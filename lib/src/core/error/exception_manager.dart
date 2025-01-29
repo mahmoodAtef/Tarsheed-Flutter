@@ -12,11 +12,11 @@ class ExceptionManager {
   final _handlers = <Type, ExceptionHandler>{
     DioException: DioExceptionHandler(),
     AuthException: AuthExceptionHandler(),
-    FallbackExceptionHandler: FallbackExceptionHandler(),
+    UnexpectedExceptionHandler: UnexpectedExceptionHandler(),
   };
 
   String getMessage(Exception exception) {
     return _handlers[exception.runtimeType]?.handle(exception) ??
-        _handlers[FallbackExceptionHandler]!.handle(exception);
+        _handlers[UnexpectedExceptionHandler]!.handle(exception);
   }
 }
