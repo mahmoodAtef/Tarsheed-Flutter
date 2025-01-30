@@ -10,3 +10,12 @@ final class RegisterWithEmailAndPasswordEvent extends AuthEvent {
   @override
   List<Object?> get props => [form];
 }
+
+final class LoginWithEmailAndPasswordEvent extends AuthEvent {
+  final String email;
+  final String password;
+  const LoginWithEmailAndPasswordEvent(
+      {required this.email, required this.password});
+  @override
+  List<Object?> get props => [email, password];
+}

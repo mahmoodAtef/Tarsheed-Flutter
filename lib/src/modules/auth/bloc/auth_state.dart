@@ -27,3 +27,14 @@ final class RegisterSuccessState extends AuthState {
   @override
   List<Object> get props => [];
 }
+
+final class LoginLoadingState extends AuthState {
+  @override
+  List<Object> get props => [];
+}
+
+final class LoginSuccessState extends AuthState {
+  // TODO: implement props based on Api response data
+  @override
+  List<Object> get props => [];
+}
