@@ -54,6 +54,16 @@ class S {
   static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
+
+  /// `No route found`
+  String get noRouteFound {
+    return Intl.message(
+      'No route found',
+      name: 'noRouteFound',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

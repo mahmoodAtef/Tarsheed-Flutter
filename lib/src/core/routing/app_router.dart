@@ -5,17 +5,7 @@ class AppRouter {
     // print(settings.toString());
     switch (settings.name) {
       default:
-        return MaterialPageRoute(
-            builder: (_) => Scaffold(
-                    body: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.phonelink_erase_rounded),
-                      Text('No route defined for ${settings.name}'),
-                    ],
-                  ),
-                )));
+        return MaterialPageRoute(builder: (_) => EmptyScreen());
     }
   }
 }

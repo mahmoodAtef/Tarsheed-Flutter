@@ -6,9 +6,9 @@ final sl = GetIt.instance;
 
 class ServiceLocator {
   static void init() {
-    AuthRemoteServices placesRemoteDataSource = AuthRemoteServices();
-    sl.registerLazySingleton(() => placesRemoteDataSource);
-    AuthRepository authRepository = AuthRepository(placesRemoteDataSource);
-    sl.registerLazySingleton(() => placesRemoteDataSource);
+    AuthRemoteServices authRemoteServices = AuthRemoteServices();
+    sl.registerLazySingleton(() => authRemoteServices);
+    AuthRepository authRepository = AuthRepository(authRemoteServices);
+    sl.registerLazySingleton(() => authRemoteServices);
   }
 }
