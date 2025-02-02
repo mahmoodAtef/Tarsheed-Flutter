@@ -16,8 +16,16 @@ class AuthRepository {
       registrationForm: registrationForm,
     );
     return await remoteResult.fold(
-      (exception) async => Left(exception),
+      (exception) => Left(exception),
       (authInfo) async => await _saveAuthInfo(authInfo),
+    );
+  }
+
+  Future<Either<Exception, Unit>> verifyEmail({required String code}) async {
+    final remoteResult = await _authRemoteServices.verifyEmail(code: code);
+    return await remoteResult.fold(
+      (exception) => Left(exception),
+      (unit) => Right(unit),
     );
   }
 
@@ -26,7 +34,7 @@ class AuthRepository {
     final remoteResult = await _authRemoteServices.loginWithEmailAndPassword(
         email: email, password: password);
     return await remoteResult.fold(
-      (exception) async => Left(exception),
+      (exception) => Left(exception),
       (authInfo) async => await _saveAuthInfo(authInfo),
     );
   }

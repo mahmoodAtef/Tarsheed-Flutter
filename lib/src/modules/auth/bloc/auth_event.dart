@@ -19,3 +19,10 @@ final class LoginWithEmailAndPasswordEvent extends AuthEvent {
   @override
   List<Object?> get props => [email, password];
 }
+
+final class VerifyEmailEvent extends AuthEvent {
+  final String code;
+  const VerifyEmailEvent(this.code);
+  @override
+  List<Object?> get props => [code];
+}

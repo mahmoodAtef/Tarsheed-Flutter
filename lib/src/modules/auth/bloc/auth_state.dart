@@ -35,3 +35,13 @@ final class LoginSuccessState extends AuthState {
   @override
   List<Object> get props => [];
 }
+
+final class VerifyEmailLoadingState extends AuthState {
+  @override
+  List<Object> get props => [];
+}
+
+final class VerifyEmailSuccessState extends AuthState {
+  @override
+  List<Object> get props => [];
+}

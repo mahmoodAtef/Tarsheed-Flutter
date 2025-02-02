@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:tarsheed/src/core/apis/api.dart';
 import 'package:tarsheed/src/core/apis/dio_helper.dart';
 import 'package:tarsheed/src/core/apis/end_points.dart';
 import 'package:tarsheed/src/core/error/custom_exceptions/auth_exceptions.dart';
@@ -11,6 +12,8 @@ import 'package:tarsheed/src/modules/auth/data/models/user.dart';
 abstract class BaseAuthRemoteServices {
   Future<Either<Exception, AuthInfo>> registerWithEmailAndPassword(
       {required EmailAndPasswordRegistrationForm registrationForm});
+  Future<Either<Exception, Unit>> verifyEmail({required String code});
+
   Future<Either<Exception, AuthInfo>> loginWithEmailAndPassword(
       {required String email, required String password});
 
@@ -30,8 +33,20 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
           path: EndPoints.register, data: registrationForm.toJson());
       return Right(AuthInfo.fromJson(response.data["data"]));
     } on Exception catch (e) {
-      return Left(
-          _returnException(e, process: "registering with email and password"));
+      return Left(_classifyException(e,
+          process: "registering with email and password"));
+    }
+  }
+
+  @override
+  Future<Either<Exception, Unit>> verifyEmail({required String code}) async {
+    try {
+      await DioHelper.postData(
+          path: EndPoints.verify,
+          data: {"id": ApiManager.userId, "code": code});
+      return Right(unit);
+    } on Exception catch (e) {
+      return Left(_classifyException(e, process: "verifying email with code"));
     }
   }
 
@@ -44,7 +59,7 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
       return Right(AuthInfo.fromJson(response.data));
     } on Exception catch (e) {
       return Left(
-          _returnException(e, process: "logging in with email and password"));
+          _classifyException(e, process: "logging in with email and password"));
     }
   }
 
@@ -78,7 +93,7 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
     throw UnimplementedError();
   }
 
-  _returnException(Exception exception, {String? process}) {
+  _classifyException(Exception exception, {String? process}) {
     {
       printException(exception, process: process);
       if (exception is DioException) {
