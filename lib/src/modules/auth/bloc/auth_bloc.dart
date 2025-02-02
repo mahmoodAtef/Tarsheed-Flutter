@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:tarsheed/src/modules/auth/data/models/email_and_password_registration_form.dart';
 import 'package:tarsheed/src/modules/auth/data/repositories/auth_repository.dart';
 
@@ -11,12 +13,12 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository authRepository = sl();
   AuthBloc() : super(AuthInitial()) {
-    on<AuthEvent>((event, emit) {
+    on<AuthEvent>((event, emit) async {
       if (event is RegisterWithEmailAndPasswordEvent) {
-        _handleRegisterWithEmailAndPasswordEvent(event, emit);
+        await _handleRegisterWithEmailAndPasswordEvent(event, emit);
       }
       if (event is LoginWithEmailAndPasswordEvent) {
-        _handleLoginWithEmailAndPasswordEvent(event, emit);
+        await _handleLoginWithEmailAndPasswordEvent(event, emit);
       }
     });
   }
@@ -24,12 +26,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _handleRegisterWithEmailAndPasswordEvent(
       RegisterWithEmailAndPasswordEvent event, Emitter<AuthState> emit) async {
     emit(RegisterLoadingState());
-
+    debugPrint("registering user");
     final result = await authRepository.registerWithEmailAndPassword(
         registrationForm: event.form);
     result.fold((l) {
+      debugPrint("error registering user");
       emit(AuthErrorState(exception: l));
     }, (r) {
+      debugPrint("user registered");
       emit(RegisterSuccessState());
     });
   }

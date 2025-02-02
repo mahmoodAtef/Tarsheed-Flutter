@@ -7,7 +7,7 @@ class AuthInfo {
   factory AuthInfo.fromJson(Map<String, dynamic> json) {
     return AuthInfo(
       accessToken: json['token'],
-      userId: json['id'],
+      userId: json['id'] ?? "",
     );
   }
 }

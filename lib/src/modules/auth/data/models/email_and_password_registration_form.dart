@@ -21,6 +21,7 @@ class EmailAndPasswordRegistrationForm {
   Map<String, dynamic> toJson() => {
         'email': email,
         'password': password,
+        'username': email.split("@").first,
         'first_name': firstName,
         'last_name': lastName
       };

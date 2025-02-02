@@ -30,7 +30,8 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
           path: EndPoints.register, data: registrationForm.toJson());
       return Right(AuthInfo.fromJson(response.data["data"]));
     } on Exception catch (e) {
-      return _returnException(e);
+      return Left(
+          _returnException(e, process: "registering with email and password"));
     }
   }
 
@@ -42,7 +43,8 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
           path: EndPoints.login, data: {"email": email, "password": password});
       return Right(AuthInfo.fromJson(response.data));
     } on Exception catch (e) {
-      return _returnException(e);
+      return Left(
+          _returnException(e, process: "logging in with email and password"));
     }
   }
 
@@ -80,9 +82,11 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
     {
       printException(exception, process: process);
       if (exception is DioException) {
-        return Left(exception as AuthException);
+        AuthException authException =
+            AuthException(requestOptions: exception.requestOptions);
+        return authException;
       }
-      return Left(exception);
+      return exception;
     }
   }
 }
