@@ -15,6 +15,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (event is RegisterWithEmailAndPasswordEvent) {
         _handleRegisterWithEmailAndPasswordEvent(event, emit);
       }
+      if (event is LoginWithEmailAndPasswordEvent) {
+        _handleLoginWithEmailAndPasswordEvent(event, emit);
+      }
     });
   }
 
@@ -23,11 +26,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(RegisterLoadingState());
 
     final result = await authRepository.registerWithEmailAndPassword(
-        emailAndPasswordRegistrationForm: event.form);
+        registrationForm: event.form);
     result.fold((l) {
       emit(AuthErrorState(exception: l));
     }, (r) {
       emit(RegisterSuccessState());
+    });
+  }
+
+  Future<void> _handleLoginWithEmailAndPasswordEvent(
+      LoginWithEmailAndPasswordEvent event, Emitter<AuthState> emit) async {
+    emit(LoginLoadingState());
+
+    final result = await authRepository.loginWithEmailAndPassword(
+        email: event.email, password: event.password);
+    result.fold((l) {
+      emit(AuthErrorState(exception: l));
+    }, (r) {
+      emit(LoginSuccessState());
     });
   }
 }

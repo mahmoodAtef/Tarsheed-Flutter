@@ -29,13 +29,12 @@ class AuthExceptionHandler implements ExceptionHandler {
           return "Account suspended for legal reasons";
         case 503:
           return "Authentication service is currently unavailable";
-        // باقي الحالات تظل كما هي
+
         default:
           return DioExceptionHandler().handle(exception);
       }
     }
 
-    // النسخة العربية
     switch (err.response?.statusCode ?? 0) {
       case 400:
         return "بيانات الاعتماد غير صالحة أو الطلب غير صحيح";
@@ -57,7 +56,7 @@ class AuthExceptionHandler implements ExceptionHandler {
         return "الحساب موقوف لأسباب قانونية";
       case 503:
         return "خدمة المصادقة غير متوفرة حالياً";
-      // باقي الحالات تظل كما هي
+
       default:
         return DioExceptionHandler().handle(exception);
     }
