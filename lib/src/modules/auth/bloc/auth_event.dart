@@ -26,3 +26,29 @@ final class VerifyEmailEvent extends AuthEvent {
   @override
   List<Object?> get props => [code];
 }
+
+final class ResendVerificationCodeEvent extends AuthEvent {
+  const ResendVerificationCodeEvent();
+  @override
+  List<Object?> get props => [];
+}
+
+class ConfirmForgotPasswordCode extends AuthEvent {
+  final String code;
+  const ConfirmForgotPasswordCode(this.code);
+  @override
+  List<Object?> get props => [code];
+}
+
+final class ResetPasswordEvent extends AuthEvent {
+  final String newPassword;
+  const ResetPasswordEvent(this.newPassword);
+  @override
+  List<Object?> get props => [newPassword];
+}
+
+final class LogoutEvent extends AuthEvent {
+  const LogoutEvent();
+  @override
+  List<Object?> get props => [];
+}

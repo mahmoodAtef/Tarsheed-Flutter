@@ -29,6 +29,10 @@ class AuthRepository {
     );
   }
 
+  Future<Either<Exception, Unit>> resendEmailVerificationCode() async {
+    return _authRemoteServices.resendEmailVerificationCode();
+  }
+
   Future<Either<Exception, Unit>> loginWithEmailAndPassword(
       {required String email, required String password}) async {
     final remoteResult = await _authRemoteServices.loginWithEmailAndPassword(
@@ -37,6 +41,22 @@ class AuthRepository {
       (exception) => Left(exception),
       (authInfo) async => await _saveAuthInfo(authInfo),
     );
+  }
+
+  Future<Either<Exception, Unit>> resetPassword(String newPassword) async {
+    return await _authRemoteServices.resetPassword(
+      newPassword,
+    );
+  }
+
+  Future<Either<Exception, Unit>> forgetPassword(
+      {required String email}) async {
+    return await _authRemoteServices.forgetPassword(email: email);
+  }
+
+  Future<Either<Exception, Unit>> confirmForgotPasswordCode(
+      {required String code}) async {
+    return await _authRemoteServices.confirmForgotPasswordCode(code: code);
   }
 
   Future<Either<Exception, Unit>> loginWithGoogle() {
@@ -61,6 +81,10 @@ class AuthRepository {
 
   Future<Either<Exception, Unit>> updateUser(User user) {
     return _authRemoteServices.updateUser(user);
+  }
+
+  Future<Either<Exception, Unit>> logout() async {
+    return _authLocalServices.logout();
   }
 
   Future<Either<Exception, Unit>> _saveAuthInfo(authInfo) async {

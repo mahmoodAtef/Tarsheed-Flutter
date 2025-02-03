@@ -20,6 +20,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await _handleLoginWithEmailAndPasswordEvent(event, emit);
       } else if (event is VerifyEmailEvent) {
         await _handleVerifyEmailEvent(event, emit);
+      } else if (event is ResendVerificationCodeEvent) {
+        await _handleResendVerificationCodeEvent(event, emit);
+      } else if (event is ConfirmForgotPasswordCode) {
+        await _handleConfirmForgotPasswordCode(event, emit);
+      } else if (event is ResetPasswordEvent) {
+        await _handleResetPasswordEvent(event, emit);
+      } else if (event is LogoutEvent) {
+        await _handleLogoutEvent(event, emit);
       }
     });
   }
@@ -61,6 +69,55 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthErrorState(exception: l));
     }, (r) {
       emit(VerifyEmailSuccessState());
+    });
+  }
+
+  Future<void> _handleResendVerificationCodeEvent(
+      ResendVerificationCodeEvent event, Emitter<AuthState> emit) async {
+    emit(VerifyEmailLoadingState());
+
+    final result = await authRepository.resendEmailVerificationCode();
+    result.fold((l) {
+      emit(AuthErrorState(exception: l));
+    }, (r) {
+      emit(ResendVerificationCodeSuccessState());
+    });
+  }
+
+  Future<void> _handleConfirmForgotPasswordCode(
+      ConfirmForgotPasswordCode event, Emitter<AuthState> emit) async {
+    emit(ConfirmForgotPasswordCodeLoadingState());
+
+    final result =
+        await authRepository.confirmForgotPasswordCode(code: event.code);
+    result.fold((l) {
+      emit(AuthErrorState(exception: l));
+    }, (r) {
+      emit(ConfirmForgotPasswordCodeSuccessState());
+    });
+  }
+
+  Future<void> _handleResetPasswordEvent(
+      ResetPasswordEvent event, Emitter<AuthState> emit) async {
+    emit(ResetPasswordLoadingState());
+
+    final result = await authRepository.resetPassword(event.newPassword);
+    result.fold((l) {
+      emit(AuthErrorState(exception: l));
+    }, (r) {
+      emit(ResetPasswordSuccessState());
+    });
+  }
+
+  Future<void> _handleLogoutEvent(
+      LogoutEvent event, Emitter<AuthState> emit) async {
+    emit(LogoutLoadingState());
+
+    final result = await authRepository.logout();
+    result.fold((l) {
+      emit(AuthErrorState(exception: l));
+    }, (r) {
+      emit(LogoutSuccessState());
     });
   }
 }

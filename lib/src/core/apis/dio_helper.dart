@@ -65,6 +65,19 @@ class DioHelper {
     );
   }
 
+  static Future<Response> patchData({
+    required String path,
+    Map<String, dynamic>? query,
+    required Map<String, dynamic>? data,
+    String? token,
+  }) {
+    return dio.patch(
+      path,
+      queryParameters: query,
+      data: data,
+    );
+  }
+
   static Future<Response> deleteData({
     required String path,
     Map<String, dynamic>? query,

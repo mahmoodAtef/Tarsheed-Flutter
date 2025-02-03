@@ -13,14 +13,22 @@ abstract class BaseAuthRemoteServices {
   Future<Either<Exception, AuthInfo>> registerWithEmailAndPassword(
       {required EmailAndPasswordRegistrationForm registrationForm});
   Future<Either<Exception, Unit>> verifyEmail({required String code});
+  Future<Either<Exception, Unit>> confirmForgotPasswordCode(
+      {required String code});
 
   Future<Either<Exception, AuthInfo>> loginWithEmailAndPassword(
       {required String email, required String password});
 
+  Future<Either<Exception, Unit>> resendEmailVerificationCode();
+  Future<Either<Exception, Unit>> forgetPassword({required String email});
+  Future<Either<Exception, Unit>> resetPassword(
+    String newPassword,
+  );
   Future<Either<Exception, AuthInfo>> loginWithGoogle();
   Future<Either<Exception, AuthInfo>> loginWithFacebook();
   Future<Either<Exception, AuthInfo>> registerWithFacebook();
   Future<Either<Exception, AuthInfo>> registerWithGoogle();
+
   Future<Either<Exception, Unit>> updateUser(User user);
 }
 
@@ -51,6 +59,19 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
   }
 
   @override
+  Future<Either<Exception, Unit>> resendEmailVerificationCode() async {
+    try {
+      await DioHelper.postData(
+          path: EndPoints.resendCode + ApiManager.userId!,
+          query: {"userId": ApiManager.userId});
+      return Right(unit);
+    } on Exception catch (e) {
+      return Left(
+          _classifyException(e, process: "resending email verification code"));
+    }
+  }
+
+  @override
   Future<Either<Exception, AuthInfo>> loginWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
@@ -60,6 +81,47 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
     } on Exception catch (e) {
       return Left(
           _classifyException(e, process: "logging in with email and password"));
+    }
+  }
+
+  @override
+  Future<Either<Exception, Unit>> forgetPassword(
+      {required String email}) async {
+    try {
+      await DioHelper.postData(
+          path: EndPoints.forgetPassword, data: {"email": email});
+      return Right(unit);
+    } on Exception catch (e) {
+      return Left(_classifyException(e, process: "forgetting password"));
+    }
+  }
+
+  @override
+  Future<Either<Exception, Unit>> confirmForgotPasswordCode(
+      {required String code}) async {
+    try {
+      await DioHelper.postData(
+          path: EndPoints.confirmForgotPasswordCode,
+          data: {
+            "code": code,
+            "id": ApiManager.userId, //
+          });
+      return Right(unit);
+    } on Exception catch (e) {
+      return Left(
+          _classifyException(e, process: "confirming forgot password code"));
+    }
+  }
+
+  @override
+  Future<Either<Exception, Unit>> resetPassword(String newPassword) async {
+    try {
+      await DioHelper.postData(path: EndPoints.resetPassword, data: {
+        {"id": ApiManager.userId!, "new_password": newPassword}
+      });
+      return Right(unit);
+    } on Exception catch (e) {
+      return Left(_classifyException(e, process: "resetting password"));
     }
   }
 
