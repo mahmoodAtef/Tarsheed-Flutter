@@ -70,8 +70,8 @@ class DioHelper {
     Map<String, dynamic>? query,
     required Map<String, dynamic>? data,
     String? token,
-  }) {
-    return dio.patch(
+  }) async {
+    return await dio.patch(
       path,
       queryParameters: query,
       data: data,

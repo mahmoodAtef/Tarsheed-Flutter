@@ -116,9 +116,9 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
   @override
   Future<Either<Exception, Unit>> resetPassword(String newPassword) async {
     try {
-      await DioHelper.postData(path: EndPoints.resetPassword, data: {
-        {"id": ApiManager.userId!, "new_password": newPassword}
-      });
+      await DioHelper.patchData(
+          path: EndPoints.resetPassword,
+          data: {"id": ApiManager.userId!, "new_password": newPassword});
       return Right(unit);
     } on Exception catch (e) {
       return Left(_classifyException(e, process: "resetting password"));
