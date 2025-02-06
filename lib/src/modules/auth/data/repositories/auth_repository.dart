@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:tarsheed/src/modules/auth/data/models/email_and_password_registration_form.dart';
-import 'package:tarsheed/src/modules/auth/data/models/user.dart';
 import 'package:tarsheed/src/modules/auth/data/services/auth_local_services.dart';
 import 'package:tarsheed/src/modules/auth/data/services/auth_remote_services.dart';
 
@@ -77,10 +76,6 @@ class AuthRepository {
   Future<Either<Exception, Unit>> registerWithFacebook() {
     // TODO: implement loginWithEmailAndPassword
     throw UnimplementedError();
-  }
-
-  Future<Either<Exception, Unit>> updateUser(User user) {
-    return _authRemoteServices.updateUser(user);
   }
 
   Future<Either<Exception, Unit>> logout() async {

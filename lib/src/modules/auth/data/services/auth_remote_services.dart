@@ -7,7 +7,6 @@ import 'package:tarsheed/src/core/error/custom_exceptions/auth_exceptions.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/modules/auth/data/models/auth_info.dart';
 import 'package:tarsheed/src/modules/auth/data/models/email_and_password_registration_form.dart';
-import 'package:tarsheed/src/modules/auth/data/models/user.dart';
 
 abstract class BaseAuthRemoteServices {
   Future<Either<Exception, AuthInfo>> registerWithEmailAndPassword(
@@ -28,8 +27,6 @@ abstract class BaseAuthRemoteServices {
   Future<Either<Exception, AuthInfo>> loginWithFacebook();
   Future<Either<Exception, AuthInfo>> registerWithFacebook();
   Future<Either<Exception, AuthInfo>> registerWithGoogle();
-
-  Future<Either<Exception, Unit>> updateUser(User user);
 }
 
 class AuthRemoteServices extends BaseAuthRemoteServices {
@@ -149,12 +146,6 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
     throw UnimplementedError();
   }
 
-  @override
-  Future<Either<Exception, Unit>> updateUser(User user) {
-    // TODO: implement updateUser
-    throw UnimplementedError();
-  }
-
   _classifyException(Exception exception, {String? process}) {
     {
       printException(exception, process: process);
@@ -167,3 +158,7 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
     }
   }
 }
+/*
+
+
+ */

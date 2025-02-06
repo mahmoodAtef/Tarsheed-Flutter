@@ -32,6 +32,7 @@ class AuthLocalServices extends BaseAuthLocalServices {
         [printException(e as Exception, process: "saving auth info"), throw e]);
   }
 
+  @override
   Future<Either<Exception, Unit>> logout() async {
     try {
       await SecureStorageHelper.removeData(key: "token");
