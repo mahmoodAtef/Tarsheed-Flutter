@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  /////////////////////////////////////////////////////////////////////////
+
                   const SizedBox(height: 40),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
