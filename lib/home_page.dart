@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/rectangle_background.dart';
-
+import 'package:tarsheed/src/modules/auth/ui/screens/account_screan.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -76,7 +76,7 @@ class HomePage extends StatelessWidget {
                       // 🔹 زر التسجيل (Register)
                       GestureDetector(
                         onTap: () {
-                          // ضع هنا الـ Navigator للـ Register
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>AccountPage()));// ضع هنا الـ Navigator للـ Register
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(

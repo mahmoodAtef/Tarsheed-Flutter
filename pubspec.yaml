@@ -30,12 +30,10 @@ dependencies:
 
   skeletonizer: ^1.4.3
   fluttertoast: ^8.2.10
-<<<<<<< HEAD
+
   flutter_secure_storage: ^9.2.4
   shared_preferences: ^2.4.0
-=======
   connectivity_plus: ^6.1.2
->>>>>>> ba2e37c (Update authentication screens)
 
 dev_dependencies:
   flutter_test:
