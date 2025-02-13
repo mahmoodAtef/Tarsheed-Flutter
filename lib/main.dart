@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+
+
   runApp(const Tarsheed());
 }
 
@@ -14,8 +18,7 @@ class Tarsheed extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+        useMaterial3: true,),
       home: LoginPage(),
     );
   }
