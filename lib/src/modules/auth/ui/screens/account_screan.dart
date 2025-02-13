@@ -1,142 +1,113 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/profile_screen.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/security_screen.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/setting.dart';
+import '../widgets/appbar.dart';
+import '../widgets/bottomNavigatorBar.dart';
+import '../widgets/card_item.dart';
 
 class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-        centerTitle: true,
-        title: Text(
-          'Account',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+      bottomNavigationBar: BottomNavigator(),
+      appBar: CustomAppBar(text: "Account"),
+      body: Container(
+        color: Colors.white,
+        width: 391,
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildAccountOption(
+            BuildItem(
               icon: Icons.person_outline,
               title: 'Profile',
               subtitle: 'Edit password, name, address, username, email',
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()));
+              },
             ),
-            _buildAccountOption(
-              icon: Icons.lock_outline,
+            SizedBox(
+              height: 20,
+            ),
+            BuildItem(
+              icon: Icons.shield_outlined,
               title: 'Security',
               subtitle: 'Face-ID, Two-Step Verification',
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SecurityPage()));
+              },
             ),
-            _buildAccountOption(
-              icon: Icons.settings_outlined,
+            SizedBox(
+              height: 20,
+            ),
+            BuildItem(
+              icon: Icons.settings,
               title: 'Settings',
               subtitle: 'Language, Backup, Energy Modes...',
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SettingPage()));
+              },
             ),
-            SizedBox(height: 20),
-            ListTile(
-              title: Text(
-                'Rate Application',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            SizedBox(height: 25),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                padding: EdgeInsets.only(left: 3),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                  border: Border(
+                      bottom: BorderSide(color: Color(0xFFEEEEEEEE), width: 3)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFF00000040),
+                      offset: Offset(0, 4), // ظل تحت الحاوية
+                      blurRadius: 4,
+                    ),
+                  ],
+                ),
+                width: 359,
+                height: 34,
+                child: Row(
+                  children: [
+                    Text('Rate Application',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black)),
+                    SizedBox(
+                      width: 160,
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                      color: Colors.black,
+                    ),
+                  ],
+                ),
               ),
-              trailing: Icon(Icons.arrow_forward_ios, size: 16),
             ),
-            Spacer(),
-            Center(
-              child: Text(
-                'Sign Out',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
+            SizedBox(
+              height: 5,
+            ),
+            TextButton(
+              onPressed: () {},
+              child: Center(
+                child: Text(
+                  'Sign Out',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red,
+                  ),
                 ),
               ),
             ),
             SizedBox(height: 40),
           ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined, color: Colors.grey),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bar_chart_outlined, color: Colors.grey),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Stack(
-              children: [
-                Icon(Icons.notifications_outlined, color: Colors.grey),
-                Positioned(
-                  right: 0,
-                  child: CircleAvatar(
-                    radius: 8,
-                    backgroundColor: Colors.red,
-                    child: Text(
-                      '99+',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 8,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline, color: Colors.blue),
-            label: '',
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAccountOption({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-  }) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: ListTile(
-        leading: Container(
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Icon(icon, color: Colors.black),
-        ),
-        title: Text(
-          title,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        subtitle: Text(
-          subtitle,
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.grey,
-          ),
         ),
       ),
     );

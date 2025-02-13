@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tarsheed/src/modules/auth/ui/screens/sign_up.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/sign_up_create_account.dart';
 import '../../../../core/utils/image_manager.dart';
 import '../widgets/large_button.dart';
 import '../widgets/main_title.dart';
@@ -29,7 +29,8 @@ class _LoginPageState extends State<LoginPage> {
       body: Stack(
         children: [
           Positioned.fill(
-            child: BackGroundRectangle(),),
+            child: BackGroundRectangle(),
+          ),
           SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 97),
@@ -41,7 +42,12 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     MainTitle(maintext: "Login Here"),
                     SizedBox(height: 30),
-                    SupTitle(text2:"Welcome back you’ve been missed!",fontweight: FontWeight.w600,size: 20,width: 228, ),
+                    SupTitle(
+                      text2: "Welcome back you’ve been missed!",
+                      fontweight: FontWeight.w600,
+                      size: 20,
+                      width: 228,
+                    ),
                     SizedBox(height: 64),
                     CustomTextField(
                       fieldType: FieldType.email,
@@ -53,7 +59,8 @@ class _LoginPageState extends State<LoginPage> {
                       fieldType: FieldType.password,
                       controller: passwordController,
                       hintText: "Password",
-                    ),                    SizedBox(height: 21),
+                    ),
+                    SizedBox(height: 21),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: TextButton(
@@ -67,8 +74,13 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     SizedBox(height: 15),
-                    LargeButton(textB: "Sign in" ,formKey: formKey,emailController: emailController,
-                      passwordController: passwordController,onpressed: (){},),
+                    LargeButton(
+                      textB: "Sign in",
+                      formKey: formKey,
+                      emailController: emailController,
+                      passwordController: passwordController,
+                      onpressed: () {},
+                    ),
                     const SizedBox(height: 15),
                     Center(
                       child: TextButton(
@@ -79,14 +91,18 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpScreen()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignUpScreen()));
                         },
                         child: Text("Create new account"),
                       ),
                     ),
                     SizedBox(height: 30),
                     Center(
-                      child: Text("Or continue with",
+                      child: Text(
+                        "Or continue with",
                         style: const TextStyle(
                           fontSize: 14,
                           color: Color(0xFF2666DE),
@@ -98,10 +114,20 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SocialIcon(image: AssetsManager.google,scale: 1.3,),
-                        SizedBox(width: 8,),
-                        SocialIcon(image: AssetsManager.facebook,scale: 2,),
-                        SizedBox(width: 8,),
+                        SocialIcon(
+                          image: AssetsManager.google,
+                          scale: 1.3,
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        SocialIcon(
+                          image: AssetsManager.facebook,
+                          scale: 2,
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
                         SocialIcon(image: AssetsManager.apple)
                       ],
                     )
@@ -115,5 +141,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-

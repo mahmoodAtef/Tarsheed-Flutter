@@ -64,6 +64,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Create new account`
+  String get createAccount {
+    return Intl.message(
+      'Create new account',
+      name: 'createAccount',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

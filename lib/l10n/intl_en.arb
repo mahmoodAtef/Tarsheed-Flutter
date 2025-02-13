@@ -1,3 +1,4 @@
 {
-  "noRouteFound": "No route found"
+  "noRouteFound": "No route found",
+  "createAccount" : "Create new account"
 }

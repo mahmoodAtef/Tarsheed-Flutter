@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tarsheed/home_page.dart';
+import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
-
 
   runApp(const Tarsheed());
 }
@@ -17,9 +17,10 @@ class Tarsheed extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,),
-      home: LoginPage(),
+        colorScheme: ColorScheme.fromSeed(seedColor: ColorManager.primary),
+        useMaterial3: true,
+      ),
+      home: HomePage(),
     );
   }
 }

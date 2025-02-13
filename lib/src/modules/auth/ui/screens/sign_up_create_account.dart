@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_email.dart';
+
 import '../../../../core/utils/image_manager.dart';
 import '../widgets/rectangle_background.dart';
 import '../widgets/large_button.dart';
@@ -14,7 +16,8 @@ class SignUpScreen extends StatelessWidget {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController(); // ✅ كنترولر جديد لتأكيد الباسورد
+  final TextEditingController confirmPasswordController =
+      TextEditingController(); // ✅ كنترولر جديد لتأكيد الباسورد
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,9 @@ class SignUpScreen extends StatelessWidget {
                   children: [
                     MainTitle(maintext: "Create Account"),
                     SizedBox(height: 10),
-                    SupTitle(text2: "Create an account so you can easily control your home"),
+                    SupTitle(
+                        text2:
+                            "Create an account so you can easily control your home"),
                     SizedBox(height: 50),
                     CustomTextField(
                       fieldType: FieldType.email,
@@ -63,7 +68,8 @@ class SignUpScreen extends StatelessWidget {
                       passwordController: passwordController,
                       onpressed: () {
                         if (formKey.currentState!.validate()) {
-                          if (passwordController.text != confirmPasswordController.text) {
+                          if (passwordController.text !=
+                              confirmPasswordController.text) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text("Passwords do not match"),
@@ -73,7 +79,9 @@ class SignUpScreen extends StatelessWidget {
                           } else {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => EmailVerificationScreen()),
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      EmailVerificationScreen()),
                             );
                           }
                         }
@@ -87,14 +95,18 @@ class SignUpScreen extends StatelessWidget {
                           textStyle: TextStyle(fontWeight: FontWeight.w800),
                         ),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => EmailVerificationScreen()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()));
                         },
                         child: Text("Already have an account"),
                       ),
                     ),
                     SizedBox(height: 30),
                     Center(
-                      child: Text("Or continue with",
+                      child: Text(
+                        "Or continue with",
                         style: const TextStyle(
                           fontSize: 14,
                           color: Color(0xFF2666DE),
@@ -106,10 +118,20 @@ class SignUpScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SocialIcon(image: AssetsManager.google,scale: 1.3,),
-                        SizedBox(width: 8,),
-                        SocialIcon(image: AssetsManager.facebook,scale: 2,),
-                        SizedBox(width: 8,),
+                        SocialIcon(
+                          image: AssetsManager.google,
+                          scale: 1.3,
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        SocialIcon(
+                          image: AssetsManager.facebook,
+                          scale: 2,
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
                         SocialIcon(image: AssetsManager.apple)
                       ],
                     )
