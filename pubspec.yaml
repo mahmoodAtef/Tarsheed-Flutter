@@ -14,16 +14,19 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_localizations:
+    sdk: flutter
 
   cupertino_icons: ^1.0.8
   bloc: ^9.0.0
   flutter_bloc: ^9.0.0
   dartz: ^0.10.1
   equatable: ^2.0.7
+  connectivity_plus: ^6.1.2
   get_it: ^8.0.3
   dio: ^5.7.0
   permission_handler: ^11.3.1
-  intl: ^0.20.2
+  intl:
   flutter_image: ^4.1.11
   image_picker: ^1.0.4
 
@@ -35,12 +38,12 @@ dependencies:
 
   flutter_secure_storage: ^9.2.4
   shared_preferences: ^2.4.0
-  connectivity_plus: ^6.1.2
+  pretty_dio_logger: ^1.4.0
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
 
 
   flutter_lints: ^5.0.0

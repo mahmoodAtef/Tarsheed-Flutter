@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/local/secure_storage_helper.dart';
 import 'package:tarsheed/src/modules/auth/data/models/auth_info.dart';
 
@@ -28,8 +27,7 @@ class AuthLocalServices extends BaseAuthLocalServices {
             hours: 23,
             minutes: 59,
           )),
-    ]).catchError((e) =>
-        [printException(e as Exception, process: "saving auth info"), throw e]);
+    ]).catchError((e) => [throw e]);
   }
 
   @override

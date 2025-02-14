@@ -4,7 +4,6 @@ import 'package:tarsheed/src/core/apis/api.dart';
 import 'package:tarsheed/src/core/apis/dio_helper.dart';
 import 'package:tarsheed/src/core/apis/end_points.dart';
 import 'package:tarsheed/src/core/error/custom_exceptions/auth_exceptions.dart';
-import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/modules/auth/data/models/auth_info.dart';
 import 'package:tarsheed/src/modules/auth/data/models/email_and_password_registration_form.dart';
 
@@ -148,7 +147,6 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
 
   _classifyException(Exception exception, {String? process}) {
     {
-      printException(exception, process: process);
       if (exception is DioException) {
         AuthException authException =
             AuthException(requestOptions: exception.requestOptions);
