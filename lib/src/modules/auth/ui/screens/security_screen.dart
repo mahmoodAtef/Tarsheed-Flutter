@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tarsheed/generated/l10n.dart'; // استيراد ملف الترجمة
 import '../widgets/appbar.dart';
 import '../widgets/bottomNavigatorBar.dart';
 import '../widgets/container_with_switch.dart';
@@ -17,26 +18,26 @@ class _SecurityPageState extends State<SecurityPage> {
     return Scaffold(
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(text: "Security"),
+      appBar: CustomAppBar(text: S.of(context).security), // استخدام الترجمة
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           children: [
             CustomContainer(
-              text: "Face ID",
+              text: S.of(context).face_id, // استخدام الترجمة
               size: 18,
               height: 66,
               status: false,
             ),
             CustomContainer(
-              text: "TWO-Step Verfication",
+              text: S.of(context).two_step_verification, // استخدام الترجمة
               size: 18,
               height: 66,
               status: true,
             ),
             SizedBox(height: 40),
             LargeButton(
-              textB: "Save",
+              textB: S.of(context).save, // استخدام الترجمة
               formKey: formKey,
               width: 329,
             )

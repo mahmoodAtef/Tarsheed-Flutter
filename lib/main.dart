@@ -3,6 +3,8 @@ import 'package:tarsheed/home_page.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 
+import 'generated/l10n.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 

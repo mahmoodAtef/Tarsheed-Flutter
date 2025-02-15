@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_email.dart';
 
@@ -17,7 +18,7 @@ class SignUpScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
-      TextEditingController(); // ✅ كنترولر جديد لتأكيد الباسورد
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,33 +37,31 @@ class SignUpScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MainTitle(maintext: "Create Account"),
+                    MainTitle(maintext: S.of(context).create_account),
                     SizedBox(height: 10),
-                    SupTitle(
-                        text2:
-                            "Create an account so you can easily control your home"),
+                    SupTitle(text2: S.of(context).create_account_desc),
                     SizedBox(height: 50),
                     CustomTextField(
                       fieldType: FieldType.email,
                       controller: emailController,
-                      hintText: "Email",
+                      hintText: S.of(context).email,
                     ),
                     SizedBox(height: 20),
                     CustomTextField(
                       fieldType: FieldType.password,
                       controller: passwordController,
-                      hintText: "Password",
+                      hintText: S.of(context).password,
                     ),
                     SizedBox(height: 20),
                     CustomTextField(
                       fieldType: FieldType.confirmPassword,
                       controller: confirmPasswordController,
                       originalPasswordController: passwordController,
-                      hintText: "Confirm Password",
+                      hintText: S.of(context).confirm_password,
                     ),
                     SizedBox(height: 35),
                     LargeButton(
-                      textB: "Sign up",
+                      textB: S.of(context).sign_up,
                       formKey: formKey,
                       emailController: emailController,
                       passwordController: passwordController,
@@ -72,7 +71,7 @@ class SignUpScreen extends StatelessWidget {
                               confirmPasswordController.text) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text("Passwords do not match"),
+                                content: Text(S.of(context).password_mismatch),
                                 backgroundColor: Colors.red,
                               ),
                             );
@@ -100,13 +99,13 @@ class SignUpScreen extends StatelessWidget {
                               MaterialPageRoute(
                                   builder: (context) => LoginPage()));
                         },
-                        child: Text("Already have an account"),
+                        child: Text(S.of(context).already_have_account),
                       ),
                     ),
                     SizedBox(height: 30),
                     Center(
                       child: Text(
-                        "Or continue with",
+                        S.of(context).or_continue_with,
                         style: const TextStyle(
                           fontSize: 14,
                           color: Color(0xFF2666DE),
@@ -122,16 +121,12 @@ class SignUpScreen extends StatelessWidget {
                           image: AssetsManager.google,
                           scale: 1.3,
                         ),
-                        SizedBox(
-                          width: 8,
-                        ),
+                        SizedBox(width: 8),
                         SocialIcon(
                           image: AssetsManager.facebook,
                           scale: 2,
                         ),
-                        SizedBox(
-                          width: 8,
-                        ),
+                        SizedBox(width: 8),
                         SocialIcon(image: AssetsManager.apple)
                       ],
                     )

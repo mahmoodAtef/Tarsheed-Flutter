@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/sign_up_create_account.dart';
+import 'package:tarsheed/generated/l10n.dart'; // تأكد من استيراد الترجمة
 import '../../../../core/utils/image_manager.dart';
 import '../widgets/large_button.dart';
 import '../widgets/main_title.dart';
@@ -40,10 +41,10 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MainTitle(maintext: "Login Here"),
+                    MainTitle(maintext: S.of(context).login_here),
                     SizedBox(height: 30),
                     SupTitle(
-                      text2: "Welcome back you’ve been missed!",
+                      text2: S.of(context).welcome_back,
                       fontweight: FontWeight.w600,
                       size: 20,
                       width: 228,
@@ -52,13 +53,13 @@ class _LoginPageState extends State<LoginPage> {
                     CustomTextField(
                       fieldType: FieldType.email,
                       controller: emailController,
-                      hintText: "Email",
+                      hintText: S.of(context).email,
                     ),
                     SizedBox(height: 20),
                     CustomTextField(
                       fieldType: FieldType.password,
                       controller: passwordController,
-                      hintText: "Password",
+                      hintText: S.of(context).password,
                     ),
                     SizedBox(height: 21),
                     Align(
@@ -66,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: TextButton(
                         onPressed: () {},
                         child: Text(
-                          "Forgot your password?",
+                          S.of(context).forgot_password,
                           style: TextStyle(
                               color: Colors.blue[800],
                               fontWeight: FontWeight.w800),
@@ -75,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     SizedBox(height: 15),
                     LargeButton(
-                      textB: "Sign in",
+                      textB: S.of(context).sign_in,
                       formKey: formKey,
                       emailController: emailController,
                       passwordController: passwordController,
@@ -96,13 +97,13 @@ class _LoginPageState extends State<LoginPage> {
                               MaterialPageRoute(
                                   builder: (context) => SignUpScreen()));
                         },
-                        child: Text("Create new account"),
+                        child: Text(S.of(context).create_new_account),
                       ),
                     ),
                     SizedBox(height: 30),
                     Center(
                       child: Text(
-                        "Or continue with",
+                        S.of(context).or_continue_with,
                         style: const TextStyle(
                           fontSize: 14,
                           color: Color(0xFF2666DE),

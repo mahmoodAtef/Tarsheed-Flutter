@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../generated/l10n.dart';
 import '../widgets/appbar.dart';
 import '../widgets/bottomNavigatorBar.dart';
 import '../widgets/container_with_switch.dart';
@@ -13,27 +14,26 @@ class EnergyModePage extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(text: "Energy Mode"),
+      appBar: CustomAppBar(text: S.of(context).energy_mode),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           children: [
             CustomContainer(
-              text: "Energy Saving Mode",
+              text: S.of(context).energy_saving_mode,
               status: false,
             ),
             CustomContainer(
-              text: "Super Energy saving Mode",
+              text: S.of(context).super_energy_saving_mode,
               status: true,
             ),
             CustomContainer(
-              text: "Sleep Mode",
+              text: S.of(context).sleep_mode,
               status: false,
             ),
           ],
         ),
       ),
     );
-    ;
   }
 }

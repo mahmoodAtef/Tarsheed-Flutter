@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:tarsheed/generated/l10n.dart'; // استيراد ملف الترجمة
 import '../widgets/appbar.dart';
 import '../widgets/bottomNavigatorBar.dart';
 
@@ -26,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(text: "Profile"),
+      appBar: CustomAppBar(text: S.of(context).profile),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(20),
@@ -42,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       backgroundImage: _image != null
                           ? FileImage(_image!)
                           : AssetImage('assets/images/avatar.png')
-                      as ImageProvider,
+                              as ImageProvider,
                     ),
                     Positioned(
                       bottom: 0,
@@ -64,10 +65,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               SizedBox(height: 20),
-              buildTextField('First Name', '', false),
-              buildTextField('Last Name', '', false),
-              buildTextField('Email', '', false),
-              buildTextField('Password', '', true),
+              buildTextField(S.of(context).first_name, '', false),
+              buildTextField(S.of(context).last_name, '', false),
+              buildTextField(S.of(context).email, '', false),
+              buildTextField(S.of(context).password, '', true),
             ],
           ),
         ),
@@ -91,7 +92,6 @@ class _ProfilePageState extends State<ProfilePage> {
             decoration: InputDecoration(
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFF2666DE)),
-                // لون الحدود عند التركيز
                 borderRadius: BorderRadius.circular(10),
               ),
               filled: true,
@@ -102,18 +102,18 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               suffixIcon: isPassword
                   ? Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.visibility_off),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {},
-                  ),
-                ],
-              )
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.visibility_off),
+                          onPressed: () {},
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () {},
+                        ),
+                      ],
+                    )
                   : Icon(Icons.edit),
             ),
           ),
