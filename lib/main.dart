@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/home_page.dart';
+import 'package:tarsheed/src/core/local/shared_prefrences.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
 
 import 'generated/l10n.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await CacheHelper.init();
+  await LocalizationManager.init();
   runApp(const Tarsheed());
 }
 

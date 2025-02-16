@@ -55,6 +55,7 @@ class LocalizationManager {
     "Friday",
     "Saturday"
   ];
+
   static List<String> getDays() {
     return currentLocale == 0 ? arabicDays : englishDays;
   }
