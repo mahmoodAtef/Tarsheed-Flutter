@@ -148,8 +148,9 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
   _classifyException(Exception exception, {String? process}) {
     {
       if (exception is DioException) {
-        AuthException authException =
-            AuthException(requestOptions: exception.requestOptions);
+        AuthException authException = AuthException(
+            requestOptions: exception.requestOptions,
+            response: exception.response);
         return authException;
       }
       return exception;

@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:tarsheed/src/core/error/custom_exceptions/auth_exceptions.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/error/handlers/dio_exception_handler.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
@@ -6,7 +6,7 @@ import 'package:tarsheed/src/core/utils/localization_manager.dart';
 class AuthExceptionHandler implements ExceptionHandler {
   @override
   String handle(Exception exception) {
-    final err = exception as DioException;
+    final err = exception as AuthException;
     if (LocalizationManager.getCurrentLocale().languageCode == "en") {
       switch (err.response?.statusCode ?? 0) {
         case 400:
