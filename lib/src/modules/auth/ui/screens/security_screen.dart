@@ -17,7 +17,6 @@ class _SecurityPageState extends State<SecurityPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigator(),
-      backgroundColor: Colors.white,
       appBar: CustomAppBar(text: S.of(context).security), // استخدام الترجمة
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),

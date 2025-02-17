@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tarsheed/src/core/utils/color_manager.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../widgets/appbar.dart';
@@ -13,7 +14,6 @@ class EnergyModePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigator(),
-      backgroundColor: Colors.white,
       appBar: CustomAppBar(text: S.of(context).energy_mode),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),

@@ -15,7 +15,6 @@ class CodeVerificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
         resizeToAvoidBottomInset: false,
         body: Stack(children: [
           Positioned.fill(
