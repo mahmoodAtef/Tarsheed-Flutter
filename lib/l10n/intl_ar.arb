@@ -1,6 +1,5 @@
 {
   "noRouteFound": "لم يتم العثور على الصفحة المطلوبة",
-  "createAccount": "إنشاء حساب",
   "account": "حساب",
   "profile": "الحساب التعريفي",
   "editPassNaAddUseEm": "تعديل كلمة المرور، الاسم، العنوان، اسم المستخدم، البريد الإلكتروني",
@@ -33,6 +32,7 @@
   "help_and_support": "المساعدة والدعم",
   "delete_my_account": "حذف حسابي",
   "create_account": "إنشاء حساب",
+
   "create_account_desc": "أنشئ حسابًا حتى تتمكن من التحكم في منزلك بسهولة",
   "confirm_password": "تأكيد كلمة المرور",
   "sign_up": "تسجيل حساب",
@@ -47,5 +47,7 @@
   "new_password": "كلمة المرور الجديدة",
   "confirm_new_password": "تأكيد كلمة المرور الجديدة",
   "finish": "إنهاء",
-  "passwords_do_not_match": "كلمتا المرور غير متطابقتين"
+  "passwords_do_not_match": "كلمتا المرور غير متطابقتين",
+  "createAccount" : "إنشاء حساب",
+  "appName": "ترشيد"
 }
