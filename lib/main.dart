@@ -4,6 +4,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/home_page.dart';
 import 'package:tarsheed/src/core/local/shared_prefrences.dart';
+import 'package:tarsheed/src/core/routing/app_router.dart';
+import 'package:tarsheed/src/core/routing/routes.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
@@ -27,7 +29,7 @@ class Tarsheed extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: LocalizationManager.getAppTitle(),
         locale: LocalizationManager.getCurrentLocale(),
         localizationsDelegates: const [
           S.delegate,
@@ -41,6 +43,10 @@ class Tarsheed extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: ColorManager.primary),
           useMaterial3: true,
         ),
+        initialRoute: Routes.initialRoute,
+
+        /// put your screens route here
+        onGenerateRoute: AppRouter.onGenerateRoute,
         home: SplashScreen());
   }
 }

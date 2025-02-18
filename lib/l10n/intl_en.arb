@@ -1,6 +1,7 @@
 {
   "noRouteFound": "No route found",
-  "createAccount": "Create new account",
+  "createAccount" : "Create new account",
+  "appName" : "Tarsheed",
   "account": "Account",
   "profile": "Profile",
   "editPassNaAddUseEm": "Edit password, name, address, username, email",

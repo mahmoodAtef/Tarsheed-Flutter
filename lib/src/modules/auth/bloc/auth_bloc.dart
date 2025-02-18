@@ -1,7 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:tarsheed/src/modules/auth/data/models/email_and_password_registration_form.dart';
 import 'package:tarsheed/src/modules/auth/data/repositories/auth_repository.dart';
 
@@ -26,6 +24,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await _handleConfirmForgotPasswordCode(event, emit);
       } else if (event is ResetPasswordEvent) {
         await _handleResetPasswordEvent(event, emit);
+      } else if (event is UpdatePasswordEvent) {
+        await _handleUpdatePasswordEvent(event, emit);
       } else if (event is LogoutEvent) {
         await _handleLogoutEvent(event, emit);
       }
@@ -35,14 +35,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _handleRegisterWithEmailAndPasswordEvent(
       RegisterWithEmailAndPasswordEvent event, Emitter<AuthState> emit) async {
     emit(RegisterLoadingState());
-    debugPrint("registering user");
     final result = await authRepository.registerWithEmailAndPassword(
         registrationForm: event.form);
     result.fold((l) {
-      debugPrint("error registering user");
       emit(AuthErrorState(exception: l));
     }, (r) {
-      debugPrint("user registered");
       emit(RegisterSuccessState());
     });
   }
@@ -106,6 +103,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthErrorState(exception: l));
     }, (r) {
       emit(ResetPasswordSuccessState());
+    });
+  }
+
+  Future<void> _handleUpdatePasswordEvent(
+      UpdatePasswordEvent event, Emitter<AuthState> emit) async {
+    emit(UpdatePasswordLoadingState());
+
+    final result = await authRepository.updatePassword(
+        newPassword: event.newPassword, oldPassword: event.oldPassword);
+    result.fold((l) {
+      emit(AuthErrorState(exception: l));
+    }, (r) {
+      emit(UpdatePasswordSuccessState());
     });
   }
 

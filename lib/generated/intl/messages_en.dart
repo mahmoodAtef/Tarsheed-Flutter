@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "already_have_account": MessageLookupByLibrary.simpleMessage(
       "Already have an account?",
     ),
+    "appName": MessageLookupByLibrary.simpleMessage("Tarsheed"),
     "backup_settings": MessageLookupByLibrary.simpleMessage("Backup Settings"),
     "confirm_new_password": MessageLookupByLibrary.simpleMessage(
       "Confirm New Password",

@@ -5,36 +5,36 @@ import '../../../generated/l10n.dart';
 
 class LocalizationManager {
   static List<Locale> supportedLocales = const [Locale("ar"), Locale("en")];
-  static late int currentLocale;
+  static late int currentLocaleIndex;
 
   static Future<void> init() async {
     await CacheHelper.getData(key: "currentLocale").then((value) {
       if (value != null) {
-        currentLocale = value;
+        currentLocaleIndex = value;
       } else {
-        currentLocale = 1;
+        currentLocaleIndex = 1;
       }
     });
   }
 
   static Future<void> setLocale(int localeIndex) async {
-    if (currentLocale != localeIndex) {
-      currentLocale = localeIndex;
+    if (currentLocaleIndex != localeIndex) {
+      currentLocaleIndex = localeIndex;
       await S.load(getCurrentLocale());
       await saveChanges();
     }
   }
 
   static Future<void> saveChanges() async {
-    await CacheHelper.saveData(key: "currentLocale", value: currentLocale);
+    await CacheHelper.saveData(key: "currentLocale", value: currentLocaleIndex);
   }
 
   static Locale getCurrentLocale() {
-    return supportedLocales[currentLocale];
+    return supportedLocales[currentLocaleIndex];
   }
 
   static String getAppTitle() {
-    return currentLocale == 0 ? "هاوي هب" : "Hawihub";
+    return currentLocaleIndex == 0 ? "ترشيد" : "Tarsheed";
   }
 
   static List<String> arabicDays = [
@@ -57,102 +57,6 @@ class LocalizationManager {
   ];
 
   static List<String> getDays() {
-    return currentLocale == 0 ? arabicDays : englishDays;
-  }
-
-  static final List<String> saudiCitiesArabic = [
-    'الرياض',
-    'جدة',
-    'مكة المكرمة',
-    'الدمام',
-    'الخبر',
-    'الطائف',
-    'المدينة المنورة',
-    'بريدة',
-    'تبوك',
-    'خميس مشيط',
-    'حائل',
-    'الجبيل',
-    'الخرج',
-    'أبها',
-    'نجران',
-    'ينبع',
-    'القصيم',
-    'الظهران',
-    'الباحة',
-    'الأحساء',
-    'النماص',
-    'عرعر',
-    'سكاكا',
-    'جازان',
-    'عنيزة',
-    'القريات',
-    'الرس',
-    'صفوى',
-    'الخفجي',
-    'الدوادمي',
-    'الزلفي',
-    'رفحاء',
-    'شقراء',
-    'الدرعية',
-    'الرميلة',
-    'بيشة',
-    'الطائف',
-    'الظهران',
-    'الفرسان',
-    'المظيلف',
-    'المزاحمية',
-    'المويه',
-  ];
-  static final List<String> saudiCitiesEnglish = [
-    'Riyadh',
-    'Jeddah',
-    'Mecca',
-    'Dammam',
-    'Khobar',
-    'Taif',
-    'Medina',
-    'Buraydah',
-    'Tabuk',
-    'Khamis Mushait',
-    'Hail',
-    'Jubail',
-    'Kharg',
-    'Abha',
-    'Najran',
-    'Yanbu',
-    'Qassim',
-    'Dhahran',
-    'Baha',
-    'Al Ahsa',
-    'Namas',
-    'Arar',
-    'Sakakah',
-    'Jazan',
-    'Unaizah',
-    'Qurayyat',
-    'Ar Rass',
-    'Safwa',
-    'Khafji',
-    'Ad Dawadimi',
-    'Zulfi',
-    'Rafha',
-    'Shaqraa',
-    'Ad Diriyah',
-    'Ar Rumaylah',
-    'Bisha',
-    'Taif',
-    'Dhahran',
-    'Farasan',
-    'Muzahmiyya',
-    'Al Muwayh',
-  ];
-
-  static List<String> get getSaudiCities {
-    if (LocalizationManager.getCurrentLocale().languageCode == "ar") {
-      return saudiCitiesArabic;
-    } else {
-      return saudiCitiesEnglish;
-    }
+    return currentLocaleIndex == 0 ? arabicDays : englishDays;
   }
 }

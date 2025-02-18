@@ -26,6 +26,9 @@ abstract class BaseAuthRemoteServices {
   Future<Either<Exception, AuthInfo>> loginWithFacebook();
   Future<Either<Exception, AuthInfo>> registerWithFacebook();
   Future<Either<Exception, AuthInfo>> registerWithGoogle();
+
+  Future<Either<Exception, Unit>> updatePassword(
+      String oldPassword, String newPassword);
 }
 
 class AuthRemoteServices extends BaseAuthRemoteServices {
@@ -122,6 +125,19 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
   }
 
   @override
+  Future<Either<Exception, Unit>> updatePassword(
+      String oldPassword, String newPassword) async {
+    try {
+      await DioHelper.putData(
+          path: EndPoints.updatePassword(ApiManager.userId!),
+          data: {"old_password": oldPassword, "new_password": newPassword});
+      return Right(unit);
+    } on Exception catch (e) {
+      return Left(_classifyException(e));
+    }
+  }
+
+  @override
   Future<Either<Exception, AuthInfo>> loginWithFacebook() {
     // TODO: implement loginWithFacebook
     throw UnimplementedError();
@@ -148,8 +164,9 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
   _classifyException(Exception exception, {String? process}) {
     {
       if (exception is DioException) {
-        AuthException authException =
-            AuthException(requestOptions: exception.requestOptions);
+        AuthException authException = AuthException(
+            requestOptions: exception.requestOptions,
+            response: exception.response);
         return authException;
       }
       return exception;

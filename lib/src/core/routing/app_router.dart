@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:tarsheed/src/core/routing/routes.dart';
+
+import '../../modules/settings/ui/screens/splash_screen.dart';
 
 class AppRouter {
-  Route onGenerateRoute(RouteSettings settings) {
+  static Route onGenerateRoute(RouteSettings settings) {
     // print(settings.toString());
     switch (settings.name) {
+      case Routes.initialRoute:
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
       default:
         return MaterialPageRoute(builder: (_) => EmptyScreen());
     }

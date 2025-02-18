@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "already_have_account": MessageLookupByLibrary.simpleMessage(
       "لديك حساب بالفعل؟",
     ),
+    "appName": MessageLookupByLibrary.simpleMessage("ترشيد"),
     "backup_settings": MessageLookupByLibrary.simpleMessage(
       "إعدادات النسخ الاحتياطي",
     ),

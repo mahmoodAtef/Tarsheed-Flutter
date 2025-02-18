@@ -8,6 +8,13 @@ class EndPoints {
   static const String confirmForgotPasswordCode =
       '/auth/password/forget/verify';
   static const String resetPassword = '/auth/password/reset';
+  static String updatePassword(String userId) =>
+      '/users/$userId/changePassword';
   static const String facebookLogin = '/auth/facebook/login';
   static const String googleLogin = '/auth/google/login';
+
+  /// Profile Endpoints
+  static const String getProfile = '/users';
+  static const String updateProfile = '/users';
+  static const String deleteProfile = '/users';
 }

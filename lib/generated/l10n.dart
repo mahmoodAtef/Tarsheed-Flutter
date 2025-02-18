@@ -75,6 +75,11 @@ class S {
     );
   }
 
+  /// `Tarsheed`
+  String get appName {
+    return Intl.message('Tarsheed', name: 'appName', desc: '', args: []);
+  }
+
   /// `Account`
   String get account {
     return Intl.message('Account', name: 'account', desc: '', args: []);

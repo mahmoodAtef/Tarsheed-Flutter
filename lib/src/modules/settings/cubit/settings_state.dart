@@ -39,3 +39,13 @@ final class UpdateProfileSuccessState extends SettingsState {
   @override
   List<Object> get props => [];
 }
+
+final class DeleteProfileLoadingState extends SettingsState {
+  @override
+  List<Object> get props => [];
+}
+
+final class DeleteProfileSuccessState extends SettingsState {
+  @override
+  List<Object> get props => [];
+}

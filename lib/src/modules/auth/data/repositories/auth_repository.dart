@@ -48,6 +48,14 @@ class AuthRepository {
     );
   }
 
+  Future<Either<Exception, Unit>> updatePassword(
+      {required String newPassword, required String oldPassword}) async {
+    return await _authRemoteServices.updatePassword(
+      oldPassword,
+      newPassword,
+    );
+  }
+
   Future<Either<Exception, Unit>> forgetPassword(
       {required String email}) async {
     return await _authRemoteServices.forgetPassword(email: email);

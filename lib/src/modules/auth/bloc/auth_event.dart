@@ -47,6 +47,15 @@ final class ResetPasswordEvent extends AuthEvent {
   List<Object?> get props => [newPassword];
 }
 
+final class UpdatePasswordEvent extends AuthEvent {
+  final String newPassword;
+  final String oldPassword;
+  const UpdatePasswordEvent(
+      {required this.newPassword, required this.oldPassword});
+  @override
+  List<Object?> get props => [newPassword, oldPassword];
+}
+
 final class LogoutEvent extends AuthEvent {
   const LogoutEvent();
   @override
