@@ -22,8 +22,8 @@ class HomePage extends StatelessWidget {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                  Image(
-                    image: AssetImage(AssetsManager.logo),
+                  Image.asset(
+                    AssetsManager.logo,
                     width: 500,
                     height: 500,
                     fit: BoxFit.contain,

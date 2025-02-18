@@ -1,5 +1,3 @@
-import 'dart:ui_web';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -44,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       radius: 50,
                       backgroundImage: _image != null
                           ? FileImage(_image!)
-                          : AssetImage(AssetsManager.avatar) as ImageProvider,
+                          : Image.asset(AssetsManager.avatar) as ImageProvider,
                     ),
                     Positioned(
                       bottom: 0,

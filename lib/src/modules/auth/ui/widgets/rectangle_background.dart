@@ -1,5 +1,3 @@
-import 'dart:ui_web';
-
 import 'package:flutter/cupertino.dart';
 
 import '../../../../core/utils/image_manager.dart';
@@ -12,14 +10,8 @@ class BackGroundRectangle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Positioned(
-            bottom: 2,
-            child: Image(image: AssetImage(AssetsManager.rectangle3))),
-        Positioned(
-            bottom: 2,
-            child: Image(
-              image: AssetImage(AssetsManager.rectangle4),
-            )),
+        Positioned(bottom: 2, child: Image.asset(AssetsManager.rectangle3)),
+        Positioned(bottom: 2, child: Image.asset(AssetsManager.rectangle4)),
         CustomPaint(
           size: Size(MediaQuery.of(context).size.width,
               MediaQuery.of(context).size.height),
