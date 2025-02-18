@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tarsheed/src/core/utils/image_manager.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/account_screan.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/rectangle_background.dart';
-import 'package:tarsheed/src/modules/auth/ui/screens/account_screan.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -72,9 +72,6 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      // 🔹 المسافة بين الأزرار
-
-                      // 🔹 زر التسجيل (Register)
                       GestureDetector(
                         onTap: () {
                           Navigator.push(

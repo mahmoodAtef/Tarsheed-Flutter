@@ -25,4 +25,6 @@ class ServiceLocator {
         SettingsRepository(settingsRemoteServices, settingsLocalServices);
     sl.registerLazySingleton(() => settingsRepository);
   }
+
+  // blocs
 }

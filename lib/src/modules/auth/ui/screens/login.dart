@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tarsheed/generated/l10n.dart'; // تأكد من استيراد الترجمة
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/sign_up_create_account.dart';
-import 'package:tarsheed/generated/l10n.dart'; // تأكد من استيراد الترجمة
-import '../../../../core/error/exception_manager.dart';
+
 import '../../../../core/utils/image_manager.dart';
 import '../widgets/large_button.dart';
 import '../widgets/main_title.dart';
@@ -29,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    AuthBloc authBloc = AuthBloc.instance;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -37,6 +37,7 @@ class _LoginPageState extends State<LoginPage> {
             child: BackGroundRectangle(),
           ),
           BlocListener<AuthBloc, AuthState>(
+            bloc: authBloc,
             listener: (context, state) {
               if (state is LoginSuccessState) {
                 context.push("/home");
@@ -44,6 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                 ExceptionManager.showMessage(state.exception);
               }
             },
+            child: SizedBox(),
           ),
           SingleChildScrollView(
             child: Padding(
@@ -89,6 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     SizedBox(height: 15),
                     BlocBuilder<AuthBloc, AuthState>(
+                      bloc: authBloc,
                       builder: (context, state) {
                         return state is LoginLoadingState
                             ? Center(child: CircularProgressIndicator())

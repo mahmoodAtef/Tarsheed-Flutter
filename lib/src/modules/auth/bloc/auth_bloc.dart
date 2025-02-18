@@ -9,6 +9,12 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  /// singleton instance
+  static AuthBloc? _authBloc;
+  static AuthBloc get instance {
+    return _authBloc ??= AuthBloc();
+  }
+
   final AuthRepository authRepository = sl();
   AuthBloc() : super(AuthInitial()) {
     on<AuthEvent>((event, emit) async {
