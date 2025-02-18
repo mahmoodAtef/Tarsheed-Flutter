@@ -10,7 +10,9 @@ class DioHelper {
     dio = Dio(BaseOptions(
       baseUrl: ApiManager.baseUrl,
       headers: {
-        "Authorization": ApiManager.authToken,
+        "Authorization": ApiManager.authToken != null
+            ? "Bearer ${ApiManager.authToken}"
+            : null,
         "Connection": "keep-alive",
       },
       connectTimeout: const Duration(seconds: 20),

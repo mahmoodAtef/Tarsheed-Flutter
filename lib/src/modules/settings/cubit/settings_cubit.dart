@@ -30,4 +30,14 @@ class SettingsCubit extends Cubit<SettingsState> {
       emit(UpdateProfileSuccessState(user: user));
     });
   }
+
+  Future<void> deleteProfile() async {
+    emit(DeleteProfileLoadingState());
+    final result = await settingsRepository.deleteProfile();
+    result.fold((l) {
+      emit(SettingsErrorState(exception: l));
+    }, (r) {
+      emit(DeleteProfileSuccessState());
+    });
+  }
 }

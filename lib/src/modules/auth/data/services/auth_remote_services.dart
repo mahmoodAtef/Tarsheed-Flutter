@@ -26,6 +26,9 @@ abstract class BaseAuthRemoteServices {
   Future<Either<Exception, AuthInfo>> loginWithFacebook();
   Future<Either<Exception, AuthInfo>> registerWithFacebook();
   Future<Either<Exception, AuthInfo>> registerWithGoogle();
+
+  Future<Either<Exception, Unit>> updatePassword(
+      String oldPassword, String newPassword);
 }
 
 class AuthRemoteServices extends BaseAuthRemoteServices {
@@ -118,6 +121,19 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
       return Right(unit);
     } on Exception catch (e) {
       return Left(_classifyException(e, process: "resetting password"));
+    }
+  }
+
+  @override
+  Future<Either<Exception, Unit>> updatePassword(
+      String oldPassword, String newPassword) async {
+    try {
+      await DioHelper.putData(
+          path: EndPoints.updatePassword(ApiManager.userId!),
+          data: {"old_password": oldPassword, "new_password": newPassword});
+      return Right(unit);
+    } on Exception catch (e) {
+      return Left(_classifyException(e));
     }
   }
 

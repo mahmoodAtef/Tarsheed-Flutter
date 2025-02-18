@@ -76,6 +76,16 @@ final class ResetPasswordSuccessState extends AuthState {
   List<Object> get props => [];
 }
 
+final class UpdatePasswordLoadingState extends AuthState {
+  @override
+  List<Object> get props => [];
+}
+
+final class UpdatePasswordSuccessState extends AuthState {
+  @override
+  List<Object> get props => [];
+}
+
 final class LogoutLoadingState extends AuthState {
   @override
   List<Object> get props => [];
