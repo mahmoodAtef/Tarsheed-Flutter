@@ -42,34 +42,22 @@ class _LoginPageState extends State<LoginPage> {
                 context.push("/home");
               } else if (state is AuthErrorState) {
                 ExceptionManager.showMessage(state.exception);
-              } else if (state is RegisterLoadingState) {
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) =>
-                      Center(child: CircularProgressIndicator()),
-                );
               }
             },
           ),
           SingleChildScrollView(
             child: Padding(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 20, vertical: 97),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 97),
               child: Form(
                 key: formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MainTitle(maintext: S
-                        .of(context)
-                        .login_here),
+                    MainTitle(maintext: S.of(context).login_here),
                     SizedBox(height: 30),
                     SupTitle(
-                      text2: S
-                          .of(context)
-                          .welcome_back,
+                      text2: S.of(context).welcome_back,
                       fontweight: FontWeight.w600,
                       size: 20,
                       width: 228,
@@ -78,17 +66,13 @@ class _LoginPageState extends State<LoginPage> {
                     CustomTextField(
                       fieldType: FieldType.email,
                       controller: emailController,
-                      hintText: S
-                          .of(context)
-                          .email,
+                      hintText: S.of(context).email,
                     ),
                     SizedBox(height: 20),
                     CustomTextField(
                       fieldType: FieldType.password,
                       controller: passwordController,
-                      hintText: S
-                          .of(context)
-                          .password,
+                      hintText: S.of(context).password,
                     ),
                     SizedBox(height: 21),
                     Align(
@@ -96,9 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: TextButton(
                         onPressed: () {},
                         child: Text(
-                          S
-                              .of(context)
-                              .forgot_password,
+                          S.of(context).forgot_password,
                           style: TextStyle(
                               color: Colors.blue[800],
                               fontWeight: FontWeight.w800),
@@ -106,22 +88,27 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     SizedBox(height: 15),
-                    LargeButton(
-                      textB: S
-                          .of(context)
-                          .sign_in,
-                      formKey: formKey,
-                      emailController: emailController,
-                      passwordController: passwordController,
-                      onpressed: () {
-                        if (formKey.currentState!.validate()) {
-                          context.read<AuthBloc>().add(
-                            LoginWithEmailAndPasswordEvent(
-                              email: emailController.text.trim(),
-                              password: passwordController.text.trim(),
-                            ),
-                          );
-                        }
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        return state is LoginLoadingState
+                            ? Center(child: CircularProgressIndicator())
+                            : LargeButton(
+                                textB: S.of(context).sign_in,
+                                formKey: formKey,
+                                emailController: emailController,
+                                passwordController: passwordController,
+                                onpressed: () {
+                                  if (formKey.currentState!.validate()) {
+                                    context.read<AuthBloc>().add(
+                                          LoginWithEmailAndPasswordEvent(
+                                            email: emailController.text.trim(),
+                                            password:
+                                                passwordController.text.trim(),
+                                          ),
+                                        );
+                                  }
+                                },
+                              );
                       },
                     ),
                     const SizedBox(height: 15),
@@ -139,17 +126,13 @@ class _LoginPageState extends State<LoginPage> {
                               MaterialPageRoute(
                                   builder: (context) => SignUpScreen()));
                         },
-                        child: Text(S
-                            .of(context)
-                            .create_new_account),
+                        child: Text(S.of(context).create_new_account),
                       ),
                     ),
                     SizedBox(height: 30),
                     Center(
                       child: Text(
-                        S
-                            .of(context)
-                            .or_continue_with,
+                        S.of(context).or_continue_with,
                         style: const TextStyle(
                           fontSize: 14,
                           color: Color(0xFF2666DE),
@@ -185,7 +168,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ],
       ),
-
     );
   }
 }

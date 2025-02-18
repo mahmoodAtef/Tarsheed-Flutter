@@ -9,6 +9,7 @@ import 'package:tarsheed/src/core/utils/localization_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/splash_screen.dart';
 
 import 'generated/l10n.dart';
 
@@ -25,29 +26,21 @@ class Tarsheed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      locale: LocalizationManager.getCurrentLocale(),
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-      theme: ThemeData(
-        scaffoldBackgroundColor: ColorManager.white,
-        colorScheme: ColorScheme.fromSeed(seedColor: ColorManager.primary),
-        useMaterial3: true,
-      ),
-      home: AnimatedSplashScreen(
-        duration: 2000,
-        splash: Image.asset("assets/images/E-logo 1.png"),
-        nextScreen: HomePage(),
-        splashTransition: SplashTransition.fadeTransition,
-        pageTransitionType: PageTransitionType.fade,
-        backgroundColor: Colors.white,
-      ),
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        locale: LocalizationManager.getCurrentLocale(),
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        theme: ThemeData(
+          scaffoldBackgroundColor: ColorManager.white,
+          colorScheme: ColorScheme.fromSeed(seedColor: ColorManager.primary),
+          useMaterial3: true,
+        ),
+        home: SplashScreen());
   }
 }

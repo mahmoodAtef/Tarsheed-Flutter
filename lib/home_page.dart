@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tarsheed/src/core/utils/image_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/rectangle_background.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/account_screan.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -20,8 +22,8 @@ class HomePage extends StatelessWidget {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                  Image.asset(
-                    'assets/images/E-logo 1.png',
+                  Image(
+                    image: AssetImage(AssetsManager.logo),
                     width: 500,
                     height: 500,
                     fit: BoxFit.contain,
@@ -40,7 +42,6 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 40),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -76,7 +77,11 @@ class HomePage extends StatelessWidget {
                       // 🔹 زر التسجيل (Register)
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>AccountPage()));// ضع هنا الـ Navigator للـ Register
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      AccountPage())); // ضع هنا الـ Navigator للـ Register
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(
