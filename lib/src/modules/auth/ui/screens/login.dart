@@ -100,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                                 formKey: formKey,
                                 emailController: emailController,
                                 passwordController: passwordController,
-                                onpressed: () {
+                                onPressed: () {
                                   if (formKey.currentState!.validate()) {
                                     context.read<AuthBloc>().add(
                                           LoginWithEmailAndPasswordEvent(

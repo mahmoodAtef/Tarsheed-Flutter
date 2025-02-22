@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 
-enum FieldType { email, password, confirmPassword, code }
+enum FieldType { email, password, confirmPassword, code, firstName, lastName }
 
 class CustomTextField extends StatefulWidget {
   final FieldType fieldType;
   final TextEditingController controller;
   final TextEditingController? originalPasswordController;
-  final String? hintText;
+  final String hintText;
 
   const CustomTextField({
     Key? key,
     required this.fieldType,
     required this.controller,
     this.originalPasswordController,
-    this.hintText,
-
+    required this.hintText,
   }) : super(key: key);
 
   @override
@@ -27,8 +26,16 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     TextInputType keyboardType;
-    String defaultHint;
+    String? defaultHint;
     switch (widget.fieldType) {
+      case FieldType.firstName:
+        keyboardType = TextInputType.name;
+        defaultHint = "first name";
+        break;
+      case FieldType.lastName:
+        keyboardType = TextInputType.name;
+        defaultHint = "last name";
+        break;
       case FieldType.email:
         keyboardType = TextInputType.emailAddress;
         defaultHint = "Email";
@@ -51,7 +58,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       controller: widget.controller,
       keyboardType: keyboardType,
       obscureText: (widget.fieldType == FieldType.password ||
-          widget.fieldType == FieldType.confirmPassword)
+              widget.fieldType == FieldType.confirmPassword)
           ? _obscureText
           : false,
       cursorColor: Colors.black,
@@ -69,19 +76,19 @@ class _CustomTextFieldState extends State<CustomTextField> {
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         suffixIcon: (widget.fieldType == FieldType.password ||
-            widget.fieldType == FieldType.confirmPassword)
+                widget.fieldType == FieldType.confirmPassword)
             ? IconButton(
-          icon: Icon(
-            _obscureText
-                ? Icons.visibility_off_outlined
-                : Icons.visibility_outlined,
-          ),
-          onPressed: () {
-            setState(() {
-              _obscureText = !_obscureText;
-            });
-          },
-        )
+                icon: Icon(
+                  _obscureText
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
+              )
             : null,
       ),
       validator: (value) {
@@ -90,6 +97,58 @@ class _CustomTextFieldState extends State<CustomTextField> {
         }
         final trimmedValue = value.trim();
         switch (widget.fieldType) {
+          case FieldType.firstName:
+            String? nameValidator(String? value, String fieldName) {
+              if (value == null || value.trim().isEmpty) {
+                return '$fieldName is required';
+              }
+              final trimmedValue = value.trim();
+              final validCharacters = RegExp(r"^[a-zA-Z\- 'أ-ي]+$");
+
+              if (trimmedValue.length < 2) {
+                return '$fieldName must be at least 2 characters';
+              }
+              if (trimmedValue.length > 50) {
+                return '$fieldName cannot exceed 50 characters';
+              }
+              if (!validCharacters.hasMatch(trimmedValue)) {
+                return '$fieldName contains invalid characters';
+              }
+              if (trimmedValue.contains('--') ||
+                  trimmedValue.contains("''") ||
+                  trimmedValue.contains('  ')) {
+                return '$fieldName has invalid formatting';
+              }
+
+              return null;
+            }
+            return nameValidator(trimmedValue, "Name");
+          case FieldType.lastName:
+            String? nameValidator(String? value, String fieldName) {
+              if (value == null || value.trim().isEmpty) {
+                return '$fieldName is required';
+              }
+              final trimmedValue = value.trim();
+              final validCharacters = RegExp(r"^[a-zA-Z\- 'أ-ي]+$");
+
+              if (trimmedValue.length < 2) {
+                return '$fieldName must be at least 2 characters';
+              }
+              if (trimmedValue.length > 50) {
+                return '$fieldName cannot exceed 50 characters';
+              }
+              if (!validCharacters.hasMatch(trimmedValue)) {
+                return '$fieldName contains invalid characters';
+              }
+              if (trimmedValue.contains('--') ||
+                  trimmedValue.contains("''") ||
+                  trimmedValue.contains('  ')) {
+                return '$fieldName has invalid formatting';
+              }
+
+              return null;
+            }
+            return nameValidator(trimmedValue, "Name");
           case FieldType.email:
             final emailRegex = RegExp(
               r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
@@ -110,8 +169,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
             final hasLowercase = RegExp(r'[a-z]').hasMatch(trimmedValue);
             final hasNumber = RegExp(r'[0-9]').hasMatch(trimmedValue);
             final hasSpecialChar =
-            RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(trimmedValue);
-            if (!(hasUppercase && hasLowercase && hasNumber && hasSpecialChar)) {
+                RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(trimmedValue);
+            if (!(hasUppercase &&
+                hasLowercase &&
+                hasNumber &&
+                hasSpecialChar)) {
               return '''
 Password must contain:
 - At least 1 uppercase letter
@@ -125,7 +187,8 @@ Password must contain:
             if (widget.originalPasswordController == null) {
               return 'Original password is not provided';
             }
-            if (trimmedValue != widget.originalPasswordController!.text.trim()) {
+            if (trimmedValue !=
+                widget.originalPasswordController!.text.trim()) {
               return 'Passwords do not match';
             }
 
@@ -136,7 +199,6 @@ Password must contain:
               return 'Code must contain numbers only';
             }
             return null;
-
         }
       },
     );

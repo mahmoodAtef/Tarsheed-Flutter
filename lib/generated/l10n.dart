@@ -225,14 +225,14 @@ class S {
     );
   }
 
-  /// `First Name`
+  /// `first name`
   String get first_name {
-    return Intl.message('First Name', name: 'first_name', desc: '', args: []);
+    return Intl.message('first name', name: 'first_name', desc: '', args: []);
   }
 
-  /// `Last Name`
+  /// `last name`
   String get last_name {
-    return Intl.message('Last Name', name: 'last_name', desc: '', args: []);
+    return Intl.message('last name', name: 'last_name', desc: '', args: []);
   }
 
   /// `Email`

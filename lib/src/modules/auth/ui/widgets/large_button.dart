@@ -8,20 +8,26 @@ class LargeButton extends StatelessWidget {
       this.icon,
       this.width,
       required this.formKey,
+      this.firstNameController,
+      this.lastNameController,
       this.emailController,
       this.passwordController,
-      this.onpressed});
+      this.onPressed});
 
   final String textB;
   final IconData? icon;
   final double? width;
   final GlobalKey<FormState> formKey;
+  final TextEditingController? firstNameController;
+  final TextEditingController? lastNameController;
   final TextEditingController? emailController;
   final TextEditingController? passwordController;
-  final VoidCallback? onpressed;
+  final VoidCallback? onPressed;
 
   void validateForm() {
     if (formKey.currentState!.validate()) {
+      print("first name: ${firstNameController?.text}");
+      print("last name: ${lastNameController?.text}");
       print("Email: ${emailController?.text}");
       print("Password: ${passwordController?.text}");
       // هنا تقدر تضيف كود تسجيل الدخول
@@ -39,7 +45,7 @@ class LargeButton extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
-        onPressed: onpressed,
+        onPressed: onPressed,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
