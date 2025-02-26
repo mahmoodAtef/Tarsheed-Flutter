@@ -8,6 +8,7 @@ import 'package:tarsheed/src/core/routing/routes.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
+import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/splash_screen.dart';
 
 Future<void> main() async {
@@ -23,26 +24,37 @@ class Tarsheed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: LocalizationManager.getAppTitle(),
-        locale: LocalizationManager.getCurrentLocale(),
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
-        theme: ThemeData(
-          scaffoldBackgroundColor: ColorManager.white,
-          colorScheme: ColorScheme.fromSeed(seedColor: ColorManager.primary),
-          useMaterial3: true,
-        ),
-        initialRoute: Routes.initialRoute,
+    return BlocProvider(
+      lazy: true,
+      create: (context) => SettingsCubit.getInstance,
+      child: BlocBuilder<SettingsCubit, SettingsState>(
+        buildWhen: (previous, current) => current is ChangeLanguageSuccessState,
+        bloc: SettingsCubit.getInstance,
+        builder: (context, state) {
+          return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: LocalizationManager.getAppTitle(),
+              locale: LocalizationManager.getCurrentLocale(),
+              localizationsDelegates: const [
+                S.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: S.delegate.supportedLocales,
+              theme: ThemeData(
+                scaffoldBackgroundColor: ColorManager.white,
+                colorScheme:
+                    ColorScheme.fromSeed(seedColor: ColorManager.primary),
+                useMaterial3: true,
+              ),
+              initialRoute: Routes.initialRoute,
 
-        /// put your screens route here
-        onGenerateRoute: AppRouter.onGenerateRoute,
-        home: SplashScreen());
+              /// put your screens route here
+              onGenerateRoute: AppRouter.onGenerateRoute,
+              home: SplashScreen());
+        },
+      ),
+    );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
+import 'package:tarsheed/src/core/utils/localization_manager.dart';
 import 'package:tarsheed/src/modules/settings/data/models/user.dart';
 import 'package:tarsheed/src/modules/settings/data/repositories/settings_repository.dart';
 
@@ -40,4 +41,14 @@ class SettingsCubit extends Cubit<SettingsState> {
       emit(DeleteProfileSuccessState());
     });
   }
+
+  Future<void> changeLanguage() async {
+    await LocalizationManager.changeLanguage();
+    emit(ChangeLanguageSuccessState(
+        languageCode: LocalizationManager.getCurrentLocale().languageCode));
+  }
+
+  static SettingsCubit? _cubit;
+
+  static SettingsCubit get getInstance => _cubit ??= SettingsCubit();
 }

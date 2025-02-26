@@ -17,12 +17,14 @@ class LocalizationManager {
     });
   }
 
-  static Future<void> setLocale(int localeIndex) async {
-    if (currentLocaleIndex != localeIndex) {
-      currentLocaleIndex = localeIndex;
-      await S.load(getCurrentLocale());
-      await saveChanges();
+  static Future<void> changeLanguage() async {
+    if (currentLocaleIndex == 0) {
+      currentLocaleIndex = 1;
+    } else {
+      currentLocaleIndex = 0;
     }
+    await S.load(getCurrentLocale());
+    await saveChanges();
   }
 
   static Future<void> saveChanges() async {

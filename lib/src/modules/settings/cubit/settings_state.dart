@@ -49,3 +49,10 @@ final class DeleteProfileSuccessState extends SettingsState {
   @override
   List<Object> get props => [];
 }
+
+final class ChangeLanguageSuccessState extends SettingsState {
+  final String languageCode;
+  const ChangeLanguageSuccessState({required this.languageCode});
+  @override
+  List<Object> get props => [languageCode];
+}
