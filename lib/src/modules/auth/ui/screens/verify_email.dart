@@ -1,7 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_code.dart';
 import '../../../../../generated/l10n.dart';
+import '../../../../core/error/exception_manager.dart';
+import '../../bloc/auth_bloc.dart';
 import '../widgets/rectangle_background.dart';
 import '../widgets/large_button.dart';
 import '../widgets/main_title.dart';
@@ -13,57 +16,76 @@ class EmailVerificationScreen extends StatelessWidget {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    AuthBloc authBloc = AuthBloc.instance;
+
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Stack(children: [
-          Positioned.fill(
-            child: BackGroundRectangle(),
-          ),
-          SingleChildScrollView(
+      resizeToAvoidBottomInset: false,
+      body: Stack(
+        children: [
+          Positioned.fill(child: BackGroundRectangle()),
+          BlocListener<AuthBloc, AuthState>(
+            bloc: authBloc,
+            listener: (context, state) {
+              if (state is ResendVerificationCodeSuccessState) {
+                context.push("/CodeVerificationScreen");
+              } else if (state is AuthErrorState) {
+                ExceptionManager.showMessage(state.exception);
+              }
+            },
+            child: SingleChildScrollView(
               child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 97),
-                  child: Form(
-                      key: formKey,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            MainTitle(
-                                maintext: S.of(context).verify_your_identity),
-                            SizedBox(height: 5),
-                            SupTitle(
-                                text2:
-                                    S.of(context).enter_email_to_receive_code),
-                            SizedBox(height: 50),
-                            CustomTextField(
-                              fieldType: FieldType.email,
-                              controller: emailController,
-                              hintText: S.of(context).email,
-                            ),
-                            SizedBox(height: 15),
-                            LargeButton(
-                              textB: S.of(context).continue_text,
-                              formKey: formKey,
-                              emailController: emailController,
-                              passwordController: passwordController,
-                              onpressed: () {
-                                if (formKey.currentState!.validate()) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              CodeVerificationScreen()));
-                                }
-                              },
-                            ),
-                            const SizedBox(height: 15),
-                            Container(height: 420),
-                          ]))))
-        ]));
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 97),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      MainTitle(maintext: S.of(context).verify_your_identity),
+                      SizedBox(height: 5),
+                      SupTitle(
+                          text2: S.of(context).enter_email_to_receive_code),
+                      SizedBox(height: 50),
+                      CustomTextField(
+                        fieldType: FieldType.email,
+                        controller: emailController,
+                        hintText: S.of(context).email,
+                      ),
+                      SizedBox(height: 15),
+                      BlocBuilder<AuthBloc, AuthState>(
+                        bloc: authBloc,
+                        builder: (context, state) {
+                          if (state is VerifyEmailLoadingState) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          return LargeButton(
+                            textB: S.of(context).continue_text,
+                            formKey: formKey,
+                            emailController: emailController,
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                context
+                                    .read<AuthBloc>()
+                                    .add(ResendVerificationCodeEvent());
+                              }
+                            },
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 15),
+                      Container(height: 420),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

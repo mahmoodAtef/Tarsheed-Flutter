@@ -66,7 +66,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "face_id": MessageLookupByLibrary.simpleMessage("Face ID"),
     "finish": MessageLookupByLibrary.simpleMessage("Finish"),
-    "first_name": MessageLookupByLibrary.simpleMessage("First Name"),
+    "first_name": MessageLookupByLibrary.simpleMessage("first name"),
     "forgot_password": MessageLookupByLibrary.simpleMessage(
       "Forgot your password?",
     ),
@@ -77,7 +77,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Language, Backup, Energy Modes...",
     ),
     "language": MessageLookupByLibrary.simpleMessage("Language"),
-    "last_name": MessageLookupByLibrary.simpleMessage("Last Name"),
+    "last_name": MessageLookupByLibrary.simpleMessage("last name"),
     "login_here": MessageLookupByLibrary.simpleMessage("Login Here"),
     "new_password": MessageLookupByLibrary.simpleMessage("New Password"),
     "noRouteFound": MessageLookupByLibrary.simpleMessage("No route found"),
