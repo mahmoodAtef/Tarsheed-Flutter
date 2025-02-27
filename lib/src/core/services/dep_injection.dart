@@ -12,20 +12,26 @@ final sl = GetIt.instance;
 
 class ServiceLocator {
   static void init() {
+    sl.registerSingleton<LocalAuthentication>(LocalAuthentication());
+    AuthLocalServices authLocalServices = AuthLocalServices(auth: sl());
+    sl.registerSingleton<AuthLocalServices>(authLocalServices);
+
     AuthRemoteServices authRemoteServices = AuthRemoteServices();
-    LocalAuthentication auth = LocalAuthentication();
-    AuthLocalServices authLocalServices = AuthLocalServices(auth: auth);
-    sl.registerLazySingleton(() => authRemoteServices);
+    sl.registerSingleton<AuthRemoteServices>(authRemoteServices);
+
     AuthRepository authRepository =
         AuthRepository(authRemoteServices, authLocalServices);
-    sl.registerLazySingleton(() => authRepository);
+    sl.registerSingleton<AuthRepository>(authRepository);
+
+    SettingsLocalServices settingsLocalServices = SettingsLocalServices();
+    sl.registerSingleton<SettingsLocalServices>(settingsLocalServices);
 
     SettingsRemoteServices settingsRemoteServices = SettingsRemoteServices();
-    SettingsLocalServices settingsLocalServices = SettingsLocalServices();
-    sl.registerLazySingleton(() => settingsRemoteServices);
+    sl.registerSingleton<SettingsRemoteServices>(settingsRemoteServices);
+
     SettingsRepository settingsRepository =
         SettingsRepository(settingsRemoteServices, settingsLocalServices);
-    sl.registerLazySingleton(() => settingsRepository);
+    sl.registerSingleton<SettingsRepository>(settingsRepository);
   }
 
   // blocs

@@ -20,6 +20,18 @@ final class LoginWithEmailAndPasswordEvent extends AuthEvent {
   List<Object?> get props => [email, password];
 }
 
+final class LoginWithGoogleEvent extends AuthEvent {
+  const LoginWithGoogleEvent();
+  @override
+  List<Object?> get props => [];
+}
+
+final class LoginWithFacebookEvent extends AuthEvent {
+  const LoginWithFacebookEvent();
+  @override
+  List<Object?> get props => [];
+}
+
 final class VerifyEmailEvent extends AuthEvent {
   final String code;
   const VerifyEmailEvent(this.code);

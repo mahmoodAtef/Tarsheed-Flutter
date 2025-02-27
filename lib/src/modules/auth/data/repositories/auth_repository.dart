@@ -14,7 +14,7 @@ class AuthRepository {
     final remoteResult = await _authRemoteServices.registerWithEmailAndPassword(
       registrationForm: registrationForm,
     );
-    return await remoteResult.fold(
+    return remoteResult.fold(
       (exception) => Left(exception),
       (authInfo) async => await _saveAuthInfo(authInfo),
     );
@@ -66,24 +66,20 @@ class AuthRepository {
     return await _authRemoteServices.confirmForgotPasswordCode(code: code);
   }
 
-  Future<Either<Exception, Unit>> loginWithGoogle() {
-    // TODO: implement loginWithEmailAndPassword
-    throw UnimplementedError();
+  Future<Either<Exception, Unit>> loginWithGoogle() async {
+    final remoteResult = await _authRemoteServices.loginWithGoogle();
+    return remoteResult.fold(
+      (exception) => Left(exception),
+      (authInfo) async => await _saveAuthInfo(authInfo),
+    );
   }
 
-  Future<Either<Exception, Unit>> loginWithFacebook() {
-    // TODO: implement loginWithEmailAndPassword
-    throw UnimplementedError();
-  }
-
-  Future<Either<Exception, Unit>> registerWithGoogle() {
-    // TODO: implement loginWithEmailAndPassword
-    throw UnimplementedError();
-  }
-
-  Future<Either<Exception, Unit>> registerWithFacebook() {
-    // TODO: implement loginWithEmailAndPassword
-    throw UnimplementedError();
+  Future<Either<Exception, Unit>> loginWithFacebook() async {
+    final remoteResult = await _authRemoteServices.loginWithFacebook();
+    return remoteResult.fold(
+      (exception) => Left(exception),
+      (authInfo) async => await _saveAuthInfo(authInfo),
+    );
   }
 
   Future<Either<Exception, Unit>> logout() async {

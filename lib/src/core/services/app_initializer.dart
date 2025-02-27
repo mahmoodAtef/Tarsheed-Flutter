@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:tarsheed/src/core/apis/api.dart';
 import 'package:tarsheed/src/core/apis/dio_helper.dart';
@@ -5,6 +7,7 @@ import 'package:tarsheed/src/core/local/secure_storage_helper.dart';
 import 'package:tarsheed/src/core/local/shared_prefrences.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
+import 'package:tarsheed/src/modules/auth/data/models/auth_info.dart';
 
 class AppInitializer {
   static Future<void> init() async {
@@ -19,12 +22,11 @@ class AppInitializer {
   }
 
   static Future<void> _getSavedData() async {
-    Future.wait([
-      SecureStorageHelper.getData(key: "id"),
-      SecureStorageHelper.getData(key: "token")
-    ]).then((value) {
-      ApiManager.userId = value[0];
-      ApiManager.authToken = value[1];
-    });
+    var authData = await SecureStorageHelper.getData(key: "auth_info");
+    if (authData != null) {
+      AuthInfo authInfo = AuthInfo.fromJson(jsonDecode(authData));
+      ApiManager.authToken = authInfo.accessToken;
+      ApiManager.userId = authInfo.userId;
+    }
   }
 }

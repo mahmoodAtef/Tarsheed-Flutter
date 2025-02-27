@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tarsheed/src/core/apis/api.dart';
 import 'package:tarsheed/src/core/apis/dio_helper.dart';
 import 'package:tarsheed/src/core/apis/end_points.dart';
@@ -24,8 +25,6 @@ abstract class BaseAuthRemoteServices {
   );
   Future<Either<Exception, AuthInfo>> loginWithGoogle();
   Future<Either<Exception, AuthInfo>> loginWithFacebook();
-  Future<Either<Exception, AuthInfo>> registerWithFacebook();
-  Future<Either<Exception, AuthInfo>> registerWithGoogle();
 
   Future<Either<Exception, Unit>> updatePassword(
       String oldPassword, String newPassword);
@@ -138,27 +137,43 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
   }
 
   @override
-  Future<Either<Exception, AuthInfo>> loginWithFacebook() {
+  Future<Either<Exception, AuthInfo>> loginWithFacebook() async {
+    try {
+      var accessToken = _getFacebookAccessToken();
+      var response = await DioHelper.postData(
+          path: EndPoints.facebookLogin, query: {"Authorization": accessToken});
+      return Right(AuthInfo.fromJson(response.data));
+    } on Exception catch (e) {
+      return Left(_classifyException(e));
+    }
+  }
+
+  Future<String> _getFacebookAccessToken() async {
     // TODO: implement loginWithFacebook
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Exception, AuthInfo>> loginWithGoogle() {
-    // TODO: implement loginWithGoogle
-    throw UnimplementedError();
+  Future<Either<Exception, AuthInfo>> loginWithGoogle() async {
+    try {
+      var accessToken = await _getGoogleAccessToken();
+      var response = await DioHelper.postData(
+          path: EndPoints.googleLogin, query: {"Authorization": accessToken});
+      return Right(AuthInfo.fromJson(response.data));
+    } on Exception catch (e) {
+      return Left(_classifyException(e));
+    }
   }
 
-  @override
-  Future<Either<Exception, AuthInfo>> registerWithFacebook() {
-    // TODO: implement registerWithFacebook
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Exception, AuthInfo>> registerWithGoogle() {
-    // TODO: implement registerWithGoogle
-    throw UnimplementedError();
+  Future<String> _getGoogleAccessToken() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    if (googleSignIn.currentUser != null) {
+      await googleSignIn.signOut();
+    }
+    var googleUser = await googleSignIn.signIn();
+    var googleAuth = await googleUser?.authentication;
+    var accessToken = googleAuth?.accessToken;
+    return accessToken!;
   }
 
   _classifyException(Exception exception, {String? process}) {
@@ -172,6 +187,48 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
       return exception;
     }
   }
+  /*
+
+  Future<User> signInWithFacebook() async {
+    //? to generate sha1 code in CMD ---> gradlew signingReport
+    final rawNonce = generateNonce();
+    final nonce = sha256ofString(rawNonce);
+    final LoginResult loginResult = await FacebookAuth.instance.login(
+      nonce: nonce,
+    );
+    OAuthCredential facebookAuthCredential;
+
+    if (Platform.isIOS) {
+      switch (loginResult.accessToken!.type) {
+        case AccessTokenType.classic:
+          final token = loginResult.accessToken as ClassicToken;
+          facebookAuthCredential = FacebookAuthProvider.credential(
+            token.authenticationToken!,
+          );
+          break;
+        case AccessTokenType.limited:
+          final token = loginResult.accessToken as LimitedToken;
+          facebookAuthCredential = OAuthCredential(
+            providerId: 'facebook.com',
+            signInMethod: 'oauth',
+            idToken: token.tokenString,
+            rawNonce: rawNonce,
+          );
+          break;
+      }
+    } else {
+      facebookAuthCredential = FacebookAuthProvider.credential(
+        loginResult.accessToken!.tokenString,
+      );
+    }
+
+    return (await FirebaseAuth.instance.signInWithCredential(
+      facebookAuthCredential,
+    ))
+        .user!;
+  }
+
+   */
 }
 /*
 

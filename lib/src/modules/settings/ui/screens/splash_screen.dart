@@ -24,7 +24,11 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: AnimatedSplashScreen(
         duration: 3000,
-        splash: Image.asset("assets/images/E-logo 1.png"),
+        splash: Image.asset(
+          "assets/images/E-logo 1.png",
+          width: 200,
+          height: 200,
+        ),
         nextScreen: HomePage(),
         splashTransition: SplashTransition.fadeTransition,
         backgroundColor: Colors.white,

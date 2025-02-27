@@ -35,6 +35,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await _handleUpdatePasswordEvent(event, emit);
       } else if (event is LogoutEvent) {
         await _handleLogoutEvent(event, emit);
+      } else if (event is LoginWithGoogleEvent) {
+        await _handleLoginWithGoogleEvent(event, emit);
+      } else if (event is LoginWithFacebookEvent) {
+        await _handleLoginWithFacebookEvent(event, emit);
       }
     });
   }
@@ -135,6 +139,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthErrorState(exception: l));
     }, (r) {
       emit(LogoutSuccessState());
+    });
+  }
+
+  Future<void> _handleLoginWithGoogleEvent(
+      LoginWithGoogleEvent event, Emitter<AuthState> emit) async {
+    emit(LoginLoadingState());
+
+    final result = await authRepository.loginWithGoogle();
+    result.fold((l) {
+      emit(AuthErrorState(exception: l));
+    }, (r) {
+      emit(LoginSuccessState());
+    });
+  }
+
+  Future<void> _handleLoginWithFacebookEvent(
+      LoginWithFacebookEvent event, Emitter<AuthState> emit) async {
+    emit(LoginLoadingState());
+
+    final result = await authRepository.loginWithGoogle();
+    result.fold((l) {
+      emit(AuthErrorState(exception: l));
+    }, (r) {
+      emit(LoginSuccessState());
     });
   }
 }

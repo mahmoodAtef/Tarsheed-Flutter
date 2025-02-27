@@ -13,6 +13,7 @@ abstract class BaseAuthLocalServices {
   Future<Either<Exception, Unit>> saveSecuritySettings(
       SecuritySettings settings);
   Future<Either<Exception, SecuritySettings>> getSecuritySettings();
+  Future<Either<Exception, Unit>> checkForAuthentication();
 }
 
 class AuthLocalServices extends BaseAuthLocalServices {
@@ -21,24 +22,14 @@ class AuthLocalServices extends BaseAuthLocalServices {
 
   @override
   Future<void> saveAuthInfo(AuthInfo info) async {
-    Future.wait([
-      SecureStorageHelper.saveData(
-          key: "token",
-          value: info.accessToken,
-          expiresAfter: Duration(
-            days: 29,
-            hours: 23,
-            minutes: 59,
-          )),
-      SecureStorageHelper.saveData(
-          key: "id",
-          value: info.userId,
-          expiresAfter: Duration(
-            days: 29,
-            hours: 23,
-            minutes: 59,
-          )),
-    ]).catchError((e) => [throw e]);
+    await SecureStorageHelper.saveData(
+        key: "auth_info",
+        value: info.toJson(),
+        expiresAfter: Duration(
+          days: 29,
+          hours: 23,
+          minutes: 59,
+        ));
   }
 
   @override
@@ -72,5 +63,11 @@ class AuthLocalServices extends BaseAuthLocalServices {
     } on Exception catch (e) {
       return Left(e);
     }
+  }
+
+  @override
+  Future<Either<Exception, Unit>> checkForAuthentication() {
+    // TODO: implement checkForAuthentication
+    throw UnimplementedError();
   }
 }

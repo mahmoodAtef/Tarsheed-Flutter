@@ -10,4 +10,5 @@ class AuthInfo {
       userId: json['id'] ?? "",
     );
   }
+  Map<String, dynamic> toJson() => {'token': accessToken, 'id': userId};
 }
