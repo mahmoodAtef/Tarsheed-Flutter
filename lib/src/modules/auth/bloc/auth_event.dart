@@ -61,3 +61,16 @@ final class LogoutEvent extends AuthEvent {
   @override
   List<Object?> get props => [];
 }
+
+final class SaveSecuritySettingsEvent extends AuthEvent {
+  final SecuritySettings settings;
+  const SaveSecuritySettingsEvent(this.settings);
+  @override
+  List<Object?> get props => [settings];
+}
+
+final class CheckForLocalAuthEvent extends AuthEvent {
+  const CheckForLocalAuthEvent();
+  @override
+  List<Object?> get props => [];
+}

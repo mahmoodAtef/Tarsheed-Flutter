@@ -95,3 +95,25 @@ final class LogoutSuccessState extends AuthState {
   @override
   List<Object> get props => [];
 }
+
+final class SaveSecuritySettingsLoadingState extends AuthState {
+  final SecuritySettings securitySettings;
+  const SaveSecuritySettingsLoadingState({required this.securitySettings});
+  @override
+  List<Object> get props => [securitySettings];
+}
+
+final class SaveSecuritySettingsSuccessState extends AuthState {
+  @override
+  List<Object> get props => [];
+}
+
+class CheckForLocalAuthLoadingState extends AuthState {
+  @override
+  List<Object> get props => [];
+}
+
+class CheckForLocalAuthSuccessState extends AuthState {
+  @override
+  List<Object> get props => [];
+}

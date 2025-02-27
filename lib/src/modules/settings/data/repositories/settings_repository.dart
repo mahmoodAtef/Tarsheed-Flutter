@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:tarsheed/src/modules/auth/data/services/auth_local_services.dart';
 import 'package:tarsheed/src/modules/settings/data/models/user.dart';
 import 'package:tarsheed/src/modules/settings/data/services/settings_local_services.dart';
 import 'package:tarsheed/src/modules/settings/data/services/settings_remote_services.dart';
@@ -13,13 +12,6 @@ class SettingsRepository {
       _settingsRemoteServices.getProfile();
   Future<Either<Exception, Unit>> updateProfile(User user) =>
       _settingsRemoteServices.updateProfile(user);
-  Future<Either<Exception, Unit>> deleteProfile() async {
-    var result = await _settingsRemoteServices.deleteProfile();
-    if (result.isRight()) {
-      await AuthLocalServices().logout();
-      return Right(unit);
-    }
-
-    return result;
-  }
+  Future<Either<Exception, Unit>> deleteProfile() =>
+      _settingsRemoteServices.deleteProfile();
 }

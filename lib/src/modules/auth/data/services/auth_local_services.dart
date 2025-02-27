@@ -1,13 +1,24 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:tarsheed/src/core/local/secure_storage_helper.dart';
 import 'package:tarsheed/src/modules/auth/data/models/auth_info.dart';
+
+import '../models/security_settings.dart';
 
 abstract class BaseAuthLocalServices {
   Future<void> saveAuthInfo(AuthInfo info);
   Future<Either<Exception, Unit>> logout();
+  Future<Either<Exception, Unit>> saveSecuritySettings(
+      SecuritySettings settings);
+  Future<Either<Exception, SecuritySettings>> getSecuritySettings();
 }
 
 class AuthLocalServices extends BaseAuthLocalServices {
+  final LocalAuthentication auth;
+  AuthLocalServices({required this.auth});
+
   @override
   Future<void> saveAuthInfo(AuthInfo info) async {
     Future.wait([
@@ -36,6 +47,28 @@ class AuthLocalServices extends BaseAuthLocalServices {
       await SecureStorageHelper.removeData(key: "token");
       await SecureStorageHelper.removeData(key: "id");
       return Right(unit);
+    } on Exception catch (e) {
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Exception, Unit>> saveSecuritySettings(
+      SecuritySettings settings) async {
+    try {
+      await SecureStorageHelper.saveData(
+          key: "security_settings", value: jsonEncode(settings.toJson()));
+      return Right(unit);
+    } on Exception catch (e) {
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Exception, SecuritySettings>> getSecuritySettings() async {
+    try {
+      var data = await SecureStorageHelper.getData(key: "security_settings");
+      return Right(SecuritySettings.fromJson(jsonDecode(data!)));
     } on Exception catch (e) {
       return Left(e);
     }
