@@ -16,6 +16,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     return _authBloc ??= AuthBloc();
   }
 
+  String? verificationId;
+
   final AuthRepository authRepository = sl();
   AuthBloc() : super(AuthInitial()) {
     on<AuthEvent>((event, emit) async {
@@ -27,6 +29,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await _handleVerifyEmailEvent(event, emit);
       } else if (event is ResendVerificationCodeEvent) {
         await _handleResendVerificationCodeEvent(event, emit);
+      } else if (event is ForgotPasswordEvent) {
+        await _handleForgotPasswordEvent(event, emit);
       } else if (event is ConfirmForgotPasswordCode) {
         await _handleConfirmForgotPasswordCode(event, emit);
       } else if (event is ResetPasswordEvent) {
@@ -72,7 +76,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       VerifyEmailEvent event, Emitter<AuthState> emit) async {
     emit(VerifyEmailLoadingState());
 
-    final result = await authRepository.verifyEmail(code: event.code);
+    final result = await authRepository.verifyEmail(
+        code: event.code, verificationId: verificationId!);
+
     result.fold((l) {
       emit(AuthErrorState(exception: l));
     }, (r) {
@@ -88,7 +94,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     result.fold((l) {
       emit(AuthErrorState(exception: l));
     }, (r) {
+      verificationId = r;
       emit(ResendVerificationCodeSuccessState());
+    });
+  }
+
+  Future<void> _handleForgotPasswordEvent(
+      ForgotPasswordEvent event, Emitter<AuthState> emit) async {
+    emit(ForgotPasswordLoadingState());
+    final result = await authRepository.forgetPassword(email: event.email);
+    result.fold((l) {
+      emit(AuthErrorState(exception: l));
+    }, (r) {
+      verificationId = r;
+      emit(ForgotPasswordSuccessState());
     });
   }
 
@@ -96,11 +115,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       ConfirmForgotPasswordCode event, Emitter<AuthState> emit) async {
     emit(ConfirmForgotPasswordCodeLoadingState());
 
-    final result =
-        await authRepository.confirmForgotPasswordCode(code: event.code);
+    final result = await authRepository.confirmForgotPasswordCode(
+        code: event.code, verificationId: verificationId!);
     result.fold((l) {
       emit(AuthErrorState(exception: l));
     }, (r) {
+      verificationId = null;
       emit(ConfirmForgotPasswordCodeSuccessState());
     });
   }

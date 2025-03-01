@@ -86,3 +86,10 @@ final class CheckForLocalAuthEvent extends AuthEvent {
   @override
   List<Object?> get props => [];
 }
+
+final class ForgotPasswordEvent extends AuthEvent {
+  final String email;
+  const ForgotPasswordEvent(this.email);
+  @override
+  List<Object?> get props => [email];
+}

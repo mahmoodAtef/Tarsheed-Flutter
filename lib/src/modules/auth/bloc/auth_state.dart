@@ -117,3 +117,13 @@ class CheckForLocalAuthSuccessState extends AuthState {
   @override
   List<Object> get props => [];
 }
+
+final class ForgotPasswordLoadingState extends AuthState {
+  @override
+  List<Object> get props => [];
+}
+
+final class ForgotPasswordSuccessState extends AuthState {
+  @override
+  List<Object> get props => [];
+}
