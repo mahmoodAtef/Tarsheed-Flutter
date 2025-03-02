@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Tarsheed</string>
+    <string name="facebook_app_id">1701151017464039</string>
+    <string name="fb_login_protocol_scheme">1701151017464039</string>
+    <string name="facebook_client_token">e456e0cc3ca150a118cf3ea1cdf940a3</string>
+</resources>

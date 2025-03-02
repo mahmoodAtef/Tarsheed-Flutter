@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tarsheed/src/core/apis/api.dart';
 import 'package:tarsheed/src/core/apis/dio_helper.dart';
@@ -154,10 +155,29 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
   }
 
   Future<String> _getFacebookAccessToken() async {
-    // TODO: implement loginWithFacebook
-    throw UnimplementedError();
+    try {
+      await _checkIfIsLogged();
+      final LoginResult result = await FacebookAuth.instance.login();
+      return result.accessToken!.tokenString;
+    } catch (e) {
+      rethrow;
+    }
   }
 
+/*
+   // by default we request the email and the public profile
+
+    // loginBehavior is only supported for Android devices, for ios it will be ignored
+    // final result = await FacebookAuth.instance.login(
+    //   permissions: ['email', 'public_profile', 'user_birthday', 'user_friends', 'user_gender', 'user_link'],
+    //   loginBehavior: LoginBehavior
+    //       .DIALOG_ONLY, // (only android) show an authentication dialog instead of redirecting to facebook app
+    // );
+
+    if (result.status == LoginStatus.success) {
+   result.accessToken;
+
+ */
   @override
   Future<Either<Exception, AuthInfo>> loginWithGoogle() async {
     try {
@@ -192,7 +212,25 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
       return exception;
     }
   }
+
+  Future<void> _checkIfIsLogged() async {
+    final auth = FacebookAuth.instance;
+    final accessToken = await auth.accessToken;
+    if (accessToken != null) {
+      final userData = await FacebookAuth.instance.logOut();
+    }
+  }
+
   /*
+
+
+  void _printCredentials() {
+    print(
+      prettyPrint(_accessToken!.toJson()),
+    );
+  }
+
+
 
   Future<User> signInWithFacebook() async {
     //? to generate sha1 code in CMD ---> gradlew signingReport
