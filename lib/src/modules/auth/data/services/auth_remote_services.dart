@@ -156,7 +156,7 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
 
   Future<String> _getFacebookAccessToken() async {
     try {
-      await _checkIfIsLogged();
+      await _checkIfIsFacebookLogged();
       final LoginResult result = await FacebookAuth.instance.login();
       return result.accessToken!.tokenString;
     } catch (e) {
@@ -199,11 +199,11 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
     }
   }
 
-  Future<void> _checkIfIsLogged() async {
+  Future<void> _checkIfIsFacebookLogged() async {
     final auth = FacebookAuth.instance;
     final accessToken = await auth.accessToken;
     if (accessToken != null) {
-      final userData = await FacebookAuth.instance.logOut();
+      await FacebookAuth.instance.logOut();
     }
   }
 }
