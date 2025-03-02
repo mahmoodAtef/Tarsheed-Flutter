@@ -164,20 +164,6 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
     }
   }
 
-/*
-   // by default we request the email and the public profile
-
-    // loginBehavior is only supported for Android devices, for ios it will be ignored
-    // final result = await FacebookAuth.instance.login(
-    //   permissions: ['email', 'public_profile', 'user_birthday', 'user_friends', 'user_gender', 'user_link'],
-    //   loginBehavior: LoginBehavior
-    //       .DIALOG_ONLY, // (only android) show an authentication dialog instead of redirecting to facebook app
-    // );
-
-    if (result.status == LoginStatus.success) {
-   result.accessToken;
-
- */
   @override
   Future<Either<Exception, AuthInfo>> loginWithGoogle() async {
     try {
@@ -220,60 +206,4 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
       final userData = await FacebookAuth.instance.logOut();
     }
   }
-
-  /*
-
-
-  void _printCredentials() {
-    print(
-      prettyPrint(_accessToken!.toJson()),
-    );
-  }
-
-
-
-  Future<User> signInWithFacebook() async {
-    //? to generate sha1 code in CMD ---> gradlew signingReport
-    final rawNonce = generateNonce();
-    final nonce = sha256ofString(rawNonce);
-    final LoginResult loginResult = await FacebookAuth.instance.login(
-      nonce: nonce,
-    );
-    OAuthCredential facebookAuthCredential;
-
-    if (Platform.isIOS) {
-      switch (loginResult.accessToken!.type) {
-        case AccessTokenType.classic:
-          final token = loginResult.accessToken as ClassicToken;
-          facebookAuthCredential = FacebookAuthProvider.credential(
-            token.authenticationToken!,
-          );
-          break;
-        case AccessTokenType.limited:
-          final token = loginResult.accessToken as LimitedToken;
-          facebookAuthCredential = OAuthCredential(
-            providerId: 'facebook.com',
-            signInMethod: 'oauth',
-            idToken: token.tokenString,
-            rawNonce: rawNonce,
-          );
-          break;
-      }
-    } else {
-      facebookAuthCredential = FacebookAuthProvider.credential(
-        loginResult.accessToken!.tokenString,
-      );
-    }
-
-    return (await FirebaseAuth.instance.signInWithCredential(
-      facebookAuthCredential,
-    ))
-        .user!;
-  }
-
-   */
 }
-/*
-
-
- */
