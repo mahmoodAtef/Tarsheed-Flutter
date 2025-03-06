@@ -46,6 +46,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "delete_my_account": MessageLookupByLibrary.simpleMessage(
       "Delete My Account",
     ),
+    "didnot_receive": MessageLookupByLibrary.simpleMessage(
+      "Didn\'t receive a code?",
+    ),
     "editPassNaAddUseEm": MessageLookupByLibrary.simpleMessage(
       "Edit password, name, address, username, email",
     ),
@@ -93,6 +96,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "profile": MessageLookupByLibrary.simpleMessage("Profile"),
     "rateApplication": MessageLookupByLibrary.simpleMessage("Rate Application"),
+    "resend_code": MessageLookupByLibrary.simpleMessage("Resend"),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
     "security": MessageLookupByLibrary.simpleMessage("Security"),
     "sent_email_message": MessageLookupByLibrary.simpleMessage(

@@ -48,5 +48,7 @@
   "new_password": "New Password",
   "confirm_new_password": "Confirm New Password",
   "finish": "Finish",
-  "passwords_do_not_match": "Passwords do not match"
+  "passwords_do_not_match": "Passwords do not match",
+  "resend_code": "Resend",
+  "didnot_receive": "Didn't receive a code?"
 }

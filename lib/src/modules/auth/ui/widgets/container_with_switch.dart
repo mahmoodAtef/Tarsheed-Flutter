@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomContainer extends StatefulWidget {
   const CustomContainer({
@@ -41,11 +41,18 @@ class _CustomContainerState extends State<CustomContainer> {
       child: Column(
         children: [
           Container(
-            width: 340,
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(12.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 4.r,
+                  offset: Offset(0, 2),
+                ),
+              ],
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,16 +62,17 @@ class _CustomContainerState extends State<CustomContainer> {
                     widget.text,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      fontSize: widget.size ?? 20,
+                      fontSize: widget.size ?? 18.sp,
+                      color: Colors.black,
                     ),
                   ),
                 ),
                 if (status != null)
                   Padding(
-                    padding: EdgeInsets.only(left: 10),
+                    padding: EdgeInsets.only(left: 8.w),
                     child: Switch(
                       inactiveThumbColor: Color(0xFF2666DE),
-                      activeColor: Color(0xFFFFFFFF),
+                      activeColor: Colors.white,
                       inactiveTrackColor: Color(0xFFD4E2FD),
                       activeTrackColor: Color(0xFF669BF7),
                       value: status!,
@@ -78,13 +86,13 @@ class _CustomContainerState extends State<CustomContainer> {
                 if (widget.icon != null)
                   IconButton(
                     onPressed: widget.onpressed,
-                    icon: Icon(widget.icon, size: 16, color: Colors.black),
+                    icon: Icon(widget.icon, size: 20.sp, color: Colors.black),
                   ),
               ],
             ),
           ),
-          Divider(thickness: 1),
-          SizedBox(height: 5),
+          Divider(thickness: 1, color: Colors.grey[300]),
+          SizedBox(height: 6.h),
         ],
       ),
     );

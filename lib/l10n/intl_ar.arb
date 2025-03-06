@@ -32,7 +32,6 @@
   "help_and_support": "المساعدة والدعم",
   "delete_my_account": "حذف حسابي",
   "create_account": "إنشاء حساب",
-
   "create_account_desc": "أنشئ حسابًا حتى تتمكن من التحكم في منزلك بسهولة",
   "confirm_password": "تأكيد كلمة المرور",
   "sign_up": "تسجيل حساب",
@@ -48,6 +47,8 @@
   "confirm_new_password": "تأكيد كلمة المرور الجديدة",
   "finish": "إنهاء",
   "passwords_do_not_match": "كلمتا المرور غير متطابقتين",
-  "createAccount" : "إنشاء حساب",
-  "appName": "ترشيد"
+  "createAccount": "إنشاء حساب",
+  "appName": "ترشيد",
+  "resend_code": "أعد الإرسال",
+  "didnot_receive": "لم تستلم الرمز؟"
 }

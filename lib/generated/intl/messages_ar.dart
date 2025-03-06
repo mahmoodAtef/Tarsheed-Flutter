@@ -46,6 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "إنشاء حساب جديد",
     ),
     "delete_my_account": MessageLookupByLibrary.simpleMessage("حذف حسابي"),
+    "didnot_receive": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
     "editPassNaAddUseEm": MessageLookupByLibrary.simpleMessage(
       "تعديل كلمة المرور، الاسم، العنوان، اسم المستخدم، البريد الإلكتروني",
     ),
@@ -91,6 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "profile": MessageLookupByLibrary.simpleMessage("الحساب التعريفي"),
     "rateApplication": MessageLookupByLibrary.simpleMessage("تقييم التطبيق"),
+    "resend_code": MessageLookupByLibrary.simpleMessage("أعد الإرسال"),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "security": MessageLookupByLibrary.simpleMessage("الأمان"),
     "sent_email_message": MessageLookupByLibrary.simpleMessage(

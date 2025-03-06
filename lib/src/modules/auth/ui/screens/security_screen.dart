@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart'; // استيراد ملف الترجمة
 import '../widgets/appbar.dart';
 import '../widgets/bottomNavigatorBar.dart';
@@ -17,30 +18,33 @@ class _SecurityPageState extends State<SecurityPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigator(),
-      appBar: CustomAppBar(text: S.of(context).security), // استخدام الترجمة
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Column(
-          children: [
-            CustomContainer(
-              text: S.of(context).face_id, // استخدام الترجمة
-              size: 18,
-              height: 66,
-              status: false,
-            ),
-            CustomContainer(
-              text: S.of(context).two_step_verification, // استخدام الترجمة
-              size: 18,
-              height: 66,
-              status: true,
-            ),
-            SizedBox(height: 40),
-            LargeButton(
-              textB: S.of(context).save, // استخدام الترجمة
-              formKey: formKey,
-              width: 329,
-            )
-          ],
+      appBar: CustomAppBar(text: S.of(context).security),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomContainer(
+                text: S.of(context).face_id,
+                size: 18,
+                height: 66.h,
+                status: false,
+              ),
+              CustomContainer(
+                text: S.of(context).two_step_verification,
+                size: 18,
+                height: 66.h,
+                status: true,
+              ),
+              SizedBox(height: 40.h),
+              LargeButton(
+                textB: S.of(context).save,
+                formKey: formKey,
+                width: double.infinity,
+              )
+            ],
+          ),
         ),
       ),
     );

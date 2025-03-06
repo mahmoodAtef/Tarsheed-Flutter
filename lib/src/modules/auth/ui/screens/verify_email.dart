@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_code.dart';
 import '../../../../../generated/l10n.dart';
@@ -37,8 +38,7 @@ class EmailVerificationScreen extends StatelessWidget {
             },
             child: SingleChildScrollView(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 97),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 97.h),
                 child: Form(
                   key: formKey,
                   child: Column(
@@ -46,16 +46,16 @@ class EmailVerificationScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       MainTitle(maintext: S.of(context).verify_your_identity),
-                      SizedBox(height: 5),
+                      SizedBox(height: 5.h),
                       SupTitle(
                           text2: S.of(context).enter_email_to_receive_code),
-                      SizedBox(height: 50),
+                      SizedBox(height: 50.h),
                       CustomTextField(
                         fieldType: FieldType.email,
                         controller: emailController,
                         hintText: S.of(context).email,
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: 15.h),
                       BlocBuilder<AuthBloc, AuthState>(
                         bloc: authBloc,
                         builder: (context, state) {
@@ -76,8 +76,8 @@ class EmailVerificationScreen extends StatelessWidget {
                           );
                         },
                       ),
-                      const SizedBox(height: 15),
-                      Container(height: 420),
+                      SizedBox(height: 15.h),
+                      Container(height: 420.h),
                     ],
                   ),
                 ),

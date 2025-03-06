@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BottomNavigator extends StatefulWidget {
   const BottomNavigator({super.key});
@@ -9,48 +9,34 @@ class BottomNavigator extends StatefulWidget {
 }
 
 class _BottomNavigatorState extends State<BottomNavigator> {
-  int selectindex = 0;
+  int selectIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 428,
-      height: 65,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomRight: Radius.circular(50),
-          bottomLeft: Radius.circular(50),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 25,
-            offset: Offset(0, -12),
-            spreadRadius: 0,
-          ),
+    return ClipRRect(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
+      child: BottomNavigationBar(
+        onTap: (val) {
+          setState(() {
+            selectIndex = val;
+          });
+        },
+        currentIndex: selectIndex,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.white,
+        unselectedItemColor: Colors.grey[400],
+        selectedItemColor: Color(0xFF2666DE),
+        elevation: 10,
+        iconSize: 24.sp,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: ""),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.bar_chart_outlined), label: ""),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notifications_outlined), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ""),
         ],
       ),
-      child: BottomNavigationBar(
-          onTap: (val) {
-            setState(() {
-              selectindex = val;
-            });
-          },
-          currentIndex: selectindex,
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
-          unselectedItemColor: Colors.grey[300],
-          fixedColor: Color(0xFF2666DE),
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: ""),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.bar_chart_outlined), label: ""),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.notification_add_outlined), label: ""),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person_outline), label: ""),
-          ]),
     );
   }
 }

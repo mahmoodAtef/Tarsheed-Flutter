@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum FieldType { email, password, confirmPassword, code, firstName, lastName }
 
@@ -73,7 +74,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         fillColor: Colors.grey[200],
         hintText: widget.hintText ?? defaultHint,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderRadius: BorderRadius.all(Radius.circular(10.r)),
         ),
         suffixIcon: (widget.fieldType == FieldType.password ||
                 widget.fieldType == FieldType.confirmPassword)

@@ -10,12 +10,12 @@ class BackgroundCircle extends CustomPainter {
     Paint linePaint = Paint()
       ..color = Color(0xFFE0E4FF) // لون الخط الدائري
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
+      ..strokeWidth = 2; // ثابت بدون .w
 
     // رسم الدائرة الكبيرة في الخلفية
     canvas.drawCircle(
       Offset(size.width * 1.1, size.height * -0.05), // الموقع
-      size.width * 0.83, // الحجم (التجربة حسب الحاجة)
+      size.width * 0.83, // الحجم
       circlePaint,
     );
 
@@ -23,9 +23,9 @@ class BackgroundCircle extends CustomPainter {
     Path path = Path();
     path.moveTo(0, size.height * 0.01); // نقطة البداية أعلى الشاشة يسارًا
     path.arcToPoint(
-      Offset(size.width, size.height * 0.4), // نقطة النهاية مع الحافة اليمنى
-      radius: Radius.circular(size.width * 0.9), // نصف القطر لمنحنى سلس
-      clockwise: false, // للتحكم في اتجاه القوس
+      Offset(size.width, size.height * 0.4), // نقطة النهاية
+      radius: Radius.circular(size.width * 0.9), // نصف القطر
+      clockwise: false,
     );
 
     canvas.drawPath(path, linePaint);
@@ -34,4 +34,3 @@ class BackgroundCircle extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
-
