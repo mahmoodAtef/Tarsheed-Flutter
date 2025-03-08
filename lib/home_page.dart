@@ -73,7 +73,7 @@ class HomePage extends StatelessWidget {
                       const SizedBox(width: 10),
                       GestureDetector(
                         onTap: () {
-                          context.push("/ProfilePage");
+                          context.push("/SignUpScreen");
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(

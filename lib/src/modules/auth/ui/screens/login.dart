@@ -36,29 +36,17 @@ class _LoginPageState extends State<LoginPage> {
           Positioned.fill(
             child: BackGroundRectangle(),
           ),
-          MultiBlocListener(
-            listeners: [
-              BlocListener<AuthBloc, AuthState>(
-                bloc: authBloc,
-                listener: (context, state) {
-                  if (state is LoginSuccessState) {
-                    context.push("/home");
-                  } else if (state is AuthErrorState) {
-                    ExceptionManager.showMessage(state.exception);
-                  }
-                },
-              ),
-              BlocListener<AuthBloc, AuthState>(
-                bloc: authBloc,
-                listener: (context, state) {
-                  if (state is ForgotPasswordSuccessState) {
-                    context.push("/EmailVerificationScreen");
-                  } else if (state is AuthErrorState) {
-                    ExceptionManager.showMessage(state.exception);
-                  }
-                },
-              ),
-            ],
+          BlocListener<AuthBloc, AuthState>(
+            bloc: authBloc,
+            listener: (context, state) {
+              if (state is LoginSuccessState) {
+                context.push("/home");
+              } else if (state is ForgotPasswordSuccessState) {
+                context.push("/EmailVerificationScreen");
+              } else if (state is AuthErrorState) {
+                ExceptionManager.showMessage(state.exception);
+              }
+            },
             child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 97.h),
@@ -160,22 +148,49 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       SizedBox(height: 10.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SocialIcon(
-                            image: AssetsManager.google,
-                            scale: 1.3,
-                          ),
-                          SizedBox(width: 8.w),
-                          SocialIcon(
-                            image: AssetsManager.facebook,
-                            scale: 2,
-                          ),
-                          SizedBox(width: 8.w),
-                          SocialIcon(image: AssetsManager.apple)
-                        ],
-                      )
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          bool isLoading = state is LoginLoadingState;
+
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: isLoading
+                                    ? null
+                                    : () {
+                                        context
+                                            .read<AuthBloc>()
+                                            .add(const LoginWithGoogleEvent());
+                                      },
+                                child: isLoading
+                                    ? CircularProgressIndicator()
+                                    : SocialIcon(
+                                        image: AssetsManager.google,
+                                        scale: 1.3,
+                                      ),
+                              ),
+                              SizedBox(width: 8.w),
+                              GestureDetector(
+                                onTap: isLoading
+                                    ? null
+                                    : () {
+                                        context.read<AuthBloc>().add(
+                                            const LoginWithFacebookEvent());
+                                      },
+                                child: isLoading
+                                    ? CircularProgressIndicator()
+                                    : SocialIcon(
+                                        image: AssetsManager.facebook,
+                                        scale: 2,
+                                      ),
+                              ),
+                              SizedBox(width: 8.w),
+                              SocialIcon(image: AssetsManager.apple),
+                            ],
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),

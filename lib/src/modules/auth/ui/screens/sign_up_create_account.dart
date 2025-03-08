@@ -167,22 +167,49 @@ class SignUpScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 10.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SocialIcon(
-                            image: AssetsManager.google,
-                            scale: 1.3,
-                          ),
-                          SizedBox(width: 8.w),
-                          SocialIcon(
-                            image: AssetsManager.facebook,
-                            scale: 2,
-                          ),
-                          SizedBox(width: 8.w),
-                          SocialIcon(image: AssetsManager.apple)
-                        ],
-                      )
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          bool isLoading = state is LoginLoadingState;
+
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: isLoading
+                                    ? null
+                                    : () {
+                                        context
+                                            .read<AuthBloc>()
+                                            .add(const LoginWithGoogleEvent());
+                                      },
+                                child: isLoading
+                                    ? CircularProgressIndicator()
+                                    : SocialIcon(
+                                        image: AssetsManager.google,
+                                        scale: 1.3,
+                                      ),
+                              ),
+                              SizedBox(width: 8.w),
+                              GestureDetector(
+                                onTap: isLoading
+                                    ? null
+                                    : () {
+                                        context.read<AuthBloc>().add(
+                                            const LoginWithFacebookEvent());
+                                      },
+                                child: isLoading
+                                    ? CircularProgressIndicator()
+                                    : SocialIcon(
+                                        image: AssetsManager.facebook,
+                                        scale: 2,
+                                      ),
+                              ),
+                              SizedBox(width: 8.w),
+                              SocialIcon(image: AssetsManager.apple),
+                            ],
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),

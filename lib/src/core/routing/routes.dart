@@ -4,4 +4,5 @@ class Routes {
   static const String profil_screen = '/ProfilePage';
   static const String verify_code = '/CodeVerificationScreen';
   static const String verify_finish = '/ResetPasswordScreen';
+  static const String sign_up_create_account = '/SignUpScreen';
 }

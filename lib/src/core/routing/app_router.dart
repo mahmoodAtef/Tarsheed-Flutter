@@ -3,6 +3,7 @@ import 'package:tarsheed/src/core/routing/routes.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/profile_screen.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_code.dart';
 import '../../modules/auth/ui/screens/login.dart';
+import '../../modules/auth/ui/screens/sign_up_create_account.dart';
 import '../../modules/auth/ui/screens/verify_finish.dart';
 import '../../modules/settings/ui/screens/splash_screen.dart';
 
@@ -20,6 +21,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => CodeVerificationScreen());
       case Routes.verify_finish:
         return MaterialPageRoute(builder: (_) => ResetPasswordScreen());
+      case Routes.sign_up_create_account:
+        return MaterialPageRoute(builder: (_) => SignUpScreen());
       default:
         return MaterialPageRoute(builder: (_) => EmptyScreen());
     }
