@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
 import 'package:tarsheed/src/modules/settings/data/models/user.dart';
@@ -7,7 +7,7 @@ import 'package:tarsheed/src/modules/settings/data/repositories/settings_reposit
 
 part 'settings_state.dart';
 
-class SettingsCubit extends Cubit<SettingsState> {
+class SettingsCubit extends HydratedCubit<SettingsState> {
   SettingsCubit() : super(SettingsInitial());
 
   SettingsRepository settingsRepository = sl();
@@ -42,8 +42,8 @@ class SettingsCubit extends Cubit<SettingsState> {
     });
   }
 
-  Future<void> changeLanguage() async {
-    await LocalizationManager.changeLanguage();
+  Future<void> changeLanguage(String languageCode) async {
+    await LocalizationManager.changeLanguage(languageCode);
     emit(ChangeLanguageSuccessState(
         languageCode: LocalizationManager.getCurrentLocale().languageCode));
   }
@@ -51,4 +51,22 @@ class SettingsCubit extends Cubit<SettingsState> {
   static SettingsCubit? _cubit;
 
   static SettingsCubit get getInstance => _cubit ??= SettingsCubit();
+  //  Save language
+  @override
+  SettingsState? fromJson(Map<String, dynamic> json) {
+    LocalizationManager.changeLanguage(json['languageCode'] ?? "en");
+    return ChangeLanguageSuccessState(
+      languageCode: json['languageCode'] ?? "en",
+    );
+  }
+
+  @override
+  Map<String, dynamic>? toJson(SettingsState state) {
+    if (state is ChangeLanguageSuccessState) {
+      return {
+        'languageCode': state.languageCode,
+      };
+    }
+    return null;
+  }
 }
