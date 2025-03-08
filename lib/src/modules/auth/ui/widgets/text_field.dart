@@ -5,14 +5,14 @@ enum FieldType { email, password, confirmPassword, code, firstName, lastName }
 
 class CustomTextField extends StatefulWidget {
   final FieldType fieldType;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final TextEditingController? originalPasswordController;
   final String hintText;
 
   const CustomTextField({
     Key? key,
     required this.fieldType,
-    required this.controller,
+    this.controller,
     this.originalPasswordController,
     required this.hintText,
   }) : super(key: key);

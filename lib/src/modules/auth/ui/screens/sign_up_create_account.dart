@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/verify_code.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_email.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
 import '../../../../core/error/exception_manager.dart';
@@ -40,7 +41,7 @@ class SignUpScreen extends StatelessWidget {
             bloc: authBloc,
             listener: (context, state) {
               if (state is RegisterSuccessState) {
-                context.push("/EmailVerificationScreen");
+                context.push("/CodeVerificationScreen");
               } else if (state is AuthErrorState) {
                 ExceptionManager.showMessage(state.exception);
               }
@@ -149,11 +150,7 @@ class SignUpScreen extends StatelessWidget {
                             textStyle: TextStyle(fontWeight: FontWeight.w800),
                           ),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginPage()),
-                            );
+                            context.push("/LoginPage");
                           },
                           child: Text(S.of(context).already_have_account),
                         ),

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
+import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import '../widgets/appbar.dart';
 import '../widgets/bottomNavigatorBar.dart';
 import '../widgets/container_with_switch.dart';
@@ -29,8 +30,7 @@ class SettingPage extends StatelessWidget {
               text: S.of(context).energy_mode,
               icon: Icons.arrow_forward_ios,
               onpressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => EnergyModePage()));
+                context.push("/EnergyModePage");
               },
             ),
             CustomContainer(

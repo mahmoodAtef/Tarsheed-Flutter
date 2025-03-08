@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/image_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/account_screan.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/profile_screen.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/rectangle_background.dart';
 
 class HomePage extends StatelessWidget {
@@ -64,21 +66,14 @@ class HomePage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10)),
                           ),
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginPage()));
+                            context.push("/LoginPage");
                           },
                         ),
                       ),
                       const SizedBox(width: 10),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      AccountPage())); // ضع هنا الـ Navigator للـ Register
+                          context.push("/ProfilePage");
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(

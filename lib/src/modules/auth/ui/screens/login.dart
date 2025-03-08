@@ -6,8 +6,6 @@ import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/sign_up_create_account.dart';
-import 'package:tarsheed/src/modules/auth/ui/screens/verify_email.dart';
-
 import '../../../../core/utils/image_manager.dart';
 import '../widgets/large_button.dart';
 import '../widgets/main_title.dart';
@@ -81,13 +79,11 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 50.h),
                       CustomTextField(
                         fieldType: FieldType.email,
-                        controller: emailController,
                         hintText: S.of(context).email,
                       ),
                       SizedBox(height: 20.h),
                       CustomTextField(
                         fieldType: FieldType.password,
-                        controller: passwordController,
                         hintText: S.of(context).password,
                       ),
                       SizedBox(height: 21.h),
@@ -147,10 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignUpScreen()));
+                            context.push("/SignUpScreen");
                           },
                           child: Text(S.of(context).create_new_account),
                         ),
