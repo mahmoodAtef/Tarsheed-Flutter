@@ -20,17 +20,19 @@ class AuthRepository {
     );
   }
 
-  Future<Either<Exception, Unit>> verifyEmail(
-      {required String code, required String verificationId}) async {
+  Future<Either<Exception, Unit>> verifyEmail({
+    required String code,
+  }) async {
     final remoteResult = await _authRemoteServices.verifyEmail(
-        code: code, verificationId: verificationId);
+      code: code,
+    );
     return await remoteResult.fold(
       (exception) => Left(exception),
       (unit) => Right(unit),
     );
   }
 
-  Future<Either<Exception, String>> resendEmailVerificationCode() async {
+  Future<Either<Exception, Unit>> resendEmailVerificationCode() async {
     return _authRemoteServices.resendEmailVerificationCode();
   }
 
@@ -46,7 +48,9 @@ class AuthRepository {
 
   Future<Either<Exception, Unit>> resetPassword(String newPassword) async {
     return await _authRemoteServices.resetPassword(
-      newPassword,);}
+      newPassword,
+    );
+  }
 
   Future<Either<Exception, Unit>> updatePassword(
       {required String newPassword, required String oldPassword}) async {
@@ -56,15 +60,19 @@ class AuthRepository {
     );
   }
 
-  Future<Either<Exception, String>> forgetPassword(
+  Future<Either<Exception, Unit>> forgetPassword(
       {required String email}) async {
-    return await _authRemoteServices.forgetPassword(email: email);
+    return await _authRemoteServices.forgetPassword(
+      email: email,
+    );
   }
 
-  Future<Either<Exception, Unit>> confirmForgotPasswordCode(
-      {required String code, required String verificationId}) async {
+  Future<Either<Exception, Unit>> confirmForgotPasswordCode({
+    required String code,
+  }) async {
     return await _authRemoteServices.confirmForgotPasswordCode(
-        code: code, verificationId: verificationId);
+      code: code,
+    );
   }
 
   Future<Either<Exception, Unit>> loginWithGoogle() async {

@@ -51,6 +51,9 @@ class DioHelper {
     dynamic data,
     String? token,
   }) async {
+    if (token != null) {
+      dio.options.headers["Authorization"] = "Bearer $token";
+    }
     return await dio.post(
       path,
       queryParameters: query,

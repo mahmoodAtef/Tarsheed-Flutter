@@ -1,13 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SocialIcon extends StatelessWidget {
-  const SocialIcon({this.scale, required this.image});
+  const SocialIcon({this.scale, required this.image, this.onPressed});
 
   final double? scale;
   final String image;
-
+  final void Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,7 +15,7 @@ class SocialIcon extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.grey[300], borderRadius: BorderRadius.circular(10.r)),
       child: IconButton(
-          onPressed: () {},
+          onPressed: onPressed,
           icon: Image.asset(
             image,
             scale: scale,

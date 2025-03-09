@@ -3,17 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
-import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
-import 'package:tarsheed/src/modules/auth/ui/screens/verify_code.dart';
-import 'package:tarsheed/src/modules/auth/ui/screens/verify_email.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
+
 import '../../../../core/error/exception_manager.dart';
 import '../../../../core/utils/image_manager.dart';
 import '../../data/models/email_and_password_registration_form.dart';
-import '../widgets/rectangle_background.dart';
 import '../widgets/large_button.dart';
-import '../widgets/social_icon.dart';
 import '../widgets/main_title.dart';
+import '../widgets/rectangle_background.dart';
+import '../widgets/social_icon.dart';
 import '../widgets/sup_title.dart';
 import '../widgets/text_field.dart';
 
@@ -169,20 +167,18 @@ class SignUpScreen extends StatelessWidget {
                       SizedBox(height: 10.h),
                       BlocBuilder<AuthBloc, AuthState>(
                         builder: (context, state) {
-                          bool isLoading = state is LoginLoadingState;
-
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               GestureDetector(
-                                onTap: isLoading
+                                onTap: state is LoginWithGoogleLoadingState
                                     ? null
                                     : () {
                                         context
                                             .read<AuthBloc>()
                                             .add(const LoginWithGoogleEvent());
                                       },
-                                child: isLoading
+                                child: state is LoginWithGoogleLoadingState
                                     ? CircularProgressIndicator()
                                     : SocialIcon(
                                         image: AssetsManager.google,
@@ -191,13 +187,13 @@ class SignUpScreen extends StatelessWidget {
                               ),
                               SizedBox(width: 8.w),
                               GestureDetector(
-                                onTap: isLoading
+                                onTap: state is LoginWithFacebookLoadingState
                                     ? null
                                     : () {
                                         context.read<AuthBloc>().add(
                                             const LoginWithFacebookEvent());
                                       },
-                                child: isLoading
+                                child: state is LoginWithFacebookLoadingState
                                     ? CircularProgressIndicator()
                                     : SocialIcon(
                                         image: AssetsManager.facebook,

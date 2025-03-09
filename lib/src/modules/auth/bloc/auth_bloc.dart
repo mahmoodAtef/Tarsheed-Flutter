@@ -16,8 +16,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     return _authBloc ??= AuthBloc();
   }
 
-  String? verificationId;
-
   final AuthRepository authRepository = sl();
   AuthBloc() : super(AuthInitial()) {
     on<AuthEvent>((event, emit) async {
@@ -61,7 +59,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _handleLoginWithEmailAndPasswordEvent(
       LoginWithEmailAndPasswordEvent event, Emitter<AuthState> emit) async {
-    emit(LoginLoadingState());
+    emit(LoginWithEmailAndPasswordLoadingState());
 
     final result = await authRepository.loginWithEmailAndPassword(
         email: event.email, password: event.password);
@@ -77,7 +75,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(VerifyEmailLoadingState());
 
     final result = await authRepository.verifyEmail(
-        code: event.code, verificationId: verificationId!);
+      code: event.code,
+    );
 
     result.fold((l) {
       emit(AuthErrorState(exception: l));
@@ -94,7 +93,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     result.fold((l) {
       emit(AuthErrorState(exception: l));
     }, (r) {
-      verificationId = r;
       emit(ResendVerificationCodeSuccessState());
     });
   }
@@ -106,7 +104,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     result.fold((l) {
       emit(AuthErrorState(exception: l));
     }, (r) {
-      verificationId = r;
       emit(ForgotPasswordSuccessState());
     });
   }
@@ -116,11 +113,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(ConfirmForgotPasswordCodeLoadingState());
 
     final result = await authRepository.confirmForgotPasswordCode(
-        code: event.code, verificationId: verificationId!);
+      code: event.code,
+    );
     result.fold((l) {
       emit(AuthErrorState(exception: l));
     }, (r) {
-      verificationId = null;
       emit(ConfirmForgotPasswordCodeSuccessState());
     });
   }
@@ -164,7 +161,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _handleLoginWithGoogleEvent(
       LoginWithGoogleEvent event, Emitter<AuthState> emit) async {
-    emit(LoginLoadingState());
+    emit(LoginWithGoogleLoadingState());
 
     final result = await authRepository.loginWithGoogle();
     result.fold((l) {
@@ -176,9 +173,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _handleLoginWithFacebookEvent(
       LoginWithFacebookEvent event, Emitter<AuthState> emit) async {
-    emit(LoginLoadingState());
+    emit(LoginWithFacebookLoadingState());
 
-    final result = await authRepository.loginWithGoogle();
+    final result = await authRepository.loginWithFacebook();
     result.fold((l) {
       emit(AuthErrorState(exception: l));
     }, (r) {
