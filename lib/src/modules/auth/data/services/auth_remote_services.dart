@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tarsheed/src/core/apis/api.dart';
@@ -12,16 +13,18 @@ import 'package:tarsheed/src/modules/auth/data/models/email_and_password_registr
 abstract class BaseAuthRemoteServices {
   Future<Either<Exception, AuthInfo>> registerWithEmailAndPassword(
       {required EmailAndPasswordRegistrationForm registrationForm});
-  Future<Either<Exception, Unit>> verifyEmail(
-      {required String code, required String verificationId});
-  Future<Either<Exception, Unit>> confirmForgotPasswordCode(
-      {required String code, required String verificationId});
+  Future<Either<Exception, Unit>> verifyEmail({
+    required String code,
+  });
+  Future<Either<Exception, Unit>> confirmForgotPasswordCode({
+    required String code,
+  });
 
   Future<Either<Exception, AuthInfo>> loginWithEmailAndPassword(
       {required String email, required String password});
 
-  Future<Either<Exception, String>> resendEmailVerificationCode();
-  Future<Either<Exception, String>> forgetPassword({required String email});
+  Future<Either<Exception, Unit>> resendEmailVerificationCode();
+  Future<Either<Exception, Unit>> forgetPassword({required String email});
   Future<Either<Exception, Unit>> resetPassword(
     String newPassword,
   );
@@ -33,12 +36,15 @@ abstract class BaseAuthRemoteServices {
 }
 
 class AuthRemoteServices extends BaseAuthRemoteServices {
+  String? verificationId;
+
   @override
   Future<Either<Exception, AuthInfo>> registerWithEmailAndPassword(
       {required EmailAndPasswordRegistrationForm registrationForm}) async {
     try {
       var response = await DioHelper.postData(
           path: EndPoints.register, data: registrationForm.toJson());
+      verificationId = response.data["id"];
       return Right(AuthInfo.fromJson(response.data["data"]));
     } on Exception catch (e) {
       return Left(_classifyException(e,
@@ -47,8 +53,9 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
   }
 
   @override
-  Future<Either<Exception, Unit>> verifyEmail(
-      {required String code, required String verificationId}) async {
+  Future<Either<Exception, Unit>> verifyEmail({
+    required String code,
+  }) async {
     try {
       var response = await DioHelper.postData(
           path: EndPoints.verify, data: {"id": verificationId, "code": code});
@@ -60,14 +67,14 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
   }
 
   @override
-  Future<Either<Exception, String>> resendEmailVerificationCode() async {
+  Future<Either<Exception, Unit>> resendEmailVerificationCode() async {
     try {
       var response = await DioHelper.postData(
           path: EndPoints.resendCode + ApiManager.userId!,
           query: {"userId": ApiManager.userId});
-      var id = response.data["id"];
+      verificationId = response.data["id"];
 
-      return Right(id);
+      return Right(unit);
     } on Exception catch (e) {
       return Left(
           _classifyException(e, process: "resending email verification code"));
@@ -88,21 +95,22 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
   }
 
   @override
-  Future<Either<Exception, String>> forgetPassword(
+  Future<Either<Exception, Unit>> forgetPassword(
       {required String email}) async {
     try {
       var response = await DioHelper.postData(
           path: EndPoints.forgetPassword, data: {"email": email});
-      String id = response.data["id"];
-      return Right(id);
+      verificationId = response.data["id"];
+      return Right(unit);
     } on Exception catch (e) {
       return Left(_classifyException(e, process: "forgetting password"));
     }
   }
 
   @override
-  Future<Either<Exception, Unit>> confirmForgotPasswordCode(
-      {required String code, required String verificationId}) async {
+  Future<Either<Exception, Unit>> confirmForgotPasswordCode({
+    required String code,
+  }) async {
     try {
       await DioHelper.postData(
           path: EndPoints.confirmForgotPasswordCode,
@@ -145,7 +153,7 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
   @override
   Future<Either<Exception, AuthInfo>> loginWithFacebook() async {
     try {
-      var accessToken = _getFacebookAccessToken();
+      var accessToken = await _getFacebookAccessToken();
       var response = await DioHelper.postData(
           path: EndPoints.facebookLogin, query: {"Authorization": accessToken});
       return Right(AuthInfo.fromJson(response.data));
@@ -154,12 +162,12 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
     }
   }
 
-  Future<String> _getFacebookAccessToken() async {
+  Future<String?> _getFacebookAccessToken() async {
     try {
       await _checkIfIsFacebookLogged();
       final LoginResult result = await FacebookAuth.instance.login();
-      return result.accessToken!.tokenString;
-    } catch (e) {
+      return result.accessToken?.tokenString;
+    } on Exception {
       rethrow;
     }
   }
@@ -169,22 +177,34 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
     try {
       var accessToken = await _getGoogleAccessToken();
       var response = await DioHelper.postData(
-          path: EndPoints.googleLogin, query: {"Authorization": accessToken});
+          path: EndPoints.googleLogin,
+          query: {"Authorization": accessToken},
+          token: accessToken);
       return Right(AuthInfo.fromJson(response.data));
     } on Exception catch (e) {
+      debugPrint(
+          "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      debugPrint("${e.toString()}");
+      debugPrint(
+          "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
       return Left(_classifyException(e));
     }
   }
 
-  Future<String> _getGoogleAccessToken() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    if (googleSignIn.currentUser != null) {
-      await googleSignIn.signOut();
+  Future<String?> _getGoogleAccessToken() async {
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      if (await googleSignIn.isSignedIn()) {
+        await googleSignIn.signOut();
+      }
+      var googleUser = await googleSignIn.signIn();
+      var googleAuth = await googleUser?.authentication;
+      var accessToken = googleAuth?.accessToken;
+      ApiManager.authToken = accessToken;
+      return accessToken;
+    } on Exception {
+      rethrow;
     }
-    var googleUser = await googleSignIn.signIn();
-    var googleAuth = await googleUser?.authentication;
-    var accessToken = googleAuth?.accessToken;
-    return accessToken!;
   }
 
   _classifyException(Exception exception, {String? process}) {
@@ -200,10 +220,14 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
   }
 
   Future<void> _checkIfIsFacebookLogged() async {
-    final auth = FacebookAuth.instance;
-    final accessToken = await auth.accessToken;
-    if (accessToken != null) {
-      await FacebookAuth.instance.logOut();
+    try {
+      final auth = FacebookAuth.instance;
+      final accessToken = await auth.accessToken;
+      if (accessToken != null) {
+        await FacebookAuth.instance.logOut();
+      }
+    } on Exception {
+      rethrow;
     }
   }
 }

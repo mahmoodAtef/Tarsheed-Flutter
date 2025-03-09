@@ -16,6 +16,7 @@ class AuthErrorState extends AuthState {
   List<Object> get props => [exception];
 }
 
+// register
 final class RegisterLoadingState extends AuthState {
   @override
   List<Object> get props => [];
@@ -26,7 +27,23 @@ final class RegisterSuccessState extends AuthState {
   List<Object> get props => [];
 }
 
-final class LoginLoadingState extends AuthState {
+// login
+final class LoginWithEmailAndPasswordLoadingState extends AuthState {
+  @override
+  List<Object> get props => [];
+}
+
+final class LoginWithFacebookLoadingState extends AuthState {
+  @override
+  List<Object> get props => [];
+}
+
+final class LoginWithGoogleLoadingState extends AuthState {
+  @override
+  List<Object> get props => [];
+}
+
+final class LoginWithAppleLoadingState extends AuthState {
   @override
   List<Object> get props => [];
 }
@@ -36,6 +53,7 @@ final class LoginSuccessState extends AuthState {
   List<Object> get props => [];
 }
 
+//
 final class VerifyEmailLoadingState extends AuthState {
   @override
   List<Object> get props => [];

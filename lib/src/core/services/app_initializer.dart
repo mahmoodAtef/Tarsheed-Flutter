@@ -1,7 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:tarsheed/firebase_options.dart';
 import 'package:tarsheed/src/core/apis/dio_helper.dart';
 import 'package:tarsheed/src/core/local/secure_storage_helper.dart';
 import 'package:tarsheed/src/core/local/shared_prefrences.dart';
@@ -15,6 +17,12 @@ class AppInitializer {
     HydratedBloc.storage = await HydratedStorage.build(
       storageDirectory:
           HydratedStorageDirectory((await getTemporaryDirectory()).path),
+    );
+
+// ...
+
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
     );
     ServiceLocator.init();
     SecureStorageHelper.init();

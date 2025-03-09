@@ -5,7 +5,7 @@ import 'package:tarsheed/generated/l10n.dart'; // تأكد من استيراد �
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
-import 'package:tarsheed/src/modules/auth/ui/screens/sign_up_create_account.dart';
+
 import '../../../../core/utils/image_manager.dart';
 import '../widgets/large_button.dart';
 import '../widgets/main_title.dart';
@@ -99,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                       BlocBuilder<AuthBloc, AuthState>(
                         bloc: authBloc,
                         builder: (context, state) {
-                          return state is LoginLoadingState
+                          return state is LoginWithEmailAndPasswordLoadingState
                               ? Center(child: CircularProgressIndicator())
                               : LargeButton(
                                   textB: S.of(context).sign_in,
@@ -150,20 +150,18 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 10.h),
                       BlocBuilder<AuthBloc, AuthState>(
                         builder: (context, state) {
-                          bool isLoading = state is LoginLoadingState;
-
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               GestureDetector(
-                                onTap: isLoading
+                                onTap: state is LoginWithGoogleLoadingState
                                     ? null
                                     : () {
                                         context
                                             .read<AuthBloc>()
                                             .add(const LoginWithGoogleEvent());
                                       },
-                                child: isLoading
+                                child: state is LoginWithGoogleLoadingState
                                     ? CircularProgressIndicator()
                                     : SocialIcon(
                                         image: AssetsManager.google,
@@ -172,13 +170,13 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               SizedBox(width: 8.w),
                               GestureDetector(
-                                onTap: isLoading
+                                onTap: state is LoginWithFacebookLoadingState
                                     ? null
                                     : () {
                                         context.read<AuthBloc>().add(
                                             const LoginWithFacebookEvent());
                                       },
-                                child: isLoading
+                                child: state is LoginWithFacebookLoadingState
                                     ? CircularProgressIndicator()
                                     : SocialIcon(
                                         image: AssetsManager.facebook,
