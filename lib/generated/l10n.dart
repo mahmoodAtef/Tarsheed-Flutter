@@ -225,26 +225,6 @@ class S {
     );
   }
 
-  /// `first name`
-  String get first_name {
-    return Intl.message('first name', name: 'first_name', desc: '', args: []);
-  }
-
-  /// `last name`
-  String get last_name {
-    return Intl.message('last name', name: 'last_name', desc: '', args: []);
-  }
-
-  /// `Email`
-  String get email {
-    return Intl.message('Email', name: 'email', desc: '', args: []);
-  }
-
-  /// `Password`
-  String get password {
-    return Intl.message('Password', name: 'password', desc: '', args: []);
-  }
-
   /// `Face ID`
   String get face_id {
     return Intl.message('Face ID', name: 'face_id', desc: '', args: []);
@@ -460,6 +440,141 @@ class S {
     return Intl.message(
       'Didn\'t receive a code?',
       name: 'didnot_receive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First Name`
+  String get first_name {
+    return Intl.message('First Name', name: 'first_name', desc: '', args: []);
+  }
+
+  /// `Last Name`
+  String get last_name {
+    return Intl.message('Last Name', name: 'last_name', desc: '', args: []);
+  }
+
+  /// `Email`
+  String get email {
+    return Intl.message('Email', name: 'email', desc: '', args: []);
+  }
+
+  /// `Password`
+  String get password {
+    return Intl.message('Password', name: 'password', desc: '', args: []);
+  }
+
+  /// `is required`
+  String get is_required {
+    return Intl.message('is required', name: 'is_required', desc: '', args: []);
+  }
+
+  /// `must be at least`
+  String get must_be_at_least {
+    return Intl.message(
+      'must be at least',
+      name: 'must_be_at_least',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `characters`
+  String get characters {
+    return Intl.message('characters', name: 'characters', desc: '', args: []);
+  }
+
+  /// `cannot exceed`
+  String get cannot_exceed {
+    return Intl.message(
+      'cannot exceed',
+      name: 'cannot_exceed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `contains invalid characters`
+  String get contains_invalid_characters {
+    return Intl.message(
+      'contains invalid characters',
+      name: 'contains_invalid_characters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `has invalid formatting`
+  String get has_invalid_formatting {
+    return Intl.message(
+      'has invalid formatting',
+      name: 'has_invalid_formatting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name`
+  String get name {
+    return Intl.message('Name', name: 'name', desc: '', args: []);
+  }
+
+  /// `Invalid email format`
+  String get invalid_email {
+    return Intl.message(
+      'Invalid email format',
+      name: 'invalid_email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password must be at least 8 characters`
+  String get password_min_length {
+    return Intl.message(
+      'Password must be at least 8 characters',
+      name: 'password_min_length',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password cannot exceed 64 characters`
+  String get password_max_length {
+    return Intl.message(
+      'Password cannot exceed 64 characters',
+      name: 'password_max_length',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password must contain:\n- At least 1 uppercase letter\n- At least 1 lowercase letter\n- At least 1 number\n- At least 1 special character`
+  String get password_requirements {
+    return Intl.message(
+      'Password must contain:\n- At least 1 uppercase letter\n- At least 1 lowercase letter\n- At least 1 number\n- At least 1 special character',
+      name: 'password_requirements',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Original password is not provided`
+  String get original_password_not_provided {
+    return Intl.message(
+      'Original password is not provided',
+      name: 'original_password_not_provided',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Code must contain numbers only`
+  String get code_numbers_only {
+    return Intl.message(
+      'Code must contain numbers only',
+      name: 'code_numbers_only',
       desc: '',
       args: [],
     );

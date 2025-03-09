@@ -50,5 +50,18 @@
   "createAccount": "إنشاء حساب",
   "appName": "ترشيد",
   "resend_code": "أعد الإرسال",
-  "didnot_receive": "لم تستلم الرمز؟"
+  "didnot_receive": "لم تستلم الرمز؟",
+  "is_required": "مطلوب",
+  "must_be_at_least": "يجب أن يكون على الأقل",
+  "characters": "حرفًا",
+  "cannot_exceed": "لا يمكن أن يتجاوز",
+  "contains_invalid_characters": "يحتوي على أحرف غير صالحة",
+  "has_invalid_formatting": "يحتوي على تنسيق غير صالح",
+  "name": "الاسم",
+  "invalid_email": "تنسيق البريد الإلكتروني غير صالح",
+  "password_min_length": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل",
+  "password_max_length": "لا يمكن أن تتجاوز كلمة المرور 64 حرفًا",
+  "password_requirements": "يجب أن تحتوي كلمة المرور على:\n- حرف كبير واحد على الأقل\n- حرف صغير واحد على الأقل\n- رقم واحد على الأقل\n- رمز خاص واحد على الأقل",
+  "original_password_not_provided": "لم يتم توفير كلمة المرور الأصلية",
+  "code_numbers_only": "يجب أن يحتوي الكود على أرقام فقط"
 }

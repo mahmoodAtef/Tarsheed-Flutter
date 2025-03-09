@@ -28,11 +28,19 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "appName": MessageLookupByLibrary.simpleMessage("Tarsheed"),
     "backup_settings": MessageLookupByLibrary.simpleMessage("Backup Settings"),
+    "cannot_exceed": MessageLookupByLibrary.simpleMessage("cannot exceed"),
+    "characters": MessageLookupByLibrary.simpleMessage("characters"),
+    "code_numbers_only": MessageLookupByLibrary.simpleMessage(
+      "Code must contain numbers only",
+    ),
     "confirm_new_password": MessageLookupByLibrary.simpleMessage(
       "Confirm New Password",
     ),
     "confirm_password": MessageLookupByLibrary.simpleMessage(
       "Confirm Password",
+    ),
+    "contains_invalid_characters": MessageLookupByLibrary.simpleMessage(
+      "contains invalid characters",
     ),
     "continue_text": MessageLookupByLibrary.simpleMessage("Continue"),
     "createAccount": MessageLookupByLibrary.simpleMessage("Create new account"),
@@ -69,27 +77,50 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "face_id": MessageLookupByLibrary.simpleMessage("Face ID"),
     "finish": MessageLookupByLibrary.simpleMessage("Finish"),
-    "first_name": MessageLookupByLibrary.simpleMessage("first name"),
+    "first_name": MessageLookupByLibrary.simpleMessage("First Name"),
     "forgot_password": MessageLookupByLibrary.simpleMessage(
       "Forgot your password?",
+    ),
+    "has_invalid_formatting": MessageLookupByLibrary.simpleMessage(
+      "has invalid formatting",
     ),
     "help_and_support": MessageLookupByLibrary.simpleMessage(
       "Help and Support",
     ),
+    "invalid_email": MessageLookupByLibrary.simpleMessage(
+      "Invalid email format",
+    ),
+    "is_required": MessageLookupByLibrary.simpleMessage("is required"),
     "lanBackEneMO": MessageLookupByLibrary.simpleMessage(
       "Language, Backup, Energy Modes...",
     ),
     "language": MessageLookupByLibrary.simpleMessage("Language"),
-    "last_name": MessageLookupByLibrary.simpleMessage("last name"),
+    "last_name": MessageLookupByLibrary.simpleMessage("Last Name"),
     "login_here": MessageLookupByLibrary.simpleMessage("Login Here"),
+    "must_be_at_least": MessageLookupByLibrary.simpleMessage(
+      "must be at least",
+    ),
+    "name": MessageLookupByLibrary.simpleMessage("Name"),
     "new_password": MessageLookupByLibrary.simpleMessage("New Password"),
     "noRouteFound": MessageLookupByLibrary.simpleMessage("No route found"),
     "or_continue_with": MessageLookupByLibrary.simpleMessage(
       "Or continue with",
     ),
+    "original_password_not_provided": MessageLookupByLibrary.simpleMessage(
+      "Original password is not provided",
+    ),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
+    "password_max_length": MessageLookupByLibrary.simpleMessage(
+      "Password cannot exceed 64 characters",
+    ),
+    "password_min_length": MessageLookupByLibrary.simpleMessage(
+      "Password must be at least 8 characters",
+    ),
     "password_mismatch": MessageLookupByLibrary.simpleMessage(
       "Passwords do not match",
+    ),
+    "password_requirements": MessageLookupByLibrary.simpleMessage(
+      "Password must contain:\n- At least 1 uppercase letter\n- At least 1 lowercase letter\n- At least 1 number\n- At least 1 special character",
     ),
     "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
       "Passwords do not match",

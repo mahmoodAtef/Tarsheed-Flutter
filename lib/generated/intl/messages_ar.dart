@@ -30,11 +30,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "backup_settings": MessageLookupByLibrary.simpleMessage(
       "إعدادات النسخ الاحتياطي",
     ),
+    "cannot_exceed": MessageLookupByLibrary.simpleMessage("لا يمكن أن يتجاوز"),
+    "characters": MessageLookupByLibrary.simpleMessage("حرفًا"),
+    "code_numbers_only": MessageLookupByLibrary.simpleMessage(
+      "يجب أن يحتوي الكود على أرقام فقط",
+    ),
     "confirm_new_password": MessageLookupByLibrary.simpleMessage(
       "تأكيد كلمة المرور الجديدة",
     ),
     "confirm_password": MessageLookupByLibrary.simpleMessage(
       "تأكيد كلمة المرور",
+    ),
+    "contains_invalid_characters": MessageLookupByLibrary.simpleMessage(
+      "يحتوي على أحرف غير صالحة",
     ),
     "continue_text": MessageLookupByLibrary.simpleMessage("متابعة"),
     "createAccount": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
@@ -71,21 +79,44 @@ class MessageLookup extends MessageLookupByLibrary {
     "forgot_password": MessageLookupByLibrary.simpleMessage(
       "هل نسيت كلمة المرور؟",
     ),
+    "has_invalid_formatting": MessageLookupByLibrary.simpleMessage(
+      "يحتوي على تنسيق غير صالح",
+    ),
     "help_and_support": MessageLookupByLibrary.simpleMessage("المساعدة والدعم"),
+    "invalid_email": MessageLookupByLibrary.simpleMessage(
+      "تنسيق البريد الإلكتروني غير صالح",
+    ),
+    "is_required": MessageLookupByLibrary.simpleMessage("مطلوب"),
     "lanBackEneMO": MessageLookupByLibrary.simpleMessage(
       "اللغة، والنسخ الاحتياطي، وأوضاع الطاقة...",
     ),
     "language": MessageLookupByLibrary.simpleMessage("اللغة"),
     "last_name": MessageLookupByLibrary.simpleMessage("الاسم الأخير"),
     "login_here": MessageLookupByLibrary.simpleMessage("تسجيل الدخول هنا"),
+    "must_be_at_least": MessageLookupByLibrary.simpleMessage(
+      "يجب أن يكون على الأقل",
+    ),
+    "name": MessageLookupByLibrary.simpleMessage("الاسم"),
     "new_password": MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
     "noRouteFound": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على الصفحة المطلوبة",
     ),
     "or_continue_with": MessageLookupByLibrary.simpleMessage("أو المتابعة عبر"),
+    "original_password_not_provided": MessageLookupByLibrary.simpleMessage(
+      "لم يتم توفير كلمة المرور الأصلية",
+    ),
     "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
+    "password_max_length": MessageLookupByLibrary.simpleMessage(
+      "لا يمكن أن تتجاوز كلمة المرور 64 حرفًا",
+    ),
+    "password_min_length": MessageLookupByLibrary.simpleMessage(
+      "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل",
+    ),
     "password_mismatch": MessageLookupByLibrary.simpleMessage(
       "كلمات المرور غير متطابقة",
+    ),
+    "password_requirements": MessageLookupByLibrary.simpleMessage(
+      "يجب أن تحتوي كلمة المرور على:\n- حرف كبير واحد على الأقل\n- حرف صغير واحد على الأقل\n- رقم واحد على الأقل\n- رمز خاص واحد على الأقل",
     ),
     "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
       "كلمتا المرور غير متطابقتين",
