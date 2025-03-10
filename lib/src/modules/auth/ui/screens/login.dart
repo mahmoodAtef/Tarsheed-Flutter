@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart'; // تأكد من استيراد الترجمة
+import 'package:tarsheed/home_page.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/sign_up_create_account.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/verify_email.dart';
 
 import '../../../../core/utils/image_manager.dart';
 import '../widgets/large_button.dart';
@@ -40,9 +43,9 @@ class _LoginPageState extends State<LoginPage> {
             bloc: authBloc,
             listener: (context, state) {
               if (state is LoginSuccessState) {
-                context.push("/home");
+                context.push(HomePage());
               } else if (state is ForgotPasswordSuccessState) {
-                context.push("/EmailVerificationScreen");
+                context.push(EmailVerificationScreen());
               } else if (state is AuthErrorState) {
                 ExceptionManager.showMessage(state.exception);
               }
@@ -78,15 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: TextButton(
-                          onPressed: () {
-                            if (emailController.text.isNotEmpty) {
-                              context.read<AuthBloc>().add(ForgotPasswordEvent(
-                                  emailController.text.trim()));
-                            } else {
-                              ExceptionManager.showMessage(
-                                  Exception("enter email."));
-                            }
-                          },
+                          onPressed: () {},
                           child: Text(
                             S.of(context).forgot_password,
                             style: TextStyle(
@@ -131,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           onPressed: () {
-                            context.push("/SignUpScreen");
+                            context.push(SignUpScreen());
                           },
                           child: Text(S.of(context).create_new_account),
                         ),

@@ -170,6 +170,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               }
               return null;
             case FieldType.lastName:
+              return null;
               // TODO: Handle this case.
               throw UnimplementedError();
           }

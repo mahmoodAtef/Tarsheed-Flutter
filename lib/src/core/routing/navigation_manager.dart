@@ -5,11 +5,11 @@ extension NavigationMethods on BuildContext {
     Navigator.pop(this);
   }
 
-  void push(
-    String route, {
-    Object? arguments,
-  }) {
-    Navigator.pushNamed(this, route, arguments: arguments);
+  void push(Widget route) {
+    Navigator.push(
+      this,
+      SlidePageRoute(child: route),
+    );
   }
 
   void pushAndRemove(String route) {

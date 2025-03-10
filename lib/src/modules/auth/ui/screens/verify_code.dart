@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/verify_finish.dart';
+
 import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
 import '../../bloc/auth_bloc.dart';
-import '../widgets/rectangle_background.dart';
 import '../widgets/main_title.dart';
+import '../widgets/rectangle_background.dart';
 import '../widgets/sup_title.dart';
 import '../widgets/text_field.dart';
 
@@ -29,10 +31,10 @@ class CodeVerificationScreen extends StatelessWidget {
             bloc: authBloc,
             listener: (context, state) {
               if (state is VerifyEmailSuccessState) {
-                context.push("/ResetPasswordScreen");
+                context.push(ResetPasswordScreen());
               } else if (state is ConfirmForgotPasswordCodeSuccessState) {
                 context.push(
-                    "/ResetPasswordScreen"); // لو الكود صحيح، ينتقل لصفحة إعادة تعيين الباسورد
+                    ResetPasswordScreen()); // لو الكود صحيح، ينتقل لصفحة إعادة تعيين الباسورد
               } else if (state is AuthErrorState) {
                 ExceptionManager.showMessage(state.exception);
               }

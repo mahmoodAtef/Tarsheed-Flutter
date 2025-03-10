@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/profile_screen.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/security_screen.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/setting.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../widgets/appbar.dart';
@@ -27,7 +30,7 @@ class AccountPage extends StatelessWidget {
               title: S.of(context).profile,
               subtitle: S.of(context).editPassNaAddUseEm,
               onTap: () {
-                context.push("/ProfilePage");
+                context.push(ProfilePage());
               },
             ),
             SizedBox(height: 20.h),
@@ -36,7 +39,7 @@ class AccountPage extends StatelessWidget {
               title: S.of(context).security,
               subtitle: S.of(context).faceTwoStVerification,
               onTap: () {
-                context.push("/SecurityPage");
+                context.push(SecurityPage());
               },
             ),
             SizedBox(height: 20.h),
@@ -45,7 +48,7 @@ class AccountPage extends StatelessWidget {
               title: S.of(context).settings,
               subtitle: S.of(context).lanBackEneMO,
               onTap: () {
-                context.push("/SettingPage");
+                context.push(SettingPage());
               },
             ),
             SizedBox(height: 25.h),
