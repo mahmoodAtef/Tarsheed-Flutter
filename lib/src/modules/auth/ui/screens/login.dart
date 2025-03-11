@@ -44,8 +44,6 @@ class _LoginPageState extends State<LoginPage> {
             listener: (context, state) {
               if (state is LoginSuccessState) {
                 context.push(HomePage());
-              } else if (state is ForgotPasswordSuccessState) {
-                context.push(EmailVerificationScreen());
               } else if (state is AuthErrorState) {
                 ExceptionManager.showMessage(state.exception);
               }

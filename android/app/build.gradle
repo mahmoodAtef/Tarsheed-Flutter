@@ -30,7 +30,7 @@ android {
         }
         release {
 //        storeFile file('upload-keystore.jks')
-//        storePassword 'android'
+//        storeP assword 'android'
 //        keyAlias 'upload'
 //        keyPassword 'tarsheed'
         }

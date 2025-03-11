@@ -145,3 +145,12 @@ final class ForgotPasswordSuccessState extends AuthState {
   @override
   List<Object> get props => [];
 }
+
+// Timer for resend verification code
+
+final class ResendVerificationCodeTimerState extends AuthState {
+  final int seconds;
+  const ResendVerificationCodeTimerState({required this.seconds});
+  @override
+  List<Object> get props => [seconds];
+}

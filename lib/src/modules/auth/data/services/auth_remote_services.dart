@@ -44,8 +44,9 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
     try {
       var response = await DioHelper.postData(
           path: EndPoints.register, data: registrationForm.toJson());
-      verificationId = response.data["id"];
-      return Right(AuthInfo.fromJson(response.data["data"]));
+      AuthInfo authInfo = AuthInfo.fromJson(response.data["data"]);
+      verificationId = authInfo.userId;
+      return Right(authInfo);
     } on Exception catch (e) {
       return Left(_classifyException(e,
           process: "registering with email and password"));
@@ -59,7 +60,6 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
     try {
       var response = await DioHelper.postData(
           path: EndPoints.verify, data: {"id": verificationId, "code": code});
-
       return Right(unit);
     } on Exception catch (e) {
       return Left(_classifyException(e, process: "verifying email with code"));
