@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tarsheed/src/modules/auth/data/models/email_and_password_registration_form.dart';
@@ -17,14 +19,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   final AuthRepository authRepository = sl();
+
   AuthBloc() : super(AuthInitial()) {
+    /*
+     */
     on<AuthEvent>((event, emit) async {
       if (event is RegisterWithEmailAndPasswordEvent) {
         await _handleRegisterWithEmailAndPasswordEvent(event, emit);
-      } else if (event is LoginWithEmailAndPasswordEvent) {
-        await _handleLoginWithEmailAndPasswordEvent(event, emit);
       } else if (event is VerifyEmailEvent) {
         await _handleVerifyEmailEvent(event, emit);
+      } else if (event is LoginWithEmailAndPasswordEvent) {
+        await _handleLoginWithEmailAndPasswordEvent(event, emit);
       } else if (event is ResendVerificationCodeEvent) {
         await _handleResendVerificationCodeEvent(event, emit);
       } else if (event is ForgotPasswordEvent) {
@@ -181,5 +186,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }, (r) {
       emit(LoginSuccessState());
     });
+  }
+
+  // timer logic
+  Timer? _resendCodeTimer;
+  int? _remainingSeconds;
+  void _startResendTimer(Emitter<AuthState> emit) {
+    const oneSec = Duration(seconds: 1);
+    _remainingSeconds = 60;
+    _resendCodeTimer = Timer.periodic(oneSec, (timer) {
+      if (_remainingSeconds == 0) {
+        timer.cancel();
+      } else {
+        _remainingSeconds = _remainingSeconds! - 1;
+        emit(ResendVerificationCodeTimerState(seconds: _remainingSeconds!));
+      }
+    });
+  }
+
+  void cancelTimer() {
+    _resendCodeTimer?.cancel();
   }
 }
