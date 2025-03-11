@@ -32,7 +32,8 @@ class EmailVerificationScreen extends StatelessWidget {
             bloc: authBloc,
             listener: (context, state) {
               if (state is ResendVerificationCodeSuccessState) {
-                context.push(CodeVerificationScreen());
+                context.push(
+                    CodeVerificationScreen(email: emailController.text.trim()));
               } else if (state is AuthErrorState) {
                 ExceptionManager.showMessage(state.exception);
               }

@@ -9,11 +9,13 @@ import '../../../core/services/dep_injection.dart';
 import '../data/models/security_settings.dart';
 
 part 'auth_event.dart';
+
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   /// singleton instance
   static AuthBloc? _authBloc;
+
   static AuthBloc get instance {
     return _authBloc ??= AuthBloc();
   }
@@ -21,6 +23,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository authRepository = sl();
 
   AuthBloc() : super(AuthInitial()) {
+    on<StartResendCodeTimerEvent>((event, emit) {
+      _startResendTimer(emit);
+    });
+
     /*
      */
     on<AuthEvent>((event, emit) async {
@@ -191,6 +197,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   // timer logic
   Timer? _resendCodeTimer;
   int? _remainingSeconds;
+
   void _startResendTimer(Emitter<AuthState> emit) {
     const oneSec = Duration(seconds: 1);
     _remainingSeconds = 60;
