@@ -81,7 +81,9 @@ class _LoginPageState extends State<LoginPage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context.push(EmailVerificationScreen());
+                          },
                           child: Text(
                             S.of(context).forgot_password,
                             style: TextStyle(

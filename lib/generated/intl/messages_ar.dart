@@ -92,6 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("اللغة"),
     "last_name": MessageLookupByLibrary.simpleMessage("الاسم الأخير"),
+    "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "login_here": MessageLookupByLibrary.simpleMessage("تسجيل الدخول هنا"),
     "must_be_at_least": MessageLookupByLibrary.simpleMessage(
       "يجب أن يكون على الأقل",
@@ -123,6 +124,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "profile": MessageLookupByLibrary.simpleMessage("الحساب التعريفي"),
     "rateApplication": MessageLookupByLibrary.simpleMessage("تقييم التطبيق"),
+    "register": MessageLookupByLibrary.simpleMessage("تسجيل"),
     "resend_code": MessageLookupByLibrary.simpleMessage("أعد الإرسال"),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "security": MessageLookupByLibrary.simpleMessage("الأمان"),
@@ -137,6 +139,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "software_update": MessageLookupByLibrary.simpleMessage("تحديث النظام"),
     "super_energy_saving_mode": MessageLookupByLibrary.simpleMessage(
       "وضع توفير الطاقة الفائق",
+    ),
+    "take_control": MessageLookupByLibrary.simpleMessage(
+      "تحكم في استهلاك طاقتك",
     ),
     "two_step_verification": MessageLookupByLibrary.simpleMessage(
       "التحقق بخطوتين",

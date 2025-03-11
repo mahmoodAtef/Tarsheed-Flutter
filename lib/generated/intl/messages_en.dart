@@ -96,6 +96,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("Language"),
     "last_name": MessageLookupByLibrary.simpleMessage("Last Name"),
+    "login": MessageLookupByLibrary.simpleMessage("Login"),
     "login_here": MessageLookupByLibrary.simpleMessage("Login Here"),
     "must_be_at_least": MessageLookupByLibrary.simpleMessage(
       "must be at least",
@@ -127,6 +128,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "profile": MessageLookupByLibrary.simpleMessage("Profile"),
     "rateApplication": MessageLookupByLibrary.simpleMessage("Rate Application"),
+    "register": MessageLookupByLibrary.simpleMessage("Register"),
     "resend_code": MessageLookupByLibrary.simpleMessage("Resend"),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
     "security": MessageLookupByLibrary.simpleMessage("Security"),
@@ -141,6 +143,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "software_update": MessageLookupByLibrary.simpleMessage("Software Update"),
     "super_energy_saving_mode": MessageLookupByLibrary.simpleMessage(
       "Super Energy Saving Mode",
+    ),
+    "take_control": MessageLookupByLibrary.simpleMessage(
+      "Take Control of\nYour Energy Usage",
     ),
     "two_step_verification": MessageLookupByLibrary.simpleMessage(
       "Two-Step Verification",

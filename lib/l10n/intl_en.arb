@@ -63,5 +63,8 @@
   "password_max_length": "Password cannot exceed 64 characters",
   "password_requirements": "Password must contain:\n- At least 1 uppercase letter\n- At least 1 lowercase letter\n- At least 1 number\n- At least 1 special character",
   "original_password_not_provided": "Original password is not provided",
-  "code_numbers_only": "Code must contain numbers only"
+  "code_numbers_only": "Code must contain numbers only",
+  "take_control": "Take Control of\nYour Energy Usage",
+  "login": "Login",
+  "register": "Register"
 }

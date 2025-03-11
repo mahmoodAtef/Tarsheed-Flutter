@@ -33,8 +33,7 @@ class CodeVerificationScreen extends StatelessWidget {
               if (state is VerifyEmailSuccessState) {
                 context.push(ResetPasswordScreen());
               } else if (state is ConfirmForgotPasswordCodeSuccessState) {
-                context.push(
-                    ResetPasswordScreen()); // لو الكود صحيح، ينتقل لصفحة إعادة تعيين الباسورد
+                context.push(ResetPasswordScreen());
               } else if (state is AuthErrorState) {
                 ExceptionManager.showMessage(state.exception);
               }
@@ -50,7 +49,7 @@ class CodeVerificationScreen extends StatelessWidget {
                     children: [
                       MainTitle(maintext: S.of(context).verify_your_identity),
                       SizedBox(height: 1.h),
-                      SupTitle(text2: S.of(context).sent_email_message),
+                      SupTitle(text2: "We have sent an email to mo****@gmail"),
                       SizedBox(height: 50.h),
                       CustomTextField(
                         fieldType: FieldType.code,

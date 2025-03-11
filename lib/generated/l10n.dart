@@ -579,6 +579,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Take Control of\nYour Energy Usage`
+  String get take_control {
+    return Intl.message(
+      'Take Control of\nYour Energy Usage',
+      name: 'take_control',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login`
+  String get login {
+    return Intl.message('Login', name: 'login', desc: '', args: []);
+  }
+
+  /// `Register`
+  String get register {
+    return Intl.message('Register', name: 'register', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
