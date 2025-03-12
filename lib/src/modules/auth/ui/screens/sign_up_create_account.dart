@@ -18,7 +18,9 @@ import '../widgets/sup_title.dart';
 import '../widgets/text_field.dart';
 
 class SignUpScreen extends StatelessWidget {
-  SignUpScreen({super.key});
+  SignUpScreen({
+    super.key,
+  });
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
@@ -41,7 +43,8 @@ class SignUpScreen extends StatelessWidget {
             bloc: authBloc,
             listener: (context, state) {
               if (state is RegisterSuccessState) {
-                context.push(CodeVerificationScreen());
+                context.push(
+                    CodeVerificationScreen(email: emailController.text.trim()));
               } else if (state is AuthErrorState) {
                 ExceptionManager.showMessage(state.exception);
               }
