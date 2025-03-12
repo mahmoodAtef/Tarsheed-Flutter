@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "707776093690",
+    "project_id": "tarsheed-7b80c",
+    "storage_bucket": "tarsheed-7b80c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707776093690:android:0564764d12b62e68969843",
+        "android_client_info": {
+          "package_name": "com.app.tarsheed"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEMlLnRTPBay-HqL_7U-eP9dV2WBDoCW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
