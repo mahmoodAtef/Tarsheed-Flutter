@@ -1,0 +1,114 @@
+String? emailValidator(String? value) {
+  if (value == null || value.trim().isEmpty) {
+    return 'Email is required';
+  }
+
+  final trimmedValue = value.trim();
+
+  // Basic email format validation
+  final emailRegex = RegExp(
+    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    caseSensitive: false,
+  );
+
+  if (!emailRegex.hasMatch(trimmedValue)) {
+    return 'Invalid email format';
+  }
+
+  // Disposable email check (example domains)
+  const disposableDomains = [
+    'tempmail.com',
+    'mailinator.com',
+    '10minutemail.com'
+  ];
+  final domain = trimmedValue.split('@').last.toLowerCase();
+  if (disposableDomains.contains(domain)) {
+    return 'Disposable emails are not allowed';
+  }
+
+  // International domain validation
+  if (RegExp(r'\p{Script=Arabic}', unicode: true).hasMatch(trimmedValue)) {
+    return 'International domains must use Punycode encoding';
+  }
+
+  return null;
+}
+
+String? passwordValidator(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Password is required';
+  }
+
+  final trimmedValue = value.trim();
+
+  // Basic checks
+  if (trimmedValue.length < 8) {
+    return 'Password must be at least 8 characters';
+  }
+  if (trimmedValue.length > 64) {
+    return 'Password cannot exceed 64 characters';
+  }
+
+  // Complexity requirements
+  final hasUppercase = RegExp(r'[A-Z]').hasMatch(trimmedValue);
+  final hasLowercase = RegExp(r'[a-z]').hasMatch(trimmedValue);
+  final hasNumber = RegExp(r'[0-9]').hasMatch(trimmedValue);
+  final hasSpecialChar =
+      RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(trimmedValue);
+
+  if (!(hasUppercase && hasLowercase && hasNumber && hasSpecialChar)) {
+    return '''
+    Password must contain:
+    - At least 1 uppercase letter
+    - At least 1 lowercase letter
+    - At least 1 number
+    - At least 1 special character
+    ''';
+  }
+
+  // Common password check (example list)
+  const commonPasswords = ['password', '12345678', 'qwertyui'];
+  if (commonPasswords.contains(trimmedValue.toLowerCase())) {
+    return 'This password is too common';
+  }
+
+  // Sequential/repeating characters check
+  if (RegExp(r'(.)\1{3}').hasMatch(trimmedValue) ||
+      RegExp(r'1234|abcd|4321').hasMatch(trimmedValue.toLowerCase())) {
+    return 'Password contains weak patterns';
+  }
+
+  return null;
+}
+
+
+String? nameValidator(String? value, String fieldName) {
+  if (value == null || value.trim().isEmpty) {
+    return '$fieldName is required';
+  }
+
+  final trimmedValue = value.trim();
+  final validCharacters = RegExp("r'^[a-zA-Z\- \'أ-ي]+\$'") ;
+
+  // Check for minimum and maximum length
+  if (trimmedValue.length < 2) {
+    return '$fieldName must be at least 2 characters';
+  }
+  if (trimmedValue.length > 50) {
+    return '$fieldName cannot exceed 50 characters';
+  }
+
+  // Check for invalid characters
+  if (!validCharacters.hasMatch(trimmedValue)) {
+    return '$fieldName contains invalid characters';
+  }
+
+  // Check for consecutive special characters
+  if (trimmedValue.contains('--') ||
+      trimmedValue.contains("''") ||
+      trimmedValue.contains('  ')) {
+    return '$fieldName has invalid formatting';
+  }
+
+  return null;
+}

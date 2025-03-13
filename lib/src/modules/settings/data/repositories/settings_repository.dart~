@@ -1,0 +1,16 @@
+import 'package:dartz/dartz.dart';
+import 'package:tarsheed/src/modules/settings/data/models/user.dart';
+import 'package:tarsheed/src/modules/settings/data/services/settings_local_services.dart';
+import 'package:tarsheed/src/modules/settings/data/services/settings_remote_services.dart';
+
+class SettingsRepository {
+  final BaseSettingsRemoteServices _settingsRemoteServices;
+  final BaseSettingsLocalServices _settingsLocalServices;
+  SettingsRepository(this._settingsRemoteServices, this._settingsLocalServices);
+
+  Future<Either<Exception, User>> getProfile() =>
+      _settingsRemoteServices.getProfile();
+  Future<Either<Exception, Unit>> updateProfile(User user) =>
+      _settingsRemoteServices.updateProfile(user);
+  Future<Either<Exception, Unit>> deleteProfile() =>  _settingsRemoteServices.deleteProfile();
+}

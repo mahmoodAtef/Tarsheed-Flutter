@@ -1,0 +1,14 @@
+=import 'package:flutter/material.dart';
+import 'package:tarsheed/src/core/utils/text_styles_manager.dart';
+
+class SomeWidget extends StatelessWidget {
+  const SomeWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "widget",
+       style: TextsStyles.title,
+    );
+  }
+}
