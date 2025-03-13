@@ -550,10 +550,10 @@ class S {
     );
   }
 
-  /// `Password must contain:\n- At least 1 uppercase letter\n- At least 1 lowercase letter\n- At least 1 number\n- At least 1 special character`
+  /// `Password must contain:\n- At least 6 characters\n- At least 1 number`
   String get password_requirements {
     return Intl.message(
-      'Password must contain:\n- At least 1 uppercase letter\n- At least 1 lowercase letter\n- At least 1 number\n- At least 1 special character',
+      'Password must contain:\n- At least 6 characters\n- At least 1 number',
       name: 'password_requirements',
       desc: '',
       args: [],

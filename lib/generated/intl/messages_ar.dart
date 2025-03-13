@@ -118,7 +118,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "كلمات المرور غير متطابقة",
     ),
     "password_requirements": MessageLookupByLibrary.simpleMessage(
-      "يجب أن تحتوي كلمة المرور على:\n- حرف كبير واحد على الأقل\n- حرف صغير واحد على الأقل\n- رقم واحد على الأقل\n- رمز خاص واحد على الأقل",
+      "يجب أن تحتوي كلمة المرور على:\n- 6 أحرف على الأقل\n- رقم واحد على الأقل",
     ),
     "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
       "كلمتا المرور غير متطابقتين",

@@ -215,14 +215,16 @@ class _ReportsPageState extends State<ReportsPage> {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(12.0),
         child: Row(
           children: [
             Container(
+              width: 50,
+              height: 50,
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(12),
+                color: Color(0xff2666DE),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
                 icon,
@@ -238,7 +240,7 @@ class _ReportsPageState extends State<ReportsPage> {
                   Text(
                     title,
                     style: TextStyle(
-                      color: Colors.grey.shade600,
+                      color: Color(0xFF98A4B5),
                       fontSize: 14,
                     ),
                   ),
@@ -246,7 +248,7 @@ class _ReportsPageState extends State<ReportsPage> {
                   Text(
                     value,
                     style: const TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w700,
                       fontSize: 24,
                     ),
                   ),
@@ -256,22 +258,23 @@ class _ReportsPageState extends State<ReportsPage> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.1),
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
                 children: [
                   Icon(
                     isDecrease ? Icons.arrow_downward : Icons.arrow_upward,
-                    color: isDecrease ? Colors.blue : Colors.red,
-                    size: 16,
+                    color: isDecrease ? Color(0xff2666DE) : Colors.red,
+                    size: 20,
                   ),
                   const SizedBox(width: 2),
                   Text(
                     percentage,
                     style: TextStyle(
-                      color: isDecrease ? Colors.blue : Colors.red,
-                      fontWeight: FontWeight.bold,
+                      color: isDecrease ? Colors.black : Colors.red,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 24,
                     ),
                   ),
                 ],

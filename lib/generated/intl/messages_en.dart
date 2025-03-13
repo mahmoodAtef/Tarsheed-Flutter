@@ -122,7 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Passwords do not match",
     ),
     "password_requirements": MessageLookupByLibrary.simpleMessage(
-      "Password must contain:\n- At least 1 uppercase letter\n- At least 1 lowercase letter\n- At least 1 number\n- At least 1 special character",
+      "Password must contain:\n- At least 6 characters\n- At least 1 number",
     ),
     "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
       "Passwords do not match",

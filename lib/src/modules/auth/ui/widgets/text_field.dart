@@ -142,15 +142,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
               if (trimmedValue.length > 64) {
                 return S.of(context).password_max_length;
               }
-              final hasUppercase = RegExp(r'[A-Z]').hasMatch(trimmedValue);
-              final hasLowercase = RegExp(r'[a-z]').hasMatch(trimmedValue);
+              final hasMinimumLength = trimmedValue.length >= 6;
               final hasNumber = RegExp(r'[0-9]').hasMatch(trimmedValue);
-              final hasSpecialChar =
-                  RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(trimmedValue);
-              if (!(hasUppercase &&
-                  hasLowercase &&
-                  hasNumber &&
-                  hasSpecialChar)) {
+
+              if (!(hasMinimumLength && hasNumber)) {
                 return S.of(context).password_requirements;
               }
               return null;
