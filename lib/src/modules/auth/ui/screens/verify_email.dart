@@ -64,10 +64,8 @@ class EmailVerificationScreen extends StatelessWidget {
                           if (state is VerifyEmailLoadingState) {
                             return Center(child: CircularProgressIndicator());
                           }
-                          return LargeButton(
-                            textB: S.of(context).continue_text,
-                            formKey: formKey,
-                            emailController: emailController,
+                          return DefaultButton(
+                            title: S.of(context).continue_text,
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
                                 context

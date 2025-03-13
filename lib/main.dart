@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
+import 'package:tarsheed/src/core/utils/theme_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/splash_screen.dart';
@@ -37,12 +37,7 @@ class Tarsheed extends StatelessWidget {
                   GlobalCupertinoLocalizations.delegate,
                 ],
                 supportedLocales: S.delegate.supportedLocales,
-                theme: ThemeData(
-                  scaffoldBackgroundColor: ColorManager.white,
-                  colorScheme:
-                      ColorScheme.fromSeed(seedColor: ColorManager.primary),
-                  useMaterial3: true,
-                ),
+                theme: ThemeManager.appTheme(),
                 home: SplashScreen()),
           );
         });

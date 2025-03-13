@@ -1,41 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class LargeButton extends StatelessWidget {
-  const LargeButton({
-    required this.textB,
+class DefaultButton extends StatelessWidget {
+  const DefaultButton({
+    super.key,
+    required this.title,
     this.icon,
     this.width,
-    required this.formKey,
-    this.firstNameController,
-    this.lastNameController,
-    this.emailController,
-    this.passwordController,
     this.onPressed,
+    this.isLoading
   });
-
-  final String textB;
+  final bool ? isLoading ;
+  final String title;
   final IconData? icon;
   final double? width;
-  final GlobalKey<FormState> formKey;
-  final TextEditingController? firstNameController;
-  final TextEditingController? lastNameController;
-  final TextEditingController? emailController;
-  final TextEditingController? passwordController;
   final VoidCallback? onPressed;
-
-  void validateForm() {
-    if (formKey.currentState!.validate()) {
-      print("first name: ${firstNameController?.text}");
-      print("last name: ${lastNameController?.text}");
-      print("Email: ${emailController?.text}");
-      print("Password: ${passwordController?.text}");
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return isLoading == true ?Center(child: CircularProgressIndicator())
+        : SizedBox(
       width: width ?? double.infinity,
       height: 55.h,
       child: ElevatedButton(
@@ -52,7 +36,7 @@ class LargeButton extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              textB,
+              title,
               style: TextStyle(
                 fontSize: 18.sp,
                 color: Colors.white,

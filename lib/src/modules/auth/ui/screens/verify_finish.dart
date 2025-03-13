@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
 import '../../bloc/auth_bloc.dart';
-import '../widgets/rectangle_background.dart';
 import '../widgets/large_button.dart';
 import '../widgets/main_title.dart';
+import '../widgets/rectangle_background.dart';
 import '../widgets/sup_title.dart';
 import '../widgets/text_field.dart';
-import '../../../../../generated/l10n.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   ResetPasswordScreen({super.key});
@@ -72,10 +73,8 @@ class ResetPasswordScreen extends StatelessWidget {
                                 state is UpdatePasswordLoadingState) {
                               return Center(child: CircularProgressIndicator());
                             }
-                            return LargeButton(
-                              textB: S.of(context).finish,
-                              formKey: formKey,
-                              passwordController: passwordController,
+                            return DefaultButton(
+                              title: S.of(context).finish,
                               onPressed: () {
                                 if (formKey.currentState!.validate()) {
                                   authBloc.add(ResetPasswordEvent(

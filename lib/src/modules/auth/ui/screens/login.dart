@@ -94,13 +94,10 @@ class _LoginPageState extends State<LoginPage> {
                       BlocBuilder<AuthBloc, AuthState>(
                         bloc: authBloc,
                         builder: (context, state) {
-                          return state is LoginWithEmailAndPasswordLoadingState
-                              ? Center(child: CircularProgressIndicator())
-                              : LargeButton(
-                                  textB: S.of(context).sign_in,
-                                  formKey: formKey,
-                                  emailController: emailController,
-                                  passwordController: passwordController,
+                          return DefaultButton(
+                            // use this method to show loading widget in rest of the app
+                            isLoading: state is LoginWithEmailAndPasswordLoadingState,
+                                  title: S.of(context).sign_in,
                                   onPressed: () {
                                     if (formKey.currentState!.validate()) {
                                       context.read<AuthBloc>().add(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart'; // استيراد ملف الترجمة
+
 import '../widgets/appbar.dart';
 import '../widgets/bottomNavigatorBar.dart';
 import '../widgets/container_with_switch.dart';
@@ -38,9 +39,8 @@ class _SecurityPageState extends State<SecurityPage> {
                 status: true,
               ),
               SizedBox(height: 40.h),
-              LargeButton(
-                textB: S.of(context).save,
-                formKey: formKey,
+              DefaultButton(
+                title: S.of(context).save,
                 width: double.infinity,
               )
             ],

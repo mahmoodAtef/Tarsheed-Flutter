@@ -111,11 +111,8 @@ class SignUpScreen extends StatelessWidget {
                           if (state is RegisterLoadingState) {
                             return Center(child: CircularProgressIndicator());
                           }
-                          return LargeButton(
-                            textB: S.of(context).sign_up,
-                            formKey: formKey,
-                            emailController: emailController,
-                            passwordController: passwordController,
+                          return DefaultButton(
+                            title: S.of(context).sign_up,
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
                                 if (passwordController.text !=
