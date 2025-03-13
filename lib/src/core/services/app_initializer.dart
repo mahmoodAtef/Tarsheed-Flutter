@@ -5,15 +5,13 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tarsheed/firebase_options.dart';
 import 'package:tarsheed/src/core/apis/dio_helper.dart';
-import 'package:tarsheed/src/core/local/secure_storage_helper.dart';
-import 'package:tarsheed/src/core/local/shared_prefrences.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
+import 'package:tarsheed/src/core/services/secure_storage_helper.dart';
 
 class AppInitializer {
   static Future<void> init() async {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    await CacheHelper.init();
     HydratedBloc.storage = await HydratedStorage.build(
       storageDirectory:
           HydratedStorageDirectory((await getTemporaryDirectory()).path),

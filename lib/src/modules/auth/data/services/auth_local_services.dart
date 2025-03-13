@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:tarsheed/src/core/local/secure_storage_helper.dart';
+import 'package:tarsheed/src/core/services/secure_storage_helper.dart';
 import 'package:tarsheed/src/modules/auth/data/models/auth_info.dart';
 
 import '../models/security_settings.dart';

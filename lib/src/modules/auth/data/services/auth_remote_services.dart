@@ -35,7 +35,7 @@ abstract class BaseAuthRemoteServices {
       String oldPassword, String newPassword);
 }
 
-class AuthRemoteServices extends BaseAuthRemoteServices {
+class AuthRemoteServices implements BaseAuthRemoteServices {
   String? verificationId;
 
   @override
