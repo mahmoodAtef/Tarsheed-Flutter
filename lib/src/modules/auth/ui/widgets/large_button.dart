@@ -6,7 +6,7 @@ class LargeButton extends StatelessWidget {
     required this.textB,
     this.icon,
     this.width,
-    required this.formKey,
+    this.formKey,
     this.firstNameController,
     this.lastNameController,
     this.emailController,
@@ -17,7 +17,7 @@ class LargeButton extends StatelessWidget {
   final String textB;
   final IconData? icon;
   final double? width;
-  final GlobalKey<FormState> formKey;
+  final GlobalKey<FormState>? formKey;
   final TextEditingController? firstNameController;
   final TextEditingController? lastNameController;
   final TextEditingController? emailController;
@@ -25,11 +25,11 @@ class LargeButton extends StatelessWidget {
   final VoidCallback? onPressed;
 
   void validateForm() {
-    if (formKey.currentState!.validate()) {
-      print("first name: ${firstNameController?.text}");
-      print("last name: ${lastNameController?.text}");
-      print("Email: ${emailController?.text}");
-      print("Password: ${passwordController?.text}");
+    if (formKey?.currentState?.validate() ?? false) {
+      print("first name: ${firstNameController?.text ?? 'N/A'}");
+      print("last name: ${lastNameController?.text ?? 'N/A'}");
+      print("Email: ${emailController?.text ?? 'N/A'}");
+      print("Password: ${passwordController?.text ?? 'N/A'}");
     }
   }
 
@@ -40,13 +40,13 @@ class LargeButton extends StatelessWidget {
       height: 55.h,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xFF2666DE),
+          backgroundColor: const Color(0xFF2666DE),
           elevation: 10,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),
           ),
         ),
-        onPressed: onPressed,
+        onPressed: onPressed ?? () {},
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -54,9 +54,9 @@ class LargeButton extends StatelessWidget {
             Text(
               textB,
               style: TextStyle(
-                fontSize: 18.sp,
+                fontSize: 16.sp,
                 color: Colors.white,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
               ),
             ),
             if (icon != null) ...[

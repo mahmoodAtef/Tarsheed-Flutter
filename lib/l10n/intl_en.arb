@@ -66,5 +66,6 @@
   "code_numbers_only": "Code must contain numbers only",
   "take_control": "Take Control of\nYour Energy Usage",
   "login": "Login",
-  "register": "Register"
+  "register": "Register",
+  "Reports": "Reports"
 }

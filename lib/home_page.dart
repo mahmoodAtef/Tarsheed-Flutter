@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/image_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/reports.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/sign_up_create_account.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/rectangle_background.dart';
 import 'package:tarsheed/generated/l10n.dart';
@@ -66,7 +67,7 @@ class HomePage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10)),
                           ),
                           onPressed: () {
-                            context.push(LoginPage());
+                            context.push(ReportsPage());
                           },
                         ),
                       ),

@@ -599,6 +599,11 @@ class S {
   String get register {
     return Intl.message('Register', name: 'register', desc: '', args: []);
   }
+
+  /// `Reports`
+  String get Reports {
+    return Intl.message('Reports', name: 'Reports', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
