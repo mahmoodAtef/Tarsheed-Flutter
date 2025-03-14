@@ -48,7 +48,8 @@ class ServiceLocator {
   }
 
   static void _initializeRepositories() {
-    sl.registerLazySingleton<ConnectivityService>(() => ConnectivityService());
+    sl.registerLazySingleton<ConnectivityService>(
+        () => ConnectivityService()..initialize());
     sl.registerSingleton<AuthRepository>(AuthRepository(sl(), sl()));
     sl.registerSingleton<SettingsRepository>(SettingsRepository(sl(), sl()));
     sl.registerSingleton<DashboardRepository>(

@@ -4,11 +4,22 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 
 class ConnectivityService {
   final Connectivity _connectivity = Connectivity();
-  final _connectionStatusController = StreamController<bool>.broadcast();
-  Stream<bool> get connectionStatus => _connectionStatusController.stream;
+  final List<ConnectivityObserver> _observers = [];
 
   bool _isConnected = false;
   bool get isConnected => _isConnected;
+
+  void addObserver(ConnectivityObserver observer) {
+    if (!_observers.contains(observer)) {
+      _observers.add(observer);
+    }
+  }
+
+  void _notifyObservers() {
+    for (var observer in _observers) {
+      observer.onConnectivityChanged(_isConnected);
+    }
+  }
 
   void initialize() {
     _checkConnectivity();
@@ -35,11 +46,13 @@ class ConnectivityService {
   }
 
   void _updateConnectionStatus(bool isConnected) {
-    _isConnected = isConnected;
-    _connectionStatusController.add(_isConnected);
+    if (_isConnected != isConnected) {
+      _isConnected = isConnected;
+      _notifyObservers();
+    }
   }
+}
 
-  void dispose() {
-    _connectionStatusController.close();
-  }
+abstract class ConnectivityObserver {
+  void onConnectivityChanged(bool isConnected);
 }
