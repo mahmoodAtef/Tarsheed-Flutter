@@ -19,8 +19,8 @@ final sl = GetIt.instance;
 
 class ServiceLocator {
   static void init() {
-    _initializeLocalServices();
     _initializeRemoteServices();
+    _initializeLocalServices();
     _initializeRepositories();
     _initializeBlocs();
   }
@@ -32,27 +32,28 @@ class ServiceLocator {
   }
 
   static void _initializeRemoteServices() {
-    sl.registerSingleton<SettingsRemoteServices>(SettingsRemoteServices());
-    sl.registerSingleton<AuthRemoteServices>(AuthRemoteServices());
+    sl.registerSingleton<BaseSettingsRemoteServices>(SettingsRemoteServices());
+    sl.registerSingleton<BaseAuthRemoteServices>(
+      AuthRemoteServices(),
+    );
     sl.registerLazySingleton<DashboardRemoteServices>(
         () => DashboardRemoteServices());
   }
 
   static void _initializeLocalServices() {
-    sl.registerSingleton<LocalAuthentication>(LocalAuthentication());
-    sl.registerLazySingleton<AuthLocalServices>(
+    sl.registerSingleton<LocalAuthentication>(
+        LocalAuthentication()); // for local auth package
+    sl.registerLazySingleton<BaseAuthLocalServices>(
         () => AuthLocalServices(auth: sl()));
-    sl.registerSingleton<SettingsLocalServices>(SettingsLocalServices());
+    sl.registerSingleton<BaseSettingsLocalServices>(SettingsLocalServices());
     sl.registerLazySingleton<DashboardLocalServices>(
         () => DashboardLocalServices());
   }
 
   static void _initializeRepositories() {
-    sl.registerLazySingleton<ConnectivityService>(
-        () => ConnectivityService()..initialize());
-    sl.registerSingleton<AuthRepository>(AuthRepository(sl(), sl()));
-    sl.registerSingleton<SettingsRepository>(SettingsRepository(sl(), sl()));
-    sl.registerSingleton<DashboardRepository>(
-        DashboardRepository(sl(), sl(), sl()));
+    sl.registerLazySingleton(() => ConnectivityService()..initialize());
+    sl.registerSingleton(AuthRepository(sl(), sl()));
+    sl.registerSingleton(SettingsRepository(sl(), sl()));
+    sl.registerSingleton(DashboardRepository(sl(), sl(), sl()));
   }
 }

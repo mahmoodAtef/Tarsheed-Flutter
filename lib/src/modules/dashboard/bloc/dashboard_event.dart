@@ -10,6 +10,13 @@ final class GetUsageReportEvent extends DashboardEvent {
   List<Object?> get props => [];
 }
 
+final class UpdateUsageReportEvent extends DashboardEvent {
+  final Report usageReport;
+  const UpdateUsageReportEvent({required this.usageReport});
+  @override
+  List<Object?> get props => [usageReport];
+}
+
 final class GetAISuggestionsEvent extends DashboardEvent {
   @override
   List<Object?> get props => [];

@@ -12,8 +12,10 @@ class DashboardRepository implements ConnectivityObserver {
   final ConnectivityService _connectivityService;
   bool _isConnected = true;
 
-  final StreamController<Either<Exception, Report>> _reportController =
-      StreamController<Either<Exception, Report>>.broadcast();
+  final StreamController<Report> _reportController =
+      StreamController<Report>.broadcast();
+  late Report _lastReport;
+  Stream<Report> get reportStream => _reportController.stream;
 
   DashboardRepository(
       this._remoteServices, this._localServices, this._connectivityService) {
@@ -22,9 +24,16 @@ class DashboardRepository implements ConnectivityObserver {
   }
 
   @override
-  void onConnectivityChanged(bool isConnected) {
+  Future<void> onConnectivityChanged(bool isConnected) async {
     _isConnected = isConnected;
-    if (_isConnected) {}
+    if (_isConnected) {
+      await getUsageReport().then((r) => r.fold((l) {}, (r) {
+            if (_lastReport != r) {
+              _lastReport = r;
+              _reportController.add(r);
+            }
+          }));
+    }
   }
 
   Future<Either<Exception, Report>> getUsageReport() async {

@@ -11,15 +11,27 @@ final class DashboardInitial extends DashboardState {
 
 // usage reports
 class UsageReportState extends DashboardState {
+  const UsageReportState();
   @override
   List<Object?> get props => throw [];
 }
 
 final class GetUsageReportLoading extends UsageReportState {}
 
-final class GetUsageReportSuccess extends UsageReportState {}
+final class GetUsageReportSuccess extends UsageReportState {
+  final Report report;
+  const GetUsageReportSuccess(this.report);
 
-final class GetUsageReportError extends UsageReportState {}
+  @override
+  List<Object?> get props => [report];
+}
+
+final class GetUsageReportError extends UsageReportState {
+  final Exception exception;
+  const GetUsageReportError(this.exception);
+  @override
+  List<Object?> get props => [exception];
+}
 
 // ai suggestions
 class AISuggestionsState extends DashboardState {

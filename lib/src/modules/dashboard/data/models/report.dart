@@ -17,6 +17,12 @@ final class Report extends Equatable {
       devicesUsages:
           List.of(json["devices"].map((e) => DeviceUsage.fromJson(e))));
 
+  Map<String, dynamic> toJson() => {
+        "savingsPercentage": savingsPercentage,
+        "totalConsumption": totalConsumption,
+        "devices": devicesUsages,
+      };
+
   @override
   List<Object?> get props => [devicesUsages, totalConsumption, devicesUsages];
 }
