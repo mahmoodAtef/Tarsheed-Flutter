@@ -17,6 +17,12 @@ import '../widgets/social_icon.dart';
 import '../widgets/sup_title.dart';
 import '../widgets/text_field.dart';
 
+/*
+Todo:
+1- handle validators
+2- handle controllers
+3- 
+ */
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -72,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: 20.h),
                       CustomTextField(
+                        controller: passwordController,
                         fieldType: FieldType.password,
                         hintText: S.of(context).password,
                       ),
@@ -96,21 +103,21 @@ class _LoginPageState extends State<LoginPage> {
                         builder: (context, state) {
                           return DefaultButton(
                             // use this method to show loading widget in rest of the app
-                            isLoading: state is LoginWithEmailAndPasswordLoadingState,
-                                  title: S.of(context).sign_in,
-                                  onPressed: () {
-                                    if (formKey.currentState!.validate()) {
-                                      context.read<AuthBloc>().add(
-                                            LoginWithEmailAndPasswordEvent(
-                                              email:
-                                                  emailController.text.trim(),
-                                              password: passwordController.text
-                                                  .trim(),
-                                            ),
-                                          );
-                                    }
-                                  },
-                                );
+                            isLoading:
+                                state is LoginWithEmailAndPasswordLoadingState,
+                            title: S.of(context).sign_in,
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                context.read<AuthBloc>().add(
+                                      LoginWithEmailAndPasswordEvent(
+                                        email: emailController.text.trim(),
+                                        password:
+                                            passwordController.text.trim(),
+                                      ),
+                                    );
+                              }
+                            },
+                          );
                         },
                       ),
                       SizedBox(height: 15.h),

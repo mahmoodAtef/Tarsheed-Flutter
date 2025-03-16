@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
@@ -35,7 +36,7 @@ class ResetPasswordScreen extends StatelessWidget {
               listener: (context, state) {
                 if (state is ResetPasswordSuccessState ||
                     state is UpdatePasswordSuccessState) {
-                  Navigator.pop(context);
+                  context.pop();
                 } else if (state is AuthErrorState) {
                   ExceptionManager.showMessage(state.exception);
                 }

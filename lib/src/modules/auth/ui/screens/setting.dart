@@ -15,7 +15,7 @@ class SettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigator(),
-      appBar: CustomAppBar(text: S.of(context).settings), // استخدام الترجمة
+      appBar: CustomAppBar(text: S.of(context).settings),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
         child: ListView(
@@ -34,17 +34,17 @@ class SettingPage extends StatelessWidget {
               },
             ),
             CustomContainer(
-              text: S.of(context).software_update, // استخدام الترجمة
+              text: S.of(context).software_update,
             ),
             CustomContainer(
-              text: S.of(context).help_and_support, // استخدام الترجمة
+              text: S.of(context).help_and_support,
             ),
             SizedBox(height: 5.h),
             TextButton(
               onPressed: () {},
               child: Center(
                 child: Text(
-                  S.of(context).delete_my_account, // استخدام الترجمة
+                  S.of(context).delete_my_account,
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,

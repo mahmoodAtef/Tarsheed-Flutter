@@ -12,11 +12,11 @@ class BackGroundRectangle extends StatelessWidget {
     return Stack(
       children: [
         Positioned(
-          bottom: 0.h, // 2% من ارتفاع الشاشة
+          bottom: 0.h,
           child: Image.asset(AssetsManager.rectangle3),
         ),
         Positioned(
-          bottom: 0.h, // نفس النسبة
+          bottom: 0.h,
           child: Image.asset(AssetsManager.rectangle4),
         ),
         CustomPaint(

@@ -18,9 +18,12 @@ class DashboardRepository implements ConnectivityObserver {
   Stream<Report> get reportStream => _reportController.stream;
 
   DashboardRepository(
-      this._remoteServices, this._localServices, this._connectivityService) {
+      this._remoteServices, this._localServices, this._connectivityService);
+
+  void initialize() {
     _connectivityService.addObserver(this);
     _isConnected = _connectivityService.isConnected;
+    _localServices.initializeDatabase();
   }
 
   @override

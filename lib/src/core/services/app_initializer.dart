@@ -4,12 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tarsheed/firebase_options.dart';
+import 'package:tarsheed/home_page.dart';
+import 'package:tarsheed/src/core/apis/api.dart';
 import 'package:tarsheed/src/core/apis/dio_helper.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/services/secure_storage_helper.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 
 class AppInitializer {
-  static Future<void> init() async {
+  static Future<Widget> init() async {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     HydratedBloc.storage = await HydratedStorage.build(
@@ -26,6 +29,7 @@ class AppInitializer {
     SecureStorageHelper.init();
     DioHelper.init();
     await _getSavedData();
+    return ApiManager.userId != null ? HomePage() : LoginPage();
   }
 
   static Future<void> _getSavedData() async {

@@ -1,47 +1,25 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:tarsheed/home_page.dart';
-import 'package:tarsheed/src/core/apis/api.dart';
+import "package:page_transition/page_transition.dart";
 import 'package:tarsheed/src/core/services/app_initializer.dart';
-import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  late Widget nextScreen;
-  @override
-  void initState() {
-    _initializeApp();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: AnimatedSplashScreen(
-        duration: 3000,
-        splash: Image.asset(
-          "assets/images/E-logo 1.png",
-          width: 200,
-          height: 200,
-        ),
-        nextScreen: HomePage(),
-        splashTransition: SplashTransition.fadeTransition,
-        backgroundColor: Colors.white,
+    return AnimatedSplashScreen.withScreenFunction(
+      screenFunction: () => AppInitializer.init(),
+      duration: 3000,
+      splashIconSize: MediaQuery.of(context).size.shortestSide * 0.6,
+      pageTransitionType: PageTransitionType.rightToLeftWithFade,
+      curve: Curves.bounceIn,
+      splash: Image.asset(
+        fit: BoxFit.fill,
+        "assets/images/E-logo 1.png",
       ),
+      splashTransition: SplashTransition.fadeTransition,
+      backgroundColor: Colors.white,
     );
-  }
-
-  Future<void> _initializeApp() async {
-    await AppInitializer.init();
-    nextScreen = _getNextScreen();
-  }
-
-  Widget _getNextScreen() {
-    return ApiManager.userId != null ? HomePage() : LoginPage();
   }
 }

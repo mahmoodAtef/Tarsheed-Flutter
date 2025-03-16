@@ -3,21 +3,29 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../generated/l10n.dart';
 
-enum FieldType { email, password, confirmPassword, code, firstName, lastName }
+enum FieldType {
+  email,
+  password,
+  confirmPassword,
+  code,
+  firstName,
+  lastName,
+} // Todo: remove this enum
 
 class CustomTextField extends StatefulWidget {
   final FieldType fieldType;
   final TextEditingController? controller;
   final TextEditingController? originalPasswordController;
   final String hintText;
+  final Function(String?)? validator;
 
-  const CustomTextField({
-    super.key,
-    required this.fieldType,
-    this.controller,
-    this.originalPasswordController,
-    required this.hintText,
-  });
+  const CustomTextField(
+      {super.key,
+      required this.fieldType,
+      this.controller,
+      this.originalPasswordController,
+      required this.hintText,
+      this.validator});
 
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
@@ -51,6 +59,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         keyboardType = TextInputType.visiblePassword;
         defaultHint = S.of(context).confirm_password;
         break;
+
       case FieldType.code:
         keyboardType = TextInputType.number;
         defaultHint = S.of(context).enter_code;

@@ -50,7 +50,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
 
   static SettingsCubit? _cubit;
 
-  static SettingsCubit get getInstance => _cubit ??= SettingsCubit();
+  static SettingsCubit get getInstance => _cubit ??= sl();
   //  Save language
   @override
   SettingsState? fromJson(Map<String, dynamic> json) {

@@ -18,11 +18,9 @@ class EmailVerificationScreen extends StatelessWidget {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
-
+  final AuthBloc authBloc = AuthBloc.instance;
   @override
   Widget build(BuildContext context) {
-    AuthBloc authBloc = AuthBloc.instance;
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(

@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../bloc/auth_bloc.dart';
 
+/*
+ToDo:
+use forgot password event
+use localization
+ */
 class CodeVerificationScreen extends StatefulWidget {
   final String email;
 

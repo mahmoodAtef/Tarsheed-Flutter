@@ -9,7 +9,6 @@ import '../../../core/services/dep_injection.dart';
 import '../data/models/security_settings.dart';
 
 part 'auth_event.dart';
-
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -17,7 +16,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   static AuthBloc? _authBloc;
 
   static AuthBloc get instance {
-    return _authBloc ??= AuthBloc();
+    return sl();
   }
 
   final AuthRepository authRepository = sl();

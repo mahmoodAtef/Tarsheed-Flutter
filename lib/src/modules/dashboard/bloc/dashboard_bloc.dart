@@ -8,7 +8,7 @@ part 'dashboard_event.dart';
 part 'dashboard_state.dart';
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
-  final DashboardRepository _repository = sl();
+  final DashboardRepository _repository = sl()..initialize();
 
   DashboardBloc() : super(DashboardInitial()) {
     on<DashboardEvent>((event, emit) {
