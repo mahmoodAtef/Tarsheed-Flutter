@@ -39,10 +39,10 @@ class DashboardRepository implements ConnectivityObserver {
     }
   }
 
-  Future<Either<Exception, Report>> getUsageReport() async {
+  Future<Either<Exception, Report>> getUsageReport({int? period}) async {
     final Either<Exception, Report> result = _isConnected
-        ? await _remoteServices.getUsageReport()
-        : await _localServices.getUsageReport();
+        ? await _remoteServices.getUsageReport(period: period)
+        : await _localServices.getUsageReport(period: period);
     return result;
   }
 }

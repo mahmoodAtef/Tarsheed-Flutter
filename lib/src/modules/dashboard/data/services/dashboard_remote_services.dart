@@ -7,9 +7,10 @@ import 'package:tarsheed/src/modules/dashboard/data/services/base_dashboard_serv
 
 class DashboardRemoteServices implements BaseDashboardServices {
   @override
-  Future<Either<Exception, Report>> getUsageReport() async {
+  Future<Either<Exception, Report>> getUsageReport({int? period}) async {
     try {
       var response = await DioHelper.getData(
+        query: {"period": period.toString()},
         path: EndPoints.getUsageReport + ApiManager.userId!,
       );
       return Right(Report.fromJson(response.data));
