@@ -58,8 +58,9 @@ class AuthRemoteServices implements BaseAuthRemoteServices {
     required String code,
   }) async {
     try {
-      var response = await DioHelper.postData(
-          path: EndPoints.verify, data: {"id": verificationId, "code": code});
+      await DioHelper.postData(
+          path: EndPoints.verify,
+          data: {"id": verificationId ?? ApiManager.userId, "code": code});
       return Right(unit);
     } on Exception catch (e) {
       return Left(_classifyException(e, process: "verifying email with code"));
@@ -71,9 +72,13 @@ class AuthRemoteServices implements BaseAuthRemoteServices {
     try {
       var response = await DioHelper.postData(
           path: EndPoints.resendCode + ApiManager.userId!,
-          query: {"userId": ApiManager.userId});
+          query: {
+            "userId": ApiManager.userId,
+          },
+          data: {
+            "userId": ApiManager.userId
+          });
       verificationId = response.data["id"];
-
       return Right(unit);
     } on Exception catch (e) {
       return Left(
@@ -100,7 +105,7 @@ class AuthRemoteServices implements BaseAuthRemoteServices {
     try {
       var response = await DioHelper.postData(
           path: EndPoints.forgetPassword, data: {"email": email});
-      verificationId = response.data["id"];
+      verificationId = response.data["userId"];
       return Right(unit);
     } on Exception catch (e) {
       return Left(_classifyException(e, process: "forgetting password"));

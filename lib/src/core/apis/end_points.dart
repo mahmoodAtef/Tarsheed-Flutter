@@ -19,5 +19,5 @@ class EndPoints {
   static const String deleteProfile = '/users';
 
   /// Dashboard Endpoints
-  static const String getUsageReport = '/usageReport';
+  static const String getUsageReport = '/reports/';
 }

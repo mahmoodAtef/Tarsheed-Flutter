@@ -119,4 +119,8 @@ class DioHelper {
       data: formData,
     );
   }
+
+  static void setToken(String token) {
+    dio.options.headers["Authorization"] = "Bearer $token";
+  }
 }

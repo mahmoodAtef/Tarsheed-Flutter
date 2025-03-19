@@ -11,17 +11,54 @@ class DashboardLocalServices implements BaseDashboardServices {
   }
 
   @override
-  Future<Either<Exception, Report>> getUsageReport() async {
+  Future<Either<Exception, Report>> getUsageReport({int? period}) async {
     try {
-      var result = await database.query('reports');
+      List<Map<String, dynamic>> result;
+
+      if (period != null) {
+        result = await database.query(
+          'reports',
+          where: 'period = ?',
+          whereArgs: [period],
+        );
+      } else {
+        result = await database.query(
+          'reports',
+          orderBy: 'updatedAt DESC',
+          limit: 1,
+        );
+      }
+
       Report report = Report.fromJson(result.first);
       return Right(report);
+    } on db.DatabaseException catch (e) {
+      return Left(e);
     } on Exception catch (e) {
       return Left(e);
     }
   }
 
-  Future saveUsageReport(Report report) async {
-    await database.insert('reports', report.toJson());
+  Future<Either<Exception, Unit>> saveUsageReport(Report report) async {
+    try {
+      // check if report exists for this period and update it if it does or insert if it doesn't
+      var existingReport = await database.query(
+        'reports',
+        where: 'period = ?',
+        whereArgs: [report.period],
+      );
+      if (existingReport.isNotEmpty) {
+        await database.update(
+          'reports',
+          report.toJson(),
+          where: 'period = ?',
+          whereArgs: [report.period],
+        );
+      } else {
+        await database.insert('reports', report.toJson());
+      }
+      return Right(unit);
+    } on Exception catch (e) {
+      return Left(e);
+    }
   }
 }
