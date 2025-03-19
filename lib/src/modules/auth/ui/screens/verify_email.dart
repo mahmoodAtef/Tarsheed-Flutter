@@ -19,6 +19,7 @@ class EmailVerificationScreen extends StatelessWidget {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final AuthBloc authBloc = AuthBloc.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,15 +46,27 @@ class EmailVerificationScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      MainTitle(maintext: S.of(context).verify_your_identity),
+                      MainTitle(mainText: S.of(context).verifyYourIdentity),
                       SizedBox(height: 5.h),
-                      SupTitle(
-                          text2: S.of(context).enter_email_to_receive_code),
+                      SupTitle(text2: S.of(context).enterEmailToReceiveCode),
                       SizedBox(height: 50.h),
                       CustomTextField(
-                        fieldType: FieldType.email,
                         controller: emailController,
                         hintText: S.of(context).email,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return S.of(context).emailRequired;
+                          }
+                          final trimmedValue = value.trim();
+                          if (trimmedValue.length > 30) {
+                            return S.of(context).emailMaxLength;
+                          }
+                          if (!value.contains('@')) {
+                            return S.of(context).invalidEmailFormat;
+                          }
+                          return null;
+                        },
                       ),
                       SizedBox(height: 15.h),
                       BlocBuilder<AuthBloc, AuthState>(
@@ -63,7 +76,7 @@ class EmailVerificationScreen extends StatelessWidget {
                             return Center(child: CircularProgressIndicator());
                           }
                           return DefaultButton(
-                            title: S.of(context).continue_text,
+                            title: S.of(context).continueText,
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
                                 context

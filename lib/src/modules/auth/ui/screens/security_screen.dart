@@ -27,13 +27,13 @@ class _SecurityPageState extends State<SecurityPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               CustomContainer(
-                text: S.of(context).face_id,
+                text: S.of(context).faceId,
                 size: 18,
                 height: 66.h,
                 status: false,
               ),
               CustomContainer(
-                text: S.of(context).two_step_verification,
+                text: S.of(context).twoStepVerification,
                 size: 18,
                 height: 66.h,
                 status: true,

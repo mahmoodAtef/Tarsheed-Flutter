@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:tarsheed/generated/l10n.dart'; // استيراد ملف الترجمة
+import 'package:tarsheed/src/core/utils/color_manager.dart';
 import '../widgets/appbar.dart';
 import '../widgets/bottomNavigatorBar.dart';
 import 'package:tarsheed/src/core/utils/image_manager.dart';
@@ -55,10 +56,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           padding: EdgeInsets.all(5.w),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.white,
+                            color: ColorManager.white,
                           ),
                           child: Icon(Icons.camera_alt,
-                              size: 20.sp, color: Colors.black),
+                              size: 20.sp, color: ColorManager.black),
                         ),
                       ),
                     ),
@@ -66,8 +67,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               SizedBox(height: 20.h),
-              buildTextField(S.of(context).first_name, '', false),
-              buildTextField(S.of(context).last_name, '', false),
+              buildTextField(S.of(context).firstName, '', false),
+              buildTextField(S.of(context).lastName, '', false),
               buildTextField(S.of(context).email, '', false),
               buildTextField(S.of(context).password, '', true),
             ],

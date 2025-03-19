@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
+import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/utils/image_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/sign_up_create_account.dart';
@@ -12,7 +13,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: ColorManager.white,
         resizeToAvoidBottomInset: false,
         body: Stack(children: [
           Positioned.fill(
@@ -40,7 +41,7 @@ class HomePage extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 35,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF2666DE),
+                        color: ColorManager.primary,
                       ),
                     ),
                   ),
@@ -55,12 +56,12 @@ class HomePage extends StatelessWidget {
                           child: Text(
                             S.of(context).login,
                             style: TextStyle(
-                                color: Colors.white,
+                                color: ColorManager.white,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600),
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF2666DE),
+                            backgroundColor: ColorManager.primary,
                             elevation: 15,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
@@ -78,7 +79,6 @@ class HomePage extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                               vertical: 15, horizontal: 20),
-                          // 🔹 نفس الـ Padding
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -87,7 +87,7 @@ class HomePage extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
-                              color: Colors.black, // 🔹 اللون الأساسي
+                              color: ColorManager.black,
                             ),
                           ),
                         ),

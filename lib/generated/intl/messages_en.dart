@@ -20,140 +20,191 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
+  static String m0(seconds) => "Resend code in: ${seconds}s";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "Continue": MessageLookupByLibrary.simpleMessage("Continue"),
     "account": MessageLookupByLibrary.simpleMessage("Account"),
-    "already_have_account": MessageLookupByLibrary.simpleMessage(
+    "alreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
       "Already have an account?",
     ),
     "appName": MessageLookupByLibrary.simpleMessage("Tarsheed"),
-    "backup_settings": MessageLookupByLibrary.simpleMessage("Backup Settings"),
-    "cannot_exceed": MessageLookupByLibrary.simpleMessage("cannot exceed"),
+    "backupSettings": MessageLookupByLibrary.simpleMessage("Backup Settings"),
+    "cannotExceed": MessageLookupByLibrary.simpleMessage("cannot exceed"),
     "characters": MessageLookupByLibrary.simpleMessage("characters"),
-    "code_numbers_only": MessageLookupByLibrary.simpleMessage(
+    "codeMustBeAtLeast6Digits": MessageLookupByLibrary.simpleMessage(
+      "The code must be at least 6 digits",
+    ),
+    "codeNumbersOnly": MessageLookupByLibrary.simpleMessage(
       "Code must contain numbers only",
     ),
-    "confirm_new_password": MessageLookupByLibrary.simpleMessage(
+    "confirmNewPassword": MessageLookupByLibrary.simpleMessage(
       "Confirm New Password",
     ),
-    "confirm_password": MessageLookupByLibrary.simpleMessage(
-      "Confirm Password",
+    "confirmPassword": MessageLookupByLibrary.simpleMessage("Confirm Password"),
+    "confirmPasswordRequired": MessageLookupByLibrary.simpleMessage(
+      "Confirm password is required",
     ),
-    "contains_invalid_characters": MessageLookupByLibrary.simpleMessage(
+    "containsInvalidCharacters": MessageLookupByLibrary.simpleMessage(
       "contains invalid characters",
     ),
-    "continue_text": MessageLookupByLibrary.simpleMessage("Continue"),
+    "continueText": MessageLookupByLibrary.simpleMessage("Continue"),
     "createAccount": MessageLookupByLibrary.simpleMessage("Create new account"),
-    "create_account": MessageLookupByLibrary.simpleMessage("Create Account"),
-    "create_account_desc": MessageLookupByLibrary.simpleMessage(
+    "createAccountDesc": MessageLookupByLibrary.simpleMessage(
       "Create an account so you can easily control your home",
     ),
-    "create_new_account": MessageLookupByLibrary.simpleMessage(
+    "createNewAccount": MessageLookupByLibrary.simpleMessage(
       "Create new account",
     ),
-    "delete_my_account": MessageLookupByLibrary.simpleMessage(
+    "deleteMyAccount": MessageLookupByLibrary.simpleMessage(
       "Delete My Account",
     ),
-    "didnot_receive": MessageLookupByLibrary.simpleMessage(
+    "didNotReceive": MessageLookupByLibrary.simpleMessage(
+      "Didn\'t receive a code?",
+    ),
+    "didNtReceiveCode": MessageLookupByLibrary.simpleMessage(
       "Didn\'t receive a code?",
     ),
     "editPassNaAddUseEm": MessageLookupByLibrary.simpleMessage(
       "Edit password, name, address, username, email",
     ),
     "email": MessageLookupByLibrary.simpleMessage("Email"),
-    "energy_mode": MessageLookupByLibrary.simpleMessage("Energy Mode"),
-    "energy_saving_mode": MessageLookupByLibrary.simpleMessage(
+    "emailMaxLength": MessageLookupByLibrary.simpleMessage(
+      "Email must not exceed 100 characters",
+    ),
+    "emailRequired": MessageLookupByLibrary.simpleMessage("Email is required"),
+    "emailVerifiedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Email verified successfully!",
+    ),
+    "energyMode": MessageLookupByLibrary.simpleMessage("Energy Mode"),
+    "energySavingMode": MessageLookupByLibrary.simpleMessage(
       "Energy Saving Mode",
     ),
-    "enter_code": MessageLookupByLibrary.simpleMessage("Enter Code"),
-    "enter_email_to_receive_code": MessageLookupByLibrary.simpleMessage(
+    "enterCode": MessageLookupByLibrary.simpleMessage("Enter Code"),
+    "enterEmailToReceiveCode": MessageLookupByLibrary.simpleMessage(
       "Enter Your Email to receive reset Code",
     ),
-    "enter_new_password": MessageLookupByLibrary.simpleMessage(
+    "enterNewPassword": MessageLookupByLibrary.simpleMessage(
       "Enter Your New Password",
     ),
+    "enterVerificationCode": MessageLookupByLibrary.simpleMessage(
+      "Enter the verification code sent to your email",
+    ),
+    "faceId": MessageLookupByLibrary.simpleMessage("Face ID"),
     "faceTwoStVerification": MessageLookupByLibrary.simpleMessage(
       "Face-ID, Two-Step Verification",
     ),
-    "face_id": MessageLookupByLibrary.simpleMessage("Face ID"),
     "finish": MessageLookupByLibrary.simpleMessage("Finish"),
-    "first_name": MessageLookupByLibrary.simpleMessage("First Name"),
-    "forgot_password": MessageLookupByLibrary.simpleMessage(
+    "firstName": MessageLookupByLibrary.simpleMessage("First Name"),
+    "firstNameRequired": MessageLookupByLibrary.simpleMessage(
+      "First name is required",
+    ),
+    "forgotPassword": MessageLookupByLibrary.simpleMessage(
       "Forgot your password?",
     ),
-    "has_invalid_formatting": MessageLookupByLibrary.simpleMessage(
+    "hasInvalidFormatting": MessageLookupByLibrary.simpleMessage(
       "has invalid formatting",
     ),
-    "help_and_support": MessageLookupByLibrary.simpleMessage(
-      "Help and Support",
-    ),
-    "invalid_email": MessageLookupByLibrary.simpleMessage(
+    "helpAndSupport": MessageLookupByLibrary.simpleMessage("Help and Support"),
+    "invalidEmail": MessageLookupByLibrary.simpleMessage(
       "Invalid email format",
     ),
-    "is_required": MessageLookupByLibrary.simpleMessage("is required"),
+    "invalidEmailFormat": MessageLookupByLibrary.simpleMessage(
+      "Invalid email format",
+    ),
+    "isRequired": MessageLookupByLibrary.simpleMessage("is required"),
     "lanBackEneMO": MessageLookupByLibrary.simpleMessage(
       "Language, Backup, Energy Modes...",
     ),
     "language": MessageLookupByLibrary.simpleMessage("Language"),
-    "last_name": MessageLookupByLibrary.simpleMessage("Last Name"),
+    "lastName": MessageLookupByLibrary.simpleMessage("Last Name"),
+    "lastNameRequired": MessageLookupByLibrary.simpleMessage(
+      "Last name is required",
+    ),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
-    "login_here": MessageLookupByLibrary.simpleMessage("Login Here"),
-    "must_be_at_least": MessageLookupByLibrary.simpleMessage(
-      "must be at least",
-    ),
+    "loginHere": MessageLookupByLibrary.simpleMessage("Login Here"),
+    "mustBeAtLeast": MessageLookupByLibrary.simpleMessage("must be at least"),
     "name": MessageLookupByLibrary.simpleMessage("Name"),
-    "new_password": MessageLookupByLibrary.simpleMessage("New Password"),
-    "noRouteFound": MessageLookupByLibrary.simpleMessage("No route found"),
-    "or_continue_with": MessageLookupByLibrary.simpleMessage(
-      "Or continue with",
+    "nameMaxLength": MessageLookupByLibrary.simpleMessage(
+      "Name cannot exceed 50 characters",
     ),
-    "original_password_not_provided": MessageLookupByLibrary.simpleMessage(
+    "nameMinLength": MessageLookupByLibrary.simpleMessage(
+      "Name must be at least 2 characters",
+    ),
+    "newPassword": MessageLookupByLibrary.simpleMessage("New Password"),
+    "noRouteFound": MessageLookupByLibrary.simpleMessage("No route found"),
+    "orContinueWith": MessageLookupByLibrary.simpleMessage("Or continue with"),
+    "originalPasswordNotProvided": MessageLookupByLibrary.simpleMessage(
       "Original password is not provided",
     ),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
-    "password_max_length": MessageLookupByLibrary.simpleMessage(
+    "passwordDigitsRequired": MessageLookupByLibrary.simpleMessage(
+      "Password must contain a digit",
+    ),
+    "passwordLowercaseRequired": MessageLookupByLibrary.simpleMessage(
+      "Password must contain a lowercase letter",
+    ),
+    "passwordMaxLength": MessageLookupByLibrary.simpleMessage(
       "Password cannot exceed 64 characters",
     ),
-    "password_min_length": MessageLookupByLibrary.simpleMessage(
+    "passwordMinLength": MessageLookupByLibrary.simpleMessage(
       "Password must be at least 8 characters",
     ),
-    "password_mismatch": MessageLookupByLibrary.simpleMessage(
+    "passwordMismatch": MessageLookupByLibrary.simpleMessage(
       "Passwords do not match",
     ),
-    "password_requirements": MessageLookupByLibrary.simpleMessage(
+    "passwordRequired": MessageLookupByLibrary.simpleMessage(
+      "Password is required",
+    ),
+    "passwordRequirements": MessageLookupByLibrary.simpleMessage(
       "Password must contain:\n- At least 1 uppercase letter\n- At least 1 lowercase letter\n- At least 1 number\n- At least 1 special character",
     ),
-    "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
+    "passwordUppercaseRequired": MessageLookupByLibrary.simpleMessage(
+      "Password must contain an uppercase letter",
+    ),
+    "passwordsDoNotMatch": MessageLookupByLibrary.simpleMessage(
       "Passwords do not match",
+    ),
+    "pleaseEnterVerificationCode": MessageLookupByLibrary.simpleMessage(
+      "Please enter the verification code",
     ),
     "profile": MessageLookupByLibrary.simpleMessage("Profile"),
     "rateApplication": MessageLookupByLibrary.simpleMessage("Rate Application"),
     "register": MessageLookupByLibrary.simpleMessage("Register"),
-    "resend_code": MessageLookupByLibrary.simpleMessage("Resend"),
+    "resendCode": MessageLookupByLibrary.simpleMessage("Resend Code"),
+    "resendCodeIn": m0,
     "save": MessageLookupByLibrary.simpleMessage("Save"),
     "security": MessageLookupByLibrary.simpleMessage("Security"),
-    "sent_email_message": MessageLookupByLibrary.simpleMessage(
+    "sentEmailMessage": MessageLookupByLibrary.simpleMessage(
       "We have sent an email to mo****@gmail.",
     ),
     "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+    "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
     "signOut": MessageLookupByLibrary.simpleMessage("Sign Out"),
-    "sign_in": MessageLookupByLibrary.simpleMessage("Sign in"),
-    "sign_up": MessageLookupByLibrary.simpleMessage("Sign up"),
-    "sleep_mode": MessageLookupByLibrary.simpleMessage("Sleep Mode"),
-    "software_update": MessageLookupByLibrary.simpleMessage("Software Update"),
-    "super_energy_saving_mode": MessageLookupByLibrary.simpleMessage(
+    "signUp": MessageLookupByLibrary.simpleMessage("Sign up"),
+    "sleepMode": MessageLookupByLibrary.simpleMessage("Sleep Mode"),
+    "softwareUpdate": MessageLookupByLibrary.simpleMessage("Software Update"),
+    "superEnergySavingMode": MessageLookupByLibrary.simpleMessage(
       "Super Energy Saving Mode",
     ),
-    "take_control": MessageLookupByLibrary.simpleMessage(
+    "takeControl": MessageLookupByLibrary.simpleMessage(
       "Take Control of\nYour Energy Usage",
     ),
-    "two_step_verification": MessageLookupByLibrary.simpleMessage(
+    "twoStepVerification": MessageLookupByLibrary.simpleMessage(
       "Two-Step Verification",
     ),
-    "verify_your_identity": MessageLookupByLibrary.simpleMessage(
+    "verificationCode": MessageLookupByLibrary.simpleMessage(
+      "Verification Code",
+    ),
+    "verify": MessageLookupByLibrary.simpleMessage("Verify"),
+    "verifyYourEmail": MessageLookupByLibrary.simpleMessage(
+      "Verify Your Email",
+    ),
+    "verifyYourIdentity": MessageLookupByLibrary.simpleMessage(
       "Verify Your Identity",
     ),
-    "welcome_back": MessageLookupByLibrary.simpleMessage(
+    "welcomeBack": MessageLookupByLibrary.simpleMessage(
       "Welcome back you’ve been missed!",
     ),
   };
