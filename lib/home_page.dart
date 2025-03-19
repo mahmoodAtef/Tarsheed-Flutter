@@ -36,7 +36,7 @@ class HomePage extends StatelessWidget {
                     width: 343,
                     height: 106,
                     child: Text(
-                      S.of(context).take_control,
+                      S.of(context).takeControl,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 35,
