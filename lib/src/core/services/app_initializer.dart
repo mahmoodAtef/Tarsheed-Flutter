@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +12,7 @@ import 'package:tarsheed/src/core/apis/api.dart';
 import 'package:tarsheed/src/core/apis/dio_helper.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/services/secure_storage_helper.dart';
+import 'package:tarsheed/src/modules/auth/data/models/auth_info.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 
 class AppInitializer {
@@ -19,9 +23,6 @@ class AppInitializer {
       storageDirectory:
           HydratedStorageDirectory((await getTemporaryDirectory()).path),
     );
-
-// ...
-
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
@@ -29,17 +30,23 @@ class AppInitializer {
     SecureStorageHelper.init();
     DioHelper.init();
     await _getSavedData();
+    if (ApiManager.authToken != null) {
+      DioHelper.setToken(ApiManager.authToken!);
+    }
     return ApiManager.userId != null ? HomePage() : LoginPage();
   }
 
   static Future<void> _getSavedData() async {
-    var authData = await SecureStorageHelper.getData(key: "auth_info");
-    // if (authData != null) {
-    //   AuthInfo authInfo =
-    //       AuthInfo.fromJson(await jsonDecode(authData.toString()));
-    //   ApiManager.authToken = authInfo.accessToken;
-    //   ApiManager.userId = authInfo.userId;
-    // }
-    debugPrint(authData);
+    try {
+      var authData = await SecureStorageHelper.getData(key: "auth_info");
+      if (authData != null) {
+        AuthInfo authInfo = AuthInfo.fromJson(await jsonDecode(authData));
+        ApiManager.authToken = authInfo.accessToken;
+        ApiManager.userId = authInfo.userId;
+      }
+      debugPrint(authData);
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }

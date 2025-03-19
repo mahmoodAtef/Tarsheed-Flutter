@@ -6,8 +6,10 @@ sealed class DashboardEvent extends Equatable {
 
 /// usage
 final class GetUsageReportEvent extends DashboardEvent {
+  final int? period;
+  const GetUsageReportEvent({this.period});
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [period];
 }
 
 final class UpdateUsageReportEvent extends DashboardEvent {

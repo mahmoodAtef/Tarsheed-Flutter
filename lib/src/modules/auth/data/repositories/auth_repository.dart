@@ -1,4 +1,8 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:tarsheed/src/core/apis/api.dart';
+import 'package:tarsheed/src/core/apis/dio_helper.dart';
+import 'package:tarsheed/src/modules/auth/data/models/auth_info.dart';
 import 'package:tarsheed/src/modules/auth/data/models/email_and_password_registration_form.dart';
 import 'package:tarsheed/src/modules/auth/data/services/auth_local_services.dart';
 import 'package:tarsheed/src/modules/auth/data/services/auth_remote_services.dart';
@@ -95,8 +99,12 @@ class AuthRepository {
     return _authLocalServices.logout();
   }
 
-  Future<Either<Exception, Unit>> _saveAuthInfo(authInfo) async {
+  Future<Either<Exception, Unit>> _saveAuthInfo(AuthInfo authInfo) async {
     try {
+      ApiManager.authToken = authInfo.accessToken;
+      ApiManager.userId = authInfo.userId;
+      debugPrint(ApiManager.userId);
+      DioHelper.setToken(ApiManager.authToken!);
       await _authLocalServices.saveAuthInfo(authInfo);
       return Right(unit);
     } on Exception catch (e) {

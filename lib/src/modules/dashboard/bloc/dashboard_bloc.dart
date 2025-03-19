@@ -14,6 +14,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     on<DashboardEvent>((event, emit) {
       if (event is GetUsageReportEvent) {
         _handleGetUsageReportEvent(event, emit);
+      } else if (event is UpdateUsageReportEvent) {
+        _handleUpdateUsageReportEvent(event, emit);
       }
     });
   }
@@ -25,6 +27,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     result.fold((l) => emit(GetUsageReportError(l)),
         (r) => emit(GetUsageReportSuccess(r)));
     _subscribeToReport();
+  }
+
+  _handleUpdateUsageReportEvent(
+      UpdateUsageReportEvent event, Emitter<DashboardState> emit) {
+    emit(GetUsageReportSuccess(event.usageReport));
   }
 
   _subscribeToReport() {

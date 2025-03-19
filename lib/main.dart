@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
+import 'package:tarsheed/src/core/services/bloc_observer.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
 import 'package:tarsheed/src/core/utils/theme_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/splash_screen.dart';
 
 void main() {
+  Bloc.observer = TarsheedBlocObserver();
   runApp(
       BlocProvider(create: (context) => AuthBloc.instance, child: Tarsheed()));
 }

@@ -13,7 +13,7 @@ final class DashboardInitial extends DashboardState {
 class UsageReportState extends DashboardState {
   const UsageReportState();
   @override
-  List<Object?> get props => throw [];
+  List<Object?> get props => [];
 }
 
 final class GetUsageReportLoading extends UsageReportState {}
@@ -36,7 +36,7 @@ final class GetUsageReportError extends UsageReportState {
 // ai suggestions
 class AISuggestionsState extends DashboardState {
   @override
-  List<Object?> get props => throw [];
+  List<Object?> get props => [];
 }
 
 final class GetAISuggestionsLoading extends AISuggestionsState {}
@@ -48,7 +48,7 @@ final class GetAISuggestionsError extends AISuggestionsState {}
 // devices
 final class DeviceState extends DashboardState {
   @override
-  List<Object?> get props => throw [];
+  List<Object?> get props => [];
 }
 
 final class GetDevicesLoading extends DeviceState {}
@@ -78,7 +78,7 @@ final class DeleteDeviceError extends DeviceState {}
 // rooms
 final class RoomState extends DashboardState {
   @override
-  List<Object?> get props => throw [];
+  List<Object?> get props => [];
 }
 
 final class GetRoomsLoading extends RoomState {}
