@@ -1,0 +1,27 @@
+import 'package:equatable/equatable.dart';
+
+class DeviceUsage extends Equatable {
+  final String deviceID;
+  final DateTime timeStamp;
+  final double usage;
+  final String deviceName;
+  const DeviceUsage(
+      {required this.deviceID,
+      required this.timeStamp,
+      required this.usage,
+      required this.deviceName});
+
+  factory DeviceUsage.fromJson(Map<String, dynamic> json) => DeviceUsage(
+      deviceName: json["deviceName"],
+      deviceID: json["deviceId"],
+      timeStamp: DateTime.parse(json['timeStamp']),
+      usage: json['usage']);
+
+  Map<String, dynamic> toJson() => {
+        "deviceId": deviceID,
+        "timeStamp": timeStamp.toIso8601String(),
+        "usage": usage
+      };
+  @override
+  List<Object?> get props => [deviceID, usage];
+}

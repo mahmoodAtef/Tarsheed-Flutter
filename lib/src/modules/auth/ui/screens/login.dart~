@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tarsheed/generated/l10n.dart'; // تأكد من استيراد الترجمة
+import 'package:tarsheed/generated/l10n.dart'; 
 import 'package:tarsheed/home_page.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
@@ -17,6 +17,12 @@ import '../widgets/social_icon.dart';
 import '../widgets/sup_title.dart';
 import '../widgets/text_field.dart';
 
+/*
+Todo:
+1- handle validators
+2- handle controllers
+3- 
+ */
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -72,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: 20.h),
                       CustomTextField(
+                        controller: passwordController,
                         fieldType: FieldType.password,
                         hintText: S.of(context).password,
                       ),
@@ -94,23 +101,23 @@ class _LoginPageState extends State<LoginPage> {
                       BlocBuilder<AuthBloc, AuthState>(
                         bloc: authBloc,
                         builder: (context, state) {
-                          return state is LoginWithEmailAndPasswordLoadingState
-                              ? Center(child: CircularProgressIndicator())
-                              : DefaultButton(
-                                  textB: S.of(context).sign_in,
-                                  onPressed: () {
-                                    if (formKey.currentState!.validate()) {
-                                      context.read<AuthBloc>().add(
-                                            LoginWithEmailAndPasswordEvent(
-                                              email:
-                                                  emailController.text.trim(),
-                                              password: passwordController.text
-                                                  .trim(),
-                                            ),
-                                          );
-                                    }
-                                  },
-                                );
+                          return DefaultButton(
+                            // use this method to show loading widget in rest of the app
+                            isLoading:
+                                state is LoginWithEmailAndPasswordLoadingState,
+                            title: S.of(context).sign_in,
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                context.read<AuthBloc>().add(
+                                      LoginWithEmailAndPasswordEvent(
+                                        email: emailController.text.trim(),
+                                        password:
+                                            passwordController.text.trim(),
+                                      ),
+                                    );
+                              }
+                            },
+                          );
                         },
                       ),
                       SizedBox(height: 15.h),

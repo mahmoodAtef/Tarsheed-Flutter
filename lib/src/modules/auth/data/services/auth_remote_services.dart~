@@ -35,7 +35,7 @@ abstract class BaseAuthRemoteServices {
       String oldPassword, String newPassword);
 }
 
-class AuthRemoteServices extends BaseAuthRemoteServices {
+class AuthRemoteServices implements BaseAuthRemoteServices {
   String? verificationId;
 
   @override
@@ -58,9 +58,8 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
     required String code,
   }) async {
     try {
-      var response = await DioHelper.postData(
-          path: EndPoints.verify, data: {"id": verificationId, "code": code});
-
+      await DioHelper.postData(
+          path: EndPoints.verify, data: {"id": verificationId ?? ApiManager.userId, "code": code});
       return Right(unit);
     } on Exception catch (e) {
       return Left(_classifyException(e, process: "verifying email with code"));
@@ -72,9 +71,11 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
     try {
       var response = await DioHelper.postData(
           path: EndPoints.resendCode + ApiManager.userId!,
-          query: {"userId": ApiManager.userId});
+          query: {"userId": ApiManager.userId ,
+          } ,
+      data:  {"userId": ApiManager.userId}
+      );
       verificationId = response.data["id"];
-
       return Right(unit);
     } on Exception catch (e) {
       return Left(
@@ -101,7 +102,7 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
     try {
       var response = await DioHelper.postData(
           path: EndPoints.forgetPassword, data: {"email": email});
-      verificationId = response.data["id"];
+      verificationId = response.data["userId"];
       return Right(unit);
     } on Exception catch (e) {
       return Left(_classifyException(e, process: "forgetting password"));
@@ -117,7 +118,7 @@ class AuthRemoteServices extends BaseAuthRemoteServices {
           path: EndPoints.confirmForgotPasswordCode,
           data: {
             "code": code,
-            "id": verificationId, //
+            "id": verificationId , //
           });
       return Right(unit);
     } on Exception catch (e) {
