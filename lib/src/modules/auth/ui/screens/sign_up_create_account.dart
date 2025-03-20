@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_code.dart';
@@ -19,9 +18,7 @@ import '../widgets/sup_title.dart';
 import '../widgets/text_field.dart';
 
 class SignUpScreen extends StatelessWidget {
-  SignUpScreen({
-    super.key,
-  });
+  SignUpScreen({super.key});
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
@@ -30,7 +27,7 @@ class SignUpScreen extends StatelessWidget {
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
-  AuthBloc authBloc = AuthBloc.instance;
+  final AuthBloc authBloc = AuthBloc.instance;
 
   @override
   Widget build(BuildContext context) {

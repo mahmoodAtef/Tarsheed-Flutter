@@ -97,7 +97,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _handleResendVerificationCodeEvent(
       ResendVerificationCodeEvent event, Emitter<AuthState> emit) async {
-    emit(VerifyEmailLoadingState());
+    emit(ResendVerificationCodeLoadingState());
 
     final result = await authRepository.resendEmailVerificationCode();
     result.fold((l) {
