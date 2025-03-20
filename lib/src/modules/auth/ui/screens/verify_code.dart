@@ -66,7 +66,7 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
 
                 // BlocListener لمراقبة نجاح تأكيد الكود
                 BlocListener<AuthBloc, AuthState>(
@@ -98,7 +98,7 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                   },
                 ),
 
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 BlocBuilder<AuthBloc, AuthState>(
                   bloc: authBloc,
                   builder: (context, state) {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tarsheed/home_page.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
@@ -28,14 +30,14 @@ class ResetPasswordScreen extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          Positioned(child: BackGroundRectangle()),
+          const Positioned.fill(child: BackGroundRectangle()),
           SafeArea(
             child: BlocListener<AuthBloc, AuthState>(
               bloc: authBloc,
               listener: (context, state) {
-                if (state is ResetPasswordSuccessState ||
-                    state is UpdatePasswordSuccessState) {
-                  context.pop();
+                if (state is ResetPasswordSuccessState) {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => LoginPage()));
                 } else if (state is AuthErrorState) {
                   ExceptionManager.showMessage(state.exception);
                 }
@@ -61,7 +63,6 @@ class ResetPasswordScreen extends StatelessWidget {
                             if (value == null || value.trim().isEmpty) {
                               return S.of(context).passwordRequired;
                             }
-
                             final trimmedValue = value.trim();
                             if (trimmedValue.length < 8) {
                               return S.of(context).passwordMinLength;
@@ -69,21 +70,17 @@ class ResetPasswordScreen extends StatelessWidget {
                             if (trimmedValue.length > 30) {
                               return S.of(context).passwordMaxLength;
                             }
-
                             if (!RegExp(r'[A-Z]').hasMatch(trimmedValue)) {
                               return S.of(context).passwordUppercaseRequired;
                             }
-
                             if (!RegExp(r'[a-z]').hasMatch(trimmedValue)) {
                               return S.of(context).passwordLowercaseRequired;
                             }
-
                             final digits =
                                 RegExp(r'\d').allMatches(trimmedValue);
                             if (digits.length < 6) {
                               return S.of(context).passwordDigitsRequired;
                             }
-
                             return null;
                           },
                         ),
@@ -107,12 +104,9 @@ class ResetPasswordScreen extends StatelessWidget {
                         BlocBuilder<AuthBloc, AuthState>(
                           bloc: authBloc,
                           builder: (context, state) {
-                            if (state is ResetPasswordLoadingState ||
-                                state is UpdatePasswordLoadingState) {
-                              return Center(child: CircularProgressIndicator());
-                            }
                             return DefaultButton(
                               title: S.of(context).finish,
+                              isLoading: state is ResetPasswordLoadingState,
                               onPressed: () {
                                 if (formKey.currentState!.validate()) {
                                   authBloc.add(ResetPasswordEvent(
