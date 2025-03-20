@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/verify_finish.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/text_field.dart';
 
 import '../../../../../generated/l10n.dart';
@@ -27,13 +28,11 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
   final TextEditingController _codeController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  // تعريف مثيل البلوك
   AuthBloc authBloc = AuthBloc.instance;
 
   @override
   void initState() {
     super.initState();
-    // بدء تشغيل مؤقت إعادة الإرسال عند تحميل الشاشة
     authBloc.add(const StartResendCodeTimerEvent());
   }
 
@@ -68,11 +67,14 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
+
+                // BlocListener لمراقبة نجاح تأكيد الكود
                 BlocListener<AuthBloc, AuthState>(
                   bloc: authBloc,
                   listener: (context, state) {
-                    if (state is VerifyEmailSuccessState) {
-                      context.pop();
+                    if (state is ConfirmForgotPasswordCodeSuccessState) {
+                      // الانتقال إلى صفحة إعادة تعيين كلمة المرور
+                      context.push(ResetPasswordScreen());
                     } else if (state is AuthErrorState) {
                       ExceptionManager.showMessage(state.exception);
                     }
@@ -85,11 +87,11 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                   builder: (context, state) {
                     return DefaultButton(
                       title: S.of(context).Continue,
-                      isLoading: state is VerifyEmailLoadingState,
+                      isLoading: state is ConfirmForgotPasswordCodeLoadingState,
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           final code = _codeController.text.trim();
-                          authBloc.add(VerifyEmailEvent(code));
+                          authBloc.add(ConfirmForgotPasswordCode(code));
                         }
                       },
                     );
@@ -97,8 +99,6 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                 ),
 
                 const SizedBox(height: 16),
-
-                // استخدام BlocBuilder لخيار إعادة الإرسال
                 BlocBuilder<AuthBloc, AuthState>(
                   bloc: authBloc,
                   builder: (context, state) {
@@ -144,7 +144,6 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
   @override
   void dispose() {
     _codeController.dispose();
-    // إلغاء المؤقت عند إغلاق الشاشة
     authBloc.cancelTimer();
     super.dispose();
   }
