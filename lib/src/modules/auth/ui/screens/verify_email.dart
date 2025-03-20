@@ -14,7 +14,9 @@ import '../widgets/sup_title.dart';
 import '../widgets/text_field.dart';
 
 class EmailVerificationScreen extends StatelessWidget {
-  EmailVerificationScreen({super.key});
+  EmailVerificationScreen({
+    super.key,
+  });
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
@@ -31,6 +33,10 @@ class EmailVerificationScreen extends StatelessWidget {
             bloc: authBloc,
             listener: (context, state) {
               if (state is ResendVerificationCodeSuccessState) {
+                context.push(
+                    CodeVerificationScreen(email: emailController.text.trim()));
+              }
+              if (state is ForgotPasswordSuccessState) {
                 context.push(
                     CodeVerificationScreen(email: emailController.text.trim()));
               } else if (state is AuthErrorState) {
@@ -72,16 +78,17 @@ class EmailVerificationScreen extends StatelessWidget {
                       BlocBuilder<AuthBloc, AuthState>(
                         bloc: authBloc,
                         builder: (context, state) {
-                          if (state is VerifyEmailLoadingState) {
+                          if (state is VerifyEmailLoadingState ||
+                              state is ForgotPasswordLoadingState) {
                             return Center(child: CircularProgressIndicator());
                           }
                           return DefaultButton(
                             title: S.of(context).continueText,
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
-                                context
-                                    .read<AuthBloc>()
-                                    .add(ResendVerificationCodeEvent());
+                                context.read<AuthBloc>().add(
+                                    ForgotPasswordEvent(
+                                        emailController.text.trim()));
                               }
                             },
                           );
