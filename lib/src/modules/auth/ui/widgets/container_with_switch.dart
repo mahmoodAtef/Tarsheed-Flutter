@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tarsheed/src/core/utils/color_manager.dart';
 
 class CustomContainer extends StatefulWidget {
   const CustomContainer({
@@ -63,7 +64,7 @@ class _CustomContainerState extends State<CustomContainer> {
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: widget.size ?? 18.sp,
-                      color: Colors.black,
+                      color: ColorManager.black,
                     ),
                   ),
                 ),
@@ -71,10 +72,10 @@ class _CustomContainerState extends State<CustomContainer> {
                   Padding(
                     padding: EdgeInsets.only(left: 8.w),
                     child: Switch(
-                      inactiveThumbColor: Color(0xFF2666DE),
+                      inactiveThumbColor: ColorManager.primary,
                       activeColor: Colors.white,
-                      inactiveTrackColor: Color(0xFFD4E2FD),
-                      activeTrackColor: Color(0xFF669BF7),
+                      inactiveTrackColor: ColorManager.inactiveBlue,
+                      activeTrackColor: ColorManager.activeBlue,
                       value: status!,
                       onChanged: (val) {
                         setState(() {
@@ -86,12 +87,13 @@ class _CustomContainerState extends State<CustomContainer> {
                 if (widget.icon != null)
                   IconButton(
                     onPressed: widget.onpressed,
-                    icon: Icon(widget.icon, size: 20.sp, color: Colors.black),
+                    icon: Icon(widget.icon,
+                        size: 20.sp, color: ColorManager.black),
                   ),
               ],
             ),
           ),
-          Divider(thickness: 1, color: Colors.grey[300]),
+          Divider(thickness: 1, color: ColorManager.grey300),
           SizedBox(height: 6.h),
         ],
       ),

@@ -19,12 +19,11 @@ class ResetPasswordScreen extends StatelessWidget {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  AuthBloc authBloc = AuthBloc.instance;
 
   @override
   Widget build(BuildContext context) {
-    AuthBloc authBloc = AuthBloc.instance;
     double screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -50,21 +49,59 @@ class ResetPasswordScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        MainTitle(maintext: S.of(context).verify_your_identity),
+                        MainTitle(mainText: S.of(context).verifyYourIdentity),
                         SizedBox(height: 5.h),
-                        SupTitle(text2: S.of(context).enter_new_password),
+                        SupTitle(text2: S.of(context).enterNewPassword),
                         SizedBox(height: 50.h),
                         CustomTextField(
-                          fieldType: FieldType.password,
                           controller: passwordController,
-                          hintText: S.of(context).new_password,
+                          hintText: S.of(context).password,
+                          isPassword: true,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return S.of(context).passwordRequired;
+                            }
+
+                            final trimmedValue = value.trim();
+                            if (trimmedValue.length < 8) {
+                              return S.of(context).passwordMinLength;
+                            }
+                            if (trimmedValue.length > 30) {
+                              return S.of(context).passwordMaxLength;
+                            }
+
+                            if (!RegExp(r'[A-Z]').hasMatch(trimmedValue)) {
+                              return S.of(context).passwordUppercaseRequired;
+                            }
+
+                            if (!RegExp(r'[a-z]').hasMatch(trimmedValue)) {
+                              return S.of(context).passwordLowercaseRequired;
+                            }
+
+                            final digits =
+                                RegExp(r'\d').allMatches(trimmedValue);
+                            if (digits.length < 6) {
+                              return S.of(context).passwordDigitsRequired;
+                            }
+
+                            return null;
+                          },
                         ),
                         SizedBox(height: 20.h),
                         CustomTextField(
-                          fieldType: FieldType.confirmPassword,
                           controller: confirmPasswordController,
-                          originalPasswordController: passwordController,
-                          hintText: S.of(context).confirm_new_password,
+                          hintText: S.of(context).confirmPassword,
+                          isPassword: true,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return S.of(context).confirmPasswordRequired;
+                            }
+                            if (value.trim() !=
+                                passwordController.text.trim()) {
+                              return S.of(context).passwordsDoNotMatch;
+                            }
+                            return null;
+                          },
                         ),
                         SizedBox(height: 15.h),
                         BlocBuilder<AuthBloc, AuthState>(

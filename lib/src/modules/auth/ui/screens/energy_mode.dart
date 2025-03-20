@@ -15,23 +15,23 @@ class EnergyModePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigator(),
-      appBar: CustomAppBar(text: S.of(context).energy_mode),
+      appBar: CustomAppBar(text: S.of(context).energyMode),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
         child: Column(
           children: [
             CustomContainer(
-              text: S.of(context).energy_saving_mode,
+              text: S.of(context).energySavingMode,
               status: false,
             ),
             SizedBox(height: 15.h),
             CustomContainer(
-              text: S.of(context).super_energy_saving_mode,
+              text: S.of(context).superEnergySavingMode,
               status: true,
             ),
             SizedBox(height: 15.h),
             CustomContainer(
-              text: S.of(context).sleep_mode,
+              text: S.of(context).sleepMode,
               status: false,
             ),
           ],

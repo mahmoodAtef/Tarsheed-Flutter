@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
+import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_code.dart';
@@ -29,16 +30,15 @@ class SignUpScreen extends StatelessWidget {
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  AuthBloc authBloc = AuthBloc.instance;
 
   @override
   Widget build(BuildContext context) {
-    AuthBloc authBloc = AuthBloc.instance;
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          Positioned.fill(child: BackGroundRectangle()),
+          const Positioned.fill(child: BackGroundRectangle()),
           BlocListener<AuthBloc, AuthState>(
             bloc: authBloc,
             listener: (context, state) {
@@ -58,17 +58,30 @@ class SignUpScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      MainTitle(maintext: S.of(context).create_account),
+                      MainTitle(mainText: S.of(context).createAccount),
                       SizedBox(height: 10.h),
-                      SupTitle(text2: S.of(context).create_account_desc),
+                      SupTitle(text2: S.of(context).createAccountDesc),
                       SizedBox(height: 20.h),
                       Row(
                         children: [
                           Expanded(
                             child: CustomTextField(
-                              fieldType: FieldType.firstName,
                               controller: firstNameController,
-                              hintText: S.of(context).first_name,
+                              hintText: S.of(context).firstName,
+                              keyboardType: TextInputType.name,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return S.of(context).firstNameRequired;
+                                }
+                                final trimmedValue = value.trim();
+                                if (trimmedValue.length < 2) {
+                                  return S.of(context).nameMinLength;
+                                }
+                                if (trimmedValue.length > 10) {
+                                  return S.of(context).nameMaxLength;
+                                }
+                                return null;
+                              },
                             ),
                           ),
                           SizedBox(
@@ -76,9 +89,22 @@ class SignUpScreen extends StatelessWidget {
                           ),
                           Expanded(
                             child: CustomTextField(
-                              fieldType: FieldType.lastName,
                               controller: lastNameController,
-                              hintText: S.of(context).last_name,
+                              hintText: S.of(context).lastName,
+                              keyboardType: TextInputType.name,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return S.of(context).lastNameRequired;
+                                }
+                                final trimmedValue = value.trim();
+                                if (trimmedValue.length < 2) {
+                                  return S.of(context).nameMinLength;
+                                }
+                                if (trimmedValue.length > 10) {
+                                  return S.of(context).nameMaxLength;
+                                }
+                                return null;
+                              },
                             ),
                           ),
                         ],
@@ -87,56 +113,95 @@ class SignUpScreen extends StatelessWidget {
                         height: 10.h,
                       ),
                       CustomTextField(
-                        fieldType: FieldType.email,
                         controller: emailController,
                         hintText: S.of(context).email,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return S.of(context).emailRequired;
+                          }
+                          final trimmedValue = value.trim();
+                          if (trimmedValue.length > 30) {
+                            return S.of(context).emailMaxLength;
+                          }
+                          if (!value.contains('@')) {
+                            return S.of(context).invalidEmailFormat;
+                          }
+                          return null;
+                        },
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        fieldType: FieldType.password,
                         controller: passwordController,
                         hintText: S.of(context).password,
+                        isPassword: true,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return S.of(context).passwordRequired;
+                          }
+
+                          final trimmedValue = value.trim();
+                          if (trimmedValue.length < 8) {
+                            return S.of(context).passwordMinLength;
+                          }
+                          if (trimmedValue.length > 30) {
+                            return S.of(context).passwordMaxLength;
+                          }
+
+                          if (!RegExp(r'[A-Z]').hasMatch(trimmedValue)) {
+                            return S.of(context).passwordUppercaseRequired;
+                          }
+
+                          if (!RegExp(r'[a-z]').hasMatch(trimmedValue)) {
+                            return S.of(context).passwordLowercaseRequired;
+                          }
+
+                          final digits = RegExp(r'\d').allMatches(trimmedValue);
+                          if (digits.length < 6) {
+                            return S.of(context).passwordDigitsRequired;
+                          }
+
+                          return null;
+                        },
                       ),
                       SizedBox(height: 10.h),
                       CustomTextField(
-                        fieldType: FieldType.confirmPassword,
                         controller: confirmPasswordController,
-                        originalPasswordController: passwordController,
-                        hintText: S.of(context).confirm_password,
+                        hintText: S.of(context).confirmPassword,
+                        isPassword: true,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return S.of(context).confirmPasswordRequired;
+                          }
+                          if (value.trim() != passwordController.text.trim()) {
+                            return S.of(context).passwordsDoNotMatch;
+                          }
+                          return null;
+                        },
                       ),
                       SizedBox(height: 25.h),
                       BlocBuilder<AuthBloc, AuthState>(
                         bloc: authBloc,
                         builder: (context, state) {
                           if (state is RegisterLoadingState) {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(
+                                child: CircularProgressIndicator());
                           }
                           return DefaultButton(
-                            title: S.of(context).sign_up,
+                            title: S.of(context).signUp,
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
-                                if (passwordController.text !=
-                                    confirmPasswordController.text) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content:
-                                          Text(S.of(context).password_mismatch),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
-                                } else {
-                                  final registrationForm =
-                                      EmailAndPasswordRegistrationForm(
-                                    lastName: firstNameController.text.trim(),
-                                    firstName: lastNameController.text.trim(),
-                                    email: emailController.text.trim(),
-                                    password: passwordController.text.trim(),
-                                  );
-                                  context.read<AuthBloc>().add(
-                                        RegisterWithEmailAndPasswordEvent(
-                                            form: registrationForm),
-                                      );
-                                }
+                                final registrationForm =
+                                    EmailAndPasswordRegistrationForm(
+                                  firstName: firstNameController.text.trim(),
+                                  lastName: lastNameController.text.trim(),
+                                  email: emailController.text.trim(),
+                                  password: passwordController.text.trim(),
+                                );
+                                context.read<AuthBloc>().add(
+                                      RegisterWithEmailAndPasswordEvent(
+                                          form: registrationForm),
+                                    );
                               }
                             },
                           );
@@ -147,21 +212,22 @@ class SignUpScreen extends StatelessWidget {
                         child: TextButton(
                           style: TextButton.styleFrom(
                             foregroundColor: Colors.black,
-                            textStyle: TextStyle(fontWeight: FontWeight.w800),
+                            textStyle:
+                                const TextStyle(fontWeight: FontWeight.w800),
                           ),
                           onPressed: () {
                             context.push(LoginPage());
                           },
-                          child: Text(S.of(context).already_have_account),
+                          child: Text(S.of(context).alreadyHaveAccount),
                         ),
                       ),
                       SizedBox(height: 25.h),
                       Center(
                         child: Text(
-                          S.of(context).or_continue_with,
+                          S.of(context).orContinueWith,
                           style: TextStyle(
                             fontSize: 14.sp,
-                            color: Color(0xFF2666DE),
+                            color: const Color(0xFF2666DE),
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -181,7 +247,7 @@ class SignUpScreen extends StatelessWidget {
                                             .add(const LoginWithGoogleEvent());
                                       },
                                 child: state is LoginWithGoogleLoadingState
-                                    ? CircularProgressIndicator()
+                                    ? const CircularProgressIndicator()
                                     : SocialIcon(
                                         image: AssetsManager.google,
                                         scale: 1.3,
@@ -196,7 +262,7 @@ class SignUpScreen extends StatelessWidget {
                                             const LoginWithFacebookEvent());
                                       },
                                 child: state is LoginWithFacebookLoadingState
-                                    ? CircularProgressIndicator()
+                                    ? const CircularProgressIndicator()
                                     : SocialIcon(
                                         image: AssetsManager.facebook,
                                         scale: 2,

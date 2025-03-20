@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tarsheed/src/core/utils/color_manager.dart';
 
 class BottomNavigator extends StatefulWidget {
   const BottomNavigator({super.key});
@@ -23,9 +24,9 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         },
         currentIndex: selectIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        unselectedItemColor: Colors.grey[400],
-        selectedItemColor: Color(0xFF2666DE),
+        backgroundColor: ColorManager.white,
+        unselectedItemColor: ColorManager.grey300,
+        selectedItemColor: ColorManager.primary,
         elevation: 10,
         iconSize: 24.sp,
         items: [

@@ -14,13 +14,18 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   /// singleton instance
   static AuthBloc? _authBloc;
+
   static AuthBloc get instance {
-    return _authBloc ??= AuthBloc();
+    return sl();
   }
 
   final AuthRepository authRepository = sl();
 
   AuthBloc() : super(AuthInitial()) {
+    on<StartResendCodeTimerEvent>((event, emit) {
+      _startResendTimer(emit);
+    });
+
     /*
      */
     on<AuthEvent>((event, emit) async {
@@ -34,7 +39,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await _handleResendVerificationCodeEvent(event, emit);
       } else if (event is ForgotPasswordEvent) {
         await _handleForgotPasswordEvent(event, emit);
-      } else if (event is ConfirmForgotPasswordCode) {
+      } else if (event is ConfirmForgotPasswordCodeEvent) {
         await _handleConfirmForgotPasswordCode(event, emit);
       } else if (event is ResetPasswordEvent) {
         await _handleResetPasswordEvent(event, emit);
@@ -92,14 +97,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _handleResendVerificationCodeEvent(
       ResendVerificationCodeEvent event, Emitter<AuthState> emit) async {
-    emit(VerifyEmailLoadingState());
+    emit(ResendVerificationCodeLoadingState());
 
     final result = await authRepository.resendEmailVerificationCode();
     result.fold((l) {
       emit(AuthErrorState(exception: l));
     }, (r) {
       emit(ResendVerificationCodeSuccessState());
-
     });
   }
 
@@ -115,7 +119,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _handleConfirmForgotPasswordCode(
-      ConfirmForgotPasswordCode event, Emitter<AuthState> emit) async {
+      ConfirmForgotPasswordCodeEvent event, Emitter<AuthState> emit) async {
     emit(ConfirmForgotPasswordCodeLoadingState());
 
     final result = await authRepository.confirmForgotPasswordCode(
@@ -131,7 +135,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _handleResetPasswordEvent(
       ResetPasswordEvent event, Emitter<AuthState> emit) async {
     emit(ResetPasswordLoadingState());
-
     final result = await authRepository.resetPassword(event.newPassword);
     result.fold((l) {
       emit(AuthErrorState(exception: l));
@@ -192,6 +195,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   // timer logic
   Timer? _resendCodeTimer;
   int? _remainingSeconds;
+
   void _startResendTimer(Emitter<AuthState> emit) {
     const oneSec = Duration(seconds: 1);
     _remainingSeconds = 60;

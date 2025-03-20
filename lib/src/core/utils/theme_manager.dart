@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tarsheed/src/core/utils/color_manager.dart';
 
 class ThemeManager {
   static const Color primaryColor = Color(0xFF2D68FF);
@@ -63,19 +65,16 @@ class ThemeManager {
       // Input decoration theme (for text fields)
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: secondaryBackgroundColor,
-        contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+        fillColor: ColorManager.grey200,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
-          borderSide: BorderSide(color: dividerColor),
+          borderRadius: BorderRadius.circular(10.r),
+          borderSide: BorderSide(color: ColorManager.black),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
-          borderSide: BorderSide(color: dividerColor),
+          borderSide: BorderSide(color: ColorManager.lightBlue),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
-          borderSide: BorderSide(color: primaryColor, width: 2.0),
+          borderSide: BorderSide(color: ColorManager.primary),
         ),
         suffixIconColor: secondaryTextColor,
       ),

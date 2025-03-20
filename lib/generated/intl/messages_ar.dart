@@ -20,136 +20,189 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ar';
 
+  static String m0(seconds) => "إعادة إرسال الرمز خلال: ${seconds} ثانية";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "Continue": MessageLookupByLibrary.simpleMessage("استمرار"),
     "account": MessageLookupByLibrary.simpleMessage("حساب"),
-    "already_have_account": MessageLookupByLibrary.simpleMessage(
+    "alreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
       "لديك حساب بالفعل؟",
     ),
     "appName": MessageLookupByLibrary.simpleMessage("ترشيد"),
-    "backup_settings": MessageLookupByLibrary.simpleMessage(
+    "backupSettings": MessageLookupByLibrary.simpleMessage(
       "إعدادات النسخ الاحتياطي",
     ),
-    "cannot_exceed": MessageLookupByLibrary.simpleMessage("لا يمكن أن يتجاوز"),
+    "cannotExceed": MessageLookupByLibrary.simpleMessage("لا يمكن أن يتجاوز"),
     "characters": MessageLookupByLibrary.simpleMessage("حرفًا"),
-    "code_numbers_only": MessageLookupByLibrary.simpleMessage(
+    "codeMustBeAtLeast6Digits": MessageLookupByLibrary.simpleMessage(
+      "يجب أن يتكون الرمز من 6 أرقام على الأقل",
+    ),
+    "codeNumbersOnly": MessageLookupByLibrary.simpleMessage(
       "يجب أن يحتوي الكود على أرقام فقط",
     ),
-    "confirm_new_password": MessageLookupByLibrary.simpleMessage(
+    "confirmNewPassword": MessageLookupByLibrary.simpleMessage(
       "تأكيد كلمة المرور الجديدة",
     ),
-    "confirm_password": MessageLookupByLibrary.simpleMessage(
+    "confirmPassword": MessageLookupByLibrary.simpleMessage(
       "تأكيد كلمة المرور",
     ),
-    "contains_invalid_characters": MessageLookupByLibrary.simpleMessage(
+    "confirmPasswordRequired": MessageLookupByLibrary.simpleMessage(
+      "تأكيد كلمة المرور مطلوب",
+    ),
+    "containsInvalidCharacters": MessageLookupByLibrary.simpleMessage(
       "يحتوي على أحرف غير صالحة",
     ),
-    "continue_text": MessageLookupByLibrary.simpleMessage("متابعة"),
+    "continueText": MessageLookupByLibrary.simpleMessage("متابعة"),
     "createAccount": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
-    "create_account": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
-    "create_account_desc": MessageLookupByLibrary.simpleMessage(
+    "createAccountDesc": MessageLookupByLibrary.simpleMessage(
       "أنشئ حسابًا حتى تتمكن من التحكم في منزلك بسهولة",
     ),
-    "create_new_account": MessageLookupByLibrary.simpleMessage(
-      "إنشاء حساب جديد",
-    ),
-    "delete_my_account": MessageLookupByLibrary.simpleMessage("حذف حسابي"),
-    "didnot_receive": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
+    "createNewAccount": MessageLookupByLibrary.simpleMessage("إنشاء حساب جديد"),
+    "deleteMyAccount": MessageLookupByLibrary.simpleMessage("حذف حسابي"),
+    "didNotReceive": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
+    "didNtReceiveCode": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
     "editPassNaAddUseEm": MessageLookupByLibrary.simpleMessage(
       "تعديل كلمة المرور، الاسم، العنوان، اسم المستخدم، البريد الإلكتروني",
     ),
     "email": MessageLookupByLibrary.simpleMessage("البريد الإلكتروني"),
-    "energy_mode": MessageLookupByLibrary.simpleMessage("وضع الطاقة"),
-    "energy_saving_mode": MessageLookupByLibrary.simpleMessage(
+    "emailMaxLength": MessageLookupByLibrary.simpleMessage(
+      "البريد الإلكتروني يجب أن لا يتجاوز 100 حرفًا",
+    ),
+    "emailRequired": MessageLookupByLibrary.simpleMessage(
+      "البريد الإلكتروني مطلوب",
+    ),
+    "emailVerifiedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم التحقق من البريد الإلكتروني بنجاح!",
+    ),
+    "energyMode": MessageLookupByLibrary.simpleMessage("وضع الطاقة"),
+    "energySavingMode": MessageLookupByLibrary.simpleMessage(
       "وضع توفير الطاقة",
     ),
-    "enter_code": MessageLookupByLibrary.simpleMessage("أدخل الرمز"),
-    "enter_email_to_receive_code": MessageLookupByLibrary.simpleMessage(
+    "enterCode": MessageLookupByLibrary.simpleMessage("أدخل الرمز"),
+    "enterEmailToReceiveCode": MessageLookupByLibrary.simpleMessage(
       "أدخل بريدك الإلكتروني لتلقي رمز إعادة التعيين",
     ),
-    "enter_new_password": MessageLookupByLibrary.simpleMessage(
+    "enterNewPassword": MessageLookupByLibrary.simpleMessage(
       "أدخل كلمة المرور الجديدة",
     ),
+    "enterVerificationCode": MessageLookupByLibrary.simpleMessage(
+      "أدخل رمز التحقق المرسل إلى بريدك الإلكتروني",
+    ),
+    "faceId": MessageLookupByLibrary.simpleMessage("التعرف على الوجه"),
     "faceTwoStVerification": MessageLookupByLibrary.simpleMessage(
       "التعرف على الوجه والتحقق بخطوتين",
     ),
-    "face_id": MessageLookupByLibrary.simpleMessage("التعرف على الوجه"),
     "finish": MessageLookupByLibrary.simpleMessage("إنهاء"),
-    "first_name": MessageLookupByLibrary.simpleMessage("الاسم الأول"),
-    "forgot_password": MessageLookupByLibrary.simpleMessage(
+    "firstName": MessageLookupByLibrary.simpleMessage("الاسم الأول"),
+    "firstNameRequired": MessageLookupByLibrary.simpleMessage(
+      "الاسم الأول مطلوب",
+    ),
+    "forgotPassword": MessageLookupByLibrary.simpleMessage(
       "هل نسيت كلمة المرور؟",
     ),
-    "has_invalid_formatting": MessageLookupByLibrary.simpleMessage(
+    "hasInvalidFormatting": MessageLookupByLibrary.simpleMessage(
       "يحتوي على تنسيق غير صالح",
     ),
-    "help_and_support": MessageLookupByLibrary.simpleMessage("المساعدة والدعم"),
-    "invalid_email": MessageLookupByLibrary.simpleMessage(
+    "helpAndSupport": MessageLookupByLibrary.simpleMessage("المساعدة والدعم"),
+    "invalidEmail": MessageLookupByLibrary.simpleMessage(
       "تنسيق البريد الإلكتروني غير صالح",
     ),
-    "is_required": MessageLookupByLibrary.simpleMessage("مطلوب"),
+    "invalidEmailFormat": MessageLookupByLibrary.simpleMessage(
+      "صيغة البريد الإلكتروني غير صحيحة",
+    ),
+    "isRequired": MessageLookupByLibrary.simpleMessage("مطلوب"),
     "lanBackEneMO": MessageLookupByLibrary.simpleMessage(
       "اللغة، والنسخ الاحتياطي، وأوضاع الطاقة...",
     ),
     "language": MessageLookupByLibrary.simpleMessage("اللغة"),
-    "last_name": MessageLookupByLibrary.simpleMessage("الاسم الأخير"),
+    "lastName": MessageLookupByLibrary.simpleMessage("الاسم الأخير"),
+    "lastNameRequired": MessageLookupByLibrary.simpleMessage(
+      "الاسم الأخير مطلوب",
+    ),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
-    "login_here": MessageLookupByLibrary.simpleMessage("تسجيل الدخول هنا"),
-    "must_be_at_least": MessageLookupByLibrary.simpleMessage(
+    "loginHere": MessageLookupByLibrary.simpleMessage("تسجيل الدخول هنا"),
+    "mustBeAtLeast": MessageLookupByLibrary.simpleMessage(
       "يجب أن يكون على الأقل",
     ),
     "name": MessageLookupByLibrary.simpleMessage("الاسم"),
-    "new_password": MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
+    "nameMaxLength": MessageLookupByLibrary.simpleMessage(
+      "يجب ألا يتجاوز الاسم 50 حرفًا",
+    ),
+    "nameMinLength": MessageLookupByLibrary.simpleMessage(
+      "يجب أن يكون الاسم على الأقل 2 حرفًا",
+    ),
+    "newPassword": MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
     "noRouteFound": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على الصفحة المطلوبة",
     ),
-    "or_continue_with": MessageLookupByLibrary.simpleMessage("أو المتابعة عبر"),
-    "original_password_not_provided": MessageLookupByLibrary.simpleMessage(
+    "orContinueWith": MessageLookupByLibrary.simpleMessage("أو المتابعة عبر"),
+    "originalPasswordNotProvided": MessageLookupByLibrary.simpleMessage(
       "لم يتم توفير كلمة المرور الأصلية",
     ),
     "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
-    "password_max_length": MessageLookupByLibrary.simpleMessage(
+    "passwordDigitsRequired": MessageLookupByLibrary.simpleMessage(
+      "كلمة المرور يجب أن تحتوي على رقم",
+    ),
+    "passwordLowercaseRequired": MessageLookupByLibrary.simpleMessage(
+      "كلمة المرور يجب أن تحتوي على حرف صغير",
+    ),
+    "passwordMaxLength": MessageLookupByLibrary.simpleMessage(
       "لا يمكن أن تتجاوز كلمة المرور 64 حرفًا",
     ),
-    "password_min_length": MessageLookupByLibrary.simpleMessage(
+    "passwordMinLength": MessageLookupByLibrary.simpleMessage(
       "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل",
     ),
-    "password_mismatch": MessageLookupByLibrary.simpleMessage(
+    "passwordMismatch": MessageLookupByLibrary.simpleMessage(
       "كلمات المرور غير متطابقة",
     ),
-    "password_requirements": MessageLookupByLibrary.simpleMessage(
+    "passwordRequired": MessageLookupByLibrary.simpleMessage(
+      "كلمة المرور مطلوبة",
+    ),
+    "passwordRequirements": MessageLookupByLibrary.simpleMessage(
       "يجب أن تحتوي كلمة المرور على:\n- حرف كبير واحد على الأقل\n- حرف صغير واحد على الأقل\n- رقم واحد على الأقل\n- رمز خاص واحد على الأقل",
     ),
-    "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
+    "passwordUppercaseRequired": MessageLookupByLibrary.simpleMessage(
+      "كلمة المرور يجب أن تحتوي على حرف كبير",
+    ),
+    "passwordsDoNotMatch": MessageLookupByLibrary.simpleMessage(
       "كلمتا المرور غير متطابقتين",
+    ),
+    "pleaseEnterVerificationCode": MessageLookupByLibrary.simpleMessage(
+      "من فضلك أدخل رمز التحقق",
     ),
     "profile": MessageLookupByLibrary.simpleMessage("الحساب التعريفي"),
     "rateApplication": MessageLookupByLibrary.simpleMessage("تقييم التطبيق"),
     "register": MessageLookupByLibrary.simpleMessage("تسجيل"),
-    "resend_code": MessageLookupByLibrary.simpleMessage("أعد الإرسال"),
+    "resendCode": MessageLookupByLibrary.simpleMessage("إعادة إرسال الرمز"),
+    "resendCodeIn": m0,
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "security": MessageLookupByLibrary.simpleMessage("الأمان"),
-    "sent_email_message": MessageLookupByLibrary.simpleMessage(
+    "sentEmailMessage": MessageLookupByLibrary.simpleMessage(
       "لقد أرسلنا بريدًا إلكترونيًا إلى mo****@gmail.",
     ),
     "settings": MessageLookupByLibrary.simpleMessage("الإعدادات"),
+    "signIn": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "signOut": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
-    "sign_in": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
-    "sign_up": MessageLookupByLibrary.simpleMessage("تسجيل حساب"),
-    "sleep_mode": MessageLookupByLibrary.simpleMessage("وضع السكون"),
-    "software_update": MessageLookupByLibrary.simpleMessage("تحديث النظام"),
-    "super_energy_saving_mode": MessageLookupByLibrary.simpleMessage(
+    "signUp": MessageLookupByLibrary.simpleMessage("تسجيل حساب"),
+    "sleepMode": MessageLookupByLibrary.simpleMessage("وضع السكون"),
+    "softwareUpdate": MessageLookupByLibrary.simpleMessage("تحديث النظام"),
+    "superEnergySavingMode": MessageLookupByLibrary.simpleMessage(
       "وضع توفير الطاقة الفائق",
     ),
-    "take_control": MessageLookupByLibrary.simpleMessage(
+    "takeControl": MessageLookupByLibrary.simpleMessage(
       "تحكم في استهلاك طاقتك",
     ),
-    "two_step_verification": MessageLookupByLibrary.simpleMessage(
+    "twoStepVerification": MessageLookupByLibrary.simpleMessage(
       "التحقق بخطوتين",
     ),
-    "verify_your_identity": MessageLookupByLibrary.simpleMessage(
-      "تحقق من هويتك",
+    "verificationCode": MessageLookupByLibrary.simpleMessage("رمز التحقق"),
+    "verify": MessageLookupByLibrary.simpleMessage("تحقق"),
+    "verifyYourEmail": MessageLookupByLibrary.simpleMessage(
+      "تحقق من بريدك الإلكتروني",
     ),
-    "welcome_back": MessageLookupByLibrary.simpleMessage(
+    "verifyYourIdentity": MessageLookupByLibrary.simpleMessage("تحقق من هويتك"),
+    "welcomeBack": MessageLookupByLibrary.simpleMessage(
       "مرحبًا بعودتك! لقد افتقدناك",
     ),
   };

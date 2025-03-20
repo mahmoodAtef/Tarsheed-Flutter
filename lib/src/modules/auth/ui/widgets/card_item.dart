@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tarsheed/src/core/utils/color_manager.dart';
 
 class BuildItem extends StatelessWidget {
   const BuildItem(
@@ -28,11 +29,11 @@ class BuildItem extends StatelessWidget {
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                      color: Color(0xFF727880),
+                      color: ColorManager.steelGrey,
                       offset: Offset(0, 4),
                       blurRadius: 4.r)
                 ],
-                color: Colors.grey[200],
+                color: ColorManager.grey300,
                 borderRadius: BorderRadius.circular(6.r),
               ),
               child: Center(child: Icon(icon)),
@@ -49,19 +50,19 @@ class BuildItem extends StatelessWidget {
                           fontSize: 18.sp,
                           shadows: [
                             Shadow(
-                                color: Color(0xFF727880),
+                                color: ColorManager.steelGrey,
                                 offset: Offset(0, 1),
                                 blurRadius: 4.r)
                           ])),
                   SizedBox(height: 4.h),
                   Text(subtitle,
                       style: TextStyle(
-                          color: Color(0xFF727880),
+                          color: ColorManager.steelGrey,
                           fontSize: 11.sp,
                           fontWeight: FontWeight.w400,
                           shadows: [
                             Shadow(
-                                color: Color(0xFF727880),
+                                color: ColorManager.steelGrey,
                                 offset: Offset(0, 1),
                                 blurRadius: 4.r)
                           ])),
