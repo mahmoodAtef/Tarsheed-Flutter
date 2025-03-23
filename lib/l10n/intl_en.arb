@@ -87,5 +87,6 @@
   "pleaseEnterVerificationCode": "Please enter the verification code",
   "codeMustBeAtLeast6Digits": "The code must be at least 6 digits",
   "didNtReceiveCode": "Didn't receive a code?",
-  "Continue": "Continue"
+  "Continue": "Continue",
+  "Reports": "Reports"
 }

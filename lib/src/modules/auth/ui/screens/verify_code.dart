@@ -73,7 +73,6 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                   bloc: authBloc,
                   listener: (context, state) {
                     if (state is ConfirmForgotPasswordCodeSuccessState) {
-                      // الانتقال إلى صفحة إعادة تعيين كلمة المرور
                       context.push(ResetPasswordScreen());
                     } else if (state is AuthErrorState) {
                       ExceptionManager.showMessage(state.exception);

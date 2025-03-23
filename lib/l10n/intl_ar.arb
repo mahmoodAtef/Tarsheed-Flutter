@@ -87,5 +87,6 @@
   "pleaseEnterVerificationCode": "من فضلك أدخل رمز التحقق",
   "codeMustBeAtLeast6Digits": "يجب أن يتكون الرمز من 6 أرقام على الأقل",
   "didNtReceiveCode": "لم تستلم الرمز؟",
-  "Continue": "استمرار"
+  "Continue": "استمرار",
+  "Reports": "التقارير"
 }

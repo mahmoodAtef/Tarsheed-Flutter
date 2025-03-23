@@ -799,6 +799,11 @@ class S {
   String get Continue {
     return Intl.message('Continue', name: 'Continue', desc: '', args: []);
   }
+
+  /// `Reports`
+  String get Reports {
+    return Intl.message('Reports', name: 'Reports', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
