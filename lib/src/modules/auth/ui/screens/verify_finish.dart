@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tarsheed/home_page.dart';
-import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 
 import '../../../../../generated/l10n.dart';
@@ -78,7 +76,7 @@ class ResetPasswordScreen extends StatelessWidget {
                             }
                             final digits =
                                 RegExp(r'\d').allMatches(trimmedValue);
-                            if (digits.length < 6) {
+                            if (digits.length < 1) {
                               return S.of(context).passwordDigitsRequired;
                             }
                             return null;

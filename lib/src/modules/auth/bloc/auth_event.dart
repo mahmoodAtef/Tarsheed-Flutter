@@ -54,11 +54,9 @@ final class ResendVerificationCodeEvent extends AuthEvent {
   List<Object?> get props => [];
 }
 
-class ConfirmForgotPasswordCode extends AuthEvent {
+class ConfirmForgotPasswordCodeEvent extends AuthEvent {
   final String code;
-
-  const ConfirmForgotPasswordCode(this.code);
-
+  const ConfirmForgotPasswordCodeEvent(this.code);
   @override
   List<Object?> get props => [code];
 }
@@ -115,9 +113,7 @@ final class StartResendCodeTimerEvent extends AuthEvent {
 
 final class ForgotPasswordEvent extends AuthEvent {
   final String email;
-
   const ForgotPasswordEvent(this.email);
-
   @override
   List<Object?> get props => [email];
 }

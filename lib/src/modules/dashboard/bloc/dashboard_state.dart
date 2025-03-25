@@ -104,3 +104,26 @@ final class DeleteRoomLoading extends RoomState {}
 final class DeleteRoomSuccess extends RoomState {}
 
 final class DeleteRoomError extends RoomState {}
+
+// device categories
+final class DeviceCategoryState extends DashboardState {
+  const DeviceCategoryState();
+  @override
+  List<Object?> get props => [];
+}
+
+final class GetDeviceCategoriesLoading extends DeviceCategoryState {}
+
+final class GetDeviceCategoriesSuccess extends DeviceCategoryState {
+  final List<DeviceCategory> deviceCategories;
+  const GetDeviceCategoriesSuccess(this.deviceCategories);
+  @override
+  List<Object?> get props => [deviceCategories];
+}
+
+final class GetDeviceCategoriesError extends DeviceCategoryState {
+  final Exception exception;
+  const GetDeviceCategoriesError(this.exception);
+  @override
+  List<Object?> get props => [exception];
+}

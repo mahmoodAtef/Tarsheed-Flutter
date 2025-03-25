@@ -154,7 +154,7 @@ class SignUpScreen extends StatelessWidget {
                           }
 
                           final digits = RegExp(r'\d').allMatches(trimmedValue);
-                          if (digits.length < 6) {
+                          if (digits.isEmpty) {
                             return S.of(context).passwordDigitsRequired;
                           }
 

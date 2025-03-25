@@ -12,14 +12,15 @@ extension NavigationMethods on BuildContext {
     );
   }
 
-  void pushAndRemove(String route) {
-    Navigator.pushNamedAndRemoveUntil(this, route, (route) => false);
+  void pushAndRemove(Widget route) {
+    Navigator.pushAndRemoveUntil(
+        this, MaterialPageRoute(builder: (_) => route), (route) => false);
   }
 
-  void pushReplacement(String route) {
-    Navigator.pushReplacementNamed(
+  void pushReplacement(Widget route) {
+    Navigator.pushReplacement(
       this,
-      route,
+      MaterialPageRoute(builder: (_) => route),
     );
   }
 

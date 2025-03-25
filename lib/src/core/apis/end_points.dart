@@ -20,4 +20,6 @@ class EndPoints {
 
   /// Dashboard Endpoints
   static const String getUsageReport = '/reports/';
+  static const String getCategories = '/categories';
+  static const String getSensors = '/sensors';
 }

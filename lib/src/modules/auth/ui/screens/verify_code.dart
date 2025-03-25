@@ -91,7 +91,7 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           final code = _codeController.text.trim();
-                          authBloc.add(ConfirmForgotPasswordCode(code));
+                          authBloc.add(ConfirmForgotPasswordCodeEvent(code));
                         }
                       },
                     );

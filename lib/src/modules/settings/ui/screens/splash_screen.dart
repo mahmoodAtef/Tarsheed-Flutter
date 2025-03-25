@@ -5,7 +5,6 @@ import 'package:tarsheed/src/core/services/app_initializer.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen.withScreenFunction(
