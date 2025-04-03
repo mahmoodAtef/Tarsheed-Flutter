@@ -31,8 +31,11 @@ final class GetRoomsEvent extends DashboardEvent {
 }
 
 final class AddRoomEvent extends DashboardEvent {
+  final Room room;
+  const AddRoomEvent(this.room);
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [room];
 }
 
 final class UpdateRoomEvent extends DashboardEvent {
@@ -52,8 +55,10 @@ final class GetDevicesEvent extends DashboardEvent {
 }
 
 final class AddDeviceEvent extends DashboardEvent {
+  final Device device;
+  const AddDeviceEvent(this.device);
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [device];
 }
 
 final class UpdateDeviceEvent extends DashboardEvent {

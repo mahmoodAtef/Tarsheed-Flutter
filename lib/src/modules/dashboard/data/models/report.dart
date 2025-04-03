@@ -25,6 +25,14 @@ final class Report extends Equatable {
           List.of(json["devices"].map((e) => DeviceUsage.fromJson(e))),
       updatedAt: json["updatedAt"] ?? DateTime.now());
 
+  factory Report.empty() => Report(
+        devicesUsages: [],
+        totalConsumption: 0,
+        savingsPercentage: 0,
+        updatedAt: DateTime.now(),
+        previousConsumption: 0,
+      );
+
   Map<String, dynamic> toJson() => {
         "savingsPercentage": savingsPercentage,
         "totalConsumption": totalConsumption,

@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/category.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/room.dart';
 import 'package:tarsheed/src/modules/dashboard/data/repositories/dashboard_repository.dart';
 
 part 'dashboard_event.dart';
@@ -15,31 +19,75 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     on<DashboardEvent>((event, emit) {
       if (event is GetUsageReportEvent) {
         _handleGetUsageReportEvent(event, emit);
-      } else if (event is UpdateUsageReportEvent) {
-        _handleUpdateUsageReportEvent(event, emit);
+      } else if (event is GetDevicesEvent) {
+        _handleGetDevicesEvent(event, emit);
+      } else if (event is AddDeviceEvent) {
+        _handleAddDeviceEvent(event, emit);
+      } else if (event is GetDevicesCategoriesEvent) {
+        _handleGetCategoriesEvent(event, emit);
+      } else if (event is GetRoomsEvent) {
+        _handleGetRoomsEvent(event, emit);
+      } else if (event is AddRoomEvent) {
+        _handleAddRoomEvent(event, emit);
       }
     });
   }
+  @override
+  Future<void> close() async {
+    await _repository.dispose();
+    return super.close();
+  }
 
+  // Event handlers
   _handleGetUsageReportEvent(
       GetUsageReportEvent event, Emitter<DashboardState> emit) async {
     emit(GetUsageReportLoading());
-    var result = await _repository.getUsageReport();
-    result.fold((l) => emit(GetUsageReportError(l)),
-        (r) => emit(GetUsageReportSuccess(r)));
-    _subscribeToReport();
+    _repository.subscribeInReportStream();
+    _repository.reportStream.listen((event) {
+      emit(GetUsageReportSuccess(event));
+    }, onError: (e) => emit(GetUsageReportError(e)));
   }
 
-  _handleUpdateUsageReportEvent(
-      UpdateUsageReportEvent event, Emitter<DashboardState> emit) {
-    emit(GetUsageReportSuccess(event.usageReport));
+  // devices events handlers
+  _handleGetDevicesEvent(
+      GetDevicesEvent event, Emitter<DashboardState> emit) async {
+    emit(GetDevicesLoading());
+    _repository.subscribeInDevicesStream();
+    _repository.devicesStream.listen((event) {
+      emit(GetDevicesSuccess(event));
+    }, onError: (e) => emit(GetDevicesError(e)));
   }
 
-  _subscribeToReport() {
-    _repository.reportStream.listen(_updateReport);
+  _handleAddDeviceEvent(
+      AddDeviceEvent event, Emitter<DashboardState> emit) async {
+    emit(AddDeviceLoading());
+    final result = await _repository.addDevice(event.device);
+    result.fold(
+        (l) => emit(AddDeviceError(l)), (r) => emit(AddDeviceSuccess(r)));
   }
 
-  _updateReport(Report report) {
-    add(UpdateUsageReportEvent(usageReport: report));
+  // rooms events handlers
+  _handleGetRoomsEvent(
+      GetRoomsEvent event, Emitter<DashboardState> emit) async {
+    emit(GetRoomsLoading());
+    _repository.subscribeInRoomsStream();
+    _repository.roomsStream.listen((event) {
+      emit(GetRoomsSuccess(event));
+    }, onError: (e) => emit(GetRoomsError(e)));
+  }
+
+  _handleAddRoomEvent(AddRoomEvent event, Emitter<DashboardState> emit) async {
+    emit(AddRoomLoading());
+    final result = await _repository.addRoom(event.room);
+    result.fold((l) => emit(AddRoomError(l)), (r) => emit(AddRoomSuccess(r)));
+  }
+
+  _handleGetCategoriesEvent(
+      GetDevicesCategoriesEvent event, Emitter<DashboardState> emit) async {
+    emit(GetDeviceCategoriesLoading());
+    _repository.subscribeInCategoriesStream();
+    _repository.categoriesStream.listen((event) {
+      emit(GetDeviceCategoriesSuccess(event));
+    }, onError: (e) => emit(GetDeviceCategoriesError(e)));
   }
 }

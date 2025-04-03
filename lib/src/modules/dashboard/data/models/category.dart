@@ -12,6 +12,7 @@ final class DeviceCategory extends Equatable {
       name: json['name'],
     );
   }
+  Map<String, dynamic> toJson() => {'id': id, 'name': name};
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [id, name];
 }

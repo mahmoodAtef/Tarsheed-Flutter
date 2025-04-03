@@ -47,21 +47,42 @@ final class GetAISuggestionsError extends AISuggestionsState {}
 
 // devices
 final class DeviceState extends DashboardState {
+  const DeviceState();
   @override
   List<Object?> get props => [];
 }
 
 final class GetDevicesLoading extends DeviceState {}
 
-final class GetDevicesSuccess extends DeviceState {}
+final class GetDevicesSuccess extends DeviceState {
+  final List<Device> devices;
+  const GetDevicesSuccess(this.devices);
+  @override
+  List<Object?> get props => [devices];
+}
 
-final class GetDeviceError extends DeviceState {}
+final class GetDevicesError extends DeviceState {
+  final Exception exception;
+  const GetDevicesError(this.exception);
+  @override
+  List<Object?> get props => [exception];
+}
 
 final class AddDeviceLoading extends DeviceState {}
 
-final class AddDeviceSuccess extends DeviceState {}
+final class AddDeviceSuccess extends DeviceState {
+  final Device device;
+  const AddDeviceSuccess(this.device);
+  @override
+  List<Object?> get props => [device];
+}
 
-final class AddDeviceError extends DeviceState {}
+final class AddDeviceError extends DeviceState {
+  final Exception exception;
+  const AddDeviceError(this.exception);
+  @override
+  List<Object?> get props => [exception];
+}
 
 final class EditDeviceLoading extends DeviceState {}
 
@@ -77,21 +98,42 @@ final class DeleteDeviceError extends DeviceState {}
 
 // rooms
 final class RoomState extends DashboardState {
+  const RoomState();
   @override
   List<Object?> get props => [];
 }
 
 final class GetRoomsLoading extends RoomState {}
 
-final class GetRoomsSuccess extends RoomState {}
+final class GetRoomsSuccess extends RoomState {
+  final List<Room> rooms;
+  const GetRoomsSuccess(this.rooms);
+  @override
+  List<Object?> get props => [rooms];
+}
 
-final class GetRoomError extends RoomState {}
+final class GetRoomsError extends RoomState {
+  final Exception exception;
+  const GetRoomsError(this.exception);
+  @override
+  List<Object?> get props => [exception];
+}
 
 final class AddRoomLoading extends RoomState {}
 
-final class AddRoomSuccess extends RoomState {}
+final class AddRoomSuccess extends RoomState {
+  final Room room;
+  const AddRoomSuccess(this.room);
+  @override
+  List<Object?> get props => [room];
+}
 
-final class AddRoomError extends RoomState {}
+final class AddRoomError extends RoomState {
+  final Exception exception;
+  const AddRoomError(this.exception);
+  @override
+  List<Object?> get props => [exception];
+}
 
 final class EditRoomLoading extends RoomState {}
 

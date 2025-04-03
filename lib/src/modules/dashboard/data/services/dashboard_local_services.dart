@@ -1,7 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:sqflite/sqflite.dart' as db;
 import 'package:tarsheed/src/modules/dashboard/data/models/category.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/room.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/sensor.dart';
 import 'package:tarsheed/src/modules/dashboard/data/services/base_dashboard_services.dart';
 
@@ -78,6 +80,19 @@ class DashboardLocalServices implements BaseDashboardServices {
     }
   }
 
+  Future<Either<Exception, Unit>> saveCategories(
+      List<DeviceCategory> categories) async {
+    try {
+      await database.delete('categories');
+      for (var category in categories) {
+        await database.insert('categories', category.toJson());
+      }
+      return Right(unit);
+    } on Exception catch (e) {
+      return Left(e);
+    }
+  }
+
   @override
   Future<Either<Exception, List<Sensor>>> getSensors() async {
     try {
@@ -86,6 +101,54 @@ class DashboardLocalServices implements BaseDashboardServices {
       return Right(sensors);
     } on db.DatabaseException catch (e) {
       return Left(e);
+    } on Exception catch (e) {
+      return Left(e);
+    }
+  }
+
+  Future<Either<Exception, Unit>> saveSensors(List<Sensor> sensors) async {
+    try {
+      await database.delete('sensors');
+      for (var sensor in sensors) {
+        await database.insert('sensors', sensor.toJson());
+      }
+      return Right(unit);
+    } on Exception catch (e) {
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Exception, List<Device>>> getDevices() {
+    // TODO: implement getDevices
+    throw UnimplementedError();
+  }
+
+  Future<Either<Exception, Unit>> saveDevices(List<Device> devices) async {
+    try {
+      await database.delete('devices');
+      for (var device in devices) {
+        await database.insert('devices', device.toJson());
+      }
+      return Right(unit);
+    } on Exception catch (e) {
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Exception, List<Room>>> getRooms() {
+    // TODO: implement getRooms
+    throw UnimplementedError();
+  }
+
+  Future<Either<Exception, Unit>> saveRooms(List<Room> rooms) async {
+    try {
+      await database.delete('rooms');
+      for (var room in rooms) {
+        await database.insert('rooms', room.toJson());
+      }
+      return Right(unit);
     } on Exception catch (e) {
       return Left(e);
     }
