@@ -29,6 +29,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         _handleGetRoomsEvent(event, emit);
       } else if (event is AddRoomEvent) {
         _handleAddRoomEvent(event, emit);
+      } else if (event is GetAISuggestionsEvent) {
+        _handleGetAISuggestionsEvent(event, emit);
       }
     });
   }
@@ -46,6 +48,16 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     _repository.reportStream.listen((event) {
       emit(GetUsageReportSuccess(event));
     }, onError: (e) => emit(GetUsageReportError(e)));
+  }
+
+  // AI SUGGESTIONS
+  _handleGetAISuggestionsEvent(
+      GetAISuggestionsEvent event, Emitter<DashboardState> emit) async {
+    emit(GetAISuggestionsLoading());
+    _repository.subscribeInAiSuggestionStream();
+    _repository.aiSuggestionStream.listen((event) {
+      emit(GetAISuggestionsSuccess(event));
+    }, onError: (e) => emit(GetAISuggestionsError(e)));
   }
 
   // devices events handlers

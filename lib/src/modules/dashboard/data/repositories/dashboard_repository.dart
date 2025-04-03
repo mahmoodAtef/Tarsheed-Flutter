@@ -53,11 +53,10 @@ class DashboardRepository implements ConnectivityObserver {
   // report logic
   late Report
       _lastReport; // to be used when comparing new report before adding it to the stream
-  late int? _lastReportPeriod;
+  int? _lastReportPeriod;
   bool _subscribedToReportStream = false;
 
   final StreamController<Report> _reportStreamController = StreamController();
-
   Stream<Report> get reportStream => _reportStreamController.stream;
 
   void subscribeInReportStream() {
@@ -88,6 +87,33 @@ class DashboardRepository implements ConnectivityObserver {
   Future<Either<Exception, Unit>> _saveUsageReport(Report report) async {
     _lastReport = report;
     return await _localServices.saveUsageReport(report);
+  }
+
+  // Ai suggestions Logic
+  final StreamController<String> _AiSuggestionStreamController =
+      StreamController();
+  Stream<String> get aiSuggestionStream => _AiSuggestionStreamController.stream;
+
+  void subscribeInAiSuggestionStream() {
+    _subscribedToReportStream = true;
+    _updateAiSuggestion();
+  }
+
+  _updateAiSuggestion() {
+    _getAiSuggestion().then((r) => r.fold((l) {
+          _AiSuggestionStreamController.sink.addError(l);
+        }, (r) {
+          if (_lastReport != r) {
+            _AiSuggestionStreamController.sink.add(r);
+          }
+        }));
+  }
+
+  Future<Either<Exception, String>> _getAiSuggestion() async {
+    final Either<Exception, String> result = _isConnected
+        ? await _remoteServices.getAISuggestions()
+        : await _localServices.getAISuggestions();
+    return result;
   }
 
   // devices logic
@@ -247,6 +273,15 @@ class DashboardRepository implements ConnectivityObserver {
     final Either<Exception, List<Sensor>> result = _isConnected
         ? await _remoteServices.getSensors()
         : await _localServices.getSensors();
+    return result;
+  }
+
+  Future<Either<Exception, Sensor>> addSensor(Sensor sensor) async {
+    var result = await _remoteServices.addSensor(sensor);
+    result.fold((l) => null, (r) {
+      _lastSensors.add(r);
+      _saveSensors(_lastSensors);
+    });
     return result;
   }
 

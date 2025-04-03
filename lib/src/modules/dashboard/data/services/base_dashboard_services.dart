@@ -11,4 +11,5 @@ abstract class BaseDashboardServices {
   Future<Either<Exception, List<Sensor>>> getSensors();
   Future<Either<Exception, List<Device>>> getDevices();
   Future<Either<Exception, List<Room>>> getRooms();
+  Future<Either<Exception, String>> getAISuggestions();
 }

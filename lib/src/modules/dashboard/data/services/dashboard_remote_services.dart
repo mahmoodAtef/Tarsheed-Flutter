@@ -123,6 +123,18 @@ class DashboardRemoteServices implements BaseDashboardServices {
       return Left(e);
     }
   }
+
+  @override
+  Future<Either<Exception, String>> getAISuggestions() async {
+    try {
+      var response = await DioHelper.getData(
+        path: EndPoints.getAISuggestions,
+      );
+      return Right(response.data["data"]["suggestions"]);
+    } on Exception catch (e) {
+      return Left(e);
+    }
+  }
 }
 
 /**/

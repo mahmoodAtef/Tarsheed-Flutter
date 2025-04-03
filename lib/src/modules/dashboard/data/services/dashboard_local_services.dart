@@ -153,4 +153,16 @@ class DashboardLocalServices implements BaseDashboardServices {
       return Left(e);
     }
   }
+
+  @override
+  Future<Either<Exception, String>> getAISuggestions() async {
+    try {
+      var result = await database.query('aisuggestions');
+      return Right(result.first['suggestions'].toString());
+    } on db.DatabaseException catch (e) {
+      return Left(e);
+    } on Exception catch (e) {
+      return Left(e);
+    }
+  }
 }
