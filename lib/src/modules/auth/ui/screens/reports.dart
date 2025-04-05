@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:tarsheed/src/core/utils/color_manager.dart';
+import 'package:tarsheed/src/modules/auth/ui/widgets/report_large_card.dart';
+import 'package:tarsheed/src/modules/auth/ui/widgets/usage_card.dart';
 import '../../../../../generated/l10n.dart';
 import '../widgets/appbar.dart';
 import '../widgets/bottomNavigatorBar.dart';
 import '../widgets/large_button.dart';
+import '../widgets/month_navigaion.dart';
+import '../widgets/select_time_period.dart';
 
 class ReportsPage extends StatefulWidget {
   const ReportsPage({Key? key}) : super(key: key);
@@ -29,41 +34,52 @@ class _ReportsPageState extends State<ReportsPage> {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
-              // الفلاتر: اليوم، الأسبوع، الشهر، السنوات
-              _buildPeriodFilter(),
+              PeriodFilter(
+                periods: _periods,
+                initialSelectedIndex: _selectedPeriodIndex,
+                onPeriodChanged: (int index) {
+                  setState(() {
+                    _selectedPeriodIndex = index;
+                  });
+                },
+              ),
 
-              // كارت الاستخدام الشهري مع الرسم البياني
-              _buildMonthlyUsageCard(),
-
-              // التنقل بين الأشهر
-              _buildMonthNavigation(),
-
-              // كارد متوسط الاستخدام
-              _buildInfoCard(
+              MonthNavigator(),
+              BuildInfoCard(
                 icon: Icons.show_chart,
                 title: 'Avg Usage',
                 value: '62.85kWh',
                 percentage: '10%',
                 isDecrease: true,
-                color: Colors.blue,
+                color: ColorManager.primary,
               ),
-
               const SizedBox(height: 10),
-
-              // كارد متوسط التكلفة
-              _buildInfoCard(
+              BuildInfoCard(
                 icon: Icons.attach_money,
                 title: 'Avg Cost',
                 value: '\$125.5',
                 percentage: '12%',
                 isDecrease: true,
-                color: Colors.blue,
+                color: ColorManager.primary,
               ),
-
               const SizedBox(height: 10),
 
               // استخدام الشهر الماضي والقادم
-              _buildUsageComparisonCards(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  UsageCard(
+                    title: 'Last Month Usage',
+                    value: '146.85 kWh',
+                  ),
+                  const SizedBox(width: 12),
+                  UsageCard(
+                    title: 'Next Month Usage',
+                    value: '146.85 kWh',
+                    subtitle: 'Projected based on your usage history',
+                  ),
+                ],
+              ),
 
               const SizedBox(height: 10),
 
@@ -74,49 +90,6 @@ class _ReportsPageState extends State<ReportsPage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  // بناء فلتر اختيار الفترة الزمنية
-  Widget _buildPeriodFilter() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: List.generate(_periods.length, (index) {
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                _selectedPeriodIndex = index;
-              });
-            },
-            child: Column(
-              children: [
-                Text(
-                  _periods[index],
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: _selectedPeriodIndex == index
-                        ? Colors.blue
-                        : Colors.black,
-                  ),
-                ),
-                if (_selectedPeriodIndex == index)
-                  Container(
-                    margin: const EdgeInsets.only(top: 4),
-                    width: 8,
-                    height: 8,
-                    decoration: const BoxDecoration(
-                      color: Colors.blue,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-              ],
-            ),
-          );
-        }),
       ),
     );
   }
@@ -139,14 +112,6 @@ class _ReportsPageState extends State<ReportsPage> {
               ),
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              height: 200,
-              child: CustomLineChart(
-                data: _chartData,
-                maxY: 200,
-                labels: List.generate(10, (i) => (i + 1).toString()),
-              ),
-            ),
             const SizedBox(height: 8),
             const Row(
               children: [
@@ -163,329 +128,5 @@ class _ReportsPageState extends State<ReportsPage> {
         ),
       ),
     );
-  }
-
-  // بناء عنصر التنقل بين الأشهر
-  Widget _buildMonthNavigation() {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 16),
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-      decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.chevron_left, color: Colors.blue),
-            onPressed: () {
-              // تنفيذ التنقل للشهر السابق
-            },
-          ),
-          Text(
-            _currentMonth,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.chevron_right, color: Colors.blue),
-            onPressed: () {
-              // تنفيذ التنقل للشهر التالي
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  // بناء كارد المعلومات (الاستخدام/التكلفة)
-  Widget _buildInfoCard({
-    required IconData icon,
-    required String title,
-    required String value,
-    required String percentage,
-    required bool isDecrease,
-    required Color color,
-  }) {
-    return Card(
-      color: Colors.white,
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                icon,
-                color: Colors.white,
-                size: 24,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      color: Colors.grey.shade600,
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    value,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    isDecrease ? Icons.arrow_downward : Icons.arrow_upward,
-                    color: isDecrease ? Colors.blue : Colors.red,
-                    size: 16,
-                  ),
-                  const SizedBox(width: 2),
-                  Text(
-                    percentage,
-                    style: TextStyle(
-                      color: isDecrease ? Colors.blue : Colors.red,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // بناء كاردات مقارنة الاستخدام (الشهر الماضي والقادم)
-  Widget _buildUsageComparisonCards() {
-    return Row(
-      children: [
-        Expanded(
-          child: Card(
-            elevation: 2,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Last Month Usage',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '146.85 kWh',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Card(
-            elevation: 2,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Next Month Usage',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '146.85 kWh',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Projected based on your usage history',
-                    style: TextStyle(
-                      color: Colors.grey.shade600,
-                      fontSize: 10,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-// رسم بياني مخصص بدون استخدام أي مكتبة خارجية
-class CustomLineChart extends StatelessWidget {
-  final List<double> data;
-  final double maxY;
-  final List<String> labels;
-
-  const CustomLineChart({
-    Key? key,
-    required this.data,
-    required this.maxY,
-    required this.labels,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Column(
-          children: [
-            Expanded(
-              child: CustomPaint(
-                size: Size(constraints.maxWidth, constraints.maxHeight * 0.9),
-                painter: LineChartPainter(
-                  data: data,
-                  maxY: maxY,
-                  labels: labels,
-                ),
-              ),
-            ),
-            Container(
-              height: constraints.maxHeight * 0.1,
-              width: constraints.maxWidth,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: labels.map((label) {
-                  return Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
-
-class LineChartPainter extends CustomPainter {
-  final List<double> data;
-  final double maxY;
-  final List<String> labels;
-
-  LineChartPainter({
-    required this.data,
-    required this.maxY,
-    required this.labels,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    // رسم خطوط الشبكة الأفقية
-    final gridPaint = Paint()
-      ..color = Colors.grey.withOpacity(0.3)
-      ..strokeWidth = 1;
-
-    final stepSize = size.height / 4;
-    for (int i = 0; i <= 4; i++) {
-      final y = size.height - (i * stepSize);
-      canvas.drawLine(
-        Offset(0, y),
-        Offset(size.width, y),
-        gridPaint,
-      );
-    }
-
-    // رسم الخط البياني
-    final linePaint = Paint()
-      ..color = Colors.blue
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 3
-      ..strokeCap = StrokeCap.round;
-
-    final path = Path();
-    final segmentWidth = size.width / (data.length - 1);
-
-    for (int i = 0; i < data.length; i++) {
-      final x = i * segmentWidth;
-      final y = size.height - (data[i] / maxY * size.height);
-
-      if (i == 0) {
-        path.moveTo(x, y);
-      } else {
-        final prevX = (i - 1) * segmentWidth;
-        final prevY = size.height - (data[i - 1] / maxY * size.height);
-
-        // إنشاء منحنى بدلاً من خط مستقيم
-        final controlX1 = prevX + segmentWidth / 2;
-        final controlY1 = prevY;
-        final controlX2 = x - segmentWidth / 2;
-        final controlY2 = y;
-
-        path.cubicTo(
-          controlX1,
-          controlY1,
-          controlX2,
-          controlY2,
-          x,
-          y,
-        );
-      }
-    }
-
-    canvas.drawPath(path, linePaint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
   }
 }

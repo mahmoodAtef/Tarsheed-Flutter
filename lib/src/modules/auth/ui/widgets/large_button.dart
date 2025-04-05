@@ -1,15 +1,18 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
+
+import '../../../../core/utils/color_manager.dart';
 
 class DefaultButton extends StatelessWidget {
-  const DefaultButton(
-      {super.key,
-      required this.title,
-      this.icon,
-      this.width,
-      this.onPressed,
-      this.isLoading});
+  const DefaultButton({
+    super.key,
+    required this.title,
+    this.icon,
+    this.width,
+    this.onPressed,
+    this.isLoading = false,
+  });
 
   final bool? isLoading;
   final String title;
@@ -19,21 +22,27 @@ class DefaultButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading == true
-        ? Center(child: CircularProgressIndicator())
-        : SizedBox(
-            width: width ?? double.infinity,
-            height: 55.h,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ColorManager.primary,
-                elevation: 10,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-              ),
-              onPressed: onPressed,
-              child: Row(
+    return SizedBox(
+      width: width ?? double.infinity,
+      height: 55.h,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: ColorManager.primary,
+          disabledBackgroundColor: ColorManager.primary,
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+        ).copyWith(
+          overlayColor: MaterialStateProperty.all(
+            ColorManager.primary.withOpacity(0.8),
+          ),
+        ),
+        onPressed: isLoading == true ? null : onPressed,
+        child: isLoading == true
+            ? Center(
+                child: CircularProgressIndicator(color: ColorManager.white))
+            : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -51,7 +60,7 @@ class DefaultButton extends StatelessWidget {
                   ],
                 ],
               ),
-            ),
-          );
+      ),
+    );
   }
 }

@@ -61,7 +61,8 @@ class BuildInfoCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     value,
-                    style: const TextStyle(
+                    style: TextStyle(
+                      color: ColorManager.black,
                       fontWeight: FontWeight.w700,
                       fontSize: 24,
                     ),
@@ -90,7 +91,8 @@ class BuildInfoCard extends StatelessWidget {
                   Text(
                     percentage,
                     style: TextStyle(
-                      color: isDecrease ? ColorManager.black : ColorManager.red,
+                      color:
+                          isDecrease ? ColorManager.primary : ColorManager.red,
                       fontWeight: FontWeight.w700,
                       fontSize: 24, // Reduced font size to better fit
                     ),
