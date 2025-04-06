@@ -13,8 +13,6 @@ class SecurityPage extends StatefulWidget {
 }
 
 class _SecurityPageState extends State<SecurityPage> {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
