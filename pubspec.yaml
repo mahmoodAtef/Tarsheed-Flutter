@@ -33,8 +33,9 @@ dependencies:
   image_picker: ^1.0.4
   flutter_screenutil: ^5.9.3
   syncfusion_flutter_gauges: ^29.1.35
-
-
+  syncfusion_flutter_charts: ^29.1.35
+  flutter_switch: ^0.3.2
+  fl_chart: ^0.68.0
   # UI
 
   skeletonizer: ^1.4.3

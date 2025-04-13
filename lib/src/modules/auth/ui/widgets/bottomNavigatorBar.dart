@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
+
+import '../screens/reports_page.dart';
 
 class BottomNavigator extends StatefulWidget {
   const BottomNavigator({super.key});
@@ -21,6 +24,10 @@ class _BottomNavigatorState extends State<BottomNavigator> {
           setState(() {
             selectIndex = val;
           });
+
+          if (val == 1) {
+            context.push(const ReportsPage());
+          }
         },
         currentIndex: selectIndex,
         type: BottomNavigationBarType.fixed,

@@ -16,7 +16,7 @@ class DefaultButton extends StatelessWidget {
 
   final bool? isLoading;
   final String title;
-  final IconData? icon;
+  final Widget? icon;
   final double? width;
   final VoidCallback? onPressed;
 
@@ -56,7 +56,7 @@ class DefaultButton extends StatelessWidget {
                   ),
                   if (icon != null) ...[
                     SizedBox(width: 10.w),
-                    Icon(icon, size: 22.sp, color: ColorManager.white),
+                    icon!,
                   ],
                 ],
               ),

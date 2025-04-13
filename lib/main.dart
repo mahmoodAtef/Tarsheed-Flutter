@@ -11,9 +11,11 @@ import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
 import 'package:tarsheed/src/core/utils/theme_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
-import 'package:tarsheed/src/modules/auth/ui/screens/setting.dart';
+import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/splash_screen.dart';
+
+import 'home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,8 +30,12 @@ void main() async {
   Bloc.observer = TarsheedBlocObserver();
 
   runApp(
-    BlocProvider(
-      create: (context) => AuthBloc.instance,
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AuthBloc.instance),
+        BlocProvider(create: (context) => DashboardBloc()),
+        // إضافة DashboardBloc هنا
+      ],
       child: Tarsheed(),
     ),
   );
