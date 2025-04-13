@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 
+import '../screens/profile_screen.dart';
 import '../screens/reports_page.dart';
+import '../screens/setting.dart';
 
 class BottomNavigator extends StatefulWidget {
   const BottomNavigator({super.key});
@@ -27,6 +29,10 @@ class _BottomNavigatorState extends State<BottomNavigator> {
 
           if (val == 1) {
             context.push(const ReportsPage());
+          } else if (val == 3) {
+            context.push(SettingPage());
+          } else if (val == 4) {
+            context.push(ProfilePage());
           }
         },
         currentIndex: selectIndex,
@@ -42,6 +48,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
               icon: Icon(Icons.bar_chart_outlined), label: ""),
           BottomNavigationBarItem(
               icon: Icon(Icons.notifications_outlined), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: ""),
           BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ""),
         ],
       ),
