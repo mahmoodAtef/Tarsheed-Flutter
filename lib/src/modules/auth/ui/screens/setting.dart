@@ -12,6 +12,7 @@ import '../../../../core/error/exception_manager.dart';
 import '../widgets/appbar.dart';
 import '../widgets/bottomNavigatorBar.dart';
 import '../widgets/container_with_switch.dart';
+import 'edit_password_page.dart';
 import 'energy_mode.dart';
 
 class SettingPage extends StatelessWidget {
@@ -31,7 +32,7 @@ class SettingPage extends StatelessWidget {
         }
       },
       child: Scaffold(
-        bottomNavigationBar: BottomNavigator(),
+        bottomNavigationBar: const BottomNavigator(currentIndex: 3),
         appBar: CustomAppBar(text: S.of(context).settings),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
@@ -82,6 +83,12 @@ class SettingPage extends StatelessWidget {
                 icon: Icons.arrow_forward_ios,
                 onpressed: () {
                   context.push(EnergyModePage());
+                },
+              ),
+              CustomContainer(
+                text: "Edit Password",
+                onTap: () {
+                  context.push(EditPasswordPage());
                 },
               ),
               CustomContainer(
