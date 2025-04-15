@@ -26,7 +26,7 @@ class SettingPage extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Account deleted successfully")),
           );
-          context.push(LoginPage());
+          context.pushReplacement(LoginPage());
         } else if (state is SettingsErrorState) {
           ExceptionManager.showMessage(state.exception);
         }

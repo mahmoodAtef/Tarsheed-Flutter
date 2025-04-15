@@ -16,10 +16,10 @@ extension NavigationMethods on BuildContext {
     Navigator.pushNamedAndRemoveUntil(this, route, (route) => false);
   }
 
-  void pushReplacement(String route) {
-    Navigator.pushReplacementNamed(
+  void pushReplacement(Widget route) {
+    Navigator.pushReplacement(
       this,
-      route,
+      SlidePageRoute(child: route),
     );
   }
 
