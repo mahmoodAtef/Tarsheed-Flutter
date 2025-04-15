@@ -21,7 +21,12 @@ class ReportsPage extends StatefulWidget {
 }
 
 class _ReportsPageState extends State<ReportsPage> {
-  final List<String> _periods = ['Today', 'Week', 'Month', 'Years'];
+  final List<String> _periods = [
+    S.current.today,
+    S.current.week,
+    S.current.month,
+    S.current.years,
+  ];
   int _selectedPeriodIndex = 3;
 
   @override
@@ -33,17 +38,15 @@ class _ReportsPageState extends State<ReportsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigator(),
-      appBar: CustomAppBar(text: S.of(context).Reports),
+      bottomNavigationBar: const BottomNavigator(currentIndex: 1),
+      appBar: CustomAppBar(text: S.of(context).reports),
       body: BlocBuilder<DashboardBloc, DashboardState>(
         builder: (context, state) {
           if (state is GetUsageReportLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is GetUsageReportError) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              ExceptionManager.showMessage(state.exception);
-            });
-            return const Center(child: Text('Error loading report data'));
+            ExceptionManager.showMessage(state.exception);
+            return Center(child: Text(S.of(context).errorLoadingReportData));
           } else if (state is GetUsageReportSuccess) {
             final report = state.report;
 
@@ -58,6 +61,20 @@ class _ReportsPageState extends State<ReportsPage> {
                 (report.totalConsumption * 1.05).toStringAsFixed(2);
             final savingsPercentage =
                 report.savingsPercentage.toStringAsFixed(0);
+
+            // dynamic decrease logic
+            final isUsageDecreased =
+                report.totalConsumption < report.previousConsumption;
+            final isCostDecreased = (report.totalConsumption * 0.85) <
+                (report.previousConsumption * 0.85);
+
+            // optional: calculate cost savings percentage
+            final previousCost = report.previousConsumption * 0.85;
+            final currentCost = report.totalConsumption * 0.85;
+            final costSavingsPercentage = previousCost == 0
+                ? '0'
+                : (((previousCost - currentCost) / previousCost) * 100)
+                    .toStringAsFixed(0);
 
             return SingleChildScrollView(
               child: Padding(
@@ -80,19 +97,19 @@ class _ReportsPageState extends State<ReportsPage> {
                     MonthNavigator(),
                     BuildInfoCard(
                       icon: Icons.show_chart,
-                      title: 'Avg Usage',
+                      title: S.of(context).avgUsage,
                       value: '$avgUsage kWh',
                       percentage: '$savingsPercentage%',
-                      isDecrease: true,
+                      isDecrease: isUsageDecreased,
                       color: ColorManager.primary,
                     ),
                     const SizedBox(height: 10),
                     BuildInfoCard(
                       icon: Icons.attach_money,
-                      title: 'Avg Cost',
+                      title: S.of(context).avgCost,
                       value: '\$$avgCost',
-                      percentage: '12%',
-                      isDecrease: true,
+                      percentage: '$costSavingsPercentage%',
+                      isDecrease: isCostDecreased,
                       color: ColorManager.primary,
                     ),
                     const SizedBox(height: 10),
@@ -100,21 +117,19 @@ class _ReportsPageState extends State<ReportsPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         UsageCard(
-                          title: 'Last Month Usage',
+                          title: S.of(context).lastMonthUsage,
                           value: '$lastMonthUsage kWh',
                         ),
                         const SizedBox(width: 12),
                         UsageCard(
-                          title: 'Next Month Usage',
+                          title: S.of(context).nextMonthUsage,
                           value: '$nextMonthUsage kWh',
-                          subtitle: 'Projected based on your usage history',
+                          subtitle: S.of(context).projectedBasedOnUsageHistory,
                         ),
                       ],
                     ),
                     const SizedBox(height: 10),
-                    const DefaultButton(
-                      title: "You are now on the low-tier system",
-                    )
+                    Text(S.of(context).lowTierSystemMessage),
                   ],
                 ),
               ),

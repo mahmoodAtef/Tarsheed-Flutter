@@ -88,5 +88,17 @@
   "codeMustBeAtLeast6Digits": "يجب أن يتكون الرمز من 6 أرقام على الأقل",
   "didNtReceiveCode": "لم تستلم الرمز؟",
   "Continue": "استمرار",
-  "Reports": "التقارير"
+  "Reports": "التقارير",
+  "reports": "التقارير",
+  "errorLoadingReportData": "خطأ في تحميل بيانات التقرير",
+  "today": "اليوم",
+  "week": "الأسبوع",
+  "month": "الشهر",
+  "years": "السنوات",
+  "avgUsage": "متوسط الاستهلاك",
+  "avgCost": "متوسط التكلفة",
+  "lastMonthUsage": "استهلاك الشهر الماضي",
+  "nextMonthUsage": "استهلاك الشهر القادم",
+  "projectedBasedOnUsageHistory": "متوقع بناءً على سجل استهلاكك",
+  "lowTierSystemMessage": "أنت الآن على النظام منخفض المستوى"
 }

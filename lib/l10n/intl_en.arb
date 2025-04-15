@@ -88,5 +88,17 @@
   "codeMustBeAtLeast6Digits": "The code must be at least 6 digits",
   "didNtReceiveCode": "Didn't receive a code?",
   "Continue": "Continue",
-  "Reports": "Reports"
+  "Reports": "Reports",
+  "reports": "Reports",
+  "errorLoadingReportData": "Error loading report data",
+  "today": "Today",
+  "week": "Week",
+  "month": "Month",
+  "years": "Years",
+  "avgUsage": "Avg Usage",
+  "avgCost": "Avg Cost",
+  "lastMonthUsage": "Last Month Usage",
+  "nextMonthUsage": "Next Month Usage",
+  "projectedBasedOnUsageHistory": "Projected based on your usage history",
+  "lowTierSystemMessage": "You are now on the low-tier system"
 }
