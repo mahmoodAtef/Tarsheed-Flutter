@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tarsheed/generated/l10n.dart';
+import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
-import '../widgets/appbar.dart';
-import '../widgets/bottomNavigatorBar.dart';
 import 'package:tarsheed/src/core/utils/image_manager.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/data/models/user.dart';
+
+import '../widgets/appbar.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -32,17 +33,11 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigator(),
       appBar: CustomAppBar(text: S.of(context).profile),
       body: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) {
           if (state is SettingsErrorState) {
-            return Center(
-              child: Text(
-                'Profile has an issue',
-                style: TextStyle(color: Colors.red, fontSize: 18.sp),
-              ),
-            );
+            ExceptionManager.showMessage(state.exception);
           }
 
           if (state is GetProfileLoadingState) {
@@ -71,11 +66,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     SizedBox(height: 20.h),
                     buildTextField(
-                        S.of(context).firstName, _firstNameController, false),
-                    buildTextField(
-                        S.of(context).lastName, _lastNameController, false),
-                    buildTextField(
-                        S.of(context).email, _emailController, false),
+                        S.of(context).firstName, _firstNameController),
+                    buildTextField(S.of(context).lastName, _lastNameController),
+                    buildTextField(S.of(context).email, _emailController),
                     SizedBox(height: 20.h),
                     ElevatedButton(
                       onPressed: () {
@@ -102,8 +95,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget buildTextField(
-      String label, TextEditingController controller, bool isPassword) {
+  Widget buildTextField(String label, TextEditingController controller) {
     return Padding(
       padding: EdgeInsets.only(bottom: 15.h),
       child: Column(
@@ -115,7 +107,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           SizedBox(height: 5.h),
           TextField(
-            obscureText: isPassword,
             controller: controller,
             decoration: InputDecoration(
               focusedBorder: OutlineInputBorder(
