@@ -22,12 +22,22 @@ class SettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<SettingsCubit, SettingsState>(
       listener: (context, state) {
-        if (state is DeleteProfileSuccessState) {
+        if (state is DeleteProfileLoadingState) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else if (state is DeleteProfileSuccessState) {
+          Navigator.of(context).pop(); // Close loading dialog
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Account deleted successfully")),
+            const SnackBar(content: Text("Account deleted successfully")),
           );
           context.pushReplacement(LoginPage());
         } else if (state is SettingsErrorState) {
+          Navigator.of(context).pop(); // Close loading dialog if open
           ExceptionManager.showMessage(state.exception);
         }
       },
@@ -56,7 +66,7 @@ class SettingPage extends StatelessWidget {
                       DropdownButtonFormField<String>(
                         value: currentLang,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
+                          border: const OutlineInputBorder(),
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 10.w),
                         ),
@@ -75,9 +85,6 @@ class SettingPage extends StatelessWidget {
                 },
               ),
               SizedBox(height: 20.h),
-              CustomContainer(
-                text: S.of(context).backupSettings,
-              ),
               CustomContainer(
                 text: S.of(context).energyMode,
                 icon: Icons.arrow_forward_ios,
