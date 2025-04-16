@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/devices.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/profile_screen.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/text_home_screen.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
+import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
 import '../widgets/bottomNavigatorBar.dart';
+import '../widgets/card_devices.dart';
 import '../widgets/card_home_screen.dart';
 import '../widgets/color_indicator.dart';
 import '../widgets/large_button.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -36,17 +42,17 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
         child: Scaffold(
-          bottomNavigationBar: BottomNavigator(),
+          bottomNavigationBar: const BottomNavigator(currentIndex: 0),
           backgroundColor: Colors.white,
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(194),
+            preferredSize: Size.fromHeight(194.h),
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(50),
-                  bottom: Radius.circular(30),
+                  top: Radius.circular(50.r),
+                  bottom: Radius.circular(30.r),
                 ),
               ),
               child: Row(
@@ -55,35 +61,49 @@ class _HomeScreenState extends State<HomeScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('9:41',
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black)),
-                      SizedBox(height: 4),
-                      Text('Dec 10, 2024',
-                          style: TextStyle(fontSize: 12, color: Colors.grey)),
-                      SizedBox(height: 8),
-                      Text('Home',
-                          style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black)),
-                      SizedBox(height: 4),
+                      Text(
+                        '9:41',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        'Dec 10, 2024',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      Text(
+                        S.of(context).home,
+                        style: TextStyle(
+                          fontSize: 28.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
                       Row(
                         children: [
                           Container(
-                            width: 12,
-                            height: 12,
-                            decoration: BoxDecoration(
+                            width: 12.w,
+                            height: 12.h,
+                            decoration: const BoxDecoration(
                               color: Colors.green,
                               shape: BoxShape.circle,
                             ),
                           ),
-                          SizedBox(width: 4),
+                          SizedBox(width: 4.w),
                           Text(
                             '13 devices running',
-                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: Colors.grey,
+                            ),
                           ),
                         ],
                       ),
@@ -97,19 +117,22 @@ class _HomeScreenState extends State<HomeScreen> {
                       alignment: Alignment.topRight,
                       children: [
                         CircleAvatar(
-                          radius: 25,
+                          radius: 25.r,
                           child: Image.asset("assets/images/avatar.png"),
                         ),
                         Positioned(
                           right: 0,
                           top: 0,
                           child: Container(
-                            width: 12,
-                            height: 12,
+                            width: 12.w,
+                            height: 12.h,
                             decoration: BoxDecoration(
                               color: Colors.green,
                               shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 2),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 2.w,
+                              ),
                             ),
                           ),
                         ),
@@ -121,21 +144,21 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 20),
+                  SizedBox(height: 20.h),
                   Text(
-                    'Energy consumption',
+                    S.of(context).energyConsumption,
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   BlocBuilder<DashboardBloc, DashboardState>(
                     builder: (context, state) {
                       double value = 0;
@@ -217,22 +240,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ],
                                             annotations: <GaugeAnnotation>[
                                               GaugeAnnotation(
-                                                widget: Text('LOW',
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Colors.black)),
+                                                widget: Text(
+                                                  S.of(context).low,
+                                                  style: TextStyle(
+                                                    fontSize: 15.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
                                                 angle: 170,
                                                 positionFactor: 1,
                                               ),
                                               GaugeAnnotation(
-                                                widget: Text('HIGH',
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Colors.black)),
+                                                widget: Text(
+                                                  S.of(context).high,
+                                                  style: TextStyle(
+                                                    fontSize: 15.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
                                                 angle: 10,
                                                 positionFactor: 1,
                                               ),
@@ -240,10 +267,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 widget: Text(
                                                   '${animatedValue.toInt()}%',
                                                   style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: Colors.black),
+                                                    fontSize: 20.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.black,
+                                                  ),
                                                 ),
                                                 angle: 80,
                                                 positionFactor: 0.2,
@@ -256,21 +283,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 12),
+                              SizedBox(width: 12.w),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   ColorIndicator(
-                                      color: Colors.green, label: 'Low'),
-                                  SizedBox(height: 10),
+                                      color: Colors.green,
+                                      label: S.of(context).low),
+                                  SizedBox(height: 10.h),
                                   ColorIndicator(
-                                      color: Colors.orange, label: 'Medium'),
-                                  SizedBox(height: 10),
+                                      color: Colors.orange,
+                                      label: S.of(context).medium),
+                                  SizedBox(height: 10.h),
                                   ColorIndicator(
-                                      color: Colors.yellow, label: 'High'),
-                                  SizedBox(height: 10),
+                                      color: Colors.yellow,
+                                      label: S.of(context).high),
+                                  SizedBox(height: 10.h),
                                   ColorIndicator(
-                                      color: Colors.red, label: 'Very High'),
+                                      color: Colors.red,
+                                      label: S.of(context).veryHigh),
                                 ],
                               ),
                             ],
@@ -285,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       .add(GetUsageReportEvent());
                                 },
                                 icon: Icon(Icons.refresh),
-                                label: Text("Retry"),
+                                label: Text(S.of(context).retry),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.redAccent,
                                   foregroundColor: Colors.white,
@@ -299,62 +330,65 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   BlocBuilder<DashboardBloc, DashboardState>(
                     builder: (context, state) {
                       double value = 0;
-                      String tier = 'Unknown';
+                      String tier = S.of(context).unknown;
 
                       if (state is GetUsageReportSuccess) {
                         value = state.report.savingsPercentage ?? 0;
 
                         if (value <= 32) {
-                          tier = 'Low';
+                          tier = S.of(context).low;
                         } else if (value <= 65) {
-                          tier = 'Medium';
+                          tier = S.of(context).medium;
                         } else if (value <= 79) {
-                          tier = 'High';
+                          tier = S.of(context).high;
                         } else {
-                          tier = 'Very High';
+                          tier = S.of(context).veryHigh;
                         }
                       }
-
                       return Center(
                         child: CustomTextWidget(
                           label:
-                              'Your Current Savings is ${value.toInt()}%, which is in the $tier tier',
-                          size: 12,
+                              '${S.of(context).currentSavings} ${value.toInt()}% ${S.of(context).inThe} $tier ${S.of(context).tier}',
+                          size: 12.sp,
                         ),
                       );
                     },
                   ),
-                  SizedBox(height: 32),
-                  CustomTextWidget(label: 'Active Mode', size: 24),
-                  SizedBox(height: 16),
+                  SizedBox(height: 32.h),
+                  CustomTextWidget(
+                      label: S.of(context).activeMode, size: 24.sp),
+                  SizedBox(height: 16.h),
                   Center(
                     child: DefaultButton(
-                      title: "Energy Saving",
+                      title: S.of(context).energySaving,
                       icon: Image.asset("assets/images/Vector.png"),
-                      width: 300,
+                      width: 300.w,
                     ),
                   ),
-                  SizedBox(height: 24),
+                  SizedBox(height: 24.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CustomTextWidget(label: 'Connected Devices', size: 22),
+                      CustomTextWidget(
+                          label: S.of(context).connectedDevices, size: 22.sp),
                       TextButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          context.push(DevicesScreen());
+                        },
                         style: TextButton.styleFrom(
                           foregroundColor: Color(0xFF366692),
                         ),
-                        label: Text('View all',
+                        label: Text(S.of(context).viewAll,
                             style: TextStyle(
                                 color: Color(0xFF366692),
-                                fontSize: 10,
+                                fontSize: 10.sp,
                                 fontWeight: FontWeight.w400)),
                         icon: Icon(Icons.arrow_forward,
-                            size: 10, color: Color(0xFF366692)),
+                            size: 10.sp, color: Color(0xFF366692)),
                       ),
                     ],
                   ),
@@ -371,6 +405,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             lightBulbStatus = value;
                           });
                         },
+                        onEdit: () {},
                       ),
                       SizedBox(width: 16),
                       DeviceCard(
@@ -383,6 +418,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             smartTVStatus = value;
                           });
                         },
+                        onEdit: () {},
                       ),
                     ],
                   ),

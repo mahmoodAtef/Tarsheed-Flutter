@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/report_large_card.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/usage_card.dart';
-import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
 import '../../../dashboard/bloc/dashboard_bloc.dart';
 import '../widgets/appbar.dart';
@@ -78,7 +79,7 @@ class _ReportsPageState extends State<ReportsPage> {
 
             return SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: EdgeInsets.all(12.w),
                 child: Column(
                   children: [
                     PeriodFilter(
@@ -103,7 +104,7 @@ class _ReportsPageState extends State<ReportsPage> {
                       isDecrease: isUsageDecreased,
                       color: ColorManager.primary,
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10.h),
                     BuildInfoCard(
                       icon: Icons.attach_money,
                       title: S.of(context).avgCost,
@@ -112,7 +113,7 @@ class _ReportsPageState extends State<ReportsPage> {
                       isDecrease: isCostDecreased,
                       color: ColorManager.primary,
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -120,7 +121,7 @@ class _ReportsPageState extends State<ReportsPage> {
                           title: S.of(context).lastMonthUsage,
                           value: '$lastMonthUsage kWh',
                         ),
-                        const SizedBox(width: 12),
+                        SizedBox(width: 12.w),
                         UsageCard(
                           title: S.of(context).nextMonthUsage,
                           value: '$nextMonthUsage kWh',
@@ -128,8 +129,11 @@ class _ReportsPageState extends State<ReportsPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
-                    Text(S.of(context).lowTierSystemMessage),
+                    SizedBox(height: 10.h),
+                    Text(
+                      S.of(context).lowTierSystemMessage,
+                      style: TextStyle(fontSize: 14.sp),
+                    ),
                   ],
                 ),
               ),

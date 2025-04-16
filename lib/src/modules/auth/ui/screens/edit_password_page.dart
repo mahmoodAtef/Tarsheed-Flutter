@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/error/exception_manager.dart';
 import '../../bloc/auth_bloc.dart';
 import '../widgets/appbar.dart';
+import '../../../../../generated/l10n.dart';
 
 class EditPasswordPage extends StatefulWidget {
   @override
@@ -28,7 +30,7 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
         } else if (state is UpdatePasswordSuccessState) {
           Navigator.of(context).pop(); // close loading
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Password updated successfully')),
+            SnackBar(content: Text(S.of(context).passwordUpdatedSuccessfully)),
           );
           Navigator.pop(context); // go back
         } else if (state is AuthErrorState) {
@@ -36,40 +38,42 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
         }
       },
       child: Scaffold(
-        appBar: CustomAppBar(text: 'Edit Password'),
+        appBar: CustomAppBar(text: S.of(context).editPassword),
         body: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16.w),
           child: Column(
             children: [
               TextField(
                 controller: oldPasswordController,
                 obscureText: true,
-                decoration:
-                    const InputDecoration(labelText: "Current Password"),
+                decoration: InputDecoration(
+                  labelText: S.of(context).currentPassword,
+                ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
               TextField(
                 controller: newPasswordController,
                 obscureText: true,
-                decoration: const InputDecoration(labelText: "New Password"),
+                decoration: InputDecoration(
+                  labelText: S.of(context).newPassword,
+                ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
               TextField(
                 controller: confirmPasswordController,
                 obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: "Confirm New Password",
+                decoration: InputDecoration(
+                  labelText: S.of(context).confirmNewPassword,
                 ),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32.h),
               Container(
-                width: double.infinity, // Make the button full width
-                height: 50, // Increase the height of the button
+                width: double.infinity,
+                height: 50.h,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Optional: round corners
+                      borderRadius: BorderRadius.circular(10.r),
                     ),
                   ),
                   onPressed: () {
@@ -80,8 +84,9 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
 
                     if (newPassword != confirmPassword) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('New passwords do not match')),
+                        SnackBar(
+                          content: Text(S.of(context).passwordsDoNotMatch),
+                        ),
                       );
                       return;
                     }
@@ -93,8 +98,10 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
                           ),
                         );
                   },
-                  child: const Text("Update Password",
-                      style: TextStyle(fontSize: 18)),
+                  child: Text(
+                    S.of(context).updatePassword,
+                    style: TextStyle(fontSize: 18.sp),
+                  ),
                 ),
               ),
             ],

@@ -16,7 +16,7 @@ class _SecurityPageState extends State<SecurityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigator(),
+      bottomNavigationBar: const BottomNavigator(currentIndex: -1),
       appBar: CustomAppBar(text: S.of(context).security),
       body: SingleChildScrollView(
         child: Padding(

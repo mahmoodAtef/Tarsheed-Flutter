@@ -33,8 +33,7 @@ class SettingPage extends StatelessWidget {
         } else if (state is DeleteProfileSuccessState) {
           Navigator.of(context).pop(); // Close loading dialog
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Account deleted successfully")),
-          );
+              SnackBar(content: Text(S.of(context).accountDeletedSuccess)));
           context.pushReplacement(LoginPage());
         } else if (state is SettingsErrorState) {
           Navigator.of(context).pop(); // Close loading dialog if open
@@ -93,7 +92,7 @@ class SettingPage extends StatelessWidget {
                 },
               ),
               CustomContainer(
-                text: "Edit Password",
+                text: S.of(context).editPassword,
                 onTap: () {
                   context.push(EditPasswordPage());
                 },

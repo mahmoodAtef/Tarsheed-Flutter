@@ -14,7 +14,7 @@ class EnergyModePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigator(),
+      bottomNavigationBar: const BottomNavigator(currentIndex: -1),
       appBar: CustomAppBar(text: S.of(context).energyMode),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
