@@ -67,13 +67,10 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                   },
                 ),
                 SizedBox(height: 16.h),
-
-                // BlocListener لمراقبة نجاح تأكيد الكود
                 BlocListener<AuthBloc, AuthState>(
                   bloc: authBloc,
                   listener: (context, state) {
                     if (state is ConfirmForgotPasswordCodeSuccessState) {
-                      // الانتقال إلى صفحة إعادة تعيين كلمة المرور
                       context.push(ResetPasswordScreen());
                     } else if (state is AuthErrorState) {
                       ExceptionManager.showMessage(state.exception);
@@ -81,7 +78,6 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                   },
                   child: Container(),
                 ),
-
                 BlocBuilder<AuthBloc, AuthState>(
                   bloc: authBloc,
                   builder: (context, state) {
@@ -97,7 +93,6 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                     );
                   },
                 ),
-
                 SizedBox(height: 16.h),
                 BlocBuilder<AuthBloc, AuthState>(
                   bloc: authBloc,

@@ -5,7 +5,6 @@ import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/profile_screen.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/security_screen.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/setting.dart';
-
 import '../../../../../generated/l10n.dart';
 import '../widgets/appbar.dart';
 import '../widgets/bottomNavigatorBar.dart';
@@ -17,7 +16,7 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigator(),
+      bottomNavigationBar: const BottomNavigator(currentIndex: 4),
       appBar: CustomAppBar(text: S.of(context).account),
       body: Container(
         color: ColorManager.white,

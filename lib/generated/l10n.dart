@@ -799,6 +799,286 @@ class S {
   String get Continue {
     return Intl.message('Continue', name: 'Continue', desc: '', args: []);
   }
+
+  /// `Reports`
+  String get Reports {
+    return Intl.message('Reports', name: 'Reports', desc: '', args: []);
+  }
+
+  /// `Reports`
+  String get reports {
+    return Intl.message('Reports', name: 'reports', desc: '', args: []);
+  }
+
+  /// `Error loading report data`
+  String get errorLoadingReportData {
+    return Intl.message(
+      'Error loading report data',
+      name: 'errorLoadingReportData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today`
+  String get today {
+    return Intl.message('Today', name: 'today', desc: '', args: []);
+  }
+
+  /// `Week`
+  String get week {
+    return Intl.message('Week', name: 'week', desc: '', args: []);
+  }
+
+  /// `Month`
+  String get month {
+    return Intl.message('Month', name: 'month', desc: '', args: []);
+  }
+
+  /// `Years`
+  String get years {
+    return Intl.message('Years', name: 'years', desc: '', args: []);
+  }
+
+  /// `Avg Usage`
+  String get avgUsage {
+    return Intl.message('Avg Usage', name: 'avgUsage', desc: '', args: []);
+  }
+
+  /// `Avg Cost`
+  String get avgCost {
+    return Intl.message('Avg Cost', name: 'avgCost', desc: '', args: []);
+  }
+
+  /// `Last Month Usage`
+  String get lastMonthUsage {
+    return Intl.message(
+      'Last Month Usage',
+      name: 'lastMonthUsage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next Month Usage`
+  String get nextMonthUsage {
+    return Intl.message(
+      'Next Month Usage',
+      name: 'nextMonthUsage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Projected based on your usage history`
+  String get projectedBasedOnUsageHistory {
+    return Intl.message(
+      'Projected based on your usage history',
+      name: 'projectedBasedOnUsageHistory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You are now on the low-tier system`
+  String get lowTierSystemMessage {
+    return Intl.message(
+      'You are now on the low-tier system',
+      name: 'lowTierSystemMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Password`
+  String get editPassword {
+    return Intl.message(
+      'Edit Password',
+      name: 'editPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Current Password`
+  String get currentPassword {
+    return Intl.message(
+      'Current Password',
+      name: 'currentPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password updated successfully`
+  String get passwordUpdatedSuccessfully {
+    return Intl.message(
+      'Password updated successfully',
+      name: 'passwordUpdatedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Password`
+  String get updatePassword {
+    return Intl.message(
+      'Update Password',
+      name: 'updatePassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save Changes`
+  String get saveChanges {
+    return Intl.message(
+      'Save Changes',
+      name: 'saveChanges',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account deleted successfully`
+  String get accountDeletedSuccess {
+    return Intl.message(
+      'Account deleted successfully',
+      name: 'accountDeletedSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Your Account?`
+  String get deleteAccountTitle {
+    return Intl.message(
+      'Delete Your Account?',
+      name: 'deleteAccountTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Once you submit a request to delete data, there's a 72-hour window during which you can cancel the process. During this period, you can cancel your deletion request in your Intuit Account. After the window, you'll no longer be able to cancel the request, and we're unable to retrieve your data.`
+  String get deleteAccountMessage {
+    return Intl.message(
+      'Once you submit a request to delete data, there\'s a 72-hour window during which you can cancel the process. During this period, you can cancel your deletion request in your Intuit Account. After the window, you\'ll no longer be able to cancel the request, and we\'re unable to retrieve your data.',
+      name: 'deleteAccountMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
+  }
+
+  /// `Confirm Delete`
+  String get confirmDelete {
+    return Intl.message(
+      'Confirm Delete',
+      name: 'confirmDelete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home`
+  String get home {
+    return Intl.message('Home', name: 'home', desc: '', args: []);
+  }
+
+  /// `Energy consumption`
+  String get energyConsumption {
+    return Intl.message(
+      'Energy consumption',
+      name: 'energyConsumption',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `LOW`
+  String get low {
+    return Intl.message('LOW', name: 'low', desc: '', args: []);
+  }
+
+  /// `HIGH`
+  String get high {
+    return Intl.message('HIGH', name: 'high', desc: '', args: []);
+  }
+
+  /// `Medium`
+  String get medium {
+    return Intl.message('Medium', name: 'medium', desc: '', args: []);
+  }
+
+  /// `Very High`
+  String get veryHigh {
+    return Intl.message('Very High', name: 'veryHigh', desc: '', args: []);
+  }
+
+  /// `Retry`
+  String get retry {
+    return Intl.message('Retry', name: 'retry', desc: '', args: []);
+  }
+
+  /// `Unknown`
+  String get unknown {
+    return Intl.message('Unknown', name: 'unknown', desc: '', args: []);
+  }
+
+  /// `Your Current Savings is`
+  String get currentSavings {
+    return Intl.message(
+      'Your Current Savings is',
+      name: 'currentSavings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `which is in the`
+  String get inThe {
+    return Intl.message('which is in the', name: 'inThe', desc: '', args: []);
+  }
+
+  /// `tier`
+  String get tier {
+    return Intl.message('tier', name: 'tier', desc: '', args: []);
+  }
+
+  /// `Active Mode`
+  String get activeMode {
+    return Intl.message('Active Mode', name: 'activeMode', desc: '', args: []);
+  }
+
+  /// `Energy Saving`
+  String get energySaving {
+    return Intl.message(
+      'Energy Saving',
+      name: 'energySaving',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Connected Devices`
+  String get connectedDevices {
+    return Intl.message(
+      'Connected Devices',
+      name: 'connectedDevices',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View all`
+  String get viewAll {
+    return Intl.message('View all', name: 'viewAll', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

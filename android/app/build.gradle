@@ -23,16 +23,16 @@ android {
     }
     signingConfigs {
         debug {
-        storeFile file('keystores/debug.keystore')
-        storePassword 'tarsheed'
-        keyAlias 'androiddebugkey'
-        keyPassword 'tarsheed'
+            storeFile file('keystores/debug.keystore')
+            storePassword 'tarsheed'
+            keyAlias 'androiddebugkey'
+            keyPassword 'tarsheed'
         }
         release {
-//        storeFile file('upload-keystore.jks')
-//        storeP assword 'android'
-//        keyAlias 'upload'
-//        keyPassword 'tarsheed'
+            storeFile file('upload-keystore.jks')
+            storeP assword 'android'
+            keyAlias 'upload'
+            keyPassword 'tarsheed'
         }
     }
     defaultConfig {
