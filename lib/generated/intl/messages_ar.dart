@@ -27,13 +27,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "Continue": MessageLookupByLibrary.simpleMessage("استمرار"),
     "Reports": MessageLookupByLibrary.simpleMessage("التقارير"),
     "account": MessageLookupByLibrary.simpleMessage("حساب"),
+    "accountDeletedSuccess": MessageLookupByLibrary.simpleMessage(
+      "تم حذف الحساب بنجاح",
+    ),
+    "activeMode": MessageLookupByLibrary.simpleMessage("الوضع النشط"),
     "alreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
       "لديك حساب بالفعل؟",
     ),
     "appName": MessageLookupByLibrary.simpleMessage("ترشيد"),
+    "avgCost": MessageLookupByLibrary.simpleMessage("متوسط التكلفة"),
+    "avgUsage": MessageLookupByLibrary.simpleMessage("متوسط الاستهلاك"),
     "backupSettings": MessageLookupByLibrary.simpleMessage(
       "إعدادات النسخ الاحتياطي",
     ),
+    "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
     "cannotExceed": MessageLookupByLibrary.simpleMessage("لا يمكن أن يتجاوز"),
     "characters": MessageLookupByLibrary.simpleMessage("حرفًا"),
     "codeMustBeAtLeast6Digits": MessageLookupByLibrary.simpleMessage(
@@ -42,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "codeNumbersOnly": MessageLookupByLibrary.simpleMessage(
       "يجب أن يحتوي الكود على أرقام فقط",
     ),
+    "confirmDelete": MessageLookupByLibrary.simpleMessage("تأكيد الحذف"),
     "confirmNewPassword": MessageLookupByLibrary.simpleMessage(
       "تأكيد كلمة المرور الجديدة",
     ),
@@ -51,6 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirmPasswordRequired": MessageLookupByLibrary.simpleMessage(
       "تأكيد كلمة المرور مطلوب",
     ),
+    "connectedDevices": MessageLookupByLibrary.simpleMessage("الأجهزة المتصلة"),
     "containsInvalidCharacters": MessageLookupByLibrary.simpleMessage(
       "يحتوي على أحرف غير صالحة",
     ),
@@ -60,12 +69,23 @@ class MessageLookup extends MessageLookupByLibrary {
       "أنشئ حسابًا حتى تتمكن من التحكم في منزلك بسهولة",
     ),
     "createNewAccount": MessageLookupByLibrary.simpleMessage("إنشاء حساب جديد"),
+    "currentPassword": MessageLookupByLibrary.simpleMessage(
+      "كلمة المرور الحالية",
+    ),
+    "currentSavings": MessageLookupByLibrary.simpleMessage("توفيرك الحالي هو"),
+    "deleteAccountMessage": MessageLookupByLibrary.simpleMessage(
+      "بمجرد تقديم طلب لحذف البيانات، سيكون لديك نافذة مدتها 72 ساعة يمكنك خلالها إلغاء العملية. خلال هذه الفترة، يمكنك إلغاء طلب الحذف في حسابك على Intuit. بعد مرور هذه الفترة، لن تتمكن من إلغاء الطلب، ولن نتمكن من استرجاع بياناتك.",
+    ),
+    "deleteAccountTitle": MessageLookupByLibrary.simpleMessage(
+      "هل تريد حذف حسابك؟",
+    ),
     "deleteMyAccount": MessageLookupByLibrary.simpleMessage("حذف حسابي"),
     "didNotReceive": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
     "didNtReceiveCode": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
     "editPassNaAddUseEm": MessageLookupByLibrary.simpleMessage(
       "تعديل كلمة المرور، الاسم، العنوان، اسم المستخدم، البريد الإلكتروني",
     ),
+    "editPassword": MessageLookupByLibrary.simpleMessage("تعديل كلمة المرور"),
     "email": MessageLookupByLibrary.simpleMessage("البريد الإلكتروني"),
     "emailMaxLength": MessageLookupByLibrary.simpleMessage(
       "البريد الإلكتروني يجب أن لا يتجاوز 100 حرفًا",
@@ -76,7 +96,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailVerifiedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "تم التحقق من البريد الإلكتروني بنجاح!",
     ),
+    "energyConsumption": MessageLookupByLibrary.simpleMessage("استهلاك الطاقة"),
     "energyMode": MessageLookupByLibrary.simpleMessage("وضع الطاقة"),
+    "energySaving": MessageLookupByLibrary.simpleMessage("توفير الطاقة"),
     "energySavingMode": MessageLookupByLibrary.simpleMessage(
       "وضع توفير الطاقة",
     ),
@@ -89,6 +111,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "enterVerificationCode": MessageLookupByLibrary.simpleMessage(
       "أدخل رمز التحقق المرسل إلى بريدك الإلكتروني",
+    ),
+    "errorLoadingReportData": MessageLookupByLibrary.simpleMessage(
+      "خطأ في تحميل بيانات التقرير",
     ),
     "faceId": MessageLookupByLibrary.simpleMessage("التعرف على الوجه"),
     "faceTwoStVerification": MessageLookupByLibrary.simpleMessage(
@@ -106,6 +131,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "يحتوي على تنسيق غير صالح",
     ),
     "helpAndSupport": MessageLookupByLibrary.simpleMessage("المساعدة والدعم"),
+    "high": MessageLookupByLibrary.simpleMessage("مرتفع"),
+    "home": MessageLookupByLibrary.simpleMessage("الرئيسية"),
+    "inThe": MessageLookupByLibrary.simpleMessage("الذي يقع في الفئة"),
     "invalidEmail": MessageLookupByLibrary.simpleMessage(
       "تنسيق البريد الإلكتروني غير صالح",
     ),
@@ -117,12 +145,21 @@ class MessageLookup extends MessageLookupByLibrary {
       "اللغة، والنسخ الاحتياطي، وأوضاع الطاقة...",
     ),
     "language": MessageLookupByLibrary.simpleMessage("اللغة"),
+    "lastMonthUsage": MessageLookupByLibrary.simpleMessage(
+      "استهلاك الشهر الماضي",
+    ),
     "lastName": MessageLookupByLibrary.simpleMessage("الاسم الأخير"),
     "lastNameRequired": MessageLookupByLibrary.simpleMessage(
       "الاسم الأخير مطلوب",
     ),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "loginHere": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
+    "low": MessageLookupByLibrary.simpleMessage("منخفض"),
+    "lowTierSystemMessage": MessageLookupByLibrary.simpleMessage(
+      "أنت الآن على النظام منخفض المستوى",
+    ),
+    "medium": MessageLookupByLibrary.simpleMessage("متوسط"),
+    "month": MessageLookupByLibrary.simpleMessage("الشهر"),
     "mustBeAtLeast": MessageLookupByLibrary.simpleMessage(
       "يجب أن يكون على الأقل",
     ),
@@ -134,6 +171,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "يجب أن يكون الاسم على الأقل 2 حرفًا",
     ),
     "newPassword": MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
+    "nextMonthUsage": MessageLookupByLibrary.simpleMessage(
+      "استهلاك الشهر القادم",
+    ),
     "noRouteFound": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على الصفحة المطلوبة",
     ),
@@ -163,6 +203,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordRequirements": MessageLookupByLibrary.simpleMessage(
       "يجب أن تحتوي كلمة المرور على:\n- حرف كبير واحد على الأقل\n- حرف صغير واحد على الأقل\n- رقم واحد على الأقل\n- رمز خاص واحد على الأقل",
     ),
+    "passwordUpdatedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم تحديث كلمة المرور بنجاح",
+    ),
     "passwordUppercaseRequired": MessageLookupByLibrary.simpleMessage(
       "كلمة المرور يجب أن تحتوي على حرف كبير",
     ),
@@ -173,11 +216,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "من فضلك أدخل رمز التحقق",
     ),
     "profile": MessageLookupByLibrary.simpleMessage("الحساب التعريفي"),
+    "projectedBasedOnUsageHistory": MessageLookupByLibrary.simpleMessage(
+      "متوقع بناءً على سجل استهلاكك",
+    ),
     "rateApplication": MessageLookupByLibrary.simpleMessage("تقييم التطبيق"),
     "register": MessageLookupByLibrary.simpleMessage("تسجيل"),
+    "reports": MessageLookupByLibrary.simpleMessage("التقارير"),
     "resendCode": MessageLookupByLibrary.simpleMessage("إعادة إرسال الرمز"),
     "resendCodeIn": m0,
+    "retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
+    "saveChanges": MessageLookupByLibrary.simpleMessage("حفظ التغييرات"),
     "security": MessageLookupByLibrary.simpleMessage("الأمان"),
     "sentEmailMessage": MessageLookupByLibrary.simpleMessage(
       "لقد أرسلنا بريدًا إلكترونيًا إلى mo****@gmail.",
@@ -194,17 +243,25 @@ class MessageLookup extends MessageLookupByLibrary {
     "takeControl": MessageLookupByLibrary.simpleMessage(
       "تحكم في استهلاك طاقتك",
     ),
+    "tier": MessageLookupByLibrary.simpleMessage("الفئة"),
+    "today": MessageLookupByLibrary.simpleMessage("اليوم"),
     "twoStepVerification": MessageLookupByLibrary.simpleMessage(
       "التحقق بخطوتين",
     ),
+    "unknown": MessageLookupByLibrary.simpleMessage("غير معروف"),
+    "updatePassword": MessageLookupByLibrary.simpleMessage("تحديث كلمة المرور"),
     "verificationCode": MessageLookupByLibrary.simpleMessage("رمز التحقق"),
     "verify": MessageLookupByLibrary.simpleMessage("تحقق"),
     "verifyYourEmail": MessageLookupByLibrary.simpleMessage(
       "تحقق من بريدك الإلكتروني",
     ),
     "verifyYourIdentity": MessageLookupByLibrary.simpleMessage("تحقق من هويتك"),
+    "veryHigh": MessageLookupByLibrary.simpleMessage("عالي جداً"),
+    "viewAll": MessageLookupByLibrary.simpleMessage("عرض الكل"),
+    "week": MessageLookupByLibrary.simpleMessage("الأسبوع"),
     "welcomeBack": MessageLookupByLibrary.simpleMessage(
       "مرحبًا بعودتك! لقد افتقدناك",
     ),
+    "years": MessageLookupByLibrary.simpleMessage("السنوات"),
   };
 }
