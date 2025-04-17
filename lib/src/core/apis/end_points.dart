@@ -29,4 +29,8 @@ class EndPoints {
   static const String addDevice = '/sensors';
   static const String addRoom = '/sensors';
   static const String addSensor = '/sensors';
+
+  static const String deleteDevice = '/sensors';
+  static const String deleteRoom = '/sensors';
+  static const String deleteSensor = '/sensors';
 }

@@ -119,9 +119,16 @@ class DashboardLocalServices implements BaseDashboardServices {
   }
 
   @override
-  Future<Either<Exception, List<Device>>> getDevices() {
-    // TODO: implement getDevices
-    throw UnimplementedError();
+  Future<Either<Exception, List<Device>>> getDevices() async {
+    try {
+      List<Map<String, dynamic>> result = await database.query('devices');
+      List<Device> devices = result.map((e) => Device.fromJson(e)).toList();
+      return Right(devices);
+    } on db.DatabaseException catch (e) {
+      return Left(e);
+    } on Exception catch (e) {
+      return Left(e);
+    }
   }
 
   Future<Either<Exception, Unit>> saveDevices(List<Device> devices) async {
@@ -137,9 +144,16 @@ class DashboardLocalServices implements BaseDashboardServices {
   }
 
   @override
-  Future<Either<Exception, List<Room>>> getRooms() {
-    // TODO: implement getRooms
-    throw UnimplementedError();
+  Future<Either<Exception, List<Room>>> getRooms() async {
+    try {
+      List<Map<String, dynamic>> result = await database.query('rooms');
+      List<Room> rooms = result.map((e) => Room.fromJson(e)).toList();
+      return Right(rooms);
+    } on db.DatabaseException catch (e) {
+      return Left(e);
+    } on Exception catch (e) {
+      return Left(e);
+    }
   }
 
   Future<Either<Exception, Unit>> saveRooms(List<Room> rooms) async {
@@ -161,6 +175,16 @@ class DashboardLocalServices implements BaseDashboardServices {
       return Right(result.first['suggestions'].toString());
     } on db.DatabaseException catch (e) {
       return Left(e);
+    } on Exception catch (e) {
+      return Left(e);
+    }
+  }
+
+  Future<Either<Exception, Unit>> saveAISuggestions(String suggestions) async {
+    try {
+      await database.delete('aisuggestions');
+      await database.insert('aisuggestions', {'suggestions': suggestions});
+      return Right(unit);
     } on Exception catch (e) {
       return Left(e);
     }

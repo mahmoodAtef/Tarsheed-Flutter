@@ -76,8 +76,3 @@ final class GetDevicesCategoriesEvent extends DashboardEvent {
   @override
   List<Object?> get props => [];
 }
-
-final class AddDeviceCategoryEvent extends DashboardEvent {
-  @override
-  List<Object?> get props => [];
-}

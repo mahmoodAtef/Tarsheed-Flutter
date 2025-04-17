@@ -55,7 +55,7 @@ class DashboardRepository implements ConnectivityObserver {
       _lastReport; // to be used when comparing new report before adding it to the stream
   int? _lastReportPeriod;
   bool _subscribedToReportStream = false;
-
+  String? _lastAiSuggestion;
   final StreamController<Report> _reportStreamController = StreamController();
   Stream<Report> get reportStream => _reportStreamController.stream;
 
@@ -90,9 +90,9 @@ class DashboardRepository implements ConnectivityObserver {
   }
 
   // Ai suggestions Logic
-  final StreamController<String> _AiSuggestionStreamController =
+  final StreamController<String> _aiSuggestionStreamController =
       StreamController();
-  Stream<String> get aiSuggestionStream => _AiSuggestionStreamController.stream;
+  Stream<String> get aiSuggestionStream => _aiSuggestionStreamController.stream;
 
   void subscribeInAiSuggestionStream() {
     _subscribedToReportStream = true;
@@ -101,10 +101,11 @@ class DashboardRepository implements ConnectivityObserver {
 
   _updateAiSuggestion() {
     _getAiSuggestion().then((r) => r.fold((l) {
-          _AiSuggestionStreamController.sink.addError(l);
+          _aiSuggestionStreamController.sink.addError(l);
         }, (r) {
-          if (_lastReport != r) {
-            _AiSuggestionStreamController.sink.add(r);
+          if (_lastAiSuggestion != r) {
+            _saveAiSuggestion(r);
+            _aiSuggestionStreamController.sink.add(r);
           }
         }));
   }
@@ -114,6 +115,11 @@ class DashboardRepository implements ConnectivityObserver {
         ? await _remoteServices.getAISuggestions()
         : await _localServices.getAISuggestions();
     return result;
+  }
+
+  Future<Either<Exception, Unit>> _saveAiSuggestion(String suggestion) async {
+    _lastAiSuggestion = suggestion;
+    return await _localServices.saveAISuggestions(suggestion);
   }
 
   // devices logic
