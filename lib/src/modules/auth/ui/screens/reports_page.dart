@@ -7,6 +7,7 @@ import 'package:tarsheed/src/modules/auth/ui/widgets/report_large_card.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/usage_card.dart';
 import '../../../../core/error/exception_manager.dart';
 import '../../../dashboard/bloc/dashboard_bloc.dart';
+import '../widgets/ai-sugg_card.dart';
 import '../widgets/appbar.dart';
 import '../widgets/bottomNavigatorBar.dart';
 import '../widgets/chart.dart';
@@ -34,6 +35,7 @@ class _ReportsPageState extends State<ReportsPage> {
   void initState() {
     super.initState();
     context.read<DashboardBloc>().add(GetUsageReportEvent());
+    context.read<DashboardBloc>().add(GetAISuggestionsEvent());
   }
 
   @override
@@ -57,25 +59,23 @@ class _ReportsPageState extends State<ReportsPage> {
 
             final avgCost = (report.totalConsumption * 0.85).toStringAsFixed(2);
             final lastMonthUsage =
-                report.previousConsumption.toStringAsFixed(2);
+            report.previousConsumption.toStringAsFixed(2);
             final nextMonthUsage =
-                (report.totalConsumption * 1.05).toStringAsFixed(2);
+            (report.totalConsumption * 1.05).toStringAsFixed(2);
             final savingsPercentage =
-                report.savingsPercentage.toStringAsFixed(0);
+            report.savingsPercentage.toStringAsFixed(0);
 
-            // dynamic decrease logic
             final isUsageDecreased =
                 report.totalConsumption < report.previousConsumption;
             final isCostDecreased = (report.totalConsumption * 0.85) <
                 (report.previousConsumption * 0.85);
 
-            // optional: calculate cost savings percentage
             final previousCost = report.previousConsumption * 0.85;
             final currentCost = report.totalConsumption * 0.85;
             final costSavingsPercentage = previousCost == 0
                 ? '0'
                 : (((previousCost - currentCost) / previousCost) * 100)
-                    .toStringAsFixed(0);
+                .toStringAsFixed(0);
 
             return SingleChildScrollView(
               child: Padding(
@@ -134,6 +134,26 @@ class _ReportsPageState extends State<ReportsPage> {
                       S.of(context).lowTierSystemMessage,
                       style: TextStyle(fontSize: 14.sp),
                     ),
+                    SizedBox(height: 10.h),
+
+                    // AI Suggestion Bloc Builder
+                    BlocBuilder<DashboardBloc, DashboardState>(
+                      builder: (context, state) {
+                        if (state is GetAISuggestionsLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (state is GetAISuggestionsError) {
+                          ExceptionManager.showMessage(state.exception);
+                          return const SizedBox.shrink();
+                        } else if (state is GetAISuggestionsSuccess) {
+                          return AISuggestionCard(
+                            suggestion: state.suggestion,
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -146,3 +166,4 @@ class _ReportsPageState extends State<ReportsPage> {
     );
   }
 }
+
