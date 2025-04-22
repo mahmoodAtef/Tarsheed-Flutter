@@ -23,6 +23,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         _handleGetDevicesEvent(event, emit);
       } else if (event is AddDeviceEvent) {
         _handleAddDeviceEvent(event, emit);
+      } else if (event is EditDeviceEvent) {
+        _handleEditDeviceEvent(event, emit);
       } else if (event is GetDevicesCategoriesEvent) {
         _handleGetCategoriesEvent(event, emit);
       } else if (event is GetRoomsEvent) {
@@ -76,6 +78,18 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     final result = await _repository.addDevice(event.device);
     result.fold(
         (l) => emit(AddDeviceError(l)), (r) => emit(AddDeviceSuccess(r)));
+  }
+
+  _handleEditDeviceEvent(
+      EditDeviceEvent event, Emitter<DashboardState> emit) async {
+    emit(EditDeviceLoading());
+    final result = await _repository.editDevice(
+        name: event.name,
+        id: event.id,
+        description: event.description,
+        pinNumber: event.pinNumber);
+    result.fold(
+        (l) => emit(EditDeviceError(l)), (r) => emit(EditDeviceSuccess()));
   }
 
   // rooms events handlers

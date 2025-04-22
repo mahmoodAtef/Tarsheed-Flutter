@@ -57,7 +57,7 @@ class DashboardRemoteServices implements BaseDashboardServices {
   Future<Either<Exception, List<Device>>> getDevices() async {
     try {
       var response = await DioHelper.getData(
-        path: EndPoints.getDevices,
+        path: EndPoints.getDevices + ApiManager.userId!,
       );
       List<Device> devices = (response.data["data"] as List)
           .map((e) => Device.fromJson(e))
@@ -91,6 +91,27 @@ class DashboardRemoteServices implements BaseDashboardServices {
       Device savedDevice =
           device.copyWith(id: response.data["data"]["deviceSaved"]["_id"]);
       return Right(savedDevice);
+    } on Exception catch (e) {
+      return Left(e);
+    }
+  }
+
+  Future<Either<Exception, Unit>> editDevice(
+      {required String id,
+      String? name,
+      String? description,
+      String? pinNumber}) async {
+    try {
+      await DioHelper.putData(
+        path: EndPoints.editDevice + id,
+        query: {"deviceId": id},
+        data: {
+          "name": name,
+          "description": description,
+          "pinNumber": pinNumber
+        },
+      );
+      return Right(unit);
     } on Exception catch (e) {
       return Left(e);
     }

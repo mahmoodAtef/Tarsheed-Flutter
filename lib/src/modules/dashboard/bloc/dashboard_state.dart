@@ -99,7 +99,12 @@ final class EditDeviceLoading extends DeviceState {}
 
 final class EditDeviceSuccess extends DeviceState {}
 
-final class EditDeviceError extends DeviceState {}
+final class EditDeviceError extends DeviceState {
+  final Exception exception;
+  const EditDeviceError(this.exception);
+  @override
+  List<Object?> get props => [exception];
+}
 
 final class DeleteDeviceLoading extends DeviceState {}
 

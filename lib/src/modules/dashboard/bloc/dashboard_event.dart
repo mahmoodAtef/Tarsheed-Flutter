@@ -61,9 +61,17 @@ final class AddDeviceEvent extends DashboardEvent {
   List<Object?> get props => [device];
 }
 
-final class UpdateDeviceEvent extends DashboardEvent {
+final class EditDeviceEvent extends DashboardEvent {
+  final String id;
+  final String? name;
+  final String? description;
+  final String? pinNumber;
+
+  const EditDeviceEvent(
+      {required this.id, this.name, this.description, this.pinNumber});
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [id, name, description, pinNumber];
 }
 
 final class DeleteDeviceEvent extends DashboardEvent {

@@ -20,17 +20,19 @@ class EndPoints {
 
   /// Dashboard Endpoints
   static const String getUsageReport = '/reports/';
-  static const String getAISuggestions = '/reports/';
-  static const String getCategories = '/categories';
+  static const String getAISuggestions = '/users/get/recomendations/';
+  static const String getCategories = '/category/all';
   static const String getSensors = '/sensors';
-  static const String getDevices = '/sensors';
-  static const String getRooms = '/sensors';
+  static const String getDevices = 'device/getAll/';
+  static const String getRooms = '/room/getAll';
 
-  static const String addDevice = '/sensors';
-  static const String addRoom = '/sensors';
-  static const String addSensor = '/sensors';
+  static const String addDevice = '/device/create';
+  static const String addRoom = '/room/create';
+  static const String addSensor = '/sensor/create';
 
-  static const String deleteDevice = '/sensors';
-  static const String deleteRoom = '/sensors';
-  static const String deleteSensor = '/sensors';
+  static const String deleteDevice = '/device/delete/';
+  static const String deleteRoom = '/room/delete';
+  static const String deleteSensor = '/sensor/delete/';
+
+  static const editDevice = '/device/update';
 }

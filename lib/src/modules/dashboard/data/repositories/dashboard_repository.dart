@@ -161,6 +161,15 @@ class DashboardRepository implements ConnectivityObserver {
     return result;
   }
 
+  Future<Either<Exception, Unit>> editDevice(
+      {required String id,
+      String? name,
+      String? description,
+      String? pinNumber}) async {
+    return await _remoteServices.editDevice(
+        id: id, name: name, description: description, pinNumber: pinNumber);
+  }
+
   _saveDevices(List<Device> devices) async {
     _lastDevices = devices;
     return await _localServices.saveDevices(devices);
