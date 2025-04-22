@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
+import 'package:tarsheed/src/modules/auth/ui/widgets/ai-sugg_card.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/report_large_card.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/usage_card.dart';
 
@@ -58,23 +59,23 @@ class _ReportsPageState extends State<ReportsPage> {
 
             final avgCost = (report.totalConsumption * 0.85).toStringAsFixed(2);
             final lastMonthUsage =
-            report.previousConsumption.toStringAsFixed(2);
+                report.previousTotalConsumption.toStringAsFixed(2);
             final nextMonthUsage =
-            (report.totalConsumption * 1.05).toStringAsFixed(2);
+                (report.totalConsumption * 1.05).toStringAsFixed(2);
             final savingsPercentage =
-            report.savingsPercentage.toStringAsFixed(0);
+                report.savingsPercentage.toStringAsFixed(0);
 
             final isUsageDecreased =
-                report.totalConsumption < report.previousConsumption;
+                report.totalConsumption < report.previousTotalConsumption;
             final isCostDecreased = (report.totalConsumption * 0.85) <
-                (report.previousConsumption * 0.85);
+                (report.previousTotalConsumption * 0.85);
 
-            final previousCost = report.previousConsumption * 0.85;
+            final previousCost = report.previousTotalConsumption * 0.85;
             final currentCost = report.totalConsumption * 0.85;
             final costSavingsPercentage = previousCost == 0
                 ? '0'
                 : (((previousCost - currentCost) / previousCost) * 100)
-                .toStringAsFixed(0);
+                    .toStringAsFixed(0);
 
             return SingleChildScrollView(
               child: Padding(
@@ -165,4 +166,3 @@ class _ReportsPageState extends State<ReportsPage> {
     );
   }
 }
-

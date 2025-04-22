@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
+
 import '../../../../core/error/exception_manager.dart';
 import '../widgets/device_model_adding.dart';
 
@@ -27,7 +27,6 @@ class _DeviceFormPageState extends State<DeviceFormPage> {
 
     if (widget.initialDevice != null) {
       _nameController.text = widget.initialDevice!.name;
-
     }
   }
 
@@ -52,7 +51,9 @@ class _DeviceFormPageState extends State<DeviceFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.initialDevice != null ? 'Edit Device' : 'Add Device')),
+      appBar: AppBar(
+          title: Text(
+              widget.initialDevice != null ? 'Edit Device' : 'Add Device')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -85,10 +86,11 @@ class _DeviceFormPageState extends State<DeviceFormPage> {
                         child: Row(
                           children: [
                             Image.network(
-                              cat.icon ?? '',
+                              cat.iconUrl ?? '',
                               width: 24,
                               height: 24,
-                              errorBuilder: (_, __, ___) => const Icon(Icons.broken_image),
+                              errorBuilder: (_, __, ___) =>
+                                  const Icon(Icons.broken_image),
                             ),
                             const SizedBox(width: 10),
                             Text(cat.name),
@@ -97,11 +99,12 @@ class _DeviceFormPageState extends State<DeviceFormPage> {
                       );
                     }).toList(),
                     onChanged: (val) {
-                      final selected = categories.firstWhere((e) => e.id == val);
+                      final selected =
+                          categories.firstWhere((e) => e.id == val);
                       setState(() {
                         selectedCategoryId = val;
                         selectedCategoryName = selected.name;
-                        selectedCategoryIcon = selected.icon;
+                        selectedCategoryIcon = selected.iconUrl;
                       });
                     },
                   );
