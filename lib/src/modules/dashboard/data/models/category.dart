@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:tarsheed/src/core/utils/localization_manager.dart';
 
 final class DeviceCategory extends Equatable {
   final String id;

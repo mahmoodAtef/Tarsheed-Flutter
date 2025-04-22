@@ -393,36 +393,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      DeviceCard(
-                        icon: Icons.lightbulb_outline,
-                        deviceName: 'Light bulbs',
-                        deviceType: 'Philips Hue 2',
-                        isActive: lightBulbStatus,
-                        onToggle: (value) {
-                          setState(() {
-                            lightBulbStatus = value;
-                          });
-                        },
-                        onEdit: () {},
-                      ),
-                      SizedBox(width: 16),
-                      DeviceCard(
-                        icon: Icons.tv,
-                        deviceName: 'Smart TV',
-                        deviceType: 'LG',
-                        isActive: smartTVStatus,
-                        onToggle: (value) {
-                          setState(() {
-                            smartTVStatus = value;
-                          });
-                        },
-                        onEdit: () {},
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),

@@ -34,6 +34,7 @@ class _ReportsPageState extends State<ReportsPage> {
   void initState() {
     super.initState();
     context.read<DashboardBloc>().add(GetUsageReportEvent());
+    context.read<DashboardBloc>().add(GetAISuggestionsEvent());
   }
 
   @override
@@ -57,25 +58,23 @@ class _ReportsPageState extends State<ReportsPage> {
 
             final avgCost = (report.totalConsumption * 0.85).toStringAsFixed(2);
             final lastMonthUsage =
-                report.previousTotalConsumption.toStringAsFixed(2);
+            report.previousConsumption.toStringAsFixed(2);
             final nextMonthUsage =
-                (report.totalConsumption * 1.05).toStringAsFixed(2);
+            (report.totalConsumption * 1.05).toStringAsFixed(2);
             final savingsPercentage =
-                report.savingsPercentage.toStringAsFixed(0);
+            report.savingsPercentage.toStringAsFixed(0);
 
-            // dynamic decrease logic
             final isUsageDecreased =
-                report.totalConsumption < report.previousTotalConsumption;
+                report.totalConsumption < report.previousConsumption;
             final isCostDecreased = (report.totalConsumption * 0.85) <
-                (report.previousTotalConsumption * 0.85);
+                (report.previousConsumption * 0.85);
 
-            // optional: calculate cost savings percentage
-            final previousCost = report.previousTotalConsumption * 0.85;
+            final previousCost = report.previousConsumption * 0.85;
             final currentCost = report.totalConsumption * 0.85;
             final costSavingsPercentage = previousCost == 0
                 ? '0'
                 : (((previousCost - currentCost) / previousCost) * 100)
-                    .toStringAsFixed(0);
+                .toStringAsFixed(0);
 
             return SingleChildScrollView(
               child: Padding(
@@ -134,6 +133,26 @@ class _ReportsPageState extends State<ReportsPage> {
                       S.of(context).lowTierSystemMessage,
                       style: TextStyle(fontSize: 14.sp),
                     ),
+                    SizedBox(height: 10.h),
+
+                    // AI Suggestion Bloc Builder
+                    BlocBuilder<DashboardBloc, DashboardState>(
+                      builder: (context, state) {
+                        if (state is GetAISuggestionsLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (state is GetAISuggestionsError) {
+                          ExceptionManager.showMessage(state.exception);
+                          return const SizedBox.shrink();
+                        } else if (state is GetAISuggestionsSuccess) {
+                          return AISuggestionCard(
+                            suggestion: state.suggestion,
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -146,3 +165,4 @@ class _ReportsPageState extends State<ReportsPage> {
     );
   }
 }
+
