@@ -5,12 +5,12 @@ import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/report_large_card.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/usage_card.dart';
+
 import '../../../../core/error/exception_manager.dart';
 import '../../../dashboard/bloc/dashboard_bloc.dart';
 import '../widgets/appbar.dart';
 import '../widgets/bottomNavigatorBar.dart';
 import '../widgets/chart.dart';
-import '../widgets/large_button.dart';
 import '../widgets/month_navigaion.dart';
 import '../widgets/select_time_period.dart';
 
@@ -57,7 +57,7 @@ class _ReportsPageState extends State<ReportsPage> {
 
             final avgCost = (report.totalConsumption * 0.85).toStringAsFixed(2);
             final lastMonthUsage =
-                report.previousConsumption.toStringAsFixed(2);
+                report.previousTotalConsumption.toStringAsFixed(2);
             final nextMonthUsage =
                 (report.totalConsumption * 1.05).toStringAsFixed(2);
             final savingsPercentage =
@@ -65,12 +65,12 @@ class _ReportsPageState extends State<ReportsPage> {
 
             // dynamic decrease logic
             final isUsageDecreased =
-                report.totalConsumption < report.previousConsumption;
+                report.totalConsumption < report.previousTotalConsumption;
             final isCostDecreased = (report.totalConsumption * 0.85) <
-                (report.previousConsumption * 0.85);
+                (report.previousTotalConsumption * 0.85);
 
             // optional: calculate cost savings percentage
-            final previousCost = report.previousConsumption * 0.85;
+            final previousCost = report.previousTotalConsumption * 0.85;
             final currentCost = report.totalConsumption * 0.85;
             final costSavingsPercentage = previousCost == 0
                 ? '0'

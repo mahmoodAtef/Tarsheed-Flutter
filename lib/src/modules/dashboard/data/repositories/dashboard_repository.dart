@@ -80,7 +80,6 @@ class DashboardRepository implements ConnectivityObserver {
     final Either<Exception, Report> result = _isConnected
         ? await _remoteServices.getUsageReport(period: period)
         : await _localServices.getUsageReport(period: period);
-
     return result;
   }
 

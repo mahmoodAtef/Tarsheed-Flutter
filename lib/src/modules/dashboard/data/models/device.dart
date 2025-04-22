@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class Device extends Equatable {
   final String name;
   final String id;
-  final String type;
+  // final String type;
   final String? description;
   final String? pinNumber;
   final String? roomId;
@@ -11,7 +11,7 @@ class Device extends Equatable {
   const Device(
       {required this.name,
       required this.id,
-      required this.type,
+      // required this.type,
       this.description,
       this.pinNumber,
       this.roomId,
@@ -21,7 +21,7 @@ class Device extends Equatable {
     return Device(
       name: json['name'],
       id: json['id'] ?? json["_id"],
-      type: json['type'],
+      //  type: json['type'],
       description: json['description'],
       pinNumber: json['pinNumber'],
       roomId: json['roomId'],
@@ -32,7 +32,7 @@ class Device extends Equatable {
   Map<String, dynamic> toJson() => {
         "name": name,
         "id": id,
-        "type": type,
+        //  "type": type,
         "description": description,
         "pinNumber": pinNumber,
         "roomId": roomId,
@@ -42,7 +42,7 @@ class Device extends Equatable {
   Device copyWith({
     String? id,
     String? name,
-    String? type,
+    // String? type,
     String? description,
     String? pinNumber,
     String? roomId,
@@ -51,7 +51,7 @@ class Device extends Equatable {
     return Device(
       name: name ?? this.name,
       id: id ?? this.id,
-      type: type ?? this.type,
+      // type: type ?? this.type,
       description: description ?? this.description,
       pinNumber: pinNumber ?? this.pinNumber,
       roomId: roomId ?? this.roomId,
