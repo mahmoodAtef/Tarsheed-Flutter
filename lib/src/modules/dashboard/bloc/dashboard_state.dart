@@ -108,9 +108,19 @@ final class EditDeviceError extends DeviceState {
 
 final class DeleteDeviceLoading extends DeviceState {}
 
-final class DeleteDeviceSuccess extends DeviceState {}
+final class DeleteDeviceSuccess extends DeviceState {
+  final String deviceId;
+  const DeleteDeviceSuccess(this.deviceId);
+  @override
+  List<Object?> get props => [deviceId];
+}
 
-final class DeleteDeviceError extends DeviceState {}
+final class DeleteDeviceError extends DeviceState {
+  final Exception exception;
+  const DeleteDeviceError(this.exception);
+  @override
+  List<Object?> get props => [exception];
+}
 
 // rooms
 final class RoomState extends DashboardState {
@@ -159,9 +169,19 @@ final class EditRoomError extends RoomState {}
 
 final class DeleteRoomLoading extends RoomState {}
 
-final class DeleteRoomSuccess extends RoomState {}
+final class DeleteRoomSuccess extends RoomState {
+  final String roomId;
+  const DeleteRoomSuccess(this.roomId);
+  @override
+  List<Object?> get props => [roomId];
+}
 
-final class DeleteRoomError extends RoomState {}
+final class DeleteRoomError extends RoomState {
+  final Exception exception;
+  const DeleteRoomError(this.exception);
+  @override
+  List<Object?> get props => [exception];
+}
 
 // device categories
 final class DeviceCategoryState extends DashboardState {

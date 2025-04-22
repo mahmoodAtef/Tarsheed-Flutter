@@ -170,6 +170,10 @@ class DashboardRepository implements ConnectivityObserver {
         id: id, name: name, description: description, pinNumber: pinNumber);
   }
 
+  Future<Either<Exception, Unit>> deleteDevice(String id) async {
+    return await _remoteServices.deleteDevice(id);
+  }
+
   _saveDevices(List<Device> devices) async {
     _lastDevices = devices;
     return await _localServices.saveDevices(devices);
@@ -251,6 +255,10 @@ class DashboardRepository implements ConnectivityObserver {
       _saveRooms(_lastRooms);
     });
     return result;
+  }
+
+  Future<Either<Exception, Unit>> deleteRoom(String id) async {
+    return await _remoteServices.deleteRoom(id);
   }
 
   _saveRooms(List<Room> rooms) async {

@@ -44,8 +44,10 @@ final class UpdateRoomEvent extends DashboardEvent {
 }
 
 final class DeleteRoomEvent extends DashboardEvent {
+  final String roomId;
+  const DeleteRoomEvent(this.roomId);
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [roomId];
 }
 
 // devices
@@ -75,8 +77,10 @@ final class EditDeviceEvent extends DashboardEvent {
 }
 
 final class DeleteDeviceEvent extends DashboardEvent {
+  final String deviceId;
+  const DeleteDeviceEvent(this.deviceId);
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [deviceId];
 }
 
 // devices categories

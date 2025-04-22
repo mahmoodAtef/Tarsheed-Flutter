@@ -142,6 +142,17 @@ class DashboardRemoteServices implements BaseDashboardServices {
     }
   }
 
+  Future<Either<Exception, Unit>> deleteRoom(String id) async {
+    try {
+      await DioHelper.deleteData(
+        path: EndPoints.deleteRoom + id,
+      );
+      return Right(unit);
+    } on Exception catch (e) {
+      return Left(e);
+    }
+  }
+
   Future<Either<Exception, Sensor>> addSensor(Sensor sensor) async {
     try {
       var response = await DioHelper.postData(

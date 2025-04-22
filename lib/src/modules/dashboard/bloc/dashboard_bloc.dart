@@ -25,12 +25,16 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         _handleAddDeviceEvent(event, emit);
       } else if (event is EditDeviceEvent) {
         _handleEditDeviceEvent(event, emit);
+      } else if (event is DeleteDeviceEvent) {
+        _handleDeleteDeviceEvent(event, emit);
       } else if (event is GetDevicesCategoriesEvent) {
         _handleGetCategoriesEvent(event, emit);
       } else if (event is GetRoomsEvent) {
         _handleGetRoomsEvent(event, emit);
       } else if (event is AddRoomEvent) {
         _handleAddRoomEvent(event, emit);
+      } else if (event is DeleteRoomEvent) {
+        _handleDeleteRoomEvent(event, emit);
       } else if (event is GetAISuggestionsEvent) {
         _handleGetAISuggestionsEvent(event, emit);
       }
@@ -92,6 +96,14 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         (l) => emit(EditDeviceError(l)), (r) => emit(EditDeviceSuccess()));
   }
 
+  _handleDeleteDeviceEvent(
+      DeleteDeviceEvent event, Emitter<DashboardState> emit) async {
+    emit(DeleteDeviceLoading());
+    final result = await _repository.deleteDevice(event.deviceId);
+    result.fold((l) => emit(DeleteDeviceError(l)),
+        (r) => emit(DeleteDeviceSuccess(event.deviceId)));
+  }
+
   // rooms events handlers
   _handleGetRoomsEvent(
       GetRoomsEvent event, Emitter<DashboardState> emit) async {
@@ -106,6 +118,14 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     emit(AddRoomLoading());
     final result = await _repository.addRoom(event.room);
     result.fold((l) => emit(AddRoomError(l)), (r) => emit(AddRoomSuccess(r)));
+  }
+
+  _handleDeleteRoomEvent(
+      DeleteRoomEvent event, Emitter<DashboardState> emit) async {
+    emit(DeleteRoomLoading());
+    final result = await _repository.deleteRoom(event.roomId);
+    result.fold((l) => emit(DeleteRoomError(l)),
+        (r) => emit(DeleteRoomSuccess(event.roomId)));
   }
 
   _handleGetCategoriesEvent(
