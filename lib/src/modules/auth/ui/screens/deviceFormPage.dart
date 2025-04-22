@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tarsheed/src/core/utils/color_manager.dart';
+import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
+import '../../../../core/error/exception_manager.dart';
 import '../widgets/device_model_adding.dart';
 
 class DeviceFormPage extends StatefulWidget {
@@ -12,32 +16,23 @@ class DeviceFormPage extends StatefulWidget {
 
 class _DeviceFormPageState extends State<DeviceFormPage> {
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _typeController = TextEditingController();
-  IconData? selectedIcon;
-
-  final List<IconData> icons = [
-    Icons.lightbulb_outline,
-    Icons.tv,
-    Icons.wifi,
-    Icons.videocam,
-    Icons.ac_unit,
-    Icons.fireplace,
-  ];
+  String? selectedCategoryId;
+  String? selectedCategoryName;
+  String? selectedCategoryIcon;
 
   @override
   void initState() {
     super.initState();
+    context.read<DashboardBloc>().add(GetDevicesCategoriesEvent());
+
     if (widget.initialDevice != null) {
       _nameController.text = widget.initialDevice!.name;
-      _typeController.text = widget.initialDevice!.type;
-      selectedIcon = widget.initialDevice!.icon;
+
     }
   }
 
   void _saveDevice() {
-    if (_nameController.text.isEmpty ||
-        _typeController.text.isEmpty ||
-        selectedIcon == null) {
+    if (_nameController.text.isEmpty || selectedCategoryId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill in all the fields')),
       );
@@ -45,9 +40,9 @@ class _DeviceFormPageState extends State<DeviceFormPage> {
     }
 
     final newDevice = DeviceModel(
-      icon: selectedIcon!,
       name: _nameController.text,
-      type: _typeController.text,
+      type: selectedCategoryName ?? '',
+      icon: selectedCategoryIcon ?? '',
       isActive: widget.initialDevice?.isActive ?? false,
     );
 
@@ -56,60 +51,70 @@ class _DeviceFormPageState extends State<DeviceFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isEditing = widget.initialDevice != null;
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(isEditing ? 'Edit Device' : 'Add Device'),
-      ),
+      appBar: AppBar(title: Text(widget.initialDevice != null ? 'Edit Device' : 'Add Device')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Text(
-              'Select Icon',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Wrap(
-              spacing: 10,
-              children: icons.map((iconData) {
-                final isSelected = iconData == selectedIcon;
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedIcon = iconData;
-                    });
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: isSelected ? Colors.blue : Colors.grey[200],
-                      shape: BoxShape.circle,
-                    ),
-                    padding: const EdgeInsets.all(12),
-                    child: Icon(
-                      iconData,
-                      size: 30,
-                      color: isSelected ? Colors.white : Colors.black,
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 20),
             TextField(
               controller: _nameController,
               decoration: const InputDecoration(labelText: 'Device Name'),
             ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _typeController,
-              decoration: const InputDecoration(labelText: 'Device Type'),
+            const SizedBox(height: 20),
+
+            /// Dropdown for categories
+            BlocConsumer<DashboardBloc, DashboardState>(
+              listener: (context, state) {
+                if (state is GetDeviceCategoriesError) {
+                  ExceptionManager.showMessage(state.exception);
+                }
+              },
+              builder: (context, state) {
+                if (state is GetDeviceCategoriesLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is GetDeviceCategoriesSuccess) {
+                  final categories = state.deviceCategories;
+
+                  return DropdownButtonFormField<String>(
+                    value: selectedCategoryId,
+                    hint: const Text("Select Category"),
+                    items: categories.map((cat) {
+                      return DropdownMenuItem<String>(
+                        value: cat.id,
+                        child: Row(
+                          children: [
+                            Image.network(
+                              cat.icon ?? '',
+                              width: 24,
+                              height: 24,
+                              errorBuilder: (_, __, ___) => const Icon(Icons.broken_image),
+                            ),
+                            const SizedBox(width: 10),
+                            Text(cat.name),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (val) {
+                      final selected = categories.firstWhere((e) => e.id == val);
+                      setState(() {
+                        selectedCategoryId = val;
+                        selectedCategoryName = selected.name;
+                        selectedCategoryIcon = selected.icon;
+                      });
+                    },
+                  );
+                } else {
+                  return const Text('No categories found.');
+                }
+              },
             ),
+
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: _saveDevice,
-              child: Text(isEditing ? 'Update' : 'Save'),
+              child: Text(widget.initialDevice != null ? 'Update' : 'Save'),
             ),
           ],
         ),

@@ -9,7 +9,7 @@ import '../widgets/card_devices.dart';
 import '../widgets/device_model_adding.dart';
 import '../widgets/rectangle_background.dart';
 import 'deviceFormPage.dart';
-//el room ya tofy
+
 class RoomsPage extends StatelessWidget {
   const RoomsPage({Key? key}) : super(key: key);
 
@@ -51,7 +51,6 @@ class RoomsPage extends StatelessWidget {
   }
 }
 
-// el categories ya tofy
 class PriorityPage extends StatelessWidget {
   const PriorityPage({Key? key}) : super(key: key);
 

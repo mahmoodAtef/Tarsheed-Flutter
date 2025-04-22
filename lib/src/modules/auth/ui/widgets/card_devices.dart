@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
+
+import '../../../../core/utils/color_manager.dart';
 
 class DeviceCard extends StatelessWidget {
-  final IconData icon;
+  final String icon;  // Change type to String to accept URL
   final String deviceName;
   final String deviceType;
   final bool isActive;
@@ -42,7 +44,16 @@ class DeviceCard extends StatelessWidget {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, size: 40, color: textColor),
+              // If the icon is a URL, use Image.network to display it
+              Image.network(
+                icon,
+                width: 40,
+                height: 40,
+                color: textColor,
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(Icons.device_unknown, size: 40, color: textColor); // Fallback icon if there's an error
+                },
+              ),
               const SizedBox(height: 10),
               Text(
                 deviceName,
