@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import '../../../../core/error/exception_manager.dart';
-import '../widgets/appbar.dart';
-import '../widgets/bottomNavigatorBar.dart';
+import '../../../../core/widgets/appbar.dart';
+import '../../../../core/widgets/bottomNavigatorBar.dart';
 import '../widgets/card_devices.dart';
 import '../widgets/device_model_adding.dart';
-import '../widgets/rectangle_background.dart';
+import '../../../../core/widgets/rectangle_background.dart';
 import 'deviceFormPage.dart';
 
 class RoomsPage extends StatelessWidget {

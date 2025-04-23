@@ -3,18 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
-import 'package:tarsheed/src/modules/auth/ui/screens/devices.dart';
-import 'package:tarsheed/src/modules/auth/ui/screens/profile_screen.dart';
-import 'package:tarsheed/src/modules/auth/ui/widgets/text_home_screen.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/screens/devices.dart';
+import 'package:tarsheed/src/modules/settings/ui/screens/profile_screen.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/widgets/text_home_screen.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
-import '../widgets/bottomNavigatorBar.dart';
+import '../../../../core/widgets/bottomNavigatorBar.dart';
 import '../widgets/card_devices.dart';
-import '../widgets/card_home_screen.dart';
 import '../widgets/color_indicator.dart';
-import '../widgets/large_button.dart';
+import '../../../../core/widgets/large_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

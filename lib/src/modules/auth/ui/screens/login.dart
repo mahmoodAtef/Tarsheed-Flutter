@@ -11,12 +11,12 @@ import 'package:tarsheed/src/modules/auth/ui/screens/sign_up_create_account.dart
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_email.dart';
 
 import '../../../../core/utils/image_manager.dart';
-import '../widgets/large_button.dart';
+import '../../../../core/widgets/large_button.dart';
 import '../widgets/main_title.dart';
-import '../widgets/rectangle_background.dart';
+import '../../../../core/widgets/rectangle_background.dart';
 import '../widgets/social_icon.dart';
 import '../widgets/sup_title.dart';
-import '../widgets/text_field.dart';
+import '../../../../core/widgets/text_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

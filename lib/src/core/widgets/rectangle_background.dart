@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/utils/image_manager.dart';
+import '../utils/image_manager.dart';
 import 'circle_background.dart';
 
 class BackGroundRectangle extends StatelessWidget {

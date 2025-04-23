@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 
 import '../../../../../generated/l10n.dart';
-import '../widgets/appbar.dart';
-import '../widgets/bottomNavigatorBar.dart';
+import '../../../../core/widgets/appbar.dart';
+import '../../../../core/widgets/bottomNavigatorBar.dart';
 import '../widgets/container_with_switch.dart';
 
 class EnergyModePage extends StatelessWidget {

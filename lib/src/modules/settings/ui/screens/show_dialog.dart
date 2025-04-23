@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/utils/color_manager.dart';
-import '../../../settings/cubit/settings_cubit.dart';
+import '../../cubit/settings_cubit.dart';
 
 void showDeleteAccountDialog(BuildContext context) {
   showDialog(

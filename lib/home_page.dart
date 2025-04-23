@@ -4,7 +4,7 @@ import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/utils/image_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/sign_up_create_account.dart';
-import 'package:tarsheed/src/modules/auth/ui/widgets/rectangle_background.dart';
+import 'package:tarsheed/src/core/widgets/rectangle_background.dart';
 import 'package:tarsheed/generated/l10n.dart';
 
 class HomePage extends StatelessWidget {

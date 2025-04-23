@@ -10,12 +10,12 @@ import 'package:tarsheed/src/modules/auth/ui/screens/verify_code.dart';
 import '../../../../core/error/exception_manager.dart';
 import '../../../../core/utils/image_manager.dart';
 import '../../data/models/email_and_password_registration_form.dart';
-import '../widgets/large_button.dart';
+import '../../../../core/widgets/large_button.dart';
 import '../widgets/main_title.dart';
-import '../widgets/rectangle_background.dart';
+import '../../../../core/widgets/rectangle_background.dart';
 import '../widgets/social_icon.dart';
 import '../widgets/sup_title.dart';
-import '../widgets/text_field.dart';
+import '../../../../core/widgets/text_field.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});

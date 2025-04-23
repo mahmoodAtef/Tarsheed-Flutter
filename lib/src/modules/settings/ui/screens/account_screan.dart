@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
-import 'package:tarsheed/src/modules/auth/ui/screens/profile_screen.dart';
-import 'package:tarsheed/src/modules/auth/ui/screens/security_screen.dart';
-import 'package:tarsheed/src/modules/auth/ui/screens/setting.dart';
+import 'package:tarsheed/src/modules/settings/ui/screens/profile_screen.dart';
+import 'package:tarsheed/src/modules/settings/ui/screens/security_screen.dart';
+import 'package:tarsheed/src/modules/settings/ui/screens/setting.dart';
 import '../../../../../generated/l10n.dart';
-import '../widgets/appbar.dart';
-import '../widgets/bottomNavigatorBar.dart';
-import '../widgets/card_item.dart';
+import '../../../../core/widgets/appbar.dart';
+import '../../../../core/widgets/bottomNavigatorBar.dart';
+import '../../../auth/ui/widgets/card_item.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});

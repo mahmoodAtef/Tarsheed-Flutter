@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart'; // استيراد ملف الترجمة
 
-import '../widgets/appbar.dart';
-import '../widgets/bottomNavigatorBar.dart';
+import '../../../../core/widgets/appbar.dart';
+import '../../../../core/widgets/bottomNavigatorBar.dart';
 import '../widgets/container_with_switch.dart';
-import '../widgets/large_button.dart';
+import '../../../../core/widgets/large_button.dart';
 
 class SecurityPage extends StatefulWidget {
   @override

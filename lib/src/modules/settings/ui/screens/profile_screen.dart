@@ -7,7 +7,7 @@ import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/utils/image_manager.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/data/models/user.dart';
-import '../widgets/appbar.dart';
+import '../../../../core/widgets/appbar.dart';
 
 class ProfilePage extends StatefulWidget {
   @override

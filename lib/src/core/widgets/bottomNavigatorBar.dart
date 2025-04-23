@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
-import 'package:tarsheed/src/modules/auth/ui/screens/home_screen.dart';
-import '../screens/account_screan.dart';
-import '../screens/reports_page.dart';
-import '../screens/setting.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/screens/home_screen.dart';
+import '../../modules/settings/ui/screens/account_screan.dart';
+import '../../modules/dashboard/ui/screens/reports_page.dart';
+import '../../modules/settings/ui/screens/setting.dart';
 
 class BottomNavigator extends StatefulWidget {
   final int currentIndex;

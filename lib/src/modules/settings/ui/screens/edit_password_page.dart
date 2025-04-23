@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/error/exception_manager.dart';
-import '../../bloc/auth_bloc.dart';
-import '../widgets/appbar.dart';
+import '../../../auth/bloc/auth_bloc.dart';
+import '../../../../core/widgets/appbar.dart';
 import '../../../../../generated/l10n.dart';
 
 class EditPasswordPage extends StatefulWidget {

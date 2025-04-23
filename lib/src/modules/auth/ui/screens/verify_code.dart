@@ -4,14 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_finish.dart';
-import 'package:tarsheed/src/modules/auth/ui/widgets/text_field.dart';
+import 'package:tarsheed/src/core/widgets/text_field.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
 import '../../bloc/auth_bloc.dart';
-import '../widgets/large_button.dart';
+import '../../../../core/widgets/large_button.dart';
 import '../widgets/main_title.dart';
-import '../widgets/rectangle_background.dart';
+import '../../../../core/widgets/rectangle_background.dart';
 import '../widgets/sup_title.dart';
 
 class CodeVerificationScreen extends StatefulWidget {
