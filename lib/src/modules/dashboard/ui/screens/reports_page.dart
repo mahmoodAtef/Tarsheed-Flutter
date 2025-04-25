@@ -3,14 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/ai-sugg_card.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/report_large_card.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/usage_card.dart';
 
 import '../../../../core/error/exception_manager.dart';
-import '../../bloc/dashboard_bloc.dart';
 import '../../../../core/widgets/appbar.dart';
 import '../../../../core/widgets/bottomNavigatorBar.dart';
+import '../../bloc/dashboard_bloc.dart';
 import '../widgets/chart.dart';
 import '../widgets/month_navigaion.dart';
 import '../widgets/select_time_period.dart';
@@ -23,6 +24,8 @@ class ReportsPage extends StatefulWidget {
 }
 
 class _ReportsPageState extends State<ReportsPage> {
+  List<Device> devices = [];
+
   final List<String> _periods = [
     S.current.today,
     S.current.week,
@@ -91,7 +94,7 @@ class _ReportsPageState extends State<ReportsPage> {
                         });
                         context
                             .read<DashboardBloc>()
-                            .add(GetUsageReportEvent(period: index));
+                            .add(GetUsageReportEvent(period: "4:2025"));
                       },
                     ),
                     UsageChartWidget(),

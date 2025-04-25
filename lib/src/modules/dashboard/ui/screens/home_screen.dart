@@ -3,17 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/screens/devices.dart';
-import 'package:tarsheed/src/modules/settings/ui/screens/profile_screen.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/widgets/text_home_screen.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/screens/devices.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/widgets/text_home_screen.dart';
+import 'package:tarsheed/src/modules/settings/ui/screens/profile_screen.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
 import '../../../../core/widgets/bottomNavigatorBar.dart';
-import '../widgets/card_devices.dart';
-import '../widgets/color_indicator.dart';
 import '../../../../core/widgets/large_button.dart';
+import '../widgets/color_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,7 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<DashboardBloc>().add(GetUsageReportEvent());
+    context.read<DashboardBloc>().add(GetUsageReportEvent(
+        period: "${DateTime.now().month}-${DateTime.now().year}"));
   }
 
   @override

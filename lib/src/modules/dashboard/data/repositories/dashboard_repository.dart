@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:tarsheed/src/core/services/connectivity_services.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/category.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/device_creation_form.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/room.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/sensor.dart';
@@ -152,7 +153,7 @@ class DashboardRepository implements ConnectivityObserver {
     return result;
   }
 
-  Future<Either<Exception, Device>> addDevice(Device device) async {
+  Future<Either<Exception, Device>> addDevice(DeviceCreationForm device) async {
     var result = await _remoteServices.addDevice(device);
     result.fold((l) => null, (r) {
       _lastDevices.add(r);
@@ -305,6 +306,19 @@ class DashboardRepository implements ConnectivityObserver {
       _saveSensors(_lastSensors);
     });
     return result;
+  }
+
+  Future<Either<Exception, Unit>> editSensor(
+      {required String id,
+      String? name,
+      String? description,
+      String? pinNumber}) async {
+    return await _remoteServices.editSensor(
+        id: id, name: name, description: description, pinNumber: pinNumber);
+  }
+
+  Future<Either<Exception, Unit>> deleteSensor(String id) async {
+    return await _remoteServices.deleteSensor(id);
   }
 
   _saveSensors(List<Sensor> sensors) async {

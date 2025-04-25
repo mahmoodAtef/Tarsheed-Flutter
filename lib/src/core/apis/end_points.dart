@@ -35,4 +35,5 @@ class EndPoints {
   static const String deleteSensor = '/sensor/delete/';
 
   static const editDevice = '/device/update';
+  static const editSensor = '/sensor/update';
 }

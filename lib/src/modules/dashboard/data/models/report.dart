@@ -1,11 +1,12 @@
 import 'package:equatable/equatable.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/consumption_interval.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device_usage.dart';
 
 final class Report extends Equatable {
   final double totalConsumption;
   final double savingsPercentage;
   final double consumptionCost;
-
+  final List<ConsumptionInterval> consumptionIntervals;
   final double averageConsumption;
   final double averageCost;
   final double previousTotalConsumption;
@@ -23,20 +24,25 @@ final class Report extends Equatable {
       required this.savingsPercentage,
       required this.updatedAt,
       this.period,
-      required this.tier});
+      required this.tier,
+      this.consumptionIntervals = const []});
+
   factory Report.fromJson(Map<String, dynamic> json) => Report(
-      savingsPercentage: double.tryParse(json["savingsPercentage"]) ?? 0,
-      totalConsumption: double.tryParse(json["totalConsumption"]) ?? 0,
-      period: json["period"],
-      averageConsumption: json["averageConsumption"],
-      averageCost: json["averageCost"],
-      consumptionCost: json["consumptionCost"],
-      previousTotalConsumption:
-          double.tryParse(json["previousPeriodConsumption"]) ?? 0,
-      tier: json["Tier"],
-      devicesUsages:
-          List.of(json["devices"].map((e) => DeviceUsage.fromJson(e))),
-      updatedAt: json["updatedAt"] ?? DateTime.now());
+        savingsPercentage: double.tryParse(json["savingsPercentage"]) ?? 0,
+        totalConsumption: double.tryParse(json["totalConsumption"]) ?? 0,
+        period: json["period"],
+        averageConsumption: json["averageConsumption"],
+        averageCost: json["averageCost"],
+        consumptionCost: json["consumptionCost"],
+        previousTotalConsumption:
+            double.tryParse(json["previousPeriodConsumption"]) ?? 0,
+        tier: json["Tier"],
+        devicesUsages:
+            List.of(json["devices"].map((e) => DeviceUsage.fromJson(e))),
+        updatedAt: json["updatedAt"] ?? DateTime.now(),
+        consumptionIntervals: List.of(json["consumptionIntervals"]
+            .map((e) => ConsumptionInterval.fromJson(e))),
+      );
 
   Map<String, dynamic> toJson() => {
         "savingsPercentage": savingsPercentage,
@@ -48,7 +54,9 @@ final class Report extends Equatable {
         "averageCost": averageCost,
         "consumptionCost": consumptionCost,
         "previousPeriodConsumption": previousTotalConsumption,
-        "Tier": tier
+        "Tier": tier,
+        "consumptionIntervals":
+            consumptionIntervals.map((e) => e.toJson()).toList()
       };
 
   @override
@@ -57,6 +65,12 @@ final class Report extends Equatable {
         totalConsumption,
         devicesUsages,
         savingsPercentage,
-        period
+        period,
+        averageConsumption,
+        averageCost,
+        consumptionCost,
+        previousTotalConsumption,
+        tier,
+        consumptionIntervals
       ];
 }

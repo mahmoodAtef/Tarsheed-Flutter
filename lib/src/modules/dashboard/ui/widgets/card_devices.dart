@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/color_manager.dart';
 
 class DeviceCard extends StatelessWidget {
-  final String icon;  // Change type to String to accept URL
+  final String icon; // Change type to String to accept URL
   final String deviceName;
   final String deviceType;
   final bool isActive;
@@ -51,7 +50,9 @@ class DeviceCard extends StatelessWidget {
                 height: 40,
                 color: textColor,
                 errorBuilder: (context, error, stackTrace) {
-                  return Icon(Icons.device_unknown, size: 40, color: textColor); // Fallback icon if there's an error
+                  return Icon(Icons.device_unknown,
+                      size: 40,
+                      color: textColor); // Fallback icon if there's an error
                 },
               ),
               const SizedBox(height: 10),

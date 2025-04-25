@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/utils/image_manager.dart';
+import 'package:tarsheed/src/core/widgets/rectangle_background.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/sign_up_create_account.dart';
-import 'package:tarsheed/src/core/widgets/rectangle_background.dart';
-import 'package:tarsheed/generated/l10n.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -53,13 +53,6 @@ class HomePage extends StatelessWidget {
                         width: 160,
                         height: 60,
                         child: ElevatedButton(
-                          child: Text(
-                            S.of(context).login,
-                            style: TextStyle(
-                                color: ColorManager.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600),
-                          ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: ColorManager.primary,
                             elevation: 15,
@@ -69,6 +62,13 @@ class HomePage extends StatelessWidget {
                           onPressed: () {
                             context.push(LoginPage());
                           },
+                          child: Text(
+                            S.of(context).login,
+                            style: TextStyle(
+                                color: ColorManager.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 10),

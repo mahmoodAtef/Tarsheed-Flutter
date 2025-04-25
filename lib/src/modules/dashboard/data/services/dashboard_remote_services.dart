@@ -4,6 +4,7 @@ import 'package:tarsheed/src/core/apis/dio_helper.dart';
 import 'package:tarsheed/src/core/apis/end_points.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/category.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/device_creation_form.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/room.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/sensor.dart';
@@ -82,14 +83,14 @@ class DashboardRemoteServices implements BaseDashboardServices {
     }
   }
 
-  Future<Either<Exception, Device>> addDevice(Device device) async {
+  Future<Either<Exception, Device>> addDevice(DeviceCreationForm device) async {
     try {
       var response = await DioHelper.postData(
         path: EndPoints.addDevice,
         data: device.toJson(),
       );
       Device savedDevice =
-          device.copyWith(id: response.data["data"]["deviceSaved"]["_id"]);
+          Device.fromJson(response.data["data"]["createdDevice"]);
       return Right(savedDevice);
     } on Exception catch (e) {
       return Left(e);
@@ -162,6 +163,38 @@ class DashboardRemoteServices implements BaseDashboardServices {
       Sensor savedSensor =
           sensor.copyWith(id: response.data["data"]["createdSensor"]["_id"]);
       return Right(savedSensor);
+    } on Exception catch (e) {
+      return Left(e);
+    }
+  }
+
+  Future<Either<Exception, Unit>> deleteSensor(String id) async {
+    try {
+      await DioHelper.deleteData(
+        path: EndPoints.deleteSensor + id,
+      );
+      return Right(unit);
+    } on Exception catch (e) {
+      return Left(e);
+    }
+  }
+
+  Future<Either<Exception, Unit>> editSensor(
+      {required String id,
+      String? name,
+      String? description,
+      String? pinNumber}) async {
+    try {
+      await DioHelper.putData(
+        path: EndPoints.editDevice + id,
+        query: {"id": id},
+        data: {
+          "name": name,
+          "description": description,
+          "pinNumber": pinNumber
+        },
+      );
+      return Right(unit);
     } on Exception catch (e) {
       return Left(e);
     }

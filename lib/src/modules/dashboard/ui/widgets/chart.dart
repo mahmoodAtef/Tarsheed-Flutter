@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/consumption_interval.dart';
 
 class UsageChartWidget extends StatelessWidget {
-  final List<ChartData> chartData = [
-    ChartData(1, 50),
-    ChartData(2, 150),
-    ChartData(3, 80),
-    ChartData(4, 120),
-    ChartData(5, 60),
-    ChartData(6, 90),
-    ChartData(7, 70),
-    ChartData(8, 110),
-    ChartData(9, 130),
-    ChartData(10, 200),
+  final List<ConsumptionInterval> chartData = [
+    ConsumptionInterval(1, 50),
+    ConsumptionInterval(2, 150),
+    ConsumptionInterval(3, 80),
+    ConsumptionInterval(4, 120),
+    ConsumptionInterval(5, 60),
+    ConsumptionInterval(6, 90),
+    ConsumptionInterval(7, 70),
+    ConsumptionInterval(8, 110),
+    ConsumptionInterval(9, 130),
+    ConsumptionInterval(10, 200),
   ];
 
   @override
@@ -54,11 +55,12 @@ class UsageChartWidget extends StatelessWidget {
                 ),
                 plotAreaBorderWidth: 0,
                 enableAxisAnimation: true,
-                series: <CartesianSeries<ChartData, double>>[
-                  SplineSeries<ChartData, double>(
+                series: <CartesianSeries<ConsumptionInterval, double>>[
+                  SplineSeries<ConsumptionInterval, double>(
                     dataSource: chartData,
-                    xValueMapper: (ChartData data, _) => data.day,
-                    yValueMapper: (ChartData data, _) => data.usage,
+                    xValueMapper: (ConsumptionInterval data, _) => data.day,
+                    yValueMapper: (ConsumptionInterval data, _) =>
+                        data.averageUsage,
                     color: ColorManager.primary,
                     width: 2,
                     markerSettings: const MarkerSettings(
@@ -77,11 +79,4 @@ class UsageChartWidget extends StatelessWidget {
       ),
     );
   }
-}
-
-class ChartData {
-  ChartData(this.day, this.usage);
-
-  final double day;
-  final double usage;
 }

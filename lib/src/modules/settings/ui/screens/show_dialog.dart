@@ -19,7 +19,7 @@ void showDeleteAccountDialog(BuildContext context) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                S.of(context).deleteAccountTitle, // Localized Title
+                S.of(context).deleteAccountTitle,
                 style: TextStyle(
                   color: ColorManager.black,
                   fontWeight: FontWeight.w700,
@@ -28,7 +28,7 @@ void showDeleteAccountDialog(BuildContext context) {
               ),
               SizedBox(height: 12.h),
               Text(
-                S.of(context).deleteAccountMessage, // Localized Message
+                S.of(context).deleteAccountMessage,
                 style: TextStyle(
                   color: ColorManager.black,
                   fontSize: 14.sp,
@@ -48,7 +48,7 @@ void showDeleteAccountDialog(BuildContext context) {
                         side: BorderSide.none,
                       ),
                       onPressed: () => Navigator.pop(context),
-                      child: Text(S.of(context).cancel, // Localized cancel text
+                      child: Text(S.of(context).cancel,
                           style: TextStyle(
                             color: ColorManager.black,
                             fontSize: 14.sp,
@@ -67,8 +67,7 @@ void showDeleteAccountDialog(BuildContext context) {
                         final cubit = SettingsCubit.getInstance;
                         await cubit.deleteProfile();
                       },
-                      child: Text(
-                          S.of(context).confirmDelete, // Localized confirm text
+                      child: Text(S.of(context).confirmDelete,
                           style: TextStyle(
                             color: ColorManager.white,
                             fontSize: 14.sp,

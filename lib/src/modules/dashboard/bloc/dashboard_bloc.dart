@@ -5,8 +5,10 @@ import 'package:equatable/equatable.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/category.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/device_creation_form.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/room.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/sensor.dart';
 import 'package:tarsheed/src/modules/dashboard/data/repositories/dashboard_repository.dart';
 
 part 'dashboard_event.dart';
@@ -14,6 +16,11 @@ part 'dashboard_state.dart';
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   final DashboardRepository _repository = sl()..initialize();
+  List<DeviceCategory> categories = [];
+  List<Device> devices = [];
+  List<Room> rooms = [];
+  List<Sensor> sensors = [];
+  Report? report;
 
   DashboardBloc() : super(DashboardInitial()) {
     on<DashboardEvent>((event, emit) {
@@ -52,6 +59,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     emit(GetUsageReportLoading());
     _repository.subscribeInReportStream();
     _repository.reportStream.listen((event) {
+      report = event;
       emit(GetUsageReportSuccess(event));
     }, onError: (e) => emit(GetUsageReportError(e)));
   }
@@ -72,6 +80,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     emit(GetDevicesLoading());
     _repository.subscribeInDevicesStream();
     _repository.devicesStream.listen((event) {
+      devices = event;
+
       emit(GetDevicesSuccess(event));
     }, onError: (e) => emit(GetDevicesError(e)));
   }
@@ -79,7 +89,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   _handleAddDeviceEvent(
       AddDeviceEvent event, Emitter<DashboardState> emit) async {
     emit(AddDeviceLoading());
-    final result = await _repository.addDevice(event.device);
+    final result = await _repository.addDevice(event.deviceCreationForm);
     result.fold(
         (l) => emit(AddDeviceError(l)), (r) => emit(AddDeviceSuccess(r)));
   }
