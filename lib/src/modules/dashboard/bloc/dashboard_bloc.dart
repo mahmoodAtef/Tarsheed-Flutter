@@ -49,8 +49,17 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   }
   @override
   Future<void> close() async {
+    _deleteAllData();
     await _repository.dispose();
     return super.close();
+  }
+
+  void _deleteAllData() {
+    devices = [];
+    report = null;
+    rooms = [];
+    sensors = [];
+    categories = [];
   }
 
   // Event handlers
@@ -120,6 +129,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     emit(GetRoomsLoading());
     _repository.subscribeInRoomsStream();
     _repository.roomsStream.listen((event) {
+      rooms = event;
       emit(GetRoomsSuccess(event));
     }, onError: (e) => emit(GetRoomsError(e)));
   }
@@ -143,6 +153,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     emit(GetDeviceCategoriesLoading());
     _repository.subscribeInCategoriesStream();
     _repository.categoriesStream.listen((event) {
+      categories = event;
       emit(GetDeviceCategoriesSuccess(event));
     }, onError: (e) => emit(GetDeviceCategoriesError(e)));
   }
