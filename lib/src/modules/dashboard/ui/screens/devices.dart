@@ -1,96 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
-import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
-import '../../../../core/error/exception_manager.dart';
 import '../../../../core/widgets/appbar.dart';
 import '../../../../core/widgets/bottomNavigatorBar.dart';
+import '../../bloc/dashboard_bloc.dart';
 import '../widgets/card_devices.dart';
 import '../widgets/device_model_adding.dart';
 import '../../../../core/widgets/rectangle_background.dart';
 import 'deviceFormPage.dart';
-
+// RoomsPage
 class RoomsPage extends StatelessWidget {
   const RoomsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => DashboardBloc()..add(GetRoomsEvent()),
-      child: Scaffold(
-        appBar: AppBar(title: const Text('Rooms')),
-        body: BlocListener<DashboardBloc, DashboardState>(
-          listener: (context, state) {
-            if (state is GetRoomsError) {
-              ExceptionManager.showMessage(state.exception);
-            }
-          },
-          child: BlocBuilder<DashboardBloc, DashboardState>(
-            builder: (context, state) {
-              if (state is GetRoomsLoading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is GetRoomsSuccess) {
-                return ListView.builder(
-                  itemCount: state.rooms.length,
-                  itemBuilder: (context, index) {
-                    var room = state.rooms[index];
-                    return ListTile(
-                      title: Text(room.name ?? 'No Name'),
-                      subtitle: Text('ID: ${room.id}'),
-                    );
-                  },
-                );
-              } else {
-                return const Center(child: Text('No rooms found.'));
-              }
-            },
-          ),
-        ),
-      ),
+    return Scaffold(
+      appBar: AppBar(title: const Text('Rooms')),
     );
   }
 }
-
+// PriorityPage
 class PriorityPage extends StatelessWidget {
   const PriorityPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => DashboardBloc()..add(GetDevicesCategoriesEvent()),
-      child: Scaffold(
-        appBar: AppBar(title: const Text('Priority')),
-        body: BlocListener<DashboardBloc, DashboardState>(
-          listener: (context, state) {
-            if (state is GetDeviceCategoriesError) {
-              ExceptionManager.showMessage(state.exception);
-            }
-          },
-          child: BlocBuilder<DashboardBloc, DashboardState>(
-            builder: (context, state) {
-              if (state is GetDeviceCategoriesLoading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is GetDeviceCategoriesSuccess) {
-                return ListView.builder(
-                  itemCount: state.deviceCategories.length,
-                  itemBuilder: (context, index) {
-                    var category = state.deviceCategories[index];
-                    return ListTile(
-                      title: Text(category.name ?? 'No Name'),
-                      subtitle: Text('ID: ${category.id}'),
-                    );
-                  },
-                );
-              } else {
-                return const Center(child: Text('No categories found.'));
-              }
-            },
-          ),
-        ),
-      ),
+    return Scaffold(
+      appBar: AppBar(title: const Text('Categories')),
     );
   }
 }
+
 
 class DevicesScreen extends StatefulWidget {
   const DevicesScreen({Key? key}) : super(key: key);
@@ -108,42 +48,17 @@ class _DevicesScreenState extends State<DevicesScreen> {
       backgroundColor: ColorManager.white,
       extendBody: true,
       body: Container(
-        decoration: const BoxDecoration(
-          color: Colors.transparent,
-        ),
+        decoration: const BoxDecoration(color: Colors.transparent),
         child: SafeArea(
           child: Stack(
             children: [
-              const Positioned.fill(
-                child: BackGroundRectangle(),
-              ),
+              const Positioned.fill(child: BackGroundRectangle()),
               Column(
                 children: [
                   const CustomAppBar(text: 'Devices'),
+                  const SizedBox(height: 10),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 18,
-                          margin: const EdgeInsets.all(1),
-                          color: Colors.black,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        SizedBox(width: 22),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -155,19 +70,17 @@ class _DevicesScreenState extends State<DevicesScreen> {
                         children: [
                           Icon(Icons.search, color: Colors.grey.shade600, size: 20),
                           const SizedBox(width: 10),
-                          Expanded(
+                          const Expanded(
                             child: TextField(
                               autofocus: false,
-                              showCursor: true,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 hintText: 'Search devices..',
                                 isDense: true,
                                 contentPadding: EdgeInsets.zero,
                                 border: InputBorder.none,
                                 focusedBorder: InputBorder.none,
                               ),
-                              style: const TextStyle(fontSize: 14),
-                              keyboardAppearance: Brightness.light,
+                              style: TextStyle(fontSize: 14),
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -179,32 +92,32 @@ class _DevicesScreenState extends State<DevicesScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     child: Row(
-                      children: [
-                        FilterTab(label: 'Consumption', isActive: true, onTap: () {}),
-                        const SizedBox(width: 10),
-                        FilterTab(
-                          label: 'Rooms',
-                          isActive: false,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const RoomsPage()),
-                            );
-                          },
+                        children: [
+                          FilterTab(label: 'Consumption', isActive: true, onTap: () {}),
+                          const SizedBox(width: 10),
+                          FilterTab(
+                            label: 'Rooms',
+                            isActive: false,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const RoomsPage()),
+                              );
+                            },
+                          ),
+                          const SizedBox(width: 10),
+                          FilterTab(
+                            label: 'Priority',
+                            isActive: false,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const PriorityPage()),
+                              );
+                            },
+                          ),
+                        ],
                         ),
-                        const SizedBox(width: 10),
-                        FilterTab(
-                          label: 'Priority',
-                          isActive: false,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const PriorityPage()),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
                   ),
                   const SizedBox(height: 10),
                   Expanded(
@@ -249,7 +162,6 @@ class _DevicesScreenState extends State<DevicesScreen> {
           ),
         ),
       ),
-      resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final newDevice = await Navigator.push(

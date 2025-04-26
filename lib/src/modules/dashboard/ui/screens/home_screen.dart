@@ -28,8 +28,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<DashboardBloc>().add(GetUsageReportEvent(
-        period: "${DateTime.now().month}-${DateTime.now().year}"));
+    final bloc = context.read<DashboardBloc>();
+    bloc.add(GetUsageReportEvent(period: "${DateTime.now().month}-${DateTime.now().year}"));
+    bloc.add(GetRoomsEvent());
+    bloc.add(GetDevicesCategoriesEvent());
   }
 
   @override

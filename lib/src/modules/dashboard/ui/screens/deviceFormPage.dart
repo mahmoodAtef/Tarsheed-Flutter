@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
-
 import '../../../../core/error/exception_manager.dart';
 import '../widgets/device_model_adding.dart';
 
@@ -23,10 +22,12 @@ class _DeviceFormPageState extends State<DeviceFormPage> {
   @override
   void initState() {
     super.initState();
-    context.read<DashboardBloc>().add(GetDevicesCategoriesEvent());
 
     if (widget.initialDevice != null) {
       _nameController.text = widget.initialDevice!.name;
+      selectedCategoryName = widget.initialDevice!.type;
+      selectedCategoryIcon = widget.initialDevice!.icon;
+
     }
   }
 
@@ -52,8 +53,8 @@ class _DeviceFormPageState extends State<DeviceFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-              widget.initialDevice != null ? 'Edit Device' : 'Add Device')),
+        title: Text(widget.initialDevice != null ? 'Edit Device' : 'Add Device'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -65,16 +66,9 @@ class _DeviceFormPageState extends State<DeviceFormPage> {
             const SizedBox(height: 20),
 
             /// Dropdown for categories
-            BlocConsumer<DashboardBloc, DashboardState>(
-              listener: (context, state) {
-                if (state is GetDeviceCategoriesError) {
-                  ExceptionManager.showMessage(state.exception);
-                }
-              },
+            BlocBuilder<DashboardBloc, DashboardState>(
               builder: (context, state) {
-                if (state is GetDeviceCategoriesLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is GetDeviceCategoriesSuccess) {
+                if (state is GetDeviceCategoriesSuccess) {
                   final categories = state.deviceCategories;
 
                   return DropdownButtonFormField<String>(
@@ -86,11 +80,11 @@ class _DeviceFormPageState extends State<DeviceFormPage> {
                         child: Row(
                           children: [
                             Image.network(
-                              cat.iconUrl ?? '',
+                              cat.iconUrl,
                               width: 24,
                               height: 24,
                               errorBuilder: (_, __, ___) =>
-                                  const Icon(Icons.broken_image),
+                              const Icon(Icons.broken_image),
                             ),
                             const SizedBox(width: 10),
                             Text(cat.name),
@@ -99,8 +93,7 @@ class _DeviceFormPageState extends State<DeviceFormPage> {
                       );
                     }).toList(),
                     onChanged: (val) {
-                      final selected =
-                          categories.firstWhere((e) => e.id == val);
+                      final selected = categories.firstWhere((e) => e.id == val);
                       setState(() {
                         selectedCategoryId = val;
                         selectedCategoryName = selected.name;
@@ -109,7 +102,7 @@ class _DeviceFormPageState extends State<DeviceFormPage> {
                     },
                   );
                 } else {
-                  return const Text('No categories found.');
+                  return const SizedBox();
                 }
               },
             ),
