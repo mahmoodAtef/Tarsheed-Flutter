@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
+import '../../../dashboard/ui/screens/home_screen.dart';
 import '../../bloc/auth_bloc.dart';
 import '../../../../core/widgets/large_button.dart';
 import '../widgets/main_title.dart';
@@ -34,8 +36,7 @@ class ResetPasswordScreen extends StatelessWidget {
               bloc: authBloc,
               listener: (context, state) {
                 if (state is ResetPasswordSuccessState) {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => LoginPage()));
+                  context.pushReplacement(HomeScreen());
                 } else if (state is AuthErrorState) {
                   ExceptionManager.showMessage(state.exception);
                 }
