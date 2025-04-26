@@ -7,8 +7,8 @@ import 'package:tarsheed/src/core/widgets/rectangle_background.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/sign_up_create_account.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

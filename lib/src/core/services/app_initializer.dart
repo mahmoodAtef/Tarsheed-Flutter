@@ -33,7 +33,7 @@ class AppInitializer {
     if (ApiManager.authToken != null) {
       DioHelper.setToken(ApiManager.authToken!);
     }
-    return ApiManager.userId != null ? HomePage() : LoginPage();
+    return ApiManager.userId != null ? WelcomeScreen() : LoginPage();
   }
 
   static Future<void> _getSavedData() async {

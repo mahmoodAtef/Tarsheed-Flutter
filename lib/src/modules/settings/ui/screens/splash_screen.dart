@@ -9,10 +9,10 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedSplashScreen.withScreenFunction(
       screenFunction: () async {
-        return const LoginPage(); // ينتقل مباشرة للـ LoginScreen
+        return const LoginPage();
       },
       duration: 3000,
-      // مدة الـ splash (3 ثواني)
+
       splashIconSize: MediaQuery.of(context).size.shortestSide * 0.6,
       pageTransitionType: PageTransitionType.rightToLeftWithFade,
       curve: Curves.bounceIn,
