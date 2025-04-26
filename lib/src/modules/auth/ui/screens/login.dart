@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
-import 'package:tarsheed/home_page.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
+import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/sign_up_create_account.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_email.dart';
+import 'package:tarsheed/src/modules/auth/ui/widgets/sup_title.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/home_screen.dart';
 
 import '../../../../core/utils/image_manager.dart';
 import '../../../../core/widgets/large_button.dart';
-import '../widgets/main_title.dart';
 import '../../../../core/widgets/rectangle_background.dart';
-import '../widgets/social_icon.dart';
-import '../widgets/sup_title.dart';
 import '../../../../core/widgets/text_field.dart';
+import '../widgets/main_title.dart';
+import '../widgets/social_icon.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final AuthBloc authBloc = AuthBloc.instance;
+  final AuthBloc authBloc = sl();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

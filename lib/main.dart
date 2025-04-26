@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tarsheed/generated/l10n.dart';
-import 'package:tarsheed/src/core/services/app_initializer.dart';
 import 'package:tarsheed/src/core/services/bloc_observer.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
@@ -22,8 +21,6 @@ void main() async {
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: HydratedStorageDirectory(storageDirectory.path),
   );
-
-  await AppInitializer.init();
 
   Bloc.observer = TarsheedBlocObserver();
 
@@ -69,3 +66,10 @@ class Tarsheed extends StatelessWidget {
     );
   }
 }
+/*
+TODO:
+ - first screen logic
+ - get rooms and categories
+ - testing create device form
+
+ */

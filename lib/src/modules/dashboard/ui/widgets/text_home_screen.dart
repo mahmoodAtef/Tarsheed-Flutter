@@ -15,13 +15,6 @@ class CustomTextWidget extends StatelessWidget {
       fontSize: fontSize,
       fontWeight: FontWeight.w600,
       color: Colors.black,
-      shadows: [
-        Shadow(
-          color: Colors.black.withOpacity(0.5),
-          offset: Offset(0, 2),
-          blurRadius: 4,
-        ),
-      ],
     );
   }
 

@@ -106,6 +106,7 @@ class AuthRepository {
       debugPrint(ApiManager.userId);
       DioHelper.setToken(ApiManager.authToken!);
       await _authLocalServices.saveAuthInfo(authInfo);
+
       return Right(unit);
     } on Exception catch (e) {
       return Left(e);

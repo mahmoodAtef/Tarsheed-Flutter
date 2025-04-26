@@ -25,7 +25,7 @@ class AuthLocalServices extends BaseAuthLocalServices {
   Future<void> saveAuthInfo(AuthInfo info) async {
     await SecureStorageHelper.saveData(
         key: "auth_info",
-        value: info.toJson(),
+        value: jsonEncode(info.toJson()),
         expiresAfter: Duration(
           days: 29,
           hours: 23,
