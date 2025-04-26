@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
+import '../../../../core/error/exception_manager.dart';
 import '../../../../core/widgets/appbar.dart';
 import '../../../../core/widgets/bottomNavigatorBar.dart';
 import '../../bloc/dashboard_bloc.dart';
+import '../../data/models/device_creation_form.dart';
 import '../widgets/card_devices.dart';
-import '../widgets/device_model_adding.dart';
 import '../../../../core/widgets/rectangle_background.dart';
 import 'deviceFormPage.dart';
-// RoomsPage
+import 'device_creation_Page.dart';
+
 class RoomsPage extends StatelessWidget {
   const RoomsPage({Key? key}) : super(key: key);
 
@@ -19,7 +21,7 @@ class RoomsPage extends StatelessWidget {
     );
   }
 }
-// PriorityPage
+
 class PriorityPage extends StatelessWidget {
   const PriorityPage({Key? key}) : super(key: key);
 
@@ -31,7 +33,6 @@ class PriorityPage extends StatelessWidget {
   }
 }
 
-
 class DevicesScreen extends StatefulWidget {
   const DevicesScreen({Key? key}) : super(key: key);
 
@@ -40,7 +41,7 @@ class DevicesScreen extends StatefulWidget {
 }
 
 class _DevicesScreenState extends State<DevicesScreen> {
-  final List<DeviceModel> devices = [];
+  final List<DeviceCreationForm> devices = [];
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +66,14 @@ class _DevicesScreenState extends State<DevicesScreen> {
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(color: Colors.grey.shade300),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 8,
+                      ),
                       child: Row(
                         children: [
-                          Icon(Icons.search, color: Colors.grey.shade600, size: 20),
+                          Icon(Icons.search,
+                              color: Colors.grey.shade600, size: 20),
                           const SizedBox(width: 10),
                           const Expanded(
                             child: TextField(
@@ -90,70 +95,72 @@ class _DevicesScreenState extends State<DevicesScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     child: Row(
-                        children: [
-                          FilterTab(label: 'Consumption', isActive: true, onTap: () {}),
-                          const SizedBox(width: 10),
-                          FilterTab(
-                            label: 'Rooms',
-                            isActive: false,
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const RoomsPage()),
-                              );
-                            },
-                          ),
-                          const SizedBox(width: 10),
-                          FilterTab(
-                            label: 'Priority',
-                            isActive: false,
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const PriorityPage()),
-                              );
-                            },
-                          ),
-                        ],
+                      children: [
+                        FilterTab(label: 'Consumption', isActive: true, onTap: () {}),
+                        const SizedBox(width: 10),
+                        FilterTab(
+                          label: 'Rooms',
+                          isActive: false,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const RoomsPage()),
+                            );
+                          },
                         ),
+                        const SizedBox(width: 10),
+                        FilterTab(
+                          label: 'Priority',
+                          isActive: false,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const PriorityPage()),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
-                      child: Wrap(
-                        spacing: 10,
-                        runSpacing: 10,
-                        children: devices.map((device) {
-                          return DeviceCard(
-                            icon: device.icon,
-                            deviceName: device.name,
-                            deviceType: device.type,
-                            isActive: device.isActive,
-                            onToggle: (value) {
-                              setState(() {
-                                device.isActive = value;
-                              });
-                            },
-                            onEdit: () async {
-                              final editedDevice = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => DeviceFormPage(initialDevice: device),
-                                ),
-                              );
-                              if (editedDevice != null && editedDevice is DeviceModel) {
-                                setState(() {
-                                  final index = devices.indexOf(device);
-                                  devices[index] = editedDevice;
-                                });
-                              }
-                            },
-                          );
-                        }).toList(),
-                      ),
+                      child: BlocBuilder<DashboardBloc, DashboardState>(
+                        buildWhen: (previous, current) => current is DeviceState,
+                        builder: (context, state) {
+                          if (state is GetDevicesLoading) {
+                            return const Center(child: CircularProgressIndicator());
+                          } else if (state is GetDevicesSuccess) {
+                            final devices = state.devices;
+                            if (devices.isEmpty) {
+                              return const Center(child: Text('No devices added.'));
+                            }
+                            return Wrap(
+                              spacing: 10,
+                              runSpacing: 10,
+                              children: devices.map((device) {
+                                return DeviceCard(
+                                  device: device,
+                                  onToggle: (bool newState) {
+                                  },
+                                  onEdit: () {
+                                  },
+                                );
+                              }).toList(),
+                            );
+                          } else if (state is GetDevicesError) {
+                            ExceptionManager.showMessage(state.exception);
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      )
+
                     ),
                   ),
                 ],
@@ -166,12 +173,13 @@ class _DevicesScreenState extends State<DevicesScreen> {
         onPressed: () async {
           final newDevice = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => const DeviceFormPage()),
+            MaterialPageRoute(builder: (_) => DeviceCreationPage()),
           );
-          if (newDevice != null && newDevice is DeviceModel) {
+          if (newDevice != null && newDevice is DeviceCreationForm) {
             setState(() {
               devices.add(newDevice);
             });
+            context.read<DashboardBloc>().add(AddDeviceEvent(newDevice));
           }
         },
         backgroundColor: ColorManager.primary,

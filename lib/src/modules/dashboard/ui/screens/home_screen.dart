@@ -32,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     bloc.add(GetUsageReportEvent(period: "${DateTime.now().month}-${DateTime.now().year}"));
     bloc.add(GetRoomsEvent());
     bloc.add(GetDevicesCategoriesEvent());
+    context.read<DashboardBloc>().add(GetDevicesEvent());
   }
 
   @override

@@ -1,34 +1,28 @@
 import 'package:flutter/material.dart';
-
 import '../../../../core/utils/color_manager.dart';
+import '../../data/models/device.dart'; // اتأكد انك مستورد الموديل بتاع Device
 
 class DeviceCard extends StatelessWidget {
-  final String icon; // Change type to String to accept URL
-  final String deviceName;
-  final String deviceType;
-  final bool isActive;
-  final ValueChanged<bool> onToggle;
+  final Device device;
   final VoidCallback? onEdit;
+  final ValueChanged<bool> onToggle;
 
   const DeviceCard({
-    required this.icon,
-    required this.deviceName,
-    required this.deviceType,
-    required this.isActive,
-    required this.onToggle,
-    this.onEdit,
     Key? key,
+    required this.device,
+    this.onEdit,
+    required this.onToggle,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final textColor = isActive ? Colors.white : Colors.black;
+    final textColor = device.state ? Colors.white : Colors.black;
 
     return Container(
-      width: 140,
+      width: 160,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: isActive ? ColorManager.primary : Colors.grey.shade200,
+        color: device.state ? ColorManager.primary : Colors.grey.shade200,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -42,43 +36,74 @@ class DeviceCard extends StatelessWidget {
         children: [
           Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // If the icon is a URL, use Image.network to display it
-              Image.network(
-                icon,
-                width: 40,
-                height: 40,
+              Icon(
+                Icons.electrical_services,
+                size: 40,
                 color: textColor,
-                errorBuilder: (context, error, stackTrace) {
-                  return Icon(Icons.device_unknown,
-                      size: 40,
-                      color: textColor); // Fallback icon if there's an error
-                },
               ),
               const SizedBox(height: 10),
               Text(
-                deviceName,
+                device.name,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                   color: textColor,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 6),
               Text(
-                deviceType,
+                device.description,
                 style: TextStyle(
                   color: textColor.withOpacity(0.8),
                   fontSize: 12,
                 ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'Room: ${device.roomId}',
+                style: TextStyle(
+                  fontSize: 10,
+                  color: textColor.withOpacity(0.8),
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                'Category: ${device.categoryId}',
+                style: TextStyle(
+                  fontSize: 10,
+                  color: textColor.withOpacity(0.8),
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'Consumption: ${device.consumption.toStringAsFixed(2)} W',
+                style: TextStyle(
+                  fontSize: 10,
+                  color: textColor.withOpacity(0.8),
+                ),
+              ),
+              Text(
+                'Priority: ${device.priority}',
+                style: TextStyle(
+                  fontSize: 10,
+                  color: textColor.withOpacity(0.8),
+                ),
               ),
               const SizedBox(height: 10),
               Switch(
-                value: isActive,
+                value: device.state,
                 onChanged: onToggle,
                 activeColor: Colors.white,
               ),
-              const SizedBox(height: 16),
             ],
           ),
           Positioned(
@@ -89,7 +114,7 @@ class DeviceCard extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: isActive ? Colors.white24 : Colors.grey.shade300,
+                  color: device.state ? Colors.white24 : Colors.grey.shade300,
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
