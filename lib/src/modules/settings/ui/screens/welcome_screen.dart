@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
+import 'package:tarsheed/src/core/services/app_initializer.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/utils/image_manager.dart';
 import 'package:tarsheed/src/core/widgets/rectangle_background.dart';
@@ -60,6 +61,7 @@ class WelcomeScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10)),
                           ),
                           onPressed: () {
+                            AppInitializer.saveFirstRunFlag();
                             context.push(LoginPage());
                           },
                           child: Text(
@@ -74,6 +76,7 @@ class WelcomeScreen extends StatelessWidget {
                       const SizedBox(width: 10),
                       GestureDetector(
                         onTap: () {
+                          AppInitializer.saveFirstRunFlag();
                           context.push(SignUpScreen());
                         },
                         child: Container(

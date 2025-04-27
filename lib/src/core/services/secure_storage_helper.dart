@@ -29,17 +29,17 @@ class SecureStorageHelper {
     if (expiresAfter != null) {
       final DateTime expiresAt = DateTime.now().add(expiresAfter);
       final String dataToStore = jsonEncode({
-        'value': value.toString(),
+        'value': value,
         'expiresAt': expiresAt.millisecondsSinceEpoch,
       });
       await secureStorage.write(key: key, value: dataToStore);
     } else {
-      await secureStorage.write(key: key, value: value.toString());
+      await secureStorage.write(key: key, value: value);
     }
   }
 
-  static Future<String?> getData({required String key}) async {
-    final String? data = await secureStorage.read(key: key);
+  static Future<dynamic> getData({required String key}) async {
+    final data = await secureStorage.read(key: key);
     if (data == null) return null;
     try {
       final Map<String, dynamic> jsonData = jsonDecode(data);
@@ -51,7 +51,7 @@ class SecureStorageHelper {
           await secureStorage.delete(key: key);
           return null;
         } else {
-          return jsonData['value'].toString();
+          return jsonData['value'];
         }
       }
       return data;

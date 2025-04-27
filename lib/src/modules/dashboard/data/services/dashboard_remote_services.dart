@@ -30,7 +30,7 @@ class DashboardRemoteServices implements BaseDashboardServices {
       var response = await DioHelper.getData(
         path: EndPoints.getCategories,
       );
-      List<DeviceCategory> categories = (response.data["data"] as List)
+      List<DeviceCategory> categories = (response.data["categories"] as List)
           .map((e) => DeviceCategory.fromJson(e))
           .toList();
       return Right(categories);
@@ -60,7 +60,7 @@ class DashboardRemoteServices implements BaseDashboardServices {
       var response = await DioHelper.getData(
         path: EndPoints.getDevices + ApiManager.userId!,
       );
-      List<Device> devices = (response.data["data"] as List)
+      List<Device> devices = (response.data["devices"] as List)
           .map((e) => Device.fromJson(e))
           .toList();
       return Right(devices);
@@ -75,8 +75,9 @@ class DashboardRemoteServices implements BaseDashboardServices {
       var response = await DioHelper.getData(
         path: EndPoints.getRooms,
       );
-      List<Room> rooms =
-          (response.data["data"] as List).map((e) => Room.fromJson(e)).toList();
+      List<Room> rooms = (response.data["rooms"] as List)
+          .map((e) => Room.fromJson(e))
+          .toList();
       return Right(rooms);
     } on Exception catch (e) {
       return Left(e);

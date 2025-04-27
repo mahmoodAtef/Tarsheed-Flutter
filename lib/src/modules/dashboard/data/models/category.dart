@@ -15,9 +15,9 @@ final class DeviceCategory extends Equatable {
 
   factory DeviceCategory.fromJson(Map<String, dynamic> json) {
     return DeviceCategory(
-      id: json['id'],
-      arabicName: json['arabicName'],
-      englishName: json['englishName'],
+      id: json['_id'],
+      arabicName: json['arName'],
+      englishName: json['enName'],
       iconUrl: json['iconUrl'],
     );
   }
