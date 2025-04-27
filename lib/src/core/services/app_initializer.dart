@@ -37,11 +37,16 @@ class AppInitializer {
     }
     return _isFirstRun == true
         ? WelcomeScreen()
-        : ApiManager.userId != null
+        : _isLoggedIn()
             ? HomeScreen()
             : LoginPage();
   }
 
+  static bool _isLoggedIn() =>
+      ApiManager.userId != null &&
+      ApiManager.authToken != null &&
+      ApiManager.userId != "null" &&
+      ApiManager.authToken != "null";
   static Future<void> _getSavedData() async {
     try {
       var authData = await SecureStorageHelper.getData(key: "auth_info");
