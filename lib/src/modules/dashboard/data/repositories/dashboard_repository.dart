@@ -28,7 +28,7 @@ class DashboardRepository {
   }
 
   // Usage Report
-  Future<Either<Exception, Report>> getUsageReport({int? period}) async {
+  Future<Either<Exception, Report>> getUsageReport({String? period}) async {
     return await _remoteServices.getUsageReport(period: period);
   }
 

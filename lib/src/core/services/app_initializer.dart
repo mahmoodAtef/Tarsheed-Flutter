@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tarsheed/firebase_options.dart';
-import 'package:tarsheed/welcome_screen.dart';
 import 'package:tarsheed/src/core/apis/api.dart';
 import 'package:tarsheed/src/core/apis/dio_helper.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
