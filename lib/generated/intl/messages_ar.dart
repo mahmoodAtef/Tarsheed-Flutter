@@ -20,7 +20,12 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ar';
 
-  static String m0(seconds) => "إعادة إرسال الرمز خلال: ${seconds} ثانية";
+  static String m0(tierNumber) =>
+      "أنت الآن في شريحة استهلاك الكهرباء رقم ${tierNumber}";
+
+  static String m1(count) => "${count} أجهزة تعمل";
+
+  static String m2(seconds) => "إعادة إرسال الرمز خلال: ${seconds} ثانية";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -73,6 +78,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "كلمة المرور الحالية",
     ),
     "currentSavings": MessageLookupByLibrary.simpleMessage("توفيرك الحالي هو"),
+    "currentTier": m0,
     "deleteAccountMessage": MessageLookupByLibrary.simpleMessage(
       "بمجرد تقديم طلب لحذف البيانات، سيكون لديك نافذة مدتها 72 ساعة يمكنك خلالها إلغاء العملية. خلال هذه الفترة، يمكنك إلغاء طلب الحذف في حسابك على Intuit. بعد مرور هذه الفترة، لن تتمكن من إلغاء الطلب، ولن نتمكن من استرجاع بياناتك.",
     ),
@@ -80,6 +86,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "هل تريد حذف حسابك؟",
     ),
     "deleteMyAccount": MessageLookupByLibrary.simpleMessage("حذف حسابي"),
+    "devicesRunning": m1,
     "didNotReceive": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
     "didNtReceiveCode": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
     "editPassNaAddUseEm": MessageLookupByLibrary.simpleMessage(
@@ -223,7 +230,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "register": MessageLookupByLibrary.simpleMessage("تسجيل"),
     "reports": MessageLookupByLibrary.simpleMessage("التقارير"),
     "resendCode": MessageLookupByLibrary.simpleMessage("إعادة إرسال الرمز"),
-    "resendCodeIn": m0,
+    "resendCodeIn": m2,
     "retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("حفظ التغييرات"),
@@ -244,6 +251,24 @@ class MessageLookup extends MessageLookupByLibrary {
       "تحكم في استهلاك طاقتك",
     ),
     "tier": MessageLookupByLibrary.simpleMessage("الفئة"),
+    "tier1": MessageLookupByLibrary.simpleMessage(
+      "الشريحة الأولى (0-50 كيلووات/ساعة)",
+    ),
+    "tier2": MessageLookupByLibrary.simpleMessage(
+      "الشريحة الثانية (51-100 كيلووات/ساعة)",
+    ),
+    "tier3": MessageLookupByLibrary.simpleMessage(
+      "الشريحة الثالثة (101-200 كيلووات/ساعة)",
+    ),
+    "tier4": MessageLookupByLibrary.simpleMessage(
+      "الشريحة الرابعة (201-350 كيلووات/ساعة)",
+    ),
+    "tier5": MessageLookupByLibrary.simpleMessage(
+      "الشريحة الخامسة (351-650 كيلووات/ساعة)",
+    ),
+    "tier6Plus": MessageLookupByLibrary.simpleMessage(
+      "الشريحة السادسة فأكثر (651+ كيلووات/ساعة)",
+    ),
     "today": MessageLookupByLibrary.simpleMessage("اليوم"),
     "twoStepVerification": MessageLookupByLibrary.simpleMessage(
       "التحقق بخطوتين",

@@ -12,6 +12,8 @@ import 'package:tarsheed/src/core/utils/localization_manager.dart';
 import 'package:tarsheed/src/core/utils/theme_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/screens/devices.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/screens/home_screen.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/splash_screen.dart';
 
@@ -62,7 +64,7 @@ class Tarsheed extends StatelessWidget {
             ],
             supportedLocales: S.delegate.supportedLocales,
             theme: ThemeManager.appTheme(),
-            home: SplashScreen(),
+            home: HomeScreen(),
           ),
         );
       },

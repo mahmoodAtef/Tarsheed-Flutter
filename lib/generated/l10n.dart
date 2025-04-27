@@ -990,6 +990,16 @@ class S {
     return Intl.message('Home', name: 'home', desc: '', args: []);
   }
 
+  /// `{count} devices running`
+  String devicesRunning(Object count) {
+    return Intl.message(
+      '$count devices running',
+      name: 'devicesRunning',
+      desc: '',
+      args: [count],
+    );
+  }
+
   /// `Energy consumption`
   String get energyConsumption {
     return Intl.message(
@@ -1028,6 +1038,71 @@ class S {
   /// `Unknown`
   String get unknown {
     return Intl.message('Unknown', name: 'unknown', desc: '', args: []);
+  }
+
+  /// `Tier 1 (0-50 kWh)`
+  String get tier1 {
+    return Intl.message('Tier 1 (0-50 kWh)', name: 'tier1', desc: '', args: []);
+  }
+
+  /// `Tier 2 (51-100 kWh)`
+  String get tier2 {
+    return Intl.message(
+      'Tier 2 (51-100 kWh)',
+      name: 'tier2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tier 3 (101-200 kWh)`
+  String get tier3 {
+    return Intl.message(
+      'Tier 3 (101-200 kWh)',
+      name: 'tier3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tier 4 (201-350 kWh)`
+  String get tier4 {
+    return Intl.message(
+      'Tier 4 (201-350 kWh)',
+      name: 'tier4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tier 5 (351-650 kWh)`
+  String get tier5 {
+    return Intl.message(
+      'Tier 5 (351-650 kWh)',
+      name: 'tier5',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tier 6+ (651+ kWh)`
+  String get tier6Plus {
+    return Intl.message(
+      'Tier 6+ (651+ kWh)',
+      name: 'tier6Plus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You are now in Electricity consumption bracket number {tierNumber}`
+  String currentTier(Object tierNumber) {
+    return Intl.message(
+      'You are now in Electricity consumption bracket number $tierNumber',
+      name: 'currentTier',
+      desc: '',
+      args: [tierNumber],
+    );
   }
 
   /// `Your Current Savings is`

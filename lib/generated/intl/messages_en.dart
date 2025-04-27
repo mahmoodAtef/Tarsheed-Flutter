@@ -20,7 +20,12 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(seconds) => "Resend code in: ${seconds}s";
+  static String m0(tierNumber) =>
+      "You are now in Electricity consumption bracket number ${tierNumber}";
+
+  static String m1(count) => "${count} devices running";
+
+  static String m2(seconds) => "Resend code in: ${seconds}s";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -73,6 +78,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "currentSavings": MessageLookupByLibrary.simpleMessage(
       "Your Current Savings is",
     ),
+    "currentTier": m0,
     "deleteAccountMessage": MessageLookupByLibrary.simpleMessage(
       "Once you submit a request to delete data, there\'s a 72-hour window during which you can cancel the process. During this period, you can cancel your deletion request in your Intuit Account. After the window, you\'ll no longer be able to cancel the request, and we\'re unable to retrieve your data.",
     ),
@@ -82,6 +88,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteMyAccount": MessageLookupByLibrary.simpleMessage(
       "Delete My Account",
     ),
+    "devicesRunning": m1,
     "didNotReceive": MessageLookupByLibrary.simpleMessage(
       "Didn\'t receive a code?",
     ),
@@ -221,7 +228,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "register": MessageLookupByLibrary.simpleMessage("Register"),
     "reports": MessageLookupByLibrary.simpleMessage("Reports"),
     "resendCode": MessageLookupByLibrary.simpleMessage("Resend Code"),
-    "resendCodeIn": m0,
+    "resendCodeIn": m2,
     "retry": MessageLookupByLibrary.simpleMessage("Retry"),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("Save Changes"),
@@ -242,6 +249,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Take Control of\nYour Energy Usage",
     ),
     "tier": MessageLookupByLibrary.simpleMessage("tier"),
+    "tier1": MessageLookupByLibrary.simpleMessage("Tier 1 (0-50 kWh)"),
+    "tier2": MessageLookupByLibrary.simpleMessage("Tier 2 (51-100 kWh)"),
+    "tier3": MessageLookupByLibrary.simpleMessage("Tier 3 (101-200 kWh)"),
+    "tier4": MessageLookupByLibrary.simpleMessage("Tier 4 (201-350 kWh)"),
+    "tier5": MessageLookupByLibrary.simpleMessage("Tier 5 (351-650 kWh)"),
+    "tier6Plus": MessageLookupByLibrary.simpleMessage("Tier 6+ (651+ kWh)"),
     "today": MessageLookupByLibrary.simpleMessage("Today"),
     "twoStepVerification": MessageLookupByLibrary.simpleMessage(
       "Two-Step Verification",

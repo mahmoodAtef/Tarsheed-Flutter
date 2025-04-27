@@ -7,6 +7,8 @@ import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/devices.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/text_home_screen.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/profile_screen.dart';
+import 'package:intl/intl.dart';
+import 'dart:async';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
@@ -25,6 +27,11 @@ class _HomeScreenState extends State<HomeScreen> {
   bool lightBulbStatus = false;
   bool smartTVStatus = true;
 
+  String currentTime = '';
+  String currentDate = '';
+
+  late Timer _timer;
+
   @override
   void initState() {
     super.initState();
@@ -33,6 +40,65 @@ class _HomeScreenState extends State<HomeScreen> {
     bloc.add(GetRoomsEvent());
     bloc.add(GetDevicesCategoriesEvent());
     context.read<DashboardBloc>().add(GetDevicesEvent());
+
+    _updateDateTime();
+
+    _timer = Timer.periodic(Duration(minutes: 1), (timer) {
+      _updateDateTime();
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _updateDateTime() {
+    final egyptTime = DateTime.now().toUtc().add(Duration(hours: 2));
+
+    try {
+      final timeFormatter = DateFormat('h:mm a');
+      currentTime = timeFormatter.format(egyptTime);
+
+      final dateFormatter = DateFormat('d MMM, yyyy');
+      currentDate = dateFormatter.format(egyptTime);
+    } catch (e) {
+      final hour = egyptTime.hour % 12 == 0 ? 12 : egyptTime.hour % 12;
+      final hourFormat = hour < 10 ? '0$hour' : '$hour';
+      final minuteFormat = egyptTime.minute < 10 ? '0${egyptTime.minute}' : '${egyptTime.minute}';
+      final period = egyptTime.hour < 12 ? 'AM' : 'PM';
+      currentTime = '$hourFormat:$minuteFormat $period';
+
+      final months = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      ];
+      currentDate = '${egyptTime.day} ${months[egyptTime.month - 1]}, ${egyptTime.year}';
+    }
+
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  // تحديد رقم الشريحة بناءً على الاستهلاك
+  int getElectricityTierNumber(double consumption) {
+    if (consumption <= 50) {
+      return 1;
+    } else if (consumption <= 100) {
+      return 2;
+    } else if (consumption <= 200) {
+      return 3;
+    } else if (consumption <= 350) {
+      return 4;
+    } else if (consumption <= 650) {
+      return 5;
+    } else if (consumption <= 1000) {
+      return 6;
+    } else {
+      return 7;
+    }
   }
 
   @override
@@ -65,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '9:41',
+                        currentTime,
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
@@ -74,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        'Dec 10, 2024',
+                        currentDate,
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: Colors.grey,
@@ -102,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           SizedBox(width: 4.w),
                           Text(
-                            '13 devices running',
+                            "13 devices running",
                             style: TextStyle(
                               fontSize: 16.sp,
                               color: Colors.grey,
@@ -164,16 +230,27 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(height: 8.h),
                   BlocBuilder<DashboardBloc, DashboardState>(
                     builder: (context, state) {
-                      double value = 0;
+                      double consumptionValue = 0;
                       bool isError = false;
 
                       if (state is GetUsageReportSuccess) {
-                        value = state.report.savingsPercentage ?? 0;
+                        // التأكد من أن savingsPercentage مش null
+                        consumptionValue = state.report.savingsPercentage ?? 0;
+                        // تحويل النسبة المئوية إلى قيمة استهلاك تقريبية
+                        consumptionValue = consumptionValue * 15; // تحويل إلى قيمة بين 0-1500
                       } else if (state is GetUsageReportError) {
                         isError = true;
                       } else if (state is GetUsageReportLoading) {
                         return Center(child: CircularProgressIndicator());
                       }
+
+                      // احصل على رقم الشريحة
+                      final tierNumber = getElectricityTierNumber(consumptionValue);
+
+                      // قيمة للعرض على المقياس (بين 0 و 100)
+                      final gaugeValue = (consumptionValue > 1000)
+                          ? 100.0
+                          : (consumptionValue / 10).clamp(0, 100).toDouble();
 
                       return Column(
                         children: [
@@ -183,7 +260,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Expanded(
                                 child: Center(
                                   child: TweenAnimationBuilder<double>(
-                                    tween: Tween<double>(begin: 0, end: value),
+                                    tween: Tween<double>(begin: 0, end: gaugeValue),
                                     duration: Duration(seconds: 2),
                                     builder: (context, animatedValue, child) {
                                       return SfRadialGauge(
@@ -200,34 +277,68 @@ class _HomeScreenState extends State<HomeScreen> {
                                               color: Colors.grey[200],
                                             ),
                                             ranges: <GaugeRange>[
+
                                               GaugeRange(
-                                                startValue: 0,
-                                                endValue: 33,
-                                                color: Colors.green,
-                                                startWidth: 20,
-                                                endWidth: 20,
-                                              ),
+                                                  startValue: 0,
+                                                  endValue: 5, // 50/10
+                                                  color: Colors.green,
+                                                  startWidth: 20,
+                                                  endWidth: 20,
+                                                  label: "1",
+                                                  labelStyle: GaugeTextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight: FontWeight.bold)),
+
                                               GaugeRange(
-                                                startValue: 33,
-                                                endValue: 66,
-                                                color: Colors.orange,
-                                                startWidth: 20,
-                                                endWidth: 20,
-                                              ),
+                                                  startValue: 5,
+                                                  endValue: 10, // 100/10
+                                                  color: Colors.lightGreen,
+                                                  startWidth: 20,
+                                                  endWidth: 20,
+                                                  label: "2",
+                                                  labelStyle: GaugeTextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight: FontWeight.bold)),
                                               GaugeRange(
-                                                startValue: 66,
-                                                endValue: 80,
-                                                color: Colors.yellow,
-                                                startWidth: 20,
-                                                endWidth: 20,
-                                              ),
+                                                  startValue: 10,
+                                                  endValue: 20, // 200/10
+                                                  color: Colors.yellow,
+                                                  startWidth: 20,
+                                                  endWidth: 20,
+                                                  label: "3",
+                                                  labelStyle: GaugeTextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight: FontWeight.bold)),
                                               GaugeRange(
-                                                startValue: 80,
-                                                endValue: 100,
-                                                color: Colors.red,
-                                                startWidth: 20,
-                                                endWidth: 20,
-                                              ),
+                                                  startValue: 20,
+                                                  endValue: 35, // 350/10
+                                                  color: Colors.orange,
+                                                  startWidth: 20,
+                                                  endWidth: 20,
+                                                  label: "4",
+                                                  labelStyle: GaugeTextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight: FontWeight.bold)),
+                                              GaugeRange(
+                                                  startValue: 35,
+                                                  endValue: 65, // 650/10
+                                                  color: Colors.deepOrange,
+                                                  startWidth: 20,
+                                                  endWidth: 20,
+                                                  label: "5",
+                                                  labelStyle: GaugeTextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight: FontWeight.bold)),
+                                              GaugeRange(
+                                                  startValue: 65,
+                                                  endValue: 100, // 1000/10
+                                                  color: Colors.red,
+                                                  startWidth: 20,
+                                                  endWidth: 20,
+                                                  label: "6",
+                                                  labelStyle: GaugeTextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight: FontWeight.bold)),
                                             ],
                                             pointers: <GaugePointer>[
                                               NeedlePointer(
@@ -244,39 +355,52 @@ class _HomeScreenState extends State<HomeScreen> {
                                             annotations: <GaugeAnnotation>[
                                               GaugeAnnotation(
                                                 widget: Text(
-                                                  S.of(context).low,
+                                                  "0-50",
                                                   style: TextStyle(
-                                                    fontSize: 15.sp,
+                                                    fontSize: 13.sp,
                                                     fontWeight: FontWeight.w600,
                                                     color: Colors.black,
                                                   ),
                                                 ),
-                                                angle: 170,
-                                                positionFactor: 1,
+                                                angle: 175,
+                                                positionFactor: 0.9,
                                               ),
                                               GaugeAnnotation(
                                                 widget: Text(
-                                                  S.of(context).high,
+                                                  "1000+",
                                                   style: TextStyle(
-                                                    fontSize: 15.sp,
+                                                    fontSize: 13.sp,
                                                     fontWeight: FontWeight.w600,
                                                     color: Colors.black,
                                                   ),
                                                 ),
-                                                angle: 10,
-                                                positionFactor: 1,
+                                                angle: 5,
+                                                positionFactor: 0.9,
                                               ),
                                               GaugeAnnotation(
-                                                widget: Text(
-                                                  '${animatedValue.toInt()}%',
-                                                  style: TextStyle(
-                                                    fontSize: 20.sp,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Colors.black,
-                                                  ),
+                                                widget: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    Text(
+                                                      '${consumptionValue.toInt()} kWh',
+                                                      style: TextStyle(
+                                                        fontSize: 20.sp,
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      'Tier $tierNumber',
+                                                      style: TextStyle(
+                                                        fontSize: 16.sp,
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Colors.grey[700],
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                angle: 80,
-                                                positionFactor: 0.2,
+                                                angle: 90,
+                                                positionFactor: 0.5,
                                               ),
                                             ],
                                           ),
@@ -292,39 +416,47 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   ColorIndicator(
                                       color: Colors.green,
-                                      label: S.of(context).low),
+                                      label: S.of(context).tier1),
                                   SizedBox(height: 10.h),
                                   ColorIndicator(
-                                      color: Colors.orange,
-                                      label: S.of(context).medium),
+                                      color: Colors.lightGreen,
+                                      label: S.of(context).tier2),
                                   SizedBox(height: 10.h),
                                   ColorIndicator(
                                       color: Colors.yellow,
-                                      label: S.of(context).high),
+                                      label: S.of(context).tier3),
+                                  SizedBox(height: 10.h),
+                                  ColorIndicator(
+                                      color: Colors.orange,
+                                      label: S.of(context).tier4),
+                                  SizedBox(height: 10.h),
+                                  ColorIndicator(
+                                      color: Colors.deepOrange,
+                                      label: S.of(context).tier5),
                                   SizedBox(height: 10.h),
                                   ColorIndicator(
                                       color: Colors.red,
-                                      label: S.of(context).veryHigh),
+                                      label: S.of(context).tier6Plus),
                                 ],
                               ),
                             ],
                           ),
                           if (isError)
                             Padding(
-                              padding: const EdgeInsets.only(top: 16.0),
+                              padding: EdgeInsets.only(top: 16.h),
                               child: ElevatedButton.icon(
                                 onPressed: () {
                                   context
                                       .read<DashboardBloc>()
                                       .add(GetUsageReportEvent());
                                 },
-                                icon: Icon(Icons.refresh),
+                                icon: Icon(Icons.refresh, size: 20.sp),
                                 label: Text(S.of(context).retry),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.redAccent,
                                   foregroundColor: Colors.white,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
+                                    borderRadius: BorderRadius.circular(8.r),
                                   ),
                                 ),
                               ),
@@ -336,26 +468,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(height: 8.h),
                   BlocBuilder<DashboardBloc, DashboardState>(
                     builder: (context, state) {
-                      double value = 0;
-                      String tier = S.of(context).unknown;
+                      double consumptionValue = 0;
+                      int tierNumber = 1;
 
                       if (state is GetUsageReportSuccess) {
-                        value = state.report.savingsPercentage ?? 0;
-
-                        if (value <= 32) {
-                          tier = S.of(context).low;
-                        } else if (value <= 65) {
-                          tier = S.of(context).medium;
-                        } else if (value <= 79) {
-                          tier = S.of(context).high;
-                        } else {
-                          tier = S.of(context).veryHigh;
-                        }
+                        consumptionValue = state.report.savingsPercentage ?? 0;
+                        consumptionValue = consumptionValue * 15;
+                        tierNumber = getElectricityTierNumber(consumptionValue);
                       }
+
                       return Center(
                         child: CustomTextWidget(
-                          label:
-                              '${S.of(context).currentSavings} ${value.toInt()}% ${S.of(context).inThe} $tier ${S.of(context).tier}',
+                          label: S.of(context).currentTier(tierNumber),
                           size: 12.sp,
                         ),
                       );
