@@ -46,6 +46,7 @@ class AuthRemoteServices implements BaseAuthRemoteServices {
       AuthInfo authInfo = AuthInfo(
           accessToken: response.data['token'],
           userId: response.data['data']['id']);
+
       verificationId = authInfo.userId;
       return Right(authInfo);
     } on Exception catch (e) {
