@@ -37,8 +37,8 @@ class _ReportsPageState extends State<ReportsPage> {
   @override
   void initState() {
     super.initState();
-    // context.read<DashboardBloc>().add(GetUsageReportEvent());
-    // context.read<DashboardBloc>().add(GetAISuggestionsEvent());
+    context.read<DashboardBloc>().add(GetUsageReportEvent());
+    context.read<DashboardBloc>().add(GetAISuggestionsEvent());
   }
 
   @override
