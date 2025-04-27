@@ -46,8 +46,7 @@ class AuthRemoteServices implements BaseAuthRemoteServices {
       AuthInfo authInfo = AuthInfo(
           accessToken: response.data['token'],
           userId: response.data['data']['id']);
-
-      verificationId = authInfo.userId;
+      verificationId = response.data['data']['id'];
       return Right(authInfo);
     } on Exception catch (e) {
       return Left(_classifyException(e,
@@ -94,7 +93,10 @@ class AuthRemoteServices implements BaseAuthRemoteServices {
     try {
       var response = await DioHelper.postData(
           path: EndPoints.login, data: {"email": email, "password": password});
-      return Right(AuthInfo.fromJson(response.data));
+      AuthInfo authInfo = AuthInfo(
+          accessToken: response.data['token'],
+          userId: response.data['data']['id']);
+      return Right(authInfo);
     } on Exception catch (e) {
       return Left(
           _classifyException(e, process: "logging in with email and password"));
