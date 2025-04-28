@@ -1,7 +1,11 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
-import 'package:tarsheed/src/modules/dashboard/data/models/consumption_interval.dart';
+
+import '../../../../core/utils/color_manager.dart';
+import '../../data/models/consumption_interval.dart';
 
 class UsageChartWidget extends StatelessWidget {
   final List<ConsumptionInterval> chartData = [
@@ -31,9 +35,10 @@ class UsageChartWidget extends StatelessWidget {
             Text(
               'Monthly Usage',
               style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: ColorManager.black),
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: ColorManager.black,
+              ),
             ),
             const SizedBox(height: 20),
             SizedBox(
@@ -44,13 +49,13 @@ class UsageChartWidget extends StatelessWidget {
                   maximum: 10,
                   interval: 1,
                   title: AxisTitle(text: ''),
-                  labelStyle: const TextStyle(color: Colors.black),
+                  labelStyle:  TextStyle(color: ColorManager.black),
                 ),
                 primaryYAxis: NumericAxis(
                   minimum: 0,
                   maximum: 200,
                   interval: 50,
-                  title: AxisTitle(text: 'kWh'),
+                  title: AxisTitle(text: ''),
                   labelStyle: TextStyle(color: ColorManager.black),
                 ),
                 plotAreaBorderWidth: 0,
@@ -59,19 +64,29 @@ class UsageChartWidget extends StatelessWidget {
                   SplineSeries<ConsumptionInterval, double>(
                     dataSource: chartData,
                     xValueMapper: (ConsumptionInterval data, _) => data.day,
-                    yValueMapper: (ConsumptionInterval data, _) =>
-                        data.averageUsage,
+                    yValueMapper: (ConsumptionInterval data, _) => data.averageUsage,
                     color: ColorManager.primary,
                     width: 2,
-                    markerSettings: const MarkerSettings(
+                    markerSettings:  MarkerSettings(
                       isVisible: true,
                       shape: DataMarkerType.circle,
-                      color: Colors.blue,
+                      color: ColorManager.primary,
                       width: 6,
                       height: 6,
                     ),
                   ),
                 ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            Center(
+              child: Text(
+                'kWh',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: ColorManager.black,
+                ),
               ),
             ),
           ],

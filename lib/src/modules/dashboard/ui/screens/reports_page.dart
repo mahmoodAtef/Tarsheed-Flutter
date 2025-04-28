@@ -27,17 +27,18 @@ class _ReportsPageState extends State<ReportsPage> {
   List<Device> devices = [];
 
   final List<String> _periods = [
-    S.current.today,
-    S.current.week,
     S.current.month,
-    S.current.years,
   ];
-  int _selectedPeriodIndex = 3;
+  int _selectedPeriodIndex = 0;
+
+  String currentPeriod = "";
 
   @override
   void initState() {
     super.initState();
-    context.read<DashboardBloc>().add(GetUsageReportEvent());
+    final now = DateTime.now();
+    currentPeriod = "${now.month}-${now.year}";
+    context.read<DashboardBloc>().add(GetUsageReportEvent(period: currentPeriod));
     context.read<DashboardBloc>().add(GetAISuggestionsEvent());
   }
 
@@ -62,11 +63,11 @@ class _ReportsPageState extends State<ReportsPage> {
 
             final avgCost = (report.totalConsumption * 0.85).toStringAsFixed(2);
             final lastMonthUsage =
-                report.previousTotalConsumption.toStringAsFixed(2);
+            report.previousTotalConsumption.toStringAsFixed(2);
             final nextMonthUsage =
-                (report.totalConsumption * 1.05).toStringAsFixed(2);
+            (report.totalConsumption * 1.05).toStringAsFixed(2);
             final savingsPercentage =
-                report.savingsPercentage.toStringAsFixed(0);
+            report.savingsPercentage.toStringAsFixed(0);
 
             final isUsageDecreased =
                 report.totalConsumption < report.previousTotalConsumption;
@@ -78,7 +79,7 @@ class _ReportsPageState extends State<ReportsPage> {
             final costSavingsPercentage = previousCost == 0
                 ? '0'
                 : (((previousCost - currentCost) / previousCost) * 100)
-                    .toStringAsFixed(0);
+                .toStringAsFixed(0);
 
             return SingleChildScrollView(
               child: Padding(
@@ -92,13 +93,22 @@ class _ReportsPageState extends State<ReportsPage> {
                         setState(() {
                           _selectedPeriodIndex = index;
                         });
+                        final now = DateTime.now();
+                        currentPeriod = "${now.month}-${now.year}";
                         context
                             .read<DashboardBloc>()
-                            .add(GetUsageReportEvent(period: "4:2025"));
+                            .add(GetUsageReportEvent(period: currentPeriod));
                       },
                     ),
                     UsageChartWidget(),
-                    MonthNavigator(),
+                    MonthNavigator(
+                      onMonthChanged: (String period) {
+                        setState(() {
+                          currentPeriod = period;
+                        });
+                        context.read<DashboardBloc>().add(GetUsageReportEvent(period: period));
+                      },
+                    ),
                     BuildInfoCard(
                       icon: Icons.show_chart,
                       title: S.of(context).avgUsage,
@@ -139,7 +149,6 @@ class _ReportsPageState extends State<ReportsPage> {
                     ),
                     SizedBox(height: 10.h),
 
-                    // AI Suggestion Bloc Builder
                     BlocBuilder<DashboardBloc, DashboardState>(
                       builder: (context, state) {
                         if (state is GetAISuggestionsLoading) {
