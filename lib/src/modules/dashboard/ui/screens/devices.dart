@@ -4,34 +4,16 @@ import 'package:tarsheed/src/core/utils/color_manager.dart';
 import '../../../../core/error/exception_manager.dart';
 import '../../../../core/widgets/appbar.dart';
 import '../../../../core/widgets/bottomNavigatorBar.dart';
+import '../../../../core/widgets/rectangle_background.dart';
 import '../../bloc/dashboard_bloc.dart';
 import '../../data/models/device_creation_form.dart';
+import '../../data/models/device.dart';
+import '../widgets/Delete_Confirmation_Dialog.dart';
 import '../widgets/card_devices.dart';
-import '../../../../core/widgets/rectangle_background.dart';
-import 'deviceFormPage.dart';
+import '../widgets/device_search_bar.dart';
+import '../widgets/filter_tabs_row.dart';
+import '../widgets/edit_device_dialog.dart';
 import 'device_creation_Page.dart';
-
-class RoomsPage extends StatelessWidget {
-  const RoomsPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Rooms')),
-    );
-  }
-}
-
-class PriorityPage extends StatelessWidget {
-  const PriorityPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Categories')),
-    );
-  }
-}
 
 class DevicesScreen extends StatefulWidget {
   const DevicesScreen({Key? key}) : super(key: key);
@@ -41,7 +23,7 @@ class DevicesScreen extends StatefulWidget {
 }
 
 class _DevicesScreenState extends State<DevicesScreen> {
-  final List<DeviceCreationForm> devices = [];
+  String? selectedDeviceIdForDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -54,84 +36,36 @@ class _DevicesScreenState extends State<DevicesScreen> {
           child: Stack(
             children: [
               const Positioned.fill(child: BackGroundRectangle()),
+
               Column(
                 children: [
                   const CustomAppBar(text: 'Devices'),
                   const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.grey.shade300),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 8,
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.search,
-                              color: Colors.grey.shade600, size: 20),
-                          const SizedBox(width: 10),
-                          const Expanded(
-                            child: TextField(
-                              autofocus: false,
-                              decoration: InputDecoration(
-                                hintText: 'Search devices..',
-                                isDense: true,
-                                contentPadding: EdgeInsets.zero,
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                              ),
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Icon(Icons.grid_view, color: Colors.grey, size: 20),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    child: Row(
-                      children: [
-                        FilterTab(label: 'Consumption', isActive: true, onTap: () {}),
-                        const SizedBox(width: 10),
-                        FilterTab(
-                          label: 'Rooms',
-                          isActive: false,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const RoomsPage()),
-                            );
-                          },
-                        ),
-                        const SizedBox(width: 10),
-                        FilterTab(
-                          label: 'Priority',
-                          isActive: false,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const PriorityPage()),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
+
+                  /// Search Bar
+                  const DeviceSearchBar(),
                   const SizedBox(height: 10),
+
+                  /// Filter Tabs
+                  const FilterTabsRow(),
+                  const SizedBox(height: 10),
+
+                  /// Devices List
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
-                      child: BlocBuilder<DashboardBloc, DashboardState>(
+                      child: BlocConsumer<DashboardBloc, DashboardState>(
+                        listenWhen: (previous, current) =>
+                        current is DeleteDeviceSuccess || current is DeleteDeviceError,
+                        listener: (context, state) {
+                          if (state is DeleteDeviceSuccess) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Device deleted successfully')),
+                            );
+                          } else if (state is DeleteDeviceError) {
+                            ExceptionManager.showMessage(state.exception);
+                          }
+                        },
                         buildWhen: (previous, current) => current is DeviceState,
                         builder: (context, state) {
                           if (state is GetDevicesLoading) {
@@ -145,12 +79,18 @@ class _DevicesScreenState extends State<DevicesScreen> {
                               spacing: 10,
                               runSpacing: 10,
                               children: devices.map((device) {
-                                return DeviceCard(
-                                  device: device,
-                                  onToggle: (bool newState) {
+                                return GestureDetector(
+                                  onLongPress: () {
+                                    selectedDeviceIdForDelete = device.id;
+                                    _showDeleteConfirmation(device.id);
                                   },
-                                  onEdit: () {
-                                  },
+                                  child: DeviceCard(
+                                    device: device,
+                                    onToggle: (bool newState) {},
+                                    onEdit: () {
+                                      _showEditDialog(device);
+                                    },
+                                  ),
                                 );
                               }).toList(),
                             );
@@ -159,8 +99,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
                           }
                           return const SizedBox.shrink();
                         },
-                      )
-
+                      ),
                     ),
                   ),
                 ],
@@ -169,16 +108,15 @@ class _DevicesScreenState extends State<DevicesScreen> {
           ),
         ),
       ),
+
+      /// Floating Button to Add Device
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final newDevice = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => DeviceCreationPage()),
+            MaterialPageRoute(builder: (_) =>  DeviceCreationPage()),
           );
           if (newDevice != null && newDevice is DeviceCreationForm) {
-            setState(() {
-              devices.add(newDevice);
-            });
             context.read<DashboardBloc>().add(AddDeviceEvent(newDevice));
           }
         },
@@ -188,39 +126,18 @@ class _DevicesScreenState extends State<DevicesScreen> {
       bottomNavigationBar: const BottomNavigator(currentIndex: -1),
     );
   }
-}
 
-class FilterTab extends StatelessWidget {
-  final String label;
-  final bool isActive;
-  final VoidCallback onTap;
+  void _showEditDialog(Device device) {
+    showDialog(
+      context: context,
+      builder: (context) => EditDeviceDialog(device: device),
+    );
+  }
 
-  const FilterTab({
-    Key? key,
-    required this.label,
-    required this.isActive,
-    required this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: isActive ? ColorManager.primary : Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isActive ? Colors.white : Colors.grey.shade600,
-            fontWeight: FontWeight.w500,
-            fontSize: 14,
-          ),
-        ),
-      ),
+  void _showDeleteConfirmation(String deviceId) {
+    showDialog(
+      context: context,
+      builder: (_) => DeleteDeviceDialog(deviceId: deviceId),
     );
   }
 }

@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // تحديد رقم الشريحة بناءً على الاستهلاك
+
   int getElectricityTierNumber(double consumption) {
     if (consumption <= 50) {
       return 1;
@@ -234,20 +234,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       bool isError = false;
 
                       if (state is GetUsageReportSuccess) {
-                        // التأكد من أن savingsPercentage مش null
+
                         consumptionValue = state.report.savingsPercentage ?? 0;
-                        // تحويل النسبة المئوية إلى قيمة استهلاك تقريبية
-                        consumptionValue = consumptionValue * 15; // تحويل إلى قيمة بين 0-1500
+                        consumptionValue = consumptionValue * 15;
                       } else if (state is GetUsageReportError) {
                         isError = true;
                       } else if (state is GetUsageReportLoading) {
                         return Center(child: CircularProgressIndicator());
                       }
 
-                      // احصل على رقم الشريحة
+
                       final tierNumber = getElectricityTierNumber(consumptionValue);
 
-                      // قيمة للعرض على المقياس (بين 0 و 100)
                       final gaugeValue = (consumptionValue > 1000)
                           ? 100.0
                           : (consumptionValue / 10).clamp(0, 100).toDouble();
