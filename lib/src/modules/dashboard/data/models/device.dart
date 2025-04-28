@@ -28,9 +28,9 @@ class Device extends Equatable {
       description: json['description'],
       roomId: json['roomId'],
       categoryId: json['categoryId'],
-      consumption: json['consumption'],
-      priority: json['priority'],
-      state: json['state'],
+      consumption: json['totalUsage'].toDouble(),
+      priority: json['priority'] ?? 0,
+      state: json['status'] == "ON",
     );
   }
 

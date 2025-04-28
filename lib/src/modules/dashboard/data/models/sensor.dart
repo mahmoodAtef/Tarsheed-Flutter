@@ -1,15 +1,20 @@
 import 'package:equatable/equatable.dart';
 
 class Sensor extends Equatable {
-  final String id;
+  final String? id;
   final String name;
   final String pinNumber;
-  final String? description;
+  final String description;
+  final String roomId;
+  final String categoryId;
+
   const Sensor(
       {required this.id,
       required this.name,
       required this.pinNumber,
-      this.description});
+      required this.description,
+      required this.roomId,
+      required this.categoryId});
 
   factory Sensor.fromJson(Map<String, dynamic> json) {
     return Sensor(
@@ -17,6 +22,8 @@ class Sensor extends Equatable {
       name: json['name'],
       pinNumber: json['pinNumber'],
       description: json['description'],
+      roomId: json['roomId'],
+      categoryId: json['categoryId'],
     );
   }
   Sensor copyWith({
@@ -24,19 +31,24 @@ class Sensor extends Equatable {
     String? name,
     String? pinNumber,
     String? description,
+    String? roomId,
+    String? categoryId,
   }) =>
       Sensor(
         id: id ?? this.id,
         name: name ?? this.name,
         pinNumber: pinNumber ?? this.pinNumber,
         description: description ?? this.description,
+        roomId: roomId ?? this.roomId,
+        categoryId: categoryId ?? this.categoryId,
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "name": name,
         "pinNumber": pinNumber,
         "description": description,
+        "roomId": roomId,
+        "categoryId": categoryId
       };
 
   @override

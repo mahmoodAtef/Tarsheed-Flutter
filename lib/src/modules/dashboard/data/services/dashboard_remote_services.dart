@@ -162,7 +162,7 @@ class DashboardRemoteServices implements BaseDashboardServices {
         data: sensor.toJson(),
       );
       Sensor savedSensor =
-          sensor.copyWith(id: response.data["data"]["createdSensor"]["_id"]);
+          sensor.copyWith(id: response.data["data"]["sensor"]["_id"]);
       return Right(savedSensor);
     } on Exception catch (e) {
       return Left(e);
