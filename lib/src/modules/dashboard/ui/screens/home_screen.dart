@@ -1,14 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/sensor.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/devices.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/text_home_screen.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/profile_screen.dart';
-import 'package:intl/intl.dart';
-import 'dart:async';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
@@ -36,11 +38,18 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     final bloc = context.read<DashboardBloc>();
-    bloc.add(GetUsageReportEvent(period: "${DateTime.now().month}-${DateTime.now().year}"));
+    bloc.add(GetUsageReportEvent(
+        period: "${DateTime.now().month}-${DateTime.now().year}"));
     bloc.add(GetRoomsEvent());
     bloc.add(GetDevicesCategoriesEvent());
-    context.read<DashboardBloc>().add(GetDevicesEvent());
-
+    bloc.add(GetDevicesEvent());
+    bloc.add(AddSensorEvent(Sensor(
+      name: 'currentTime',
+      pinNumber: '1',
+      description: 'description',
+      roomId: '1',
+      categoryId: '1',
+    )));
     _updateDateTime();
 
     _timer = Timer.periodic(Duration(minutes: 1), (timer) {
@@ -66,22 +75,34 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (e) {
       final hour = egyptTime.hour % 12 == 0 ? 12 : egyptTime.hour % 12;
       final hourFormat = hour < 10 ? '0$hour' : '$hour';
-      final minuteFormat = egyptTime.minute < 10 ? '0${egyptTime.minute}' : '${egyptTime.minute}';
+      final minuteFormat = egyptTime.minute < 10
+          ? '0${egyptTime.minute}'
+          : '${egyptTime.minute}';
       final period = egyptTime.hour < 12 ? 'AM' : 'PM';
       currentTime = '$hourFormat:$minuteFormat $period';
 
       final months = [
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
       ];
-      currentDate = '${egyptTime.day} ${months[egyptTime.month - 1]}, ${egyptTime.year}';
+      currentDate =
+          '${egyptTime.day} ${months[egyptTime.month - 1]}, ${egyptTime.year}';
     }
 
     if (mounted) {
       setState(() {});
     }
   }
-
 
   int getElectricityTierNumber(double consumption) {
     if (consumption <= 50) {
@@ -234,7 +255,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       bool isError = false;
 
                       if (state is GetUsageReportSuccess) {
-
                         consumptionValue = state.report.savingsPercentage ?? 0;
                         consumptionValue = consumptionValue * 15;
                       } else if (state is GetUsageReportError) {
@@ -243,8 +263,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         return Center(child: CircularProgressIndicator());
                       }
 
-
-                      final tierNumber = getElectricityTierNumber(consumptionValue);
+                      final tierNumber =
+                          getElectricityTierNumber(consumptionValue);
 
                       final gaugeValue = (consumptionValue > 1000)
                           ? 100.0
@@ -258,7 +278,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               Expanded(
                                 child: Center(
                                   child: TweenAnimationBuilder<double>(
-                                    tween: Tween<double>(begin: 0, end: gaugeValue),
+                                    tween: Tween<double>(
+                                        begin: 0, end: gaugeValue),
                                     duration: Duration(seconds: 2),
                                     builder: (context, animatedValue, child) {
                                       return SfRadialGauge(
@@ -275,7 +296,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                               color: Colors.grey[200],
                                             ),
                                             ranges: <GaugeRange>[
-
                                               GaugeRange(
                                                   startValue: 0,
                                                   endValue: 5, // 50/10
@@ -285,8 +305,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   label: "1",
                                                   labelStyle: GaugeTextStyle(
                                                       fontSize: 12.sp,
-                                                      fontWeight: FontWeight.bold)),
-
+                                                      fontWeight:
+                                                          FontWeight.bold)),
                                               GaugeRange(
                                                   startValue: 5,
                                                   endValue: 10, // 100/10
@@ -296,7 +316,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   label: "2",
                                                   labelStyle: GaugeTextStyle(
                                                       fontSize: 12.sp,
-                                                      fontWeight: FontWeight.bold)),
+                                                      fontWeight:
+                                                          FontWeight.bold)),
                                               GaugeRange(
                                                   startValue: 10,
                                                   endValue: 20, // 200/10
@@ -306,7 +327,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   label: "3",
                                                   labelStyle: GaugeTextStyle(
                                                       fontSize: 12.sp,
-                                                      fontWeight: FontWeight.bold)),
+                                                      fontWeight:
+                                                          FontWeight.bold)),
                                               GaugeRange(
                                                   startValue: 20,
                                                   endValue: 35, // 350/10
@@ -316,7 +338,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   label: "4",
                                                   labelStyle: GaugeTextStyle(
                                                       fontSize: 12.sp,
-                                                      fontWeight: FontWeight.bold)),
+                                                      fontWeight:
+                                                          FontWeight.bold)),
                                               GaugeRange(
                                                   startValue: 35,
                                                   endValue: 65, // 650/10
@@ -326,7 +349,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   label: "5",
                                                   labelStyle: GaugeTextStyle(
                                                       fontSize: 12.sp,
-                                                      fontWeight: FontWeight.bold)),
+                                                      fontWeight:
+                                                          FontWeight.bold)),
                                               GaugeRange(
                                                   startValue: 65,
                                                   endValue: 100, // 1000/10
@@ -336,7 +360,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   label: "6",
                                                   labelStyle: GaugeTextStyle(
                                                       fontSize: 12.sp,
-                                                      fontWeight: FontWeight.bold)),
+                                                      fontWeight:
+                                                          FontWeight.bold)),
                                             ],
                                             pointers: <GaugePointer>[
                                               NeedlePointer(
@@ -377,13 +402,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                               GaugeAnnotation(
                                                 widget: Column(
-                                                  mainAxisSize: MainAxisSize.min,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
                                                   children: [
                                                     Text(
                                                       '${consumptionValue.toInt()} kWh',
                                                       style: TextStyle(
                                                         fontSize: 20.sp,
-                                                        fontWeight: FontWeight.w600,
+                                                        fontWeight:
+                                                            FontWeight.w600,
                                                         color: Colors.black,
                                                       ),
                                                     ),
@@ -391,7 +418,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       'Tier $tierNumber',
                                                       style: TextStyle(
                                                         fontSize: 16.sp,
-                                                        fontWeight: FontWeight.w600,
+                                                        fontWeight:
+                                                            FontWeight.w600,
                                                         color: Colors.grey[700],
                                                       ),
                                                     ),

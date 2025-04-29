@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
+
 import '../../../../core/error/exception_manager.dart';
 import '../../../../core/widgets/appbar.dart';
 import '../../../../core/widgets/bottomNavigatorBar.dart';
 import '../../../../core/widgets/rectangle_background.dart';
 import '../../bloc/dashboard_bloc.dart';
-import '../../data/models/device_creation_form.dart';
 import '../../data/models/device.dart';
+import '../../data/models/device_creation_form.dart';
 import '../widgets/Delete_Confirmation_Dialog.dart';
 import '../widgets/card_devices.dart';
 import '../widgets/device_search_bar.dart';
-import '../widgets/filter_tabs_row.dart';
 import '../widgets/edit_device_dialog.dart';
+import '../widgets/filter_tabs_row.dart';
 import 'device_creation_Page.dart';
 
 class DevicesScreen extends StatefulWidget {
@@ -36,7 +37,6 @@ class _DevicesScreenState extends State<DevicesScreen> {
           child: Stack(
             children: [
               const Positioned.fill(child: BackGroundRectangle()),
-
               Column(
                 children: [
                   const CustomAppBar(text: 'Devices'),
@@ -56,24 +56,32 @@ class _DevicesScreenState extends State<DevicesScreen> {
                       padding: const EdgeInsets.all(12.0),
                       child: BlocConsumer<DashboardBloc, DashboardState>(
                         listenWhen: (previous, current) =>
-                        current is DeleteDeviceSuccess || current is DeleteDeviceError,
+                            current is DeleteDeviceSuccess ||
+                            current is DeleteDeviceError,
                         listener: (context, state) {
                           if (state is DeleteDeviceSuccess) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Device deleted successfully')),
+                              const SnackBar(
+                                  content: Text('Device deleted successfully')),
                             );
                           } else if (state is DeleteDeviceError) {
                             ExceptionManager.showMessage(state.exception);
                           }
                         },
-                        buildWhen: (previous, current) => current is DeviceState,
+                        buildWhen: (previous, current) =>
+                            current is DeviceState,
                         builder: (context, state) {
                           if (state is GetDevicesLoading) {
-                            return const Center(child: CircularProgressIndicator());
-                          } else if (state is GetDevicesSuccess) {
-                            final devices = state.devices;
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (state is GetDevicesError) {
+                            ExceptionManager.showMessage(state.exception);
+                          } else {
+                            final devices =
+                                context.read<DashboardBloc>().devices;
                             if (devices.isEmpty) {
-                              return const Center(child: Text('No devices added.'));
+                              return const Center(
+                                  child: Text('No devices added.'));
                             }
                             return Wrap(
                               spacing: 10,
@@ -94,8 +102,6 @@ class _DevicesScreenState extends State<DevicesScreen> {
                                 );
                               }).toList(),
                             );
-                          } else if (state is GetDevicesError) {
-                            ExceptionManager.showMessage(state.exception);
                           }
                           return const SizedBox.shrink();
                         },
@@ -114,7 +120,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
         onPressed: () async {
           final newDevice = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) =>  DeviceCreationPage()),
+            MaterialPageRoute(builder: (_) => DeviceCreationPage()),
           );
           if (newDevice != null && newDevice is DeviceCreationForm) {
             context.read<DashboardBloc>().add(AddDeviceEvent(newDevice));

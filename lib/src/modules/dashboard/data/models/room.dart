@@ -17,7 +17,7 @@ class Room extends Equatable {
       id: json['id'] ?? json['_id'],
       name: json['name'],
       description: json['description'],
-      devicesIds: json['devices_ids'],
+      devicesIds: List<String>.from(json['roomDevices']),
     );
   }
 

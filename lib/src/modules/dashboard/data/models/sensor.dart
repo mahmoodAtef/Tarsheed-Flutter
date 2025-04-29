@@ -9,7 +9,7 @@ class Sensor extends Equatable {
   final String categoryId;
 
   const Sensor(
-      {required this.id,
+      {this.id,
       required this.name,
       required this.pinNumber,
       required this.description,

@@ -16,7 +16,7 @@ class DashboardRemoteServices implements BaseDashboardServices {
     try {
       var response = await DioHelper.getData(
         query: {"targetPeriod": period},
-        path: EndPoints.getUsageReport + ApiManager.userId!,
+        path: EndPoints.getUsageReport,
       );
       return Right(Report.fromJson(response.data));
     } on Exception catch (e) {
