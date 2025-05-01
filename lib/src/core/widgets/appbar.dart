@@ -3,8 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({required this.text, super.key});
-
+  const CustomAppBar({
+    required this.text,
+    super.key,
+    this.withBackButton = true,
+  });
+  final bool withBackButton;
   final String text;
 
   @override
@@ -14,10 +18,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: ColorManager.white,
-      leading: IconButton(
-        icon: Icon(Icons.chevron_left, color: ColorManager.black, size: 24.sp),
-        onPressed: () => Navigator.pop(context),
-      ),
+      leading: withBackButton
+          ? IconButton(
+              icon: Icon(Icons.chevron_left,
+                  color: ColorManager.black, size: 24.sp),
+              onPressed: () => Navigator.pop(context),
+            )
+          : null,
       centerTitle: true,
       title: Text(
         text,

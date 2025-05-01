@@ -67,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "contains invalid characters",
     ),
     "continueText": MessageLookupByLibrary.simpleMessage("Continue"),
+    "count": MessageLookupByLibrary.simpleMessage("Count"),
     "createAccount": MessageLookupByLibrary.simpleMessage("Create new account"),
     "createAccountDesc": MessageLookupByLibrary.simpleMessage(
       "Create an account so you can easily control your home",
@@ -181,6 +182,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "newPassword": MessageLookupByLibrary.simpleMessage("New Password"),
     "nextMonthUsage": MessageLookupByLibrary.simpleMessage("Next Month Usage"),
+    "noDataFound": MessageLookupByLibrary.simpleMessage("No data found"),
     "noRouteFound": MessageLookupByLibrary.simpleMessage("No route found"),
     "orContinueWith": MessageLookupByLibrary.simpleMessage("Or continue with"),
     "originalPasswordNotProvided": MessageLookupByLibrary.simpleMessage(

@@ -23,7 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(tierNumber) =>
       "أنت الآن في شريحة استهلاك الكهرباء رقم ${tierNumber}";
 
-  static String m1(count) => "${count} أجهزة تعمل";
+  static String m1(count) => "أجهزة تعمل";
 
   static String m2(seconds) => "إعادة إرسال الرمز خلال: ${seconds} ثانية";
 
@@ -69,6 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "يحتوي على أحرف غير صالحة",
     ),
     "continueText": MessageLookupByLibrary.simpleMessage("متابعة"),
+    "count": MessageLookupByLibrary.simpleMessage("عدد"),
     "createAccount": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
     "createAccountDesc": MessageLookupByLibrary.simpleMessage(
       "أنشئ حسابًا حتى تتمكن من التحكم في منزلك بسهولة",
@@ -180,6 +181,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "newPassword": MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
     "nextMonthUsage": MessageLookupByLibrary.simpleMessage(
       "استهلاك الشهر القادم",
+    ),
+    "noDataFound": MessageLookupByLibrary.simpleMessage(
+      "لم يتم العثور على بيانات",
     ),
     "noRouteFound": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على الصفحة المطلوبة",
