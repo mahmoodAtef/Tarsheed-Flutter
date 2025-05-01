@@ -18,7 +18,7 @@ class SettingsRemoteServices extends BaseSettingsRemoteServices {
       var response = await DioHelper.getData(
         path: "${EndPoints.getProfile}/${ApiManager.userId}",
       );
-      return Right(User.fromJson(response.data["data"]["user_data"]));
+      return Right(User.fromJson(response.data["userData"]));
     } on Exception catch (e) {
       return Left(e);
     }

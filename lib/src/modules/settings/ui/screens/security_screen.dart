@@ -4,8 +4,8 @@ import 'package:tarsheed/generated/l10n.dart'; // استيراد ملف التر
 
 import '../../../../core/widgets/appbar.dart';
 import '../../../../core/widgets/bottomNavigatorBar.dart';
-import '../widgets/container_with_switch.dart';
 import '../../../../core/widgets/large_button.dart';
+import '../widgets/container_with_switch.dart';
 
 class SecurityPage extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class _SecurityPageState extends State<SecurityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: const BottomNavigator(currentIndex: -1),
+      bottomNavigationBar: const BottomNavigator(),
       appBar: CustomAppBar(text: S.of(context).security),
       body: SingleChildScrollView(
         child: Padding(

@@ -1000,6 +1000,11 @@ class S {
     );
   }
 
+  /// `Count`
+  String get count {
+    return Intl.message('Count', name: 'count', desc: '', args: []);
+  }
+
   /// `Energy consumption`
   String get energyConsumption {
     return Intl.message(
@@ -1153,6 +1158,16 @@ class S {
   /// `View all`
   String get viewAll {
     return Intl.message('View all', name: 'viewAll', desc: '', args: []);
+  }
+
+  /// `No data found`
+  String get noDataFound {
+    return Intl.message(
+      'No data found',
+      name: 'noDataFound',
+      desc: '',
+      args: [],
+    );
   }
 }
 

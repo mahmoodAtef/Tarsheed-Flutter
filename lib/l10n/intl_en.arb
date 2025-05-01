@@ -113,7 +113,7 @@
   "confirmDelete": "Confirm Delete",
   "home": "Home",
   "devicesRunning": "{count} devices running",
-  "count": {},
+  "count": "Count",
   "energyConsumption": "Energy consumption",
   "low": "LOW",
   "high": "HIGH",
@@ -134,5 +134,10 @@
   "activeMode": "Active Mode",
   "energySaving": "Energy Saving",
   "connectedDevices": "Connected Devices",
-  "viewAll": "View all"
+  "viewAll": "View all",
+  "noDataFound": "No data found"
+
 }
+
+
+

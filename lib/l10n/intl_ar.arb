@@ -112,8 +112,8 @@
   "cancel": "إلغاء",
   "confirmDelete": "تأكيد الحذف",
   "home": "الرئيسية",
-  "devicesRunning": "{count} أجهزة تعمل",
-  "count": {},
+  "devicesRunning": "أجهزة تعمل",
+  "count": "عدد",
   "energyConsumption": "استهلاك الطاقة",
   "low": "منخفض",
   "high": "مرتفع",
@@ -134,5 +134,7 @@
   "activeMode": "الوضع النشط",
   "energySaving": "توفير الطاقة",
   "connectedDevices": "الأجهزة المتصلة",
-  "viewAll": "عرض الكل"
+  "viewAll": "عرض الكل",
+  "noDataFound": "لم يتم العثور على بيانات"
+
 }
