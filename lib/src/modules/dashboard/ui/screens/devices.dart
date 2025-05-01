@@ -129,7 +129,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
         backgroundColor: ColorManager.primary,
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: const BottomNavigator(currentIndex: -1),
+      bottomNavigationBar: const BottomNavigator(),
     );
   }
 

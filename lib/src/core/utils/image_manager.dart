@@ -6,4 +6,6 @@ class AssetsManager {
   static const String rectangle3 = "assets/images/Rectangle 3.png";
   static const String rectangle4 = "assets/images/Rectangle 4.png";
   static const String avatar = "assets/images/avatar.png";
+  static const String errorIcon = "assets/images/error_icon.png";
+  static const String noDataFound = "assets/images/no_data_found.png";
 }
