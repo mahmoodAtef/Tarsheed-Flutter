@@ -12,7 +12,7 @@ class SplashScreen extends StatelessWidget {
       screenFunction: () async {
         return AppInitializer.init();
       },
-      duration: 3000,
+      duration: 300,
       splashIconSize: MediaQuery.of(context).size.shortestSide * 0.6,
       pageTransitionType: PageTransitionType.rightToLeftWithFade,
       curve: Curves.bounceIn,

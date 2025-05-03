@@ -67,7 +67,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   _handleGetUsageReportEvent(
       GetUsageReportEvent event, Emitter<DashboardState> emit) async {
     emit(GetUsageReportLoading());
-    final result = await _repository.getUsageReport();
+    final result = await _repository.getUsageReport(period: event.period);
     result.fold((l) => emit(GetUsageReportError(l)), (r) {
       report = r;
       emit(GetUsageReportSuccess(r));

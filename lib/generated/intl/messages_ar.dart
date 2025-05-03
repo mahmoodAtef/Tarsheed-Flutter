@@ -23,9 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(tierNumber) =>
       "أنت الآن في شريحة استهلاك الكهرباء رقم ${tierNumber}";
 
-  static String m1(count) => "أجهزة تعمل";
-
-  static String m2(seconds) => "إعادة إرسال الرمز خلال: ${seconds} ثانية";
+  static String m1(seconds) => "إعادة إرسال الرمز خلال: ${seconds} ثانية";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -36,6 +34,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "تم حذف الحساب بنجاح",
     ),
     "activeMode": MessageLookupByLibrary.simpleMessage("الوضع النشط"),
+    "aiSuggestions": MessageLookupByLibrary.simpleMessage(
+      "اقتراحات الذكاء الاصطناعي",
+    ),
     "alreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
       "لديك حساب بالفعل؟",
     ),
@@ -69,7 +70,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "يحتوي على أحرف غير صالحة",
     ),
     "continueText": MessageLookupByLibrary.simpleMessage("متابعة"),
-    "count": MessageLookupByLibrary.simpleMessage("عدد"),
     "createAccount": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
     "createAccountDesc": MessageLookupByLibrary.simpleMessage(
       "أنشئ حسابًا حتى تتمكن من التحكم في منزلك بسهولة",
@@ -87,7 +87,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "هل تريد حذف حسابك؟",
     ),
     "deleteMyAccount": MessageLookupByLibrary.simpleMessage("حذف حسابي"),
-    "devicesRunning": m1,
+    "devicesRunning": MessageLookupByLibrary.simpleMessage("أجهزة تعمل"),
     "didNotReceive": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
     "didNtReceiveCode": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
     "editPassNaAddUseEm": MessageLookupByLibrary.simpleMessage(
@@ -164,7 +164,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginHere": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "low": MessageLookupByLibrary.simpleMessage("منخفض"),
     "lowTierSystemMessage": MessageLookupByLibrary.simpleMessage(
-      "أنت الآن على النظام منخفض المستوى",
+      "أنت الآن على الشرحة:",
     ),
     "medium": MessageLookupByLibrary.simpleMessage("متوسط"),
     "month": MessageLookupByLibrary.simpleMessage("الشهر"),
@@ -234,7 +234,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "register": MessageLookupByLibrary.simpleMessage("تسجيل"),
     "reports": MessageLookupByLibrary.simpleMessage("التقارير"),
     "resendCode": MessageLookupByLibrary.simpleMessage("إعادة إرسال الرمز"),
-    "resendCodeIn": m2,
+    "resendCodeIn": m1,
     "retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("حفظ التغييرات"),
