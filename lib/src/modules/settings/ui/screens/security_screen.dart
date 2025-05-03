@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart'; // استيراد ملف الترجمة
 
 import '../../../../core/widgets/appbar.dart';
-import '../../../../core/widgets/bottomNavigatorBar.dart';
+import '../../../../core/widgets/bottom_navigator_bar.dart';
 import '../../../../core/widgets/large_button.dart';
 import '../widgets/container_with_switch.dart';
 

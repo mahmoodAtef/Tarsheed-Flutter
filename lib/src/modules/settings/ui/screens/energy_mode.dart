@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/widgets/appbar.dart';
-import '../../../../core/widgets/bottomNavigatorBar.dart';
+import '../../../../core/widgets/bottom_navigator_bar.dart';
 import '../widgets/container_with_switch.dart';
 
 class EnergyModePage extends StatelessWidget {
