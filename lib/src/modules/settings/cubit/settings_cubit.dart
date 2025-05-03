@@ -9,8 +9,8 @@ part 'settings_state.dart';
 
 class SettingsCubit extends HydratedCubit<SettingsState> {
   SettingsCubit() : super(SettingsInitial());
-  int currentPageIndex = 0;
-  int lastIndex = 0;
+  int currentPageIndex = 1;
+  int lastIndex = 1;
   SettingsRepository settingsRepository = sl();
 
   void changeIndex(int index) {

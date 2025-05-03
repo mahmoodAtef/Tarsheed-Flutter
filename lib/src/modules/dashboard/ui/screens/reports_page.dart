@@ -14,7 +14,6 @@ import '../../../../core/widgets/appbar.dart';
 import '../../bloc/dashboard_bloc.dart';
 import '../widgets/chart.dart';
 import '../widgets/month_navigaion.dart';
-import '../widgets/select_time_period.dart';
 
 class ReportsPage extends StatelessWidget {
   const ReportsPage({super.key});
@@ -50,7 +49,7 @@ class _ReportsContentState extends State<_ReportsContent> {
 
   void _initData() {
     final now = DateTime.now();
-    _currentPeriod = "${now.month}-${now.year}";
+    _currentPeriod = "04-${now.year}";
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _fetchInitialData();
@@ -59,7 +58,7 @@ class _ReportsContentState extends State<_ReportsContent> {
 
   void _fetchInitialData() {
     final bloc = context.read<DashboardBloc>();
-    bloc.add(GetUsageReportEvent(period: _currentPeriod));
+    bloc.add(GetUsageReportEvent(period: "04-${DateTime.now().year}"));
     bloc.add(GetAISuggestionsEvent());
   }
 
@@ -83,82 +82,114 @@ class _ReportsContentState extends State<_ReportsContent> {
 
   @override
   Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.all(12.w),
+        child: Column(
+          spacing: 20.h,
+          children: [
+            MonthNavigator(onMonthChanged: _onMonthChanged),
+            _ChartSection(),
+            _ReportContentSection(),
+            _AISuggestionsSection()
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ReportContentSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<DashboardBloc, DashboardState>(
       buildWhen: (previous, current) =>
-          current is GetUsageReportLoading ||
           current is GetUsageReportSuccess ||
-          current is GetUsageReportError,
+          current is GetUsageReportError ||
+          current is GetUsageReportLoading,
       builder: (context, state) {
         if (state is GetUsageReportLoading) {
-          return const CustomLoadingWidget();
+          return CustomLoadingWidget();
         }
-
         if (state is GetUsageReportError) {
-          ExceptionManager.showMessage(state.exception);
           return Center(
-            child: SizedBox(
-              height: 120.h,
-              child: CustomErrorWidget(
-                  message: ExceptionManager.getMessage(state.exception)),
+            child: CustomErrorWidget(
+              message: ExceptionManager.getMessage(state.exception),
             ),
           );
         }
-
         if (state is GetUsageReportSuccess) {
           return _buildReportContent(context, state.report);
         }
-
-        // Initial state before any loading occurs
-        return const Center(child: CircularProgressIndicator());
+        return Container();
       },
     );
   }
 
   Widget _buildReportContent(BuildContext context, Report report) {
     return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(12.w),
-        child: Column(
-          children: [
-            PeriodFilter(
-              periods: _periods,
-              initialSelectedIndex: _selectedPeriodIndex,
-              onPeriodChanged: _onPeriodChanged,
-            ),
-            UsageChartWidget(),
-            MonthNavigator(onMonthChanged: _onMonthChanged),
-            BuildInfoCard(
-              icon: Icons.show_chart,
-              title: S.of(context).avgUsage,
-              value: '${report.averageConsumption} kWh',
-              percentage: '${report.savingsPercentage}%',
-              isDecrease: report.savingsPercentage > 0,
-              color: ColorManager.primary,
-            ),
-            SizedBox(height: 10.h),
-            BuildInfoCard(
-              icon: Icons.attach_money,
-              title: S.of(context).avgCost,
-              value: '\$${report.averageCost}',
-              percentage: '${report.savingsPercentage}%',
-              isDecrease: report.savingsPercentage > 0,
-              color: ColorManager.primary,
-            ),
-            SizedBox(height: 10.h),
-            _UsageForecastSection(
-              lastMonthUsage: "${report.previousTotalConsumption}",
-              nextMonthUsage: "",
-            ),
-            SizedBox(height: 10.h),
-            Text(
-              S.of(context).lowTierSystemMessage,
-              style: TextStyle(fontSize: 14.sp),
-            ),
-            SizedBox(height: 10.h),
-            _AISuggestionsSection(),
-          ],
-        ),
+      child: Column(
+        children: [
+          BuildInfoCard(
+            icon: Icons.show_chart,
+            title: S.of(context).avgUsage,
+            value: '${report.averageConsumption} kWh',
+            percentage: '${report.savingsPercentage}%',
+            isDecrease: report.savingsPercentage > 0,
+            color: ColorManager.primary,
+          ),
+          SizedBox(height: 10.h),
+          BuildInfoCard(
+            icon: Icons.attach_money,
+            title: S.of(context).avgCost,
+            value: '\$${report.averageCost}',
+            percentage: '${report.savingsPercentage}%',
+            isDecrease: report.savingsPercentage > 0,
+            color: ColorManager.primary,
+          ),
+          SizedBox(height: 10.h),
+          _UsageForecastSection(
+            lastMonthUsage: "${report.previousTotalConsumption}",
+            nextMonthUsage: "",
+          ),
+          SizedBox(height: 10.h),
+          Text(
+            "${S.of(context).lowTierSystemMessage}: ${report.tier}",
+            style: TextStyle(fontSize: 14.sp),
+          ),
+          SizedBox(height: 10.h),
+        ],
       ),
+    );
+  }
+}
+
+class _ChartSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<DashboardBloc, DashboardState>(
+      buildWhen: (previous, current) =>
+          current is GetUsageReportSuccess ||
+          current is GetUsageReportError ||
+          current is GetUsageReportLoading,
+      builder: (context, state) {
+        if (state is GetUsageReportLoading) {
+          return SizedBox(height: 270.h, child: CustomLoadingWidget());
+        }
+        if (state is GetUsageReportError) {
+          return Center(
+            child: CustomErrorWidget(
+              message: ExceptionManager.getMessage(state.exception),
+            ),
+          );
+        }
+        if (state is GetUsageReportSuccess) {
+          return UsageChartWidget(
+            chartData: state.report.consumptionIntervals,
+          );
+        }
+        return Container();
+      },
     );
   }
 }
@@ -195,27 +226,41 @@ class _UsageForecastSection extends StatelessWidget {
 class _AISuggestionsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DashboardBloc, DashboardState>(
-      buildWhen: (previous, current) =>
-          current is GetAISuggestionsLoading ||
-          current is GetAISuggestionsSuccess ||
-          current is GetAISuggestionsError,
-      builder: (context, state) {
-        if (state is GetAISuggestionsLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 20.h,
+      children: [
+        Text(S.of(context).aiSuggestions,
+            style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+                color: ColorManager.black)),
+        BlocBuilder<DashboardBloc, DashboardState>(
+          buildWhen: (previous, current) =>
+              current is GetAISuggestionsLoading ||
+              current is GetAISuggestionsSuccess ||
+              current is GetAISuggestionsError,
+          builder: (context, state) {
+            if (state is GetAISuggestionsLoading) {
+              return SizedBox(height: 120.h, child: CustomLoadingWidget());
+            }
 
-        if (state is GetAISuggestionsError) {
-          ExceptionManager.showMessage(state.exception);
-          return const SizedBox.shrink();
-        }
+            if (state is GetAISuggestionsError) {
+              return SizedBox(
+                height: 120.h,
+                child: CustomErrorWidget(
+                    message: ExceptionManager.getMessage(state.exception)),
+              );
+            }
 
-        if (state is GetAISuggestionsSuccess) {
-          return AISuggestionCard(suggestion: state.suggestion);
-        }
+            if (state is GetAISuggestionsSuccess) {
+              return AISuggestionCard(suggestion: state.suggestion);
+            }
 
-        return const SizedBox.shrink();
-      },
+            return const SizedBox.shrink();
+          },
+        ),
+      ],
     );
   }
 }

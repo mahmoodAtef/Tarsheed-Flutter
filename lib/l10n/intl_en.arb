@@ -100,7 +100,7 @@
   "lastMonthUsage": "Last Month Usage",
   "nextMonthUsage": "Next Month Usage",
   "projectedBasedOnUsageHistory": "Projected based on your usage history",
-  "lowTierSystemMessage": "You are now on the low-tier system",
+  "lowTierSystemMessage": "You are now on the tier:",
   "editPassword": "Edit Password",
   "currentPassword": "Current Password",
   "passwordUpdatedSuccessfully": "Password updated successfully",
@@ -112,8 +112,7 @@
   "cancel": "Cancel",
   "confirmDelete": "Confirm Delete",
   "home": "Home",
-  "devicesRunning": "{count} devices running",
-  "count": "Count",
+  "devicesRunning": "Devices running",
   "energyConsumption": "Energy consumption",
   "low": "LOW",
   "high": "HIGH",
@@ -135,8 +134,8 @@
   "energySaving": "Energy Saving",
   "connectedDevices": "Connected Devices",
   "viewAll": "View all",
-  "noDataFound": "No data found"
-
+  "noDataFound": "No data found",
+  "aiSuggestions": "AI Suggestions"
 }
 
 

@@ -880,10 +880,10 @@ class S {
     );
   }
 
-  /// `You are now on the low-tier system`
+  /// `You are now on the tier:`
   String get lowTierSystemMessage {
     return Intl.message(
-      'You are now on the low-tier system',
+      'You are now on the tier:',
       name: 'lowTierSystemMessage',
       desc: '',
       args: [],
@@ -990,19 +990,14 @@ class S {
     return Intl.message('Home', name: 'home', desc: '', args: []);
   }
 
-  /// `{count} devices running`
-  String devicesRunning(Object count) {
+  /// `Devices running`
+  String get devicesRunning {
     return Intl.message(
-      '$count devices running',
+      'Devices running',
       name: 'devicesRunning',
       desc: '',
-      args: [count],
+      args: [],
     );
-  }
-
-  /// `Count`
-  String get count {
-    return Intl.message('Count', name: 'count', desc: '', args: []);
   }
 
   /// `Energy consumption`
@@ -1165,6 +1160,16 @@ class S {
     return Intl.message(
       'No data found',
       name: 'noDataFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `AI Suggestions`
+  String get aiSuggestions {
+    return Intl.message(
+      'AI Suggestions',
+      name: 'aiSuggestions',
       desc: '',
       args: [],
     );

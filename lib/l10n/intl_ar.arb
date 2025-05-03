@@ -100,7 +100,7 @@
   "lastMonthUsage": "استهلاك الشهر الماضي",
   "nextMonthUsage": "استهلاك الشهر القادم",
   "projectedBasedOnUsageHistory": "متوقع بناءً على سجل استهلاكك",
-  "lowTierSystemMessage": "أنت الآن على النظام منخفض المستوى",
+  "lowTierSystemMessage": "أنت الآن على الشرحة:",
   "editPassword": "تعديل كلمة المرور",
   "currentPassword": "كلمة المرور الحالية",
   "passwordUpdatedSuccessfully": "تم تحديث كلمة المرور بنجاح",
@@ -135,6 +135,7 @@
   "energySaving": "توفير الطاقة",
   "connectedDevices": "الأجهزة المتصلة",
   "viewAll": "عرض الكل",
-  "noDataFound": "لم يتم العثور على بيانات"
+  "noDataFound": "لم يتم العثور على بيانات",
+  "aiSuggestions": "اقتراحات الذكاء الاصطناعي"
 
 }

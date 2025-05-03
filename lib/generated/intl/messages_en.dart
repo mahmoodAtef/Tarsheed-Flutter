@@ -23,9 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(tierNumber) =>
       "You are now in Electricity consumption bracket number ${tierNumber}";
 
-  static String m1(count) => "${count} devices running";
-
-  static String m2(seconds) => "Resend code in: ${seconds}s";
+  static String m1(seconds) => "Resend code in: ${seconds}s";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -36,6 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Account deleted successfully",
     ),
     "activeMode": MessageLookupByLibrary.simpleMessage("Active Mode"),
+    "aiSuggestions": MessageLookupByLibrary.simpleMessage("AI Suggestions"),
     "alreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
       "Already have an account?",
     ),
@@ -67,7 +66,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "contains invalid characters",
     ),
     "continueText": MessageLookupByLibrary.simpleMessage("Continue"),
-    "count": MessageLookupByLibrary.simpleMessage("Count"),
     "createAccount": MessageLookupByLibrary.simpleMessage("Create new account"),
     "createAccountDesc": MessageLookupByLibrary.simpleMessage(
       "Create an account so you can easily control your home",
@@ -89,7 +87,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteMyAccount": MessageLookupByLibrary.simpleMessage(
       "Delete My Account",
     ),
-    "devicesRunning": m1,
+    "devicesRunning": MessageLookupByLibrary.simpleMessage("Devices running"),
     "didNotReceive": MessageLookupByLibrary.simpleMessage(
       "Didn\'t receive a code?",
     ),
@@ -168,7 +166,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginHere": MessageLookupByLibrary.simpleMessage("Login Here"),
     "low": MessageLookupByLibrary.simpleMessage("LOW"),
     "lowTierSystemMessage": MessageLookupByLibrary.simpleMessage(
-      "You are now on the low-tier system",
+      "You are now on the tier:",
     ),
     "medium": MessageLookupByLibrary.simpleMessage("Medium"),
     "month": MessageLookupByLibrary.simpleMessage("Month"),
@@ -230,7 +228,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "register": MessageLookupByLibrary.simpleMessage("Register"),
     "reports": MessageLookupByLibrary.simpleMessage("Reports"),
     "resendCode": MessageLookupByLibrary.simpleMessage("Resend Code"),
-    "resendCodeIn": m2,
+    "resendCodeIn": m1,
     "retry": MessageLookupByLibrary.simpleMessage("Retry"),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("Save Changes"),
