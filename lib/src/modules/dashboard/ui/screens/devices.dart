@@ -4,17 +4,17 @@ import 'package:tarsheed/src/core/utils/color_manager.dart';
 
 import '../../../../core/error/exception_manager.dart';
 import '../../../../core/widgets/appbar.dart';
-import '../../../../core/widgets/bottomNavigatorBar.dart';
+import '../../../../core/widgets/bottom_navigator_bar.dart';
 import '../../../../core/widgets/rectangle_background.dart';
 import '../../bloc/dashboard_bloc.dart';
 import '../../data/models/device.dart';
 import '../../data/models/device_creation_form.dart';
-import '../widgets/Delete_Confirmation_Dialog.dart';
+import '../widgets/delete_confirmation_dialog.dart';
 import '../widgets/card_devices.dart';
 import '../widgets/device_search_bar.dart';
 import '../widgets/edit_device_dialog.dart';
 import '../widgets/filter_tabs_row.dart';
-import 'device_creation_Page.dart';
+import 'device_creation_page.dart';
 
 class DevicesScreen extends StatefulWidget {
   const DevicesScreen({Key? key}) : super(key: key);
@@ -115,7 +115,6 @@ class _DevicesScreenState extends State<DevicesScreen> {
         ),
       ),
 
-      /// Floating Button to Add Device
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final newDevice = await Navigator.push(

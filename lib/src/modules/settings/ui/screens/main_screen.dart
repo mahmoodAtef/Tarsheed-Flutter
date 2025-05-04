@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tarsheed/src/core/widgets/bottomNavigatorBar.dart';
+import 'package:tarsheed/src/core/widgets/bottom_navigator_bar.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/home_screen.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/reports_page.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';

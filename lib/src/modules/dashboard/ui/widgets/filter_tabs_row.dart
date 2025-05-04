@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/screens/sensors_screen.dart';
 import '../../../../core/utils/color_manager.dart';
 
 class FilterTabsRow extends StatelessWidget {
@@ -29,6 +30,14 @@ class FilterTabsRow extends StatelessWidget {
           isActive: false,
           onTap: () {
 
+          },
+        ),
+        const SizedBox(width: 10),
+        FilterTab(
+          label: 'Sensor',
+          isActive: false,
+          onTap: () {
+        context.push(SensorsScreen());
           },
         ),
       ],
