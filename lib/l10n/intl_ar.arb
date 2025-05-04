@@ -136,6 +136,7 @@
   "connectedDevices": "الأجهزة المتصلة",
   "viewAll": "عرض الكل",
   "noDataFound": "لم يتم العثور على بيانات",
-  "aiSuggestions": "اقتراحات الذكاء الاصطناعي"
+  "aiSuggestions": "اقتراحات الذكاء الاصطناعي",
+  "currentMonthUsage": "استهلاك الشهر الحالي"
 
 }

@@ -39,8 +39,9 @@ final class Report extends Equatable {
         updatedAt: json["updatedAt"] ?? DateTime.now(),
         consumptionIntervals: json["consumptionIntervals"] == null
             ? []
-            : List.of(json["consumptionIntervals"]
-                .map((e) => ConsumptionInterval.fromJson(e))),
+            : json["chartData"]
+                .map((e) => ConsumptionInterval.fromJson(e))
+                .toList(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -52,9 +53,8 @@ final class Report extends Equatable {
         "averageCost": averageCost,
         "consumptionCost": consumptionCost,
         "previousPeriodConsumption": previousTotalConsumption,
-        "Tier": "Tier $tier",
-        "consumptionIntervals":
-            consumptionIntervals.map((e) => e.toJson()).toList()
+        "Tier": "$tier",
+        "chartData": consumptionIntervals.map((e) => e.toJson()).toList()
       };
 
   @override

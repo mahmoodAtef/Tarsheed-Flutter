@@ -13,20 +13,19 @@ import '../../../../core/error/exception_manager.dart';
 import '../../../../core/widgets/appbar.dart';
 import '../../bloc/dashboard_bloc.dart';
 import '../widgets/chart.dart';
-import '../widgets/month_navigaion.dart';
 
 class ReportsPage extends StatelessWidget {
   const ReportsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CustomAppBar(text: S.of(context).reports, withBackButton: false),
-        Expanded(
-          child: _ReportsContent(),
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          CustomAppBar(text: S.of(context).reports, withBackButton: false),
+          _ReportsContent(),
+        ],
+      ),
     );
   }
 }
@@ -88,7 +87,6 @@ class _ReportsContentState extends State<_ReportsContent> {
         child: Column(
           spacing: 20.h,
           children: [
-            MonthNavigator(onMonthChanged: _onMonthChanged),
             _ChartSection(),
             _ReportContentSection(),
             _AISuggestionsSection()
@@ -133,7 +131,7 @@ class _ReportContentSection extends StatelessWidget {
           BuildInfoCard(
             icon: Icons.show_chart,
             title: S.of(context).avgUsage,
-            value: '${report.averageConsumption} kWh',
+            value: '${report.averageConsumption.toStringAsFixed(2)} kWh',
             percentage: '${report.savingsPercentage}%',
             isDecrease: report.savingsPercentage > 0,
             color: ColorManager.primary,
@@ -142,7 +140,7 @@ class _ReportContentSection extends StatelessWidget {
           BuildInfoCard(
             icon: Icons.attach_money,
             title: S.of(context).avgCost,
-            value: '\$${report.averageCost}',
+            value: '\$${report.averageCost.toStringAsFixed(2)}',
             percentage: '${report.savingsPercentage}%',
             isDecrease: report.savingsPercentage > 0,
             color: ColorManager.primary,
@@ -150,7 +148,7 @@ class _ReportContentSection extends StatelessWidget {
           SizedBox(height: 10.h),
           _UsageForecastSection(
             lastMonthUsage: "${report.previousTotalConsumption}",
-            nextMonthUsage: "",
+            nextMonthUsage: "${report.totalConsumption}",
           ),
           SizedBox(height: 10.h),
           Text(
@@ -214,7 +212,7 @@ class _UsageForecastSection extends StatelessWidget {
         ),
         SizedBox(width: 12.w),
         UsageCard(
-          title: S.of(context).nextMonthUsage,
+          title: S.of(context).currentMonthUsage,
           value: '$nextMonthUsage kWh',
           subtitle: S.of(context).projectedBasedOnUsageHistory,
         ),

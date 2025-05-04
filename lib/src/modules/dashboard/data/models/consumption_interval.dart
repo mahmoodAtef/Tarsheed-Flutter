@@ -1,16 +1,16 @@
 class ConsumptionInterval {
   const ConsumptionInterval(this.day, this.averageUsage);
 
-  final double day;
+  final int day;
   final double averageUsage;
 
-  factory ConsumptionInterval.fromJson(Map<String, dynamic> json) =>
+  factory ConsumptionInterval.fromJson(MapEntry<String, dynamic> json) =>
       ConsumptionInterval(
-        json["day"],
-        json["averageUsage"],
+        int.parse(json.key),
+        json.value.toDouble(),
       );
 
-  Map<String, dynamic> toJson() => {"day": day, "averageUsage": averageUsage};
+  Map<String, dynamic> toJson() => {"$day": averageUsage};
 }
 
 /*

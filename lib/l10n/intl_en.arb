@@ -135,7 +135,8 @@
   "connectedDevices": "Connected Devices",
   "viewAll": "View all",
   "noDataFound": "No data found",
-  "aiSuggestions": "AI Suggestions"
+  "aiSuggestions": "AI Suggestions",
+  "currentMonthUsage": "Current Month Usage"
 }
 
 

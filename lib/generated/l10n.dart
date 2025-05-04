@@ -1174,6 +1174,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Current Month Usage`
+  String get currentMonthUsage {
+    return Intl.message(
+      'Current Month Usage',
+      name: 'currentMonthUsage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

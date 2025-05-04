@@ -54,7 +54,8 @@ class UsageChartWidget extends StatelessWidget {
                     series: <CartesianSeries<ConsumptionInterval, double>>[
                       SplineSeries<ConsumptionInterval, double>(
                         dataSource: chartData,
-                        xValueMapper: (ConsumptionInterval data, _) => data.day,
+                        xValueMapper: (ConsumptionInterval data, _) =>
+                            data.day.toDouble(),
                         yValueMapper: (ConsumptionInterval data, _) =>
                             data.averageUsage,
                         color: ColorManager.primary,

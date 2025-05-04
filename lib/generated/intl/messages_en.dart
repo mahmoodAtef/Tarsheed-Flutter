@@ -73,6 +73,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "createNewAccount": MessageLookupByLibrary.simpleMessage(
       "Create new account",
     ),
+    "currentMonthUsage": MessageLookupByLibrary.simpleMessage(
+      "Current Month Usage",
+    ),
     "currentPassword": MessageLookupByLibrary.simpleMessage("Current Password"),
     "currentSavings": MessageLookupByLibrary.simpleMessage(
       "Your Current Savings is",

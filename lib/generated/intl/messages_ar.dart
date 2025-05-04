@@ -75,6 +75,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "أنشئ حسابًا حتى تتمكن من التحكم في منزلك بسهولة",
     ),
     "createNewAccount": MessageLookupByLibrary.simpleMessage("إنشاء حساب جديد"),
+    "currentMonthUsage": MessageLookupByLibrary.simpleMessage(
+      "استهلاك الشهر الحالي",
+    ),
     "currentPassword": MessageLookupByLibrary.simpleMessage(
       "كلمة المرور الحالية",
     ),
