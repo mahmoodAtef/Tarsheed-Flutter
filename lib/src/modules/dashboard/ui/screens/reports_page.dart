@@ -127,6 +127,7 @@ class _ReportContentSection extends StatelessWidget {
   Widget _buildReportContent(BuildContext context, Report report) {
     return SingleChildScrollView(
       child: Column(
+        spacing: 10.h,
         children: [
           BuildInfoCard(
             icon: Icons.show_chart,
@@ -136,21 +137,18 @@ class _ReportContentSection extends StatelessWidget {
             isDecrease: report.savingsPercentage > 0,
             color: ColorManager.primary,
           ),
-          SizedBox(height: 10.h),
           BuildInfoCard(
             icon: Icons.attach_money,
             title: S.of(context).avgCost,
             value: '\$${report.averageCost.toStringAsFixed(2)}',
-            percentage: '${report.savingsPercentage}%',
-            isDecrease: report.savingsPercentage > 0,
+            percentage: '${report.savingsCostPercentage}%',
+            isDecrease: report.savingsCostPercentage > 0,
             color: ColorManager.primary,
           ),
-          SizedBox(height: 10.h),
           _UsageForecastSection(
             lastMonthUsage: "${report.previousTotalConsumption}",
             nextMonthUsage: "${report.totalConsumption}",
           ),
-          SizedBox(height: 10.h),
           Text(
             "${S.of(context).lowTierSystemMessage}: ${report.tier}",
             style: TextStyle(fontSize: 14.sp),

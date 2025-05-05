@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
+import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 
 import '../../../../core/error/exception_manager.dart';
 import '../../../../core/widgets/appbar.dart';
-import '../../../../core/widgets/bottom_navigator_bar.dart';
 import '../../../../core/widgets/rectangle_background.dart';
 import '../../bloc/dashboard_bloc.dart';
 import '../../data/models/device.dart';
 import '../../data/models/device_creation_form.dart';
-import '../widgets/delete_confirmation_dialog.dart';
 import '../widgets/card_devices.dart';
+import '../widgets/delete_confirmation_dialog.dart';
 import '../widgets/device_search_bar.dart';
 import '../widgets/edit_device_dialog.dart';
 import '../widgets/filter_tabs_row.dart';
@@ -29,30 +30,28 @@ class _DevicesScreenState extends State<DevicesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const CustomAppBar(text: 'Devices'),
       backgroundColor: ColorManager.white,
       extendBody: true,
-      body: Container(
-        decoration: const BoxDecoration(color: Colors.transparent),
-        child: SafeArea(
-          child: Stack(
-            children: [
-              const Positioned.fill(child: BackGroundRectangle()),
-              Column(
-                children: [
-                  const CustomAppBar(text: 'Devices'),
-                  const SizedBox(height: 10),
+      body: SingleChildScrollView(
+        child: Container(
+          decoration: const BoxDecoration(color: Colors.transparent),
+          child: SafeArea(
+            child: Stack(
+              children: [
+                const Positioned.fill(child: BackGroundRectangle()),
+                Column(
+                  children: [
+                    const SizedBox(height: 10),
+                    const DeviceSearchBar(),
+                    const SizedBox(height: 10),
 
-                  /// Search Bar
-                  const DeviceSearchBar(),
-                  const SizedBox(height: 10),
+                    /// Filter Tabs
+                    const FilterTabsRow(),
+                    const SizedBox(height: 10),
 
-                  /// Filter Tabs
-                  const FilterTabsRow(),
-                  const SizedBox(height: 10),
-
-                  /// Devices List
-                  Expanded(
-                    child: Padding(
+                    /// Devices List
+                    Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: BlocConsumer<DashboardBloc, DashboardState>(
                         listenWhen: (previous, current) =>
@@ -72,49 +71,67 @@ class _DevicesScreenState extends State<DevicesScreen> {
                             current is DeviceState,
                         builder: (context, state) {
                           if (state is GetDevicesLoading) {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return Center(
+                              child: SizedBox(
+                                height: 120.h,
+                                child: CustomLoadingWidget(),
+                              ),
+                            );
                           } else if (state is GetDevicesError) {
-                            ExceptionManager.showMessage(state.exception);
+                            return Center(
+                              child: CustomErrorWidget(
+                                message: ExceptionManager.getMessage(
+                                    state.exception),
+                              ),
+                            );
                           } else {
                             final devices =
                                 context.read<DashboardBloc>().devices;
                             if (devices.isEmpty) {
-                              return const Center(
-                                  child: Text('No devices added.'));
+                              return Center(
+                                child: SizedBox(
+                                  height: 120.h,
+                                  child: NoDataWidget(),
+                                ),
+                              );
                             }
-                            return Wrap(
-                              spacing: 10,
-                              runSpacing: 10,
-                              children: devices.map((device) {
-                                return GestureDetector(
-                                  onLongPress: () {
-                                    selectedDeviceIdForDelete = device.id;
-                                    _showDeleteConfirmation(device.id);
-                                  },
-                                  child: DeviceCard(
-                                    device: device,
-                                    onToggle: (bool newState) {},
-                                    onEdit: () {
-                                      _showEditDialog(device);
-                                    },
+                            return Padding(
+                              padding: EdgeInsets.all(8.w),
+                              child: GridView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: devices.length,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 10.h,
+                                    crossAxisSpacing: 10.w,
                                   ),
-                                );
-                              }).toList(),
+                                  itemBuilder: (context, index) {
+                                    final device = devices[index];
+                                    return DeviceCard(
+                                      onToggle: (value) {},
+                                      device: device,
+                                      onEdit: () => _showEditDialog(device),
+                                      onDelete: () {
+                                        selectedDeviceIdForDelete = device.id;
+                                        _showDeleteConfirmation(device.id);
+                                      },
+                                    );
+                                  }),
                             );
                           }
                           return const SizedBox.shrink();
                         },
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
-
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final newDevice = await Navigator.push(
@@ -128,7 +145,6 @@ class _DevicesScreenState extends State<DevicesScreen> {
         backgroundColor: ColorManager.primary,
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: const BottomNavigator(),
     );
   }
 

@@ -4,6 +4,7 @@ import 'package:tarsheed/src/modules/dashboard/data/models/consumption_interval.
 final class Report extends Equatable {
   final double totalConsumption;
   final double savingsPercentage;
+  final double savingsCostPercentage;
   final double consumptionCost;
   final List<ConsumptionInterval> consumptionIntervals;
   final double averageConsumption;
@@ -19,6 +20,7 @@ final class Report extends Equatable {
       required this.averageCost,
       required this.consumptionCost,
       required this.savingsPercentage,
+      required this.savingsCostPercentage,
       required this.updatedAt,
       this.period,
       required this.tier,
@@ -26,6 +28,7 @@ final class Report extends Equatable {
 
   factory Report.fromJson(Map<String, dynamic> json) => Report(
         savingsPercentage: json["savingsPercentage"]?.toDouble() ?? 0,
+        savingsCostPercentage: json["savingCostPercntage"]?.toDouble() ?? 0,
         totalConsumption: json["totalConsumption"]?.toDouble() ?? 0,
         period: json["period"],
         averageConsumption: json["averageConsumption"]?.toDouble() ?? 0,
