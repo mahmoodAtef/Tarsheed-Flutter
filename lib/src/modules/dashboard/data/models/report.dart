@@ -37,11 +37,9 @@ final class Report extends Equatable {
           json["Tier"],
         ),
         updatedAt: json["updatedAt"] ?? DateTime.now(),
-        consumptionIntervals: json["consumptionIntervals"] == null
+        consumptionIntervals: json["chartData"] == null
             ? []
-            : json["chartData"]
-                .map((e) => ConsumptionInterval.fromJson(e))
-                .toList(),
+            : _getConsumptionIntervals(json["chartData"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -69,4 +67,26 @@ final class Report extends Equatable {
         tier,
         consumptionIntervals
       ];
+  static List<ConsumptionInterval> _getConsumptionIntervals(
+      Map<String, dynamic> data) {
+    List<ConsumptionInterval> intervals = [];
+    data.forEach((key, value) {
+      int day = double.parse(key.toString()).toInt() * 3;
+      intervals.add(ConsumptionInterval(day, value.toDouble()));
+    });
+    return intervals;
+  }
+  /*
+   {
+      "userId": "680a9b2dcdf756b0e0909dde",
+      "totalConsumption": 454,
+      "consumptionCost": 432.12,
+      "Tier": "5",
+      "averageConsumption": 745.875,
+      "averageCost": 820.1650000000001,
+      "previousTotalConsumption": 802,
+      "savingsPercentage": 43.39,
+      "chartData": {1: 139, 2: 46, 3: 75, 4: 37, 5: 137, 6: 0, 7: 0, 8: 0, 9: 20, 10: 0}
+ }
+   */
 }

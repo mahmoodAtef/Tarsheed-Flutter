@@ -36,15 +36,15 @@ class UsageChartWidget extends StatelessWidget {
                   height: 200,
                   child: SfCartesianChart(
                     primaryXAxis: NumericAxis(
-                      minimum: 1,
-                      maximum: 10,
-                      interval: 1,
+                      minimum: 0,
+                      maximum: 30,
+                      interval: 3,
                       title: AxisTitle(text: ''),
                       labelStyle: TextStyle(color: ColorManager.black),
                     ),
                     primaryYAxis: NumericAxis(
                       minimum: 0,
-                      maximum: 200,
+                      maximum: getMaxValue(chartData) ?? 300,
                       interval: 50,
                       title: AxisTitle(text: ''),
                       labelStyle: TextStyle(color: ColorManager.black),
@@ -88,5 +88,15 @@ class UsageChartWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  double? getMaxValue(List<ConsumptionInterval> data) {
+    if (data.isEmpty) return null;
+    return data.fold<double>(
+          data.first.averageUsage,
+          (maxSoFar, element) =>
+              element.averageUsage > maxSoFar ? element.averageUsage : maxSoFar,
+        ) +
+        50;
   }
 }

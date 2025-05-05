@@ -76,10 +76,4 @@ class Tarsheed extends StatelessWidget {
     );
   }
 }
-/*
-TODO:
- - first screen logic
- - get rooms and categories
- - testing create device form
-
- */
+/**/

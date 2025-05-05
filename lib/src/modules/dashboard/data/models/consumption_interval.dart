@@ -4,10 +4,10 @@ class ConsumptionInterval {
   final int day;
   final double averageUsage;
 
-  factory ConsumptionInterval.fromJson(MapEntry<String, dynamic> json) =>
+  factory ConsumptionInterval.fromJson(Map<dynamic, dynamic> json) =>
       ConsumptionInterval(
-        int.parse(json.key),
-        json.value.toDouble(),
+        json.keys.first as int,
+        json.values.first.toDouble(),
       );
 
   Map<String, dynamic> toJson() => {"$day": averageUsage};
