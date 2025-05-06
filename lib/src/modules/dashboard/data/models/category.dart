@@ -21,6 +21,9 @@ final class DeviceCategory extends Equatable {
       iconUrl: json['iconUrl'],
     );
   }
+  static DeviceCategory get empty => DeviceCategory(
+      arabicName: "اخرى", englishName: "other", id: "", iconUrl: "");
+
   String get name =>
       LocalizationManager.currentLocaleIndex == 0 ? arabicName : englishName;
   Map<String, dynamic> toJson() => {'id': id, 'name': name};

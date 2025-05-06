@@ -42,6 +42,12 @@ class Room extends Equatable {
     );
   }
 
+  static const empty = Room(
+    id: '',
+    name: '',
+    description: '',
+    devicesIds: [],
+  );
   @override
   List<Object?> get props => [id, name, description, devicesIds];
 }
