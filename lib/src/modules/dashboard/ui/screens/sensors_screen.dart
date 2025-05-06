@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
+
 import '../../../../core/widgets/appbar.dart';
 import '../../../../core/widgets/bottom_navigator_bar.dart';
 import '../../../../core/widgets/rectangle_background.dart';
@@ -23,12 +24,8 @@ class SensorsScreen extends StatelessWidget {
               children: [
                 const CustomAppBar(text: 'Sensors'),
                 const SizedBox(height: 10),
-
-                // Search Bar
                 const DeviceSearchBar(),
                 const SizedBox(height: 10),
-
-                // Placeholder
                 const Expanded(
                   child: Center(
                     child: Text(
@@ -47,7 +44,7 @@ class SensorsScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorManager.primary,
         onPressed: () {
-            context.push(AddSensorFormPage());
+          context.push(AddSensorFormPage());
         },
         child: const Icon(Icons.add),
       ),

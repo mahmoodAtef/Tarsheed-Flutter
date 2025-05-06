@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/utils/image_manager.dart';
@@ -71,4 +72,8 @@ class NoDataWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+void showToast(String message) {
+  Fluttertoast.showToast(msg: message);
 }

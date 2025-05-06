@@ -46,6 +46,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         await _handleDeleteRoomEvent(event, emit);
       } else if (event is GetAISuggestionsEvent) {
         await _handleGetAISuggestionsEvent(event, emit);
+      } else if (event is AddSensorEvent) {
+        await _handleAddSensorEvent(event, emit);
+      } else if (event is GetSensorsEvent) {
+        await _handleGetSensorsEvent(event, emit);
+      } else if (event is DeleteSensorEvent) {
+        await _handleDeleteSensorEvent(event, emit);
       }
     });
   }
@@ -68,12 +74,14 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   // Event handlers
   _handleGetUsageReportEvent(
       GetUsageReportEvent event, Emitter<DashboardState> emit) async {
-    emit(GetUsageReportLoading());
-    final result = await _repository.getUsageReport(period: event.period);
-    result.fold((l) => emit(GetUsageReportError(l)), (r) {
-      report = r;
-      emit(GetUsageReportSuccess(r));
-    });
+    if (report == null || event.isRefresh == true) {
+      emit(GetUsageReportLoading());
+      final result = await _repository.getUsageReport(period: event.period);
+      result.fold((l) => emit(GetUsageReportError(l)), (r) {
+        report = r;
+        emit(GetUsageReportSuccess(r));
+      });
+    }
   }
 
   // AI SUGGESTIONS
@@ -88,12 +96,14 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   // devices events handlers
   _handleGetDevicesEvent(
       GetDevicesEvent event, Emitter<DashboardState> emit) async {
-    emit(GetDevicesLoading());
-    final result = await _repository.getDevices();
-    result.fold((l) => emit(GetDevicesError(l)), (r) {
-      devices = r;
-      emit(GetDevicesSuccess(r));
-    });
+    if (devices.isEmpty || event.isRefresh == true) {
+      emit(GetDevicesLoading());
+      final result = await _repository.getDevices();
+      result.fold((l) => emit(GetDevicesError(l)), (r) {
+        devices = r;
+        emit(GetDevicesSuccess(r));
+      });
+    }
   }
 
   _handleAddDeviceEvent(
@@ -127,12 +137,14 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   // rooms events handlers
   _handleGetRoomsEvent(
       GetRoomsEvent event, Emitter<DashboardState> emit) async {
-    emit(GetRoomsLoading());
-    final result = await _repository.getRooms();
-    result.fold((l) => emit(GetRoomsError(l)), (r) {
-      rooms = r;
-      emit(GetRoomsSuccess(r));
-    });
+    if (rooms.isEmpty || event.isRefresh == true) {
+      emit(GetRoomsLoading());
+      final result = await _repository.getRooms();
+      result.fold((l) => emit(GetRoomsError(l)), (r) {
+        rooms = r;
+        emit(GetRoomsSuccess(r));
+      });
+    }
   }
 
   _handleAddRoomEvent(AddRoomEvent event, Emitter<DashboardState> emit) async {
@@ -151,12 +163,47 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
   _handleGetCategoriesEvent(
       GetDevicesCategoriesEvent event, Emitter<DashboardState> emit) async {
-    emit(GetDeviceCategoriesLoading());
-    final result = await _repository.getCategories();
-    result.fold((l) => emit(GetDeviceCategoriesError(l)), (r) {
-      categories = r;
-      debugPrint(categories.toString());
-      emit(GetDeviceCategoriesSuccess(r));
+    if (categories.isEmpty) {
+      emit(GetDeviceCategoriesLoading());
+      final result = await _repository.getCategories();
+      result.fold((l) => emit(GetDeviceCategoriesError(l)), (r) {
+        categories = r;
+        debugPrint(categories.toString());
+        emit(GetDeviceCategoriesSuccess(r));
+      });
+    }
+  }
+
+  // sensors handlers
+  _handleAddSensorEvent(
+      AddSensorEvent event, Emitter<DashboardState> emit) async {
+    emit(AddSensorLoadingState());
+    final result = await _repository.addSensor(event.sensor);
+    result.fold((l) => AddSensorErrorState(l), (r) {
+      sensors.add(r);
+      emit(AddSensorSuccessState(r));
+    });
+  }
+
+  _handleGetSensorsEvent(
+      GetSensorsEvent event, Emitter<DashboardState> emit) async {
+    if (sensors.isEmpty || event.isRefresh == true) {
+      emit(GetSensorsLoadingState());
+      final result = await _repository.getSensors();
+      result.fold((l) => GetSensorsErrorState(l), (r) {
+        sensors = r;
+        emit(GetSensorsSuccessState(r));
+      });
+    }
+  }
+
+  _handleDeleteSensorEvent(
+      DeleteSensorEvent event, Emitter<DashboardState> emit) async {
+    emit(DeleteSensorLoadingState());
+    final result = await _repository.deleteSensor(event.sensorId);
+    result.fold((l) => DeleteSensorErrorState(l), (r) {
+      sensors.removeWhere((e) => e.id == event.sensorId);
+      emit(DeleteSensorSuccessState(event.sensorId));
     });
   }
 }

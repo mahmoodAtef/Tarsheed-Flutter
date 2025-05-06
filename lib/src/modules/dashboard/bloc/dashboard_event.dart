@@ -7,7 +7,8 @@ sealed class DashboardEvent extends Equatable {
 /// usage
 final class GetUsageReportEvent extends DashboardEvent {
   final String? period;
-  const GetUsageReportEvent({this.period});
+  final bool? isRefresh;
+  const GetUsageReportEvent({this.period, this.isRefresh});
   @override
   List<Object?> get props => [period];
 }
@@ -26,8 +27,10 @@ final class GetAISuggestionsEvent extends DashboardEvent {
 
 // rooms
 final class GetRoomsEvent extends DashboardEvent {
+  final bool? isRefresh;
+  const GetRoomsEvent({this.isRefresh});
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [isRefresh];
 }
 
 final class AddRoomEvent extends DashboardEvent {
@@ -52,6 +55,8 @@ final class DeleteRoomEvent extends DashboardEvent {
 
 // devices
 final class GetDevicesEvent extends DashboardEvent {
+  final bool? isRefresh;
+  const GetDevicesEvent({this.isRefresh});
   @override
   List<Object?> get props => [];
 }
@@ -114,4 +119,11 @@ final class DeleteSensorEvent extends DashboardEvent {
   const DeleteSensorEvent(this.sensorId);
   @override
   List<Object?> get props => [sensorId];
+}
+
+final class GetSensorsEvent extends DashboardEvent {
+  final bool? isRefresh;
+  const GetSensorsEvent({this.isRefresh});
+  @override
+  List<Object?> get props => [isRefresh];
 }

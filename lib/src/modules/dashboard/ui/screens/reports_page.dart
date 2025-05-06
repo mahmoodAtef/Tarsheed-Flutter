@@ -150,7 +150,7 @@ class _ReportContentSection extends StatelessWidget {
             nextMonthUsage: "${report.totalConsumption}",
           ),
           Text(
-            "${S.of(context).lowTierSystemMessage}: ${report.tier}",
+            "${S.of(context).lowTierSystemMessage} ${report.tier}",
             style: TextStyle(fontSize: 14.sp),
           ),
           SizedBox(height: 10.h),

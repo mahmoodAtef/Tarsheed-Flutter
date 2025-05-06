@@ -205,3 +205,60 @@ final class GetDeviceCategoriesError extends DeviceCategoryState {
   @override
   List<Object?> get props => [exception];
 }
+
+final class SensorState extends DashboardState {
+  const SensorState();
+  @override
+  List<Object?> get props => [];
+}
+
+final class AddSensorLoadingState extends SensorState {}
+
+final class AddSensorSuccessState extends SensorState {
+  final Sensor sensor;
+  const AddSensorSuccessState(this.sensor);
+  @override
+  List<Object?> get props => [sensor];
+}
+
+final class AddSensorErrorState extends SensorState {
+  final Exception exception;
+  const AddSensorErrorState(this.exception);
+
+  @override
+  List<Object?> get props => [exception];
+}
+
+final class DeleteSensorLoadingState extends SensorState {}
+
+final class DeleteSensorSuccessState extends SensorState {
+  final String sensorId;
+  const DeleteSensorSuccessState(this.sensorId);
+  @override
+  List<Object?> get props => [sensorId];
+}
+
+final class DeleteSensorErrorState extends SensorState {
+  final Exception exception;
+  const DeleteSensorErrorState(this.exception);
+
+  @override
+  List<Object?> get props => [exception];
+}
+
+final class GetSensorsLoadingState extends SensorState {}
+
+final class GetSensorsSuccessState extends SensorState {
+  final List<Sensor> sensors;
+  const GetSensorsSuccessState(this.sensors);
+  @override
+  List<Object?> get props => [sensors];
+}
+
+final class GetSensorsErrorState extends SensorState {
+  final Exception exception;
+  const GetSensorsErrorState(this.exception);
+
+  @override
+  List<Object?> get props => [exception];
+}

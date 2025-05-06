@@ -130,6 +130,12 @@ class DevicesListView extends StatelessWidget {
     return BlocConsumer<DashboardBloc, DashboardState>(
       listenWhen: (previous, current) =>
           current is DeleteDeviceSuccess || current is DeleteDeviceError,
+      buildWhen: (previous, current) =>
+          current is GetDevicesLoading ||
+          current is GetDevicesSuccess ||
+          current is GetDevicesError ||
+          current is DeleteDeviceSuccess ||
+          current is AddDeviceSuccess,
       listener: (context, state) {
         if (state is DeleteDeviceSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -140,10 +146,7 @@ class DevicesListView extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state is GetDevicesLoading ||
-            state is AddDeviceLoading ||
-            state is EditDeviceLoading ||
-            state is DeleteDeviceLoading) {
+        if (state is GetDevicesLoading) {
           return Center(
               child: Padding(
             padding: EdgeInsets.symmetric(vertical: 20.0.h),

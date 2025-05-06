@@ -1189,6 +1189,56 @@ class S {
   String get sensors {
     return Intl.message('Sensors', name: 'sensors', desc: '', args: []);
   }
+
+  /// `Please enter name`
+  String get nameRequired {
+    return Intl.message(
+      'Please enter name',
+      name: 'nameRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter Pin Number`
+  String get pinNumberRequired {
+    return Intl.message(
+      'Please enter Pin Number',
+      name: 'pinNumberRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select room`
+  String get roomRequired {
+    return Intl.message(
+      'Please select room',
+      name: 'roomRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select type`
+  String get typeRequired {
+    return Intl.message(
+      'Please select type',
+      name: 'typeRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sensor added successfully`
+  String get sensorAdded {
+    return Intl.message(
+      'Sensor added successfully',
+      name: 'sensorAdded',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

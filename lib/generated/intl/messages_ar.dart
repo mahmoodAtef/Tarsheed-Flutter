@@ -181,6 +181,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "nameMinLength": MessageLookupByLibrary.simpleMessage(
       "يجب أن يكون الاسم على الأقل 2 حرفًا",
     ),
+    "nameRequired": MessageLookupByLibrary.simpleMessage("من فضلك أدخل الاسم"),
     "newPassword": MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
     "nextMonthUsage": MessageLookupByLibrary.simpleMessage(
       "استهلاك الشهر القادم",
@@ -226,6 +227,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordsDoNotMatch": MessageLookupByLibrary.simpleMessage(
       "كلمتا المرور غير متطابقتين",
     ),
+    "pinNumberRequired": MessageLookupByLibrary.simpleMessage(
+      "من فضلك ادخل رقم المدخل",
+    ),
     "pleaseEnterVerificationCode": MessageLookupByLibrary.simpleMessage(
       "من فضلك أدخل رمز التحقق",
     ),
@@ -239,9 +243,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "resendCode": MessageLookupByLibrary.simpleMessage("إعادة إرسال الرمز"),
     "resendCodeIn": m1,
     "retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
+    "roomRequired": MessageLookupByLibrary.simpleMessage("من فضلك اختر غرفة"),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("حفظ التغييرات"),
     "security": MessageLookupByLibrary.simpleMessage("الأمان"),
+    "sensorAdded": MessageLookupByLibrary.simpleMessage("تمت اضافة المستشعر"),
     "sensors": MessageLookupByLibrary.simpleMessage("أجهزة الاستشعار"),
     "sentEmailMessage": MessageLookupByLibrary.simpleMessage(
       "لقد أرسلنا بريدًا إلكترونيًا إلى mo****@gmail.",
@@ -281,6 +287,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "twoStepVerification": MessageLookupByLibrary.simpleMessage(
       "التحقق بخطوتين",
     ),
+    "typeRequired": MessageLookupByLibrary.simpleMessage("من فضلك اختر النوع"),
     "unknown": MessageLookupByLibrary.simpleMessage("غير معروف"),
     "updatePassword": MessageLookupByLibrary.simpleMessage("تحديث كلمة المرور"),
     "verificationCode": MessageLookupByLibrary.simpleMessage("رمز التحقق"),

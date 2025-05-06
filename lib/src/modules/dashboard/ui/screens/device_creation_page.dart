@@ -104,8 +104,6 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
                   const SizedBox(height: 12),
 
                   const SizedBox(height: 20),
-
-                  /// Save Button
                 ],
               ),
             ),
