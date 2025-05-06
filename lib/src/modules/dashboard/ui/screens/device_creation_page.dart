@@ -1,7 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/utils/localization_manager.dart';
 import '../../bloc/dashboard_bloc.dart';
+import '../../data/models/category.dart';
 import '../../data/models/device_creation_form.dart';
+
+enum SensorCategory {
+  temperature,
+  current,
+  motion,
+  vibration,
+}
+
+extension SensorData on SensorCategory {
+  String get name {
+    bool isArabic = LocalizationManager.currentLocaleIndex == 0;
+    switch (this) {
+      case SensorCategory.temperature:
+        return isArabic ? "مستشعر حرارة" : "Temperature Sensor";
+      case SensorCategory.current:
+        return isArabic ? "مستشعر التيار" : "Current Sensor";
+      case SensorCategory.motion:
+        return isArabic ? "مستشعر الحركة" : "Motion Sensor";
+      case SensorCategory.vibration:
+        return isArabic ? "مستشعر الاهتزاز" : "Vibration Sensor";
+    }
+  }
+
+  String get id {
+    switch (this) {
+      case SensorCategory.temperature:
+        return "6817b4b7f927a0b34e0756d7";
+      case SensorCategory.current:
+        return "6817b5bda500e527dbafb536";
+      case SensorCategory.motion:
+        return "6817b5bda500e527dbafb536";
+      case SensorCategory.vibration:
+        return "6817b5e3dc386af5382343f3";
+    }
+  }
+}
 
 class DeviceCreationPage extends StatefulWidget {
   @override
@@ -16,11 +54,9 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
 
   String? selectedRoomId;
   String? selectedCategoryId;
-  String? selectedSensorId;
+  SensorCategory? selectedSensorType;
 
   List<String> rooms = [];
-  List<String> categories = [];
-  List<String> sensors = [];
 
   @override
   Widget build(BuildContext context) {
@@ -53,44 +89,77 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
             const SizedBox(height: 20),
 
             /// Room Dropdown
-            DropdownButtonFormField<String>(
-              value: selectedRoomId,
-              decoration: const InputDecoration(labelText: 'Select Room'),
-              items: rooms.map((roomId) {
-                return DropdownMenuItem(
-                  value: roomId,
-                  child: Text(roomId),
+            BlocBuilder<DashboardBloc, DashboardState>(
+              builder: (context, state) {
+                final rooms = context.read<DashboardBloc>().rooms;
+                return DropdownButtonFormField<String>(
+                  value: selectedRoomId,
+                  hint: const Text('Select Room'),
+                  items: rooms.map((room) {
+                    return DropdownMenuItem<String>(
+                      value: room.id,
+                      child: Text(room.name),
+                    );
+                  }).toList(),
+                  onChanged: (value) => setState(() => selectedRoomId = value),
                 );
-              }).toList(),
-              onChanged: (val) => setState(() => selectedRoomId = val),
+              },
             ),
             const SizedBox(height: 12),
 
-            /// Category Dropdown
-            DropdownButtonFormField<String>(
-              value: selectedCategoryId,
-              decoration: const InputDecoration(labelText: 'Select Category'),
-              items: categories.map((categoryId) {
-                return DropdownMenuItem(
-                  value: categoryId,
-                  child: Text(categoryId),
+            /// Category Dropdown from Bloc
+            BlocBuilder<DashboardBloc, DashboardState>(
+              builder: (context, state) {
+                if (state is GetDeviceCategoriesSuccess) {
+                  final categories = state.deviceCategories;
+                  return DropdownButtonFormField<String>(
+                    value: selectedCategoryId,
+                    decoration: InputDecoration(
+                      labelText: LocalizationManager.currentLocaleIndex == 0
+                          ? 'اختر الفئة'
+                          : 'Select Category',
+                    ),
+                    items: categories.map((category) {
+                      return DropdownMenuItem(
+                        value: category.id,
+                        child: Text(category.name),
+                      );
+                    }).toList(),
+                    onChanged: (val) => setState(() => selectedCategoryId = val),
+                  );
+                }
+                if (state is GetDeviceCategoriesLoading) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                return DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: LocalizationManager.currentLocaleIndex == 0
+                        ? 'اختر الفئة'
+                        : 'Select Category',
+                  ),
+                  items: [],
+                  onChanged: null,
                 );
-              }).toList(),
-              onChanged: (val) => setState(() => selectedCategoryId = val),
+              },
             ),
+
             const SizedBox(height: 12),
 
             /// Sensor Dropdown
-            DropdownButtonFormField<String>(
-              value: selectedSensorId,
-              decoration: const InputDecoration(labelText: 'Select Sensor'),
-              items: sensors.map((sensorId) {
-                return DropdownMenuItem(
-                  value: sensorId,
-                  child: Text(sensorId),
+            DropdownButtonFormField<SensorCategory>(
+              value: selectedSensorType,
+              decoration: InputDecoration(
+                labelText: LocalizationManager.currentLocaleIndex == 0
+                    ? 'اختر النوع'
+                    : 'Select Type',
+              ),
+              items: SensorCategory.values.map((type) {
+                return DropdownMenuItem<SensorCategory>(
+                  value: type,
+                  child: Text(type.name),
                 );
               }).toList(),
-              onChanged: (val) => setState(() => selectedSensorId = val),
+              onChanged: (value) => setState(() => selectedSensorType = value),
             ),
             const SizedBox(height: 20),
 
@@ -104,7 +173,7 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
                     pinNumber: pinNumberController.text,
                     roomId: selectedRoomId!,
                     categoryId: selectedCategoryId!,
-                    sensorId: selectedSensorId!,
+                    sensorId: selectedSensorType!.id,
                     priority: int.tryParse(priorityController.text) ?? 1,
                   );
 
@@ -125,10 +194,14 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
         pinNumberController.text.isEmpty ||
         selectedRoomId == null ||
         selectedCategoryId == null ||
-        selectedSensorId == null ||
+        selectedSensorType == null ||
         priorityController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields')),
+        SnackBar(
+          content: Text(LocalizationManager.currentLocaleIndex == 0
+              ? 'يرجى ملء جميع الحقول'
+              : 'Please fill all fields'),
+        ),
       );
       return false;
     }
