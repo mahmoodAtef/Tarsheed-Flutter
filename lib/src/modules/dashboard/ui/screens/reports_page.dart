@@ -57,7 +57,7 @@ class _ReportsContentState extends State<_ReportsContent> {
 
   void _fetchInitialData() {
     final bloc = context.read<DashboardBloc>();
-    bloc.add(GetUsageReportEvent(period: "04-${DateTime.now().year}"));
+    bloc.add(GetUsageReportEvent()); // period: "04-${DateTime.now().year}"
     bloc.add(GetAISuggestionsEvent());
   }
 

@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final bloc = sl<DashboardBloc>();
       final now = DateTime.now();
-      bloc.add(GetUsageReportEvent(period: "${now.month}-${now.year}"));
+      bloc.add(GetUsageReportEvent());
       bloc.add(GetRoomsEvent());
       bloc.add(GetDevicesCategoriesEvent());
       bloc.add(GetDevicesEvent());
