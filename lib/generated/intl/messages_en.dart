@@ -236,6 +236,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "save": MessageLookupByLibrary.simpleMessage("Save"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("Save Changes"),
     "security": MessageLookupByLibrary.simpleMessage("Security"),
+    "sensors": MessageLookupByLibrary.simpleMessage("Sensors"),
     "sentEmailMessage": MessageLookupByLibrary.simpleMessage(
       "We have sent an email to mo****@gmail.",
     ),

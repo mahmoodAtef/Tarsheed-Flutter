@@ -1184,6 +1184,11 @@ class S {
       args: [],
     );
   }
+
+  /// `Sensors`
+  String get sensors {
+    return Intl.message('Sensors', name: 'sensors', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -6,6 +6,7 @@ import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/screens/sensors_screen.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/show_dialog.dart';
 
@@ -101,7 +102,10 @@ class SettingPage extends StatelessWidget {
                   },
                 ),
                 CustomContainer(
-                  text: S.of(context).softwareUpdate,
+                  text: S.of(context).sensors,
+                  onTap: (){
+                    context.push(SensorsScreen());
+                  },
                 ),
                 CustomContainer(
                   text: S.of(context).helpAndSupport,

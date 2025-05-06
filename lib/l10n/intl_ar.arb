@@ -137,6 +137,7 @@
   "viewAll": "عرض الكل",
   "noDataFound": "لم يتم العثور على بيانات",
   "aiSuggestions": "اقتراحات الذكاء الاصطناعي",
-  "currentMonthUsage": "استهلاك الشهر الحالي"
+  "currentMonthUsage": "استهلاك الشهر الحالي",
+  "sensors": "أجهزة الاستشعار"
 
 }

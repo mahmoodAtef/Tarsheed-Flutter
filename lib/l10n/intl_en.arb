@@ -136,7 +136,8 @@
   "viewAll": "View all",
   "noDataFound": "No data found",
   "aiSuggestions": "AI Suggestions",
-  "currentMonthUsage": "Current Month Usage"
+  "currentMonthUsage": "Current Month Usage",
+  "sensors": "Sensors"
 }
 
 
