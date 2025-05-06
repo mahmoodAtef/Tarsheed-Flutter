@@ -50,16 +50,10 @@ class _DevicesScreenContent extends StatelessWidget {
                 children: [
                   const CustomAppBar(text: 'Devices'),
                   const SizedBox(height: 10),
-
-                  // Search Bar
                   const DeviceSearchBar(),
                   const SizedBox(height: 10),
-
-                  // Filter Tabs with Sort Button
                   const DeviceFilterHeader(),
                   const SizedBox(height: 10),
-
-                  // Devices List - This is the main content area
                   Padding(
                     padding: EdgeInsets.all(12.0),
                     child: DevicesListView(),
@@ -146,7 +140,6 @@ class DevicesListView extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        // Handle loading states
         if (state is GetDevicesLoading ||
             state is AddDeviceLoading ||
             state is EditDeviceLoading ||
@@ -257,7 +250,6 @@ class DevicesListView extends StatelessWidget {
         return sortedDevices;
 
       case DeviceFilterType.rooms:
-        // Group devices by roomId
         final devicesByRoom = <String, List<Device>>{};
 
         for (final device in devices) {

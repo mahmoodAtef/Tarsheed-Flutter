@@ -297,7 +297,6 @@ class _EnergyConsumptionSection extends StatelessWidget {
   }
 
   Widget _buildGaugeContent(BuildContext context, Report? report) {
-    // Default values if report is null
     double consumptionValue = 0;
     int tierNumber = 1;
 
