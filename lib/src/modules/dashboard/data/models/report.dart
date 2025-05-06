@@ -36,9 +36,7 @@ final class Report extends Equatable {
         consumptionCost: json["consumptionCost"]?.toDouble() ?? 0,
         previousTotalConsumption:
             json["previousPeriodConsumption"]?.toDouble() ?? 0,
-        tier: int.parse(
-          json["Tier"],
-        ),
+        tier: json['Tier'],
         updatedAt: json["updatedAt"] ?? DateTime.now(),
         consumptionIntervals: json["chartData"] == null
             ? []

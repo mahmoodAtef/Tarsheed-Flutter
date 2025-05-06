@@ -90,8 +90,7 @@ class DashboardRemoteServices implements BaseDashboardServices {
         path: EndPoints.addDevice,
         data: device.toJson(),
       );
-      Device savedDevice =
-          Device.fromJson(response.data["data"]["createdDevice"]);
+      Device savedDevice = Device.fromJson(response.data["deviceSaved"]);
       return Right(savedDevice);
     } on Exception catch (e) {
       return Left(e);
@@ -207,7 +206,7 @@ class DashboardRemoteServices implements BaseDashboardServices {
       var response = await DioHelper.getData(
         path: EndPoints.getAISuggestions,
       );
-      return Right(response.data["data"]["suggestions"]);
+      return Right(response.data["recommendations"] ?? "No Usage Yet");
     } on Exception catch (e) {
       return Left(e);
     }

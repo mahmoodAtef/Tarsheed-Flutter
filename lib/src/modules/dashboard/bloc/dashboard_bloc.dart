@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/category.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
@@ -16,6 +17,7 @@ part 'dashboard_state.dart';
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   final DashboardRepository _repository = sl()..initialize();
+  static DashboardBloc get() => sl();
   List<DeviceCategory> categories = [];
   List<Device> devices = [];
   List<Room> rooms = [];
@@ -153,6 +155,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     final result = await _repository.getCategories();
     result.fold((l) => emit(GetDeviceCategoriesError(l)), (r) {
       categories = r;
+      debugPrint(categories.toString());
       emit(GetDeviceCategoriesSuccess(r));
     });
   }
