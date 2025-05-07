@@ -35,7 +35,7 @@ class SettingPage extends StatelessWidget {
                 ),
               );
             } else if (state is DeleteProfileSuccessState) {
-              Navigator.of(context).pop(); // Close loading dialog
+              context.pushAndRemove(LoginPage()); // Close loading dialog
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text(S.of(context).accountDeletedSuccess)));
               context.pushReplacement(LoginPage());
@@ -103,7 +103,7 @@ class SettingPage extends StatelessWidget {
                 ),
                 CustomContainer(
                   text: S.of(context).sensors,
-                  onTap: (){
+                  onTap: () {
                     context.push(SensorsScreen());
                   },
                 ),
