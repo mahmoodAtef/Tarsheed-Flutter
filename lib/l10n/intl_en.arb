@@ -142,7 +142,8 @@
   "pinNumberRequired" : "Please enter Pin Number",
   "roomRequired": "Please select room",
   "typeRequired" : "Please select type",
-  "sensorAdded" : "Sensor added successfully"
+  "sensorAdded" : "Sensor added successfully",
+  "notifications": "Notifications"
 }
 
 

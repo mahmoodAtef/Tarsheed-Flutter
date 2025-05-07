@@ -66,7 +66,7 @@ class NoDataWidget extends StatelessWidget {
               height: 60.h,
               width: 60.w,
               image: AssetImage(AssetsManager.noDataFound)),
-          SizedBox(height: 30.h),
+          SizedBox(height: 10.h),
           Text(S.of(context).noDataFound),
         ],
       ),

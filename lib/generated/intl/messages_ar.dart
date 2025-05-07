@@ -192,6 +192,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noRouteFound": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على الصفحة المطلوبة",
     ),
+    "notifications": MessageLookupByLibrary.simpleMessage("الإشعارات"),
     "orContinueWith": MessageLookupByLibrary.simpleMessage("أو المتابعة عبر"),
     "originalPasswordNotProvided": MessageLookupByLibrary.simpleMessage(
       "لم يتم توفير كلمة المرور الأصلية",

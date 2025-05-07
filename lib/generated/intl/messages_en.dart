@@ -186,6 +186,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "nextMonthUsage": MessageLookupByLibrary.simpleMessage("Next Month Usage"),
     "noDataFound": MessageLookupByLibrary.simpleMessage("No data found"),
     "noRouteFound": MessageLookupByLibrary.simpleMessage("No route found"),
+    "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
     "orContinueWith": MessageLookupByLibrary.simpleMessage("Or continue with"),
     "originalPasswordNotProvided": MessageLookupByLibrary.simpleMessage(
       "Original password is not provided",

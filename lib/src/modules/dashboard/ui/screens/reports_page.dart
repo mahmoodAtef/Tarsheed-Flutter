@@ -179,9 +179,9 @@ class _ChartSection extends StatelessWidget {
             ),
           );
         }
-        if (state is GetUsageReportSuccess) {
+        if (DashboardBloc.get().report != null) {
           return UsageChartWidget(
-            chartData: state.report.consumptionIntervals,
+            chartData: DashboardBloc.get().report!.consumptionIntervals,
           );
         }
         return Container();

@@ -81,6 +81,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         report = r;
         emit(GetUsageReportSuccess(r));
       });
+    } else {
+      emit(GetUsageReportSuccess(report!));
     }
   }
 
@@ -144,6 +146,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         rooms = r;
         emit(GetRoomsSuccess(r));
       });
+    } else {
+      emit(GetRoomsSuccess(rooms));
     }
   }
 
@@ -171,6 +175,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         debugPrint(categories.toString());
         emit(GetDeviceCategoriesSuccess(r));
       });
+    } else {
+      emit(GetDeviceCategoriesSuccess(categories));
     }
   }
 
