@@ -138,6 +138,12 @@
   "noDataFound": "لم يتم العثور على بيانات",
   "aiSuggestions": "اقتراحات الذكاء الاصطناعي",
   "currentMonthUsage": "استهلاك الشهر الحالي",
-  "sensors": "أجهزة الاستشعار"
+  "sensors": "أجهزة الاستشعار",
+  "nameRequired" : "من فضلك أدخل الاسم",
+  "pinNumberRequired" : "من فضلك ادخل رقم المدخل",
+  "roomRequired": "من فضلك اختر غرفة",
+  "typeRequired" : "من فضلك اختر النوع",
+  "sensorAdded": "تمت اضافة المستشعر",
+  "notifications" : "الإشعارات"
 
 }

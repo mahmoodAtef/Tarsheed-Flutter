@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:tarsheed/src/core/apis/api.dart';
 import 'package:tarsheed/src/core/apis/dio_helper.dart';
 import 'package:tarsheed/src/core/apis/end_points.dart';
@@ -45,10 +46,12 @@ class DashboardRemoteServices implements BaseDashboardServices {
       var response = await DioHelper.getData(
         path: EndPoints.getSensors,
       );
-      List<Sensor> sensors = (response.data["data"] as List)
+      List<Sensor> sensors = (response.data["sensors"] as List)
           .map((e) => Sensor.fromJson(e))
           .toList();
       return Right(sensors);
+    } on DioException catch (e) {
+      return Left(e);
     } on Exception catch (e) {
       return Left(e);
     }
@@ -90,8 +93,7 @@ class DashboardRemoteServices implements BaseDashboardServices {
         path: EndPoints.addDevice,
         data: device.toJson(),
       );
-      Device savedDevice =
-          Device.fromJson(response.data["data"]["createdDevice"]);
+      Device savedDevice = Device.fromJson(response.data["deviceSaved"]);
       return Right(savedDevice);
     } on Exception catch (e) {
       return Left(e);
@@ -161,8 +163,7 @@ class DashboardRemoteServices implements BaseDashboardServices {
         path: EndPoints.addSensor,
         data: sensor.toJson(),
       );
-      Sensor savedSensor =
-          sensor.copyWith(id: response.data["data"]["sensor"]["_id"]);
+      Sensor savedSensor = sensor.copyWith(id: response.data["sensor"]["_id"]);
       return Right(savedSensor);
     } on Exception catch (e) {
       return Left(e);
@@ -207,7 +208,7 @@ class DashboardRemoteServices implements BaseDashboardServices {
       var response = await DioHelper.getData(
         path: EndPoints.getAISuggestions,
       );
-      return Right(response.data["data"]["suggestions"]);
+      return Right(response.data["recommendations"] ?? "No Usage Yet");
     } on Exception catch (e) {
       return Left(e);
     }

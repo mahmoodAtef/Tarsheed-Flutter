@@ -22,7 +22,7 @@ class EndPoints {
   static const String getUsageReport = '/reports/';
   static const String getAISuggestions = '/users/get/recomendations/';
   static const String getCategories = '/category/all';
-  static const String getSensors = '/sensors';
+  static const String getSensors = '/sensor/getAll';
   static const String getDevices = 'device/getAll/';
   static const String getRooms = '/room/getAll';
 

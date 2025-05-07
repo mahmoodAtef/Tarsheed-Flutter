@@ -20,7 +20,7 @@ class Sensor extends Equatable {
     return Sensor(
       id: json['id'] ?? json['_id'],
       name: json['name'],
-      pinNumber: json['pinNumber'],
+      pinNumber: json['pinNumber'].toString(),
       description: json['description'],
       roomId: json['roomId'],
       categoryId: json['categoryId'],

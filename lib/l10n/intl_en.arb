@@ -137,7 +137,13 @@
   "noDataFound": "No data found",
   "aiSuggestions": "AI Suggestions",
   "currentMonthUsage": "Current Month Usage",
-  "sensors": "Sensors"
+  "sensors": "Sensors",
+  "nameRequired": "Please enter name",
+  "pinNumberRequired" : "Please enter Pin Number",
+  "roomRequired": "Please select room",
+  "typeRequired" : "Please select type",
+  "sensorAdded" : "Sensor added successfully",
+  "notifications": "Notifications"
 }
 
 

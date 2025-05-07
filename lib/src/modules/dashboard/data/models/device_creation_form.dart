@@ -6,7 +6,6 @@ class DeviceCreationForm extends Equatable {
   final String pinNumber;
   final String roomId;
   final String categoryId;
-  final String sensorId;
   final int priority;
 
   const DeviceCreationForm({
@@ -15,7 +14,6 @@ class DeviceCreationForm extends Equatable {
     required this.pinNumber,
     required this.roomId,
     required this.categoryId,
-    required this.sensorId,
     required this.priority,
   });
 
@@ -25,7 +23,6 @@ class DeviceCreationForm extends Equatable {
         'pinNumber': pinNumber,
         'roomId': roomId,
         'categoryId': categoryId,
-        'sensorId': sensorId,
         'priority': priority,
       };
 
@@ -36,7 +33,6 @@ class DeviceCreationForm extends Equatable {
         pinNumber,
         roomId,
         categoryId,
-        sensorId,
         priority,
       ];
 }

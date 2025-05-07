@@ -181,10 +181,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "nameMinLength": MessageLookupByLibrary.simpleMessage(
       "Name must be at least 2 characters",
     ),
+    "nameRequired": MessageLookupByLibrary.simpleMessage("Please enter name"),
     "newPassword": MessageLookupByLibrary.simpleMessage("New Password"),
     "nextMonthUsage": MessageLookupByLibrary.simpleMessage("Next Month Usage"),
     "noDataFound": MessageLookupByLibrary.simpleMessage("No data found"),
     "noRouteFound": MessageLookupByLibrary.simpleMessage("No route found"),
+    "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
     "orContinueWith": MessageLookupByLibrary.simpleMessage("Or continue with"),
     "originalPasswordNotProvided": MessageLookupByLibrary.simpleMessage(
       "Original password is not provided",
@@ -220,6 +222,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordsDoNotMatch": MessageLookupByLibrary.simpleMessage(
       "Passwords do not match",
     ),
+    "pinNumberRequired": MessageLookupByLibrary.simpleMessage(
+      "Please enter Pin Number",
+    ),
     "pleaseEnterVerificationCode": MessageLookupByLibrary.simpleMessage(
       "Please enter the verification code",
     ),
@@ -233,9 +238,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "resendCode": MessageLookupByLibrary.simpleMessage("Resend Code"),
     "resendCodeIn": m1,
     "retry": MessageLookupByLibrary.simpleMessage("Retry"),
+    "roomRequired": MessageLookupByLibrary.simpleMessage("Please select room"),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("Save Changes"),
     "security": MessageLookupByLibrary.simpleMessage("Security"),
+    "sensorAdded": MessageLookupByLibrary.simpleMessage(
+      "Sensor added successfully",
+    ),
     "sensors": MessageLookupByLibrary.simpleMessage("Sensors"),
     "sentEmailMessage": MessageLookupByLibrary.simpleMessage(
       "We have sent an email to mo****@gmail.",
@@ -263,6 +272,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "twoStepVerification": MessageLookupByLibrary.simpleMessage(
       "Two-Step Verification",
     ),
+    "typeRequired": MessageLookupByLibrary.simpleMessage("Please select type"),
     "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
     "updatePassword": MessageLookupByLibrary.simpleMessage("Update Password"),
     "verificationCode": MessageLookupByLibrary.simpleMessage(

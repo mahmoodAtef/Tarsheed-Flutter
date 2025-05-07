@@ -15,8 +15,8 @@ class DioHelper {
             : null,
         "Connection": "keep-alive",
       },
-      connectTimeout: const Duration(seconds: 20),
-      receiveTimeout: const Duration(seconds: 20),
+      connectTimeout: const Duration(minutes: 10),
+      receiveTimeout: const Duration(minutes: 10),
     ));
     // customization
     dio.interceptors.add(PrettyDioLogger(
@@ -30,7 +30,6 @@ class DioHelper {
         maxWidth: 90,
         enabled: kDebugMode,
         filter: (options, args) {
-          // don't print responses with unit8 list data
           return !args.isResponse || !args.hasUint8ListData;
         }));
   }
