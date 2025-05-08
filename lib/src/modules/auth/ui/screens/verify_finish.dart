@@ -6,13 +6,12 @@ import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
-import '../../../dashboard/ui/screens/home_screen.dart';
-import '../../bloc/auth_bloc.dart';
 import '../../../../core/widgets/large_button.dart';
-import '../widgets/main_title.dart';
 import '../../../../core/widgets/rectangle_background.dart';
-import '../widgets/sup_title.dart';
 import '../../../../core/widgets/text_field.dart';
+import '../../bloc/auth_bloc.dart';
+import '../widgets/main_title.dart';
+import '../widgets/sup_title.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   ResetPasswordScreen({super.key});
@@ -36,7 +35,7 @@ class ResetPasswordScreen extends StatelessWidget {
               bloc: authBloc,
               listener: (context, state) {
                 if (state is ResetPasswordSuccessState) {
-                  context.pushReplacement(HomeScreen());
+                  context.pushReplacement(LoginPage());
                 } else if (state is AuthErrorState) {
                   ExceptionManager.showMessage(state.exception);
                 }

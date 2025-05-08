@@ -235,6 +235,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "من فضلك أدخل رمز التحقق",
     ),
     "profile": MessageLookupByLibrary.simpleMessage("الحساب التعريفي"),
+    "profileUpdatedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم تحديث الملف الشخصي بنجاح",
+    ),
     "projectedBasedOnUsageHistory": MessageLookupByLibrary.simpleMessage(
       "متوقع بناءً على سجل استهلاكك",
     ),

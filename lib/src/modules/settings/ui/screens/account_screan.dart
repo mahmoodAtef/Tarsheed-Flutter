@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
+import 'package:tarsheed/src/core/widgets/core_widgets.dart';
+import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
+import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/profile_screen.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/security_screen.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/setting.dart';
@@ -91,19 +95,35 @@ class AccountPage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 5.h),
-              TextButton(
-                onPressed: () {},
-                child: Center(
-                  child: Text(
-                    S.of(context).signOut,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                      color: ColorManager.red,
-                    ),
-                  ),
-                ),
+              SizedBox(height: 10.h),
+              BlocConsumer<AuthBloc, AuthState>(
+                listenWhen: (previous, current) =>
+                    current is LogoutSuccessState ||
+                    current is LogoutLoadingState,
+                listener: (context, state) {
+                  if (state is LogoutSuccessState) {
+                    context.pushAndRemove(LoginPage());
+                  }
+                },
+                builder: (context, state) {
+                  return state is LogoutLoadingState
+                      ? Center(child: CustomLoadingWidget())
+                      : TextButton(
+                          onPressed: () {
+                            context.read<AuthBloc>().add(LogoutEvent());
+                          },
+                          child: Center(
+                            child: Text(
+                              S.of(context).signOut,
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold,
+                                color: ColorManager.red,
+                              ),
+                            ),
+                          ),
+                        );
+                },
               ),
               SizedBox(height: 40.h),
             ],

@@ -11,6 +11,7 @@ import 'package:tarsheed/src/modules/auth/ui/screens/sign_up_create_account.dart
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_email.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/sup_title.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/home_screen.dart';
+import 'package:tarsheed/src/modules/settings/ui/screens/main_screen.dart';
 
 import '../../../../core/utils/image_manager.dart';
 import '../../../../core/widgets/large_button.dart';
@@ -44,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
             bloc: authBloc,
             listener: (context, state) {
               if (state is LoginSuccessState) {
-                context.pushReplacement(HomeScreen());
+                context.pushReplacement(MainScreen());
               } else if (state is AuthErrorState) {
                 ExceptionManager.showMessage(state.exception);
               }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
@@ -8,7 +9,6 @@ import 'package:tarsheed/src/core/utils/localization_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/sensors_screen.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
-import 'package:tarsheed/src/modules/settings/ui/screens/show_dialog.dart';
 
 import '../../../../core/error/exception_manager.dart';
 import '../../../../core/widgets/appbar.dart';
@@ -113,7 +113,8 @@ class SettingPage extends StatelessWidget {
                 SizedBox(height: 5.h),
                 TextButton(
                   onPressed: () {
-                    showDeleteAccountDialog(context);
+                    Fluttertoast.showToast(msg: "قولنا محدش يحذف الأكونت");
+                    // showDeleteAccountDialog(context);
                   },
                   child: Center(
                     child: Text(

@@ -229,6 +229,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Please enter the verification code",
     ),
     "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+    "profileUpdatedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Profile updated successfully",
+    ),
     "projectedBasedOnUsageHistory": MessageLookupByLibrary.simpleMessage(
       "Projected based on your usage history",
     ),

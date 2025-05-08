@@ -144,6 +144,7 @@
   "roomRequired": "من فضلك اختر غرفة",
   "typeRequired" : "من فضلك اختر النوع",
   "sensorAdded": "تمت اضافة المستشعر",
-  "notifications" : "الإشعارات"
+  "notifications" : "الإشعارات",
+  "profileUpdatedSuccessfully" : "تم تحديث الملف الشخصي بنجاح"
 
 }
