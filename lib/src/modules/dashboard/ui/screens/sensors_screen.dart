@@ -10,6 +10,9 @@ import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import '../../../../core/widgets/appbar.dart';
 import '../../../../core/widgets/bottom_navigator_bar.dart';
 import '../../../../core/widgets/rectangle_background.dart';
+import '../../data/models/room.dart';
+import '../../data/models/sensor_category.dart';
+import '../widgets/report_large_card.dart';
 import 'add_sensor_form_page.dart';
 
 class SensorsScreen extends StatelessWidget {
@@ -63,7 +66,28 @@ class SensorsScreen extends StatelessWidget {
                             DashboardBloc.get().sensors.isEmpty) {
                           return NoDataWidget();
                         } else {
-                          return Container(); // Todo: replace it with Sensors Widget
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: DashboardBloc.get().sensors.length,
+                            itemBuilder: (context, index) {
+                              final sensor = DashboardBloc.get().sensors[index];
+                              final category = SensorCategory.values.firstWhere(
+                                    (e) => e.id == sensor.categoryId,
+                                orElse: () => SensorCategory.temperature,
+                              );
+                              return BuildInfoCard(
+                                iconWidget: Image.asset(
+                                  category.imagePath,
+                                  width: 30,
+                                  height: 30,
+                                  fit: BoxFit.cover,
+                                ),
+                                title: "${category.name}: ${sensor.name}",
+                                value: sensor.description,
+                              );
+                            },
+                          );
                         }
                       }),
                 ),

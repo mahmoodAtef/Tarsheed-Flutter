@@ -5,11 +5,59 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/widgets/large_button.dart';
-
 import '../../../../core/utils/localization_manager.dart';
 import '../../bloc/dashboard_bloc.dart';
 import '../../data/models/device_creation_form.dart';
+import '../../data/models/sensor_category.dart';
 
+enum SensorCategory {
+  temperature,
+  current,
+  motion,
+  vibration,
+}
+extension SensorImagePath on SensorCategory {
+  String get imagePath {
+    switch (this) {
+      case SensorCategory.temperature:
+        return 'assets/images/temp.jpeg';
+      case SensorCategory.current:
+        return 'assets/images/cuur.jpeg';
+      case SensorCategory.motion:
+        return 'assets/images/mothion.jpg';
+      case SensorCategory.vibration:
+        return 'assets/images/vib.jpeg';
+    }
+  }
+}
+extension SensorData on SensorCategory {
+  String get name {
+    bool isArabic = LocalizationManager.currentLocaleIndex == 0;
+    switch (this) {
+      case SensorCategory.temperature:
+        return isArabic ? "مستشعر حرارة" : "Temperature Sensor";
+      case SensorCategory.current:
+        return isArabic ? "مستشعر التيار" : "Current Sensor";
+      case SensorCategory.motion:
+        return isArabic ? "مستشعر الحركة" : "Motion Sensor";
+      case SensorCategory.vibration:
+        return isArabic ? "مستشعر الاهتزاز" : "Vibration Sensor";
+    }
+  }
+
+  String get id {
+    switch (this) {
+      case SensorCategory.temperature:
+        return "6817b4b7f927a0b34e0756d7";
+      case SensorCategory.current:
+        return "6817b5bda500e527dbafb536";
+      case SensorCategory.motion:
+        return "6817b5bda500e527dbafb536";
+      case SensorCategory.vibration:
+        return "6817b5e3dc386af5382343f3";
+    }
+  }
+}
 class DeviceCreationPage extends StatefulWidget {
   @override
   _DeviceCreationPageState createState() => _DeviceCreationPageState();
@@ -23,11 +71,13 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
 
   String? selectedRoomId;
   String? selectedCategoryId;
-
+  SensorCategory? selectedSensorType;
   List<String> rooms = [];
+  int? selectedPriority;
 
   @override
   Widget build(BuildContext context) {
+    bool isArabic = LocalizationManager.currentLocaleIndex == 0;
     return Scaffold(
       appBar: AppBar(title: const Text('Add Device')),
       body: Column(
@@ -52,13 +102,6 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
                     decoration: const InputDecoration(labelText: 'Pin Number'),
                   ),
                   const SizedBox(height: 12),
-                  TextField(
-                    controller: priorityController,
-                    decoration: const InputDecoration(labelText: 'Priority'),
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20),
-
                   /// Room Dropdown
                   BlocBuilder<DashboardBloc, DashboardState>(
                     builder: (context, state) {
@@ -100,9 +143,109 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
                       );
                     },
                   ),
+                  /// sensors Dropdown
+                  const SizedBox(height: 12),
+                  DropdownButtonFormField<SensorCategory>(
+                    value: selectedSensorType,
+                    decoration: InputDecoration(
+                      labelText: isArabic ? 'اختر جهاز الاستشعار' : 'Select Sensor',
+                    ),
+                    items: SensorCategory.values.map((type) {
+                      return DropdownMenuItem<SensorCategory>(
+                        value: type,
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              type.imagePath,
+                              width: 30,
+                              height: 30,
+                            ),
+                            SizedBox(width: 10),
+                            Text(type.name),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) =>
+                        setState(() => selectedSensorType = value),
+                  ),
 
                   const SizedBox(height: 12),
-
+                  /// priority Dropdown
+                  DropdownButtonFormField<int>(
+                    value: selectedPriority,
+                    decoration: InputDecoration(
+                      labelText: isArabic ? 'أولوية الجهاز' : 'Device Priority',
+                      border: OutlineInputBorder(),
+                    ),
+                    items: [
+                      DropdownMenuItem(
+                        value: 1,
+                        child: Row(
+                          children: [
+                            const Icon(Icons.warning, color: Colors.red),
+                            const SizedBox(width: 8),
+                            Text(
+                              isArabic
+                                  ? 'أولوية ١ - شديدة الأهمية'
+                                  : 'Priority 1 - Critical',
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                          ],
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 2,
+                        child: Row(
+                          children: [
+                            const Icon(Icons.error_outline, color: Colors.orange),
+                            const SizedBox(width: 8),
+                            Text(
+                              isArabic
+                                  ? 'أولوية ٢ - مهمة'
+                                  : 'Priority 2 - Important',
+                              style: const TextStyle(color: Colors.orange),
+                            ),
+                          ],
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 3,
+                        child: Row(
+                          children: [
+                            const Icon(Icons.info_outline, color: Colors.blue),
+                            const SizedBox(width: 8),
+                            Text(
+                              isArabic
+                                  ? 'أولوية ٣ - متوسطة'
+                                  : 'Priority 3 - Moderate',
+                              style: const TextStyle(color: Colors.blue),
+                            ),
+                          ],
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 4,
+                        child: Row(
+                          children: [
+                            const Icon(Icons.low_priority, color: Colors.grey),
+                            const SizedBox(width: 8),
+                            Text(
+                              isArabic
+                                  ? 'أولوية ٤ - غير مهمة'
+                                  : 'Priority 4 - Low',
+                              style: const TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        selectedPriority = value;
+                      });
+                    },
+                  ),
                   const SizedBox(height: 20),
                 ],
               ),
@@ -120,7 +263,7 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
                   }
                 },
                 buildWhen: (current, previous) =>
-                    current is DeviceState ||
+                current is DeviceState ||
                     current is AddDeviceLoading ||
                     current is AddDeviceSuccess ||
                     current is AddDeviceError,
@@ -137,7 +280,7 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
                             roomId: selectedRoomId!,
                             categoryId: selectedCategoryId!,
                             priority:
-                                int.tryParse(priorityController.text) ?? 1,
+                            int.tryParse(priorityController.text) ?? 1,
                           );
 
                           context

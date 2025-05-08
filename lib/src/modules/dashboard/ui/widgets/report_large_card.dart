@@ -3,21 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 
 class BuildInfoCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String value;
-  final String percentage;
-  final bool isDecrease;
-  final Color color;
+  final Widget? iconWidget;
+  final IconData? icon;
+  final String? title;
+  final String? value;
+  final String? percentage;
+  final bool? isDecrease;
+  final Color? color;
+  final String? roomName;
 
   const BuildInfoCard({
-    super.key,
-    required this.icon,
+    this.iconWidget,
+    this.icon,
     required this.title,
     required this.value,
-    required this.percentage,
-    required this.isDecrease,
-    required this.color,
+    this.percentage,
+    this.isDecrease,
+    this.color,
+    this.roomName,
+    super.key,
   });
 
   @override
@@ -33,17 +37,17 @@ class BuildInfoCard extends StatelessWidget {
             Container(
               width: 50,
               height: 50,
-              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: ColorManager.primary,
-                // Using the provided color parameter
+                color: color ?? ColorManager.primary,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(
-                icon,
-                color: Colors.white,
-                size: 24,
-              ),
+              padding: const EdgeInsets.all(8),
+              child: iconWidget ??
+                  Icon(
+                    icon ?? Icons.info,
+                    color: Colors.white,
+                    size: 24,
+                  ),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -51,55 +55,77 @@ class BuildInfoCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
-                    style: TextStyle(
+                    title ?? 'No Title',
+                    style: const TextStyle(
                       color: ColorManager.darkGrey,
                       fontSize: 14,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    value,
-                    style: TextStyle(
+                    value ?? 'No Value',
+                    style: const TextStyle(
                       color: ColorManager.black,
                       fontWeight: FontWeight.w700,
-                      fontSize: 24,
+                      fontSize: 20,
                     ),
                   ),
                 ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: ColorManager.white,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    isDecrease
-                        ? Icons.arrow_downward_rounded
-                        : Icons.arrow_upward_rounded,
-                    color: isDecrease ? ColorManager.primary : ColorManager.red,
-                    // Using the provided color for decrease
-                    size: 20,
-                    weight: 800,
+
+            if (roomName != null)
+              Container(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: ColorManager.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  roomName!,
+                  style: const TextStyle(
+                    color: ColorManager.primary,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
                   ),
-                  const SizedBox(width: 2),
-                  Text(
-                    percentage,
-                    style: TextStyle(
-                      color:
-                          isDecrease ? ColorManager.primary : ColorManager.red,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 24, // Reduced font size to better fit
+                ),
+              )
+            else
+              Container(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: ColorManager.white,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      (isDecrease ?? true)
+                          ? Icons.arrow_downward_rounded
+                          : Icons.arrow_upward_rounded,
+                      color: (isDecrease ?? true)
+                          ? (color ?? ColorManager.primary)
+                          : ColorManager.red,
+                      size: 20,
+                      weight: 800,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 2),
+                    Text(
+                      percentage ?? '0%',
+                      style: TextStyle(
+                        color: (isDecrease ?? true)
+                            ? (color ?? ColorManager.primary)
+                            : ColorManager.red,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),
