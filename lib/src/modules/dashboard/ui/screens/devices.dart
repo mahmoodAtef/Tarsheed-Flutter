@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
-import 'package:tarsheed/src/modules/dashboard/data/models/room.dart';
+import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
+import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 
 import '../../../../core/error/exception_manager.dart';
 import '../../../../core/widgets/appbar.dart';
 import '../../../../core/widgets/rectangle_background.dart';
-import '../../bloc/dashboard_bloc.dart';
 import '../../data/models/device.dart';
 import '../../data/models/device_creation_form.dart';
+import '../../data/models/room.dart';
 import '../widgets/card_devices.dart';
 import '../widgets/delete_confirmation_dialog.dart';
 import '../widgets/device_search_bar.dart';
@@ -18,17 +20,20 @@ import '../widgets/devices_filter_tabs.dart';
 import '../widgets/edit_device_dialog.dart';
 import 'device_creation_page.dart';
 
-enum DeviceFilterType { consumption, rooms, priority }
-
-enum SortOrder { ascending, descending }
-
 class DevicesScreen extends StatelessWidget {
   const DevicesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<DevicesFilterCubit>(
-      create: (_) => DevicesFilterCubit(),
+    return BlocProvider<DevicesCubit>.value(
+      value: sl<DevicesCubit>()..getDevices(),
+      child: _DevicesScreenContent(),
+    );
+  }
+
+  _refresh() {
+    return BlocProvider<DevicesCubit>.value(
+      value: sl<DevicesCubit>()..getDevices(refresh: true),
       child: _DevicesScreenContent(),
     );
   }
@@ -79,7 +84,7 @@ class _DevicesScreenContent extends StatelessWidget {
     );
 
     if (newDevice != null && newDevice is DeviceCreationForm) {
-      context.read<DashboardBloc>().add(AddDeviceEvent(newDevice));
+      context.read<DevicesCubit>().addDevice(newDevice);
     }
   }
 }
@@ -89,16 +94,19 @@ class DeviceFilterHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DevicesFilterCubit, DevicesFilterState>(
-      builder: (context, filterState) {
+    return BlocBuilder<DevicesCubit, DevicesState>(
+      buildWhen: (previous, current) =>
+          previous.filterType != current.filterType ||
+          previous.sortOrder != current.sortOrder,
+      builder: (context, state) {
         return Row(
           children: [
             Expanded(
               child: FilterTabsRow(
-                selectedTabIndex: filterState.filterType.index,
+                selectedTabIndex: state.filterType.index,
                 onTabSelected: (index) {
                   context
-                      .read<DevicesFilterCubit>()
+                      .read<DevicesCubit>()
                       .updateFilterType(DeviceFilterType.values[index]);
                 },
               ),
@@ -106,10 +114,10 @@ class DeviceFilterHeader extends StatelessWidget {
             // Sort Order Toggle Button
             IconButton(
               onPressed: () {
-                context.read<DevicesFilterCubit>().toggleSortOrder();
+                context.read<DevicesCubit>().toggleSortOrder();
               },
               icon: Icon(
-                filterState.sortOrder == SortOrder.ascending
+                state.sortOrder == SortOrder.ascending
                     ? Icons.arrow_upward
                     : Icons.arrow_downward,
                 color: ColorManager.primary,
@@ -127,15 +135,11 @@ class DevicesListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DashboardBloc, DashboardState>(
+    final List<Room> rooms = sl<DashboardBloc>().rooms;
+
+    return BlocConsumer<DevicesCubit, DevicesState>(
       listenWhen: (previous, current) =>
           current is DeleteDeviceSuccess || current is DeleteDeviceError,
-      buildWhen: (previous, current) =>
-          current is GetDevicesLoading ||
-          current is GetDevicesSuccess ||
-          current is GetDevicesError ||
-          current is DeleteDeviceSuccess ||
-          current is AddDeviceSuccess,
       listener: (context, state) {
         if (state is DeleteDeviceSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -160,25 +164,19 @@ class DevicesListView extends StatelessWidget {
           );
         }
 
-        final devices = context.read<DashboardBloc>().devices;
+        final devices = state.devices;
 
-        if (devices.isEmpty) {
+        if (devices == null || devices.isEmpty) {
           return const NoDataWidget();
         }
 
-        final filterState = context.watch<DevicesFilterCubit>().state;
+        final filteredData =
+            context.read<DevicesCubit>().getFilteredDevices(rooms);
 
-        final filteredDevices = _getFilteredDevices(
-          devices,
-          filterState.filterType,
-          filterState.sortOrder,
-          context.read<DashboardBloc>().rooms,
-        );
-
-        if (filterState.filterType == DeviceFilterType.rooms) {
-          return _buildRoomsView(filteredDevices, context);
+        if (state.filterType == DeviceFilterType.rooms) {
+          return _buildRoomsView(filteredData, context, rooms);
         } else {
-          return _buildGridView(filteredDevices, context);
+          return _buildGridView(filteredData, context);
         }
       },
     );
@@ -203,8 +201,8 @@ class DevicesListView extends StatelessWidget {
     );
   }
 
-  Widget _buildRoomsView(
-      Map<String, List<Device>> devicesByRoom, BuildContext context) {
+  Widget _buildRoomsView(Map<String, List<Device>> devicesByRoom,
+      BuildContext context, List<Room> rooms) {
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
@@ -212,8 +210,7 @@ class DevicesListView extends StatelessWidget {
       itemBuilder: (context, index) {
         final roomId = devicesByRoom.keys.elementAt(index);
         final roomDevices = devicesByRoom[roomId]!;
-        final roomName =
-            _getRoomName(roomId, context.read<DashboardBloc>().rooms);
+        final roomName = _getRoomName(roomId, rooms);
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,51 +234,6 @@ class DevicesListView extends StatelessWidget {
     );
   }
 
-  dynamic _getFilteredDevices(
-    List<Device> devices,
-    DeviceFilterType filterType,
-    SortOrder sortOrder,
-    List<Room> rooms,
-  ) {
-    switch (filterType) {
-      case DeviceFilterType.consumption:
-        final sortedDevices = List<Device>.from(devices);
-        sortedDevices.sort((a, b) {
-          final comparison = a.consumption.compareTo(b.consumption);
-          return sortOrder == SortOrder.ascending ? comparison : -comparison;
-        });
-        return sortedDevices;
-
-      case DeviceFilterType.rooms:
-        final devicesByRoom = <String, List<Device>>{};
-
-        for (final device in devices) {
-          if (!devicesByRoom.containsKey(device.roomId)) {
-            devicesByRoom[device.roomId] = [];
-          }
-          devicesByRoom[device.roomId]!.add(device);
-        }
-
-        // Sort devices within each room if needed
-        devicesByRoom.forEach((roomId, roomDevices) {
-          roomDevices.sort((a, b) {
-            final comparison = a.name.compareTo(b.name);
-            return sortOrder == SortOrder.ascending ? comparison : -comparison;
-          });
-        });
-
-        return devicesByRoom;
-
-      case DeviceFilterType.priority:
-        final sortedDevices = List<Device>.from(devices);
-        sortedDevices.sort((a, b) {
-          final comparison = a.priority.compareTo(b.priority);
-          return sortOrder == SortOrder.ascending ? comparison : -comparison;
-        });
-        return sortedDevices;
-    }
-  }
-
   String _getRoomName(String roomId, List<Room> rooms) {
     final room = rooms.firstWhere(
       (room) => room.id == roomId,
@@ -295,9 +247,9 @@ class DeviceCardWrapper extends StatelessWidget {
   final Device device;
 
   const DeviceCardWrapper({
-    Key? key,
+    super.key,
     required this.device,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -324,48 +276,6 @@ class DeviceCardWrapper extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => DeleteDeviceDialog(deviceId: deviceId),
-    );
-  }
-}
-
-class DevicesFilterCubit extends Cubit<DevicesFilterState> {
-  DevicesFilterCubit() : super(DevicesFilterState.initial());
-
-  void updateFilterType(DeviceFilterType filterType) {
-    emit(state.copyWith(filterType: filterType));
-  }
-
-  void toggleSortOrder() {
-    final newOrder = state.sortOrder == SortOrder.ascending
-        ? SortOrder.descending
-        : SortOrder.ascending;
-    emit(state.copyWith(sortOrder: newOrder));
-  }
-}
-
-class DevicesFilterState {
-  final DeviceFilterType filterType;
-  final SortOrder sortOrder;
-
-  DevicesFilterState({
-    required this.filterType,
-    required this.sortOrder,
-  });
-
-  factory DevicesFilterState.initial() {
-    return DevicesFilterState(
-      filterType: DeviceFilterType.consumption,
-      sortOrder: SortOrder.descending,
-    );
-  }
-
-  DevicesFilterState copyWith({
-    DeviceFilterType? filterType,
-    SortOrder? sortOrder,
-  }) {
-    return DevicesFilterState(
-      filterType: filterType ?? this.filterType,
-      sortOrder: sortOrder ?? this.sortOrder,
     );
   }
 }

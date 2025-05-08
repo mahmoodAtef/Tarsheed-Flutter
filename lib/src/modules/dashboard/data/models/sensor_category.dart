@@ -34,4 +34,17 @@ extension SensorData on SensorCategory {
         return "6817b5e3dc386af5382343f3";
     }
   }
+
+  String get imagePath {
+    switch (this) {
+      case SensorCategory.temperature:
+        return 'assets/images/temp.jpeg';
+      case SensorCategory.current:
+        return 'assets/images/cuur.jpeg';
+      case SensorCategory.motion:
+        return 'assets/images/mothion.jpg';
+      case SensorCategory.vibration:
+        return 'assets/images/vib.jpeg';
+    }
+  }
 }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../bloc/dashboard_bloc.dart';
-import '../../data/models/device.dart';
+import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
+
 import '../../../../core/utils/color_manager.dart';
+import '../../data/models/device.dart';
 
 class EditDeviceDialog extends StatefulWidget {
   final Device device;
-  const EditDeviceDialog({Key? key, required this.device}) : super(key: key);
+
+  const EditDeviceDialog({super.key, required this.device});
 
   @override
   State<EditDeviceDialog> createState() => _EditDeviceDialogState();
@@ -17,21 +19,21 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
   late TextEditingController descriptionController;
   late TextEditingController pinNumberController;
   bool isModified = false;
-  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
     nameController = TextEditingController(text: widget.device.name);
-    descriptionController = TextEditingController(text: widget.device.description);
+    descriptionController =
+        TextEditingController(text: widget.device.description);
     pinNumberController = TextEditingController();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<DashboardBloc, DashboardState>(
+    return BlocListener<DevicesCubit, DevicesState>(
       listenWhen: (previous, current) =>
-      current is EditDeviceSuccess || current is EditDeviceError,
+          current is EditDeviceSuccess || current is EditDeviceError,
       listener: (context, state) {
         if (state is EditDeviceSuccess) {
           Navigator.of(context).pop();
@@ -61,17 +63,24 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancel'),
           ),
-          ElevatedButton(
-            onPressed: isModified && !isLoading ? _onSavePressed : null,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: isModified ? ColorManager.primary : Colors.grey,
-            ),
-            child: isLoading
-                ? const SizedBox(
-              width: 20, height: 20,
-              child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
-            )
-                : const Text('Save'),
+          BlocBuilder<DevicesCubit, DevicesState>(
+            builder: (context, state) {
+              return ElevatedButton(
+                onPressed: isModified ? _onSavePressed : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      isModified ? ColorManager.primary : Colors.grey,
+                ),
+                child: state is EditDeviceLoading
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                            color: Colors.white, strokeWidth: 2),
+                      )
+                    : const Text('Save'),
+              );
+            },
           ),
         ],
       ),
@@ -87,14 +96,11 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
   }
 
   void _onSavePressed() {
-    setState(() => isLoading = true);
-    context.read<DashboardBloc>().add(
-      EditDeviceEvent(
-        id: widget.device.id,
-        name: nameController.text,
-        description: descriptionController.text,
-        pinNumber: pinNumberController.text,
-      ),
-    );
+    context.read<DevicesCubit>().editDevice(
+          id: widget.device.id,
+          name: nameController.text,
+          description: descriptionController.text,
+          pinNumber: pinNumberController.text,
+        );
   }
 }

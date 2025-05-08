@@ -9,9 +9,9 @@ import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
+import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/devices.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/widgets/card_devices.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/text_home_screen.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/profile_screen.dart';
 
@@ -45,11 +45,12 @@ class HomeScreen extends StatelessWidget {
   void _initializeData() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final bloc = sl<DashboardBloc>();
+      final DevicesCubit devicesCubit = sl<DevicesCubit>();
       final now = DateTime.now();
       bloc.add(GetUsageReportEvent());
       bloc.add(GetRoomsEvent());
       bloc.add(GetDevicesCategoriesEvent());
-      bloc.add(GetDevicesEvent());
+      devicesCubit.getDevices();
     });
   }
 }
@@ -600,40 +601,72 @@ class _ConnectedDevicesSection extends StatelessWidget {
         SizedBox(height: 16.h),
         SizedBox(
           height: 175.h,
-          child: BlocBuilder<DashboardBloc, DashboardState>(
-            buildWhen: (previous, current) =>
-                current is GetDevicesLoading ||
-                current is GetDevicesSuccess ||
-                current is GetDevicesError,
-            builder: (context, state) {
-              if (state is GetDevicesLoading) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              final devices = context.read<DashboardBloc>().devices;
-              final displayCount = devices.length > 3 ? 3 : devices.length;
-
-              if (displayCount == 0) {
-                return NoDataWidget();
-              }
-
-              return ListView.separated(
-                scrollDirection: Axis.horizontal,
-                separatorBuilder: (_, __) => SizedBox(width: 20.w),
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                itemCount: displayCount,
-                itemBuilder: (context, index) {
-                  return DeviceCard(
-                    device: devices[index],
-                    onToggle: (_) {},
+          child: BlocProvider(
+            create: (context) => sl<DevicesCubit>()..getDevices(),
+            child: BlocBuilder<DevicesCubit, DevicesState>(
+              builder: (context, state) {
+                if (_checkIfDevicesLoading(state)) {
+                  return const Center(child: CustomLoadingWidget());
+                } else if (_checkIfDevicesError(state)) {
+                  return Center(
+                    child: CustomErrorWidget(
+                      height: 110.h,
+                      message: ExceptionManager.getMessage(
+                          (state as GetDevicesError).exception),
+                    ),
                   );
-                },
-              );
-            },
+                } else if (_checkIfDevicesEmpty(state)) {
+                  return Center(
+                    child: NoDataWidget(),
+                  );
+                } else {
+                  return ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: state.devices!
+                                  .where((x) => x.state == true)
+                                  .length >
+                              3
+                          ? 3
+                          : state.devices!.where((x) => x.state == true).length,
+                      separatorBuilder: (context, index) => const SizedBox(
+                            width: 10,
+                          ),
+                      itemBuilder: (context, index) {
+                        final device = state.devices?[index];
+                        return DeviceCardWrapper(device: device!);
+                      });
+                }
+              },
+            ),
           ),
         ),
       ],
     );
+  }
+
+  bool _checkIfDevicesLoading(DevicesState state) {
+    if ((state is GetDevicesLoading && (state.devices == null)) ||
+        state is DevicesInitial) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool _checkIfDevicesError(DevicesState state) {
+    if (state is GetDevicesError) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool _checkIfDevicesEmpty(DevicesState state) {
+    if (state.devices == null ||
+        state.devices!.where((x) => x.state == true).isEmpty) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

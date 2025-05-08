@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:tarsheed/src/core/apis/api.dart';
 import 'package:tarsheed/src/core/apis/dio_helper.dart';
 import 'package:tarsheed/src/core/apis/end_points.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
@@ -21,14 +22,14 @@ class DevicesRemoteServices implements BaseDevicesRemoteServices {
   Future<Either<Exception, List<Device>>> getDevices() async {
     try {
       final response = await DioHelper.getData(
-        path: EndPoints.getDevices,
+        path: "${EndPoints.getDevices}${ApiManager.userId}",
       );
       final List<Device> devices = (response.data['devices'] as List)
           .map((e) => Device.fromJson(e))
           .toList();
       return Right(devices);
-    } catch (e) {
-      return Left(e as Exception);
+    } on Exception catch (e) {
+      return Left(e);
     }
   }
 

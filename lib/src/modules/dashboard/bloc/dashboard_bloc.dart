@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/category.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
-import 'package:tarsheed/src/modules/dashboard/data/models/device_creation_form.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/room.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/sensor.dart';
@@ -28,14 +27,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     on<DashboardEvent>((event, emit) async {
       if (event is GetUsageReportEvent) {
         await _handleGetUsageReportEvent(event, emit);
-      } else if (event is GetDevicesEvent) {
-        await _handleGetDevicesEvent(event, emit);
-      } else if (event is AddDeviceEvent) {
-        await _handleAddDeviceEvent(event, emit);
-      } else if (event is EditDeviceEvent) {
-        await _handleEditDeviceEvent(event, emit);
-      } else if (event is DeleteDeviceEvent) {
-        await _handleDeleteDeviceEvent(event, emit);
       } else if (event is GetDevicesCategoriesEvent) {
         await _handleGetCategoriesEvent(event, emit);
       } else if (event is GetRoomsEvent) {
@@ -93,47 +84,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     final result = await _repository.getAISuggestion();
     result.fold((l) => emit(GetAISuggestionsError(l)),
         (r) => emit(GetAISuggestionsSuccess(r)));
-  }
-
-  // devices events handlers
-  _handleGetDevicesEvent(
-      GetDevicesEvent event, Emitter<DashboardState> emit) async {
-    if (devices.isEmpty || event.isRefresh == true) {
-      emit(GetDevicesLoading());
-      final result = await _repository.getDevices();
-      result.fold((l) => emit(GetDevicesError(l)), (r) {
-        devices = r;
-        emit(GetDevicesSuccess(r));
-      });
-    }
-  }
-
-  _handleAddDeviceEvent(
-      AddDeviceEvent event, Emitter<DashboardState> emit) async {
-    emit(AddDeviceLoading());
-    final result = await _repository.addDevice(event.deviceCreationForm);
-    result.fold(
-        (l) => emit(AddDeviceError(l)), (r) => emit(AddDeviceSuccess(r)));
-  }
-
-  _handleEditDeviceEvent(
-      EditDeviceEvent event, Emitter<DashboardState> emit) async {
-    emit(EditDeviceLoading());
-    final result = await _repository.editDevice(
-        name: event.name,
-        id: event.id,
-        description: event.description,
-        pinNumber: event.pinNumber);
-    result.fold(
-        (l) => emit(EditDeviceError(l)), (r) => emit(EditDeviceSuccess()));
-  }
-
-  _handleDeleteDeviceEvent(
-      DeleteDeviceEvent event, Emitter<DashboardState> emit) async {
-    emit(DeleteDeviceLoading());
-    final result = await _repository.deleteDevice(event.deviceId);
-    result.fold((l) => emit(DeleteDeviceError(l)),
-        (r) => emit(DeleteDeviceSuccess(event.deviceId)));
   }
 
   // rooms events handlers

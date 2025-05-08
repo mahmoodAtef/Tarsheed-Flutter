@@ -8,31 +8,35 @@ import 'package:tarsheed/src/core/utils/image_manager.dart';
 
 class CustomErrorWidget extends StatelessWidget {
   final String message;
-  const CustomErrorWidget({super.key, required this.message});
+  final double? height;
+  const CustomErrorWidget({super.key, required this.message, this.height});
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Image(
-              height: 80.h,
-              width: 80.w,
-              image: AssetImage(AssetsManager.errorIcon),
-              fit: BoxFit.fill,
+      child: SizedBox(
+        height: height,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Image(
+                height: 80.h,
+                width: 80.w,
+                image: AssetImage(AssetsManager.errorIcon),
+                fit: BoxFit.fill,
+              ),
             ),
-          ),
-          SizedBox(height: 20.h),
-          Text(
-            message,
-            style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-                color: Colors.black),
-          ),
-        ],
+            SizedBox(height: 20.h),
+            Text(
+              message,
+              style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+            ),
+          ],
+        ),
       ),
     );
   }

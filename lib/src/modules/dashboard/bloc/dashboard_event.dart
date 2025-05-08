@@ -53,41 +53,6 @@ final class DeleteRoomEvent extends DashboardEvent {
   List<Object?> get props => [roomId];
 }
 
-// devices
-final class GetDevicesEvent extends DashboardEvent {
-  final bool? isRefresh;
-  const GetDevicesEvent({this.isRefresh});
-  @override
-  List<Object?> get props => [];
-}
-
-final class AddDeviceEvent extends DashboardEvent {
-  final DeviceCreationForm deviceCreationForm;
-  const AddDeviceEvent(this.deviceCreationForm);
-  @override
-  List<Object?> get props => [deviceCreationForm];
-}
-
-final class EditDeviceEvent extends DashboardEvent {
-  final String id;
-  final String? name;
-  final String? description;
-  final String? pinNumber;
-
-  const EditDeviceEvent(
-      {required this.id, this.name, this.description, this.pinNumber});
-
-  @override
-  List<Object?> get props => [id, name, description, pinNumber];
-}
-
-final class DeleteDeviceEvent extends DashboardEvent {
-  final String deviceId;
-  const DeleteDeviceEvent(this.deviceId);
-  @override
-  List<Object?> get props => [deviceId];
-}
-
 // devices categories
 final class GetDevicesCategoriesEvent extends DashboardEvent {
   @override

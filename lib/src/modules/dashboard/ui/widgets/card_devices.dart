@@ -157,7 +157,7 @@ class DeviceCard extends StatelessWidget {
       return BlocBuilder<DashboardBloc, DashboardState>(
         buildWhen: (current, previous) => current is DeviceCategoryState,
         builder: (context, state) {
-          return state is GetDevicesLoading
+          return state is GetDeviceCategoriesLoading
               ? SizedBox()
               : Image.network(
                   category.iconUrl,

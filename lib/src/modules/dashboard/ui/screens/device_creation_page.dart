@@ -1,63 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:tarsheed/generated/l10n.dart';
-import 'package:tarsheed/src/core/routing/navigation_manager.dart';
-import 'package:tarsheed/src/core/widgets/large_button.dart';
+
 import '../../../../core/utils/localization_manager.dart';
 import '../../bloc/dashboard_bloc.dart';
-import '../../data/models/device_creation_form.dart';
 import '../../data/models/sensor_category.dart';
 
-enum SensorCategory {
-  temperature,
-  current,
-  motion,
-  vibration,
-}
-extension SensorImagePath on SensorCategory {
-  String get imagePath {
-    switch (this) {
-      case SensorCategory.temperature:
-        return 'assets/images/temp.jpeg';
-      case SensorCategory.current:
-        return 'assets/images/cuur.jpeg';
-      case SensorCategory.motion:
-        return 'assets/images/mothion.jpg';
-      case SensorCategory.vibration:
-        return 'assets/images/vib.jpeg';
-    }
-  }
-}
-extension SensorData on SensorCategory {
-  String get name {
-    bool isArabic = LocalizationManager.currentLocaleIndex == 0;
-    switch (this) {
-      case SensorCategory.temperature:
-        return isArabic ? "مستشعر حرارة" : "Temperature Sensor";
-      case SensorCategory.current:
-        return isArabic ? "مستشعر التيار" : "Current Sensor";
-      case SensorCategory.motion:
-        return isArabic ? "مستشعر الحركة" : "Motion Sensor";
-      case SensorCategory.vibration:
-        return isArabic ? "مستشعر الاهتزاز" : "Vibration Sensor";
-    }
-  }
-
-  String get id {
-    switch (this) {
-      case SensorCategory.temperature:
-        return "6817b4b7f927a0b34e0756d7";
-      case SensorCategory.current:
-        return "6817b5bda500e527dbafb536";
-      case SensorCategory.motion:
-        return "6817b5bda500e527dbafb536";
-      case SensorCategory.vibration:
-        return "6817b5e3dc386af5382343f3";
-    }
-  }
-}
 class DeviceCreationPage extends StatefulWidget {
   @override
   _DeviceCreationPageState createState() => _DeviceCreationPageState();
@@ -102,6 +50,7 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
                     decoration: const InputDecoration(labelText: 'Pin Number'),
                   ),
                   const SizedBox(height: 12),
+
                   /// Room Dropdown
                   BlocBuilder<DashboardBloc, DashboardState>(
                     builder: (context, state) {
@@ -143,12 +92,14 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
                       );
                     },
                   ),
+
                   /// sensors Dropdown
                   const SizedBox(height: 12),
                   DropdownButtonFormField<SensorCategory>(
                     value: selectedSensorType,
                     decoration: InputDecoration(
-                      labelText: isArabic ? 'اختر جهاز الاستشعار' : 'Select Sensor',
+                      labelText:
+                          isArabic ? 'اختر جهاز الاستشعار' : 'Select Sensor',
                     ),
                     items: SensorCategory.values.map((type) {
                       return DropdownMenuItem<SensorCategory>(
@@ -171,6 +122,7 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
                   ),
 
                   const SizedBox(height: 12),
+
                   /// priority Dropdown
                   DropdownButtonFormField<int>(
                     value: selectedPriority,
@@ -198,7 +150,8 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
                         value: 2,
                         child: Row(
                           children: [
-                            const Icon(Icons.error_outline, color: Colors.orange),
+                            const Icon(Icons.error_outline,
+                                color: Colors.orange),
                             const SizedBox(width: 8),
                             Text(
                               isArabic
@@ -248,47 +201,6 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
                   ),
                   const SizedBox(height: 20),
                 ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16.0.w),
-            child: SizedBox(
-              width: double.maxFinite,
-              child: BlocConsumer<DashboardBloc, DashboardState>(
-                listener: (context, state) {
-                  if (state is AddDeviceSuccess) {
-                    Fluttertoast.showToast(msg: "device added successfully");
-                    context.pop();
-                  }
-                },
-                buildWhen: (current, previous) =>
-                current is DeviceState ||
-                    current is AddDeviceLoading ||
-                    current is AddDeviceSuccess ||
-                    current is AddDeviceError,
-                builder: (context, state) {
-                  return DefaultButton(
-                      title: S.of(context).save,
-                      isLoading: state is AddDeviceLoading,
-                      onPressed: () {
-                        if (_validateInputs()) {
-                          final form = DeviceCreationForm(
-                            name: nameController.text,
-                            description: descriptionController.text,
-                            pinNumber: pinNumberController.text,
-                            roomId: selectedRoomId!,
-                            categoryId: selectedCategoryId!,
-                            priority:
-                            int.tryParse(priorityController.text) ?? 1,
-                          );
-
-                          context
-                              .read<DashboardBloc>()
-                              .add(AddDeviceEvent(form));
-                        }
-                      });
-                },
               ),
             ),
           ),

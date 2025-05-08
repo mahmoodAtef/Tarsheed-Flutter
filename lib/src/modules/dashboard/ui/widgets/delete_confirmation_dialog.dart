@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../bloc/dashboard_bloc.dart';
+import 'package:tarsheed/src/core/services/dep_injection.dart';
+import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 
 class DeleteDeviceDialog extends StatelessWidget {
   final String deviceId;
 
-  const DeleteDeviceDialog({Key? key, required this.deviceId}) : super(key: key);
+  const DeleteDeviceDialog({Key? key, required this.deviceId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class DeleteDeviceDialog extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            context.read<DashboardBloc>().add(DeleteDeviceEvent(deviceId));
+            sl<DevicesCubit>().deleteDevice(deviceId);
             Navigator.pop(context);
           },
           style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
