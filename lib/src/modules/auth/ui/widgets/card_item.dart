@@ -38,7 +38,7 @@ class BuildItem extends StatelessWidget {
                 children: [
                   Text(title,
                       style: TextStyle(
-                        color: Colors.black,
+                        color: ColorManager.black,
                         fontWeight: FontWeight.w600,
                         fontSize: 18.sp,
                       )),

@@ -35,12 +35,12 @@ class SettingPage extends StatelessWidget {
                 ),
               );
             } else if (state is DeleteProfileSuccessState) {
-              context.pushAndRemove(LoginPage()); // Close loading dialog
+              context.pushAndRemove(LoginPage());
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text(S.of(context).accountDeletedSuccess)));
               context.pushReplacement(LoginPage());
             } else if (state is SettingsErrorState) {
-              Navigator.of(context).pop(); // Close loading dialog if open
+              Navigator.of(context).pop();
               ExceptionManager.showMessage(state.exception);
             }
           },

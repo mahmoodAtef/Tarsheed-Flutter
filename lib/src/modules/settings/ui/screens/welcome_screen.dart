@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/services/app_initializer.dart';
@@ -14,51 +15,49 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: ColorManager.white,
-        resizeToAvoidBottomInset: false,
-        body: Stack(children: [
-          Positioned.fill(
-            child: BackGroundRectangle(),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 0.5),
-            child: Center(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+      backgroundColor: ColorManager.white,
+      resizeToAvoidBottomInset: false,
+      body: Stack(
+        children: [
+          const Positioned.fill(child: BackGroundRectangle()),
+          Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   Image.asset(
                     AssetsManager.logo,
-                    width: 500,
-                    height: 500,
+                    width: 220.w,
+                    height: 220.h,
                     fit: BoxFit.contain,
                   ),
-                  SizedBox(height: 2),
-                  Container(
-                    width: 343,
-                    height: 106,
+                  SizedBox(height: 24.h),
+                  SizedBox(
+                    width: 343.w,
                     child: Text(
                       S.of(context).takeControl,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 35,
+                        fontSize: 28.sp,
                         fontWeight: FontWeight.w600,
                         color: ColorManager.primary,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40.h),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: 160,
-                        height: 60,
+                        width: 140.w,
+                        height: 50.h,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: ColorManager.primary,
-                            elevation: 15,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
                           ),
                           onPressed: () {
                             AppInitializer.saveFirstRunFlag();
@@ -67,38 +66,36 @@ class WelcomeScreen extends StatelessWidget {
                           child: Text(
                             S.of(context).login,
                             style: TextStyle(
-                                color: ColorManager.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600),
+                              color: ColorManager.white,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      GestureDetector(
-                        onTap: () {
+                      SizedBox(width: 20.w),
+                      TextButton(
+                        onPressed: () {
                           AppInitializer.saveFirstRunFlag();
                           context.push(SignUpScreen());
                         },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            S.of(context).register,
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: ColorManager.black,
-                            ),
+                        child: Text(
+                          S.of(context).register,
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w600,
+                            color: ColorManager.black,
                           ),
                         ),
                       ),
                     ],
                   ),
-                ])),
-          )
-        ]));
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
