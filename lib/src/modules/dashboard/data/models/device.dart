@@ -9,8 +9,9 @@ class Device extends Equatable {
   final double consumption;
   final int priority;
   final bool state;
-
+  final String pinNumber;
   const Device({
+    required this.pinNumber,
     required this.state,
     required this.name,
     required this.id,
@@ -32,6 +33,7 @@ class Device extends Equatable {
           json["totalUsage"] == null ? 0 : json['totalUsage']?.toDouble(),
       priority: json['priority'] ?? 0,
       state: json['status'] == "ON",
+      pinNumber: json['pinNumber'].toString(),
     );
   }
 
@@ -43,6 +45,7 @@ class Device extends Equatable {
         'consumption': consumption,
         'priority': priority,
         'state': state,
+        'pinNumber': pinNumber
       };
 
   Device copyWith(
@@ -64,7 +67,8 @@ class Device extends Equatable {
         consumption: consumption ?? this.consumption,
         categoryId: categoryId ?? this.categoryId,
         priority: priority ?? this.priority,
-        state: state ?? this.state);
+        state: state ?? this.state,
+        pinNumber: pinNumber ?? this.pinNumber);
   }
 
   @override
