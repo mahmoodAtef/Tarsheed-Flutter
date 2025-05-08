@@ -16,7 +16,20 @@ enum SensorCategory {
   motion,
   vibration,
 }
-
+extension SensorImagePath on SensorCategory {
+  String get imagePath {
+    switch (this) {
+      case SensorCategory.temperature:
+        return 'assets/images/temp.jpeg';
+      case SensorCategory.current:
+        return 'assets/images/cuur.jpeg';
+      case SensorCategory.motion:
+        return 'assets/images/mothion.jpg';
+      case SensorCategory.vibration:
+        return 'assets/images/vib.jpeg';
+    }
+  }
+}
 extension SensorData on SensorCategory {
   String get name {
     bool isArabic = LocalizationManager.currentLocaleIndex == 0;
@@ -140,12 +153,23 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
                     items: SensorCategory.values.map((type) {
                       return DropdownMenuItem<SensorCategory>(
                         value: type,
-                        child: Text(type.name),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              type.imagePath,
+                              width: 30,
+                              height: 30,
+                            ),
+                            SizedBox(width: 10),
+                            Text(type.name),
+                          ],
+                        ),
                       );
                     }).toList(),
                     onChanged: (value) =>
                         setState(() => selectedSensorType = value),
                   ),
+
                   const SizedBox(height: 12),
                   /// priority Dropdown
                   DropdownButtonFormField<int>(
@@ -239,7 +263,7 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
                   }
                 },
                 buildWhen: (current, previous) =>
-                    current is DeviceState ||
+                current is DeviceState ||
                     current is AddDeviceLoading ||
                     current is AddDeviceSuccess ||
                     current is AddDeviceError,
@@ -256,7 +280,7 @@ class _DeviceCreationPageState extends State<DeviceCreationPage> {
                             roomId: selectedRoomId!,
                             categoryId: selectedCategoryId!,
                             priority:
-                                int.tryParse(priorityController.text) ?? 1,
+                            int.tryParse(priorityController.text) ?? 1,
                           );
 
                           context
