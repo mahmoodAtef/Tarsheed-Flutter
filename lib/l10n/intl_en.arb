@@ -144,7 +144,20 @@
   "typeRequired" : "Please select type",
   "sensorAdded" : "Sensor added successfully",
   "notifications": "Notifications",
-  "profileUpdatedSuccessfully": "Profile updated successfully"
+  "profileUpdatedSuccessfully": "Profile updated successfully",
+  "addDevice": "Add Device",
+  "description" : "Description",
+  "descriptionRequired" : "Please enter description",
+  "pinNumber" : "Pin Number",
+  "room" : "Room",
+  "noRoomsAvailable" : "No rooms available",
+  "category" : "Category",
+  "noCategoriesAvailable" : "No categories available",
+  "categoryRequired" : "Please select category",
+  "deviceAddedSuccessfully" : "Device added successfully",
+  "priority" : "Priority",
+  "priorityRequired" : "Please select priority"
+
 }
 
 

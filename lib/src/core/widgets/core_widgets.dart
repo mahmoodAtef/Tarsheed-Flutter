@@ -81,3 +81,60 @@ class NoDataWidget extends StatelessWidget {
 void showToast(String message) {
   Fluttertoast.showToast(msg: message);
 }
+
+class DropDownWidget extends StatefulWidget {
+  final String? value;
+  final String? Function(String?)? validator;
+  final String? Function(String?)? onChanged;
+  final String label;
+  final List<DropDownItem> items;
+  const DropDownWidget({
+    super.key,
+    this.value,
+    this.validator,
+    this.onChanged,
+    required this.label,
+    required this.items,
+  });
+
+  @override
+  State<DropDownWidget> createState() => _DropDownWidgetState();
+}
+
+class _DropDownWidgetState extends State<DropDownWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<String>(
+      value: widget.value,
+      hint: Text(widget.label),
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        labelText: widget.label,
+      ),
+      items: widget.items.map((item) {
+        return DropdownMenuItem<String>(
+          value: item.value,
+          child: Row(
+            children: [
+              item.leading ?? const SizedBox(),
+              const SizedBox(width: 8),
+              Text(item.label),
+            ],
+          ),
+        );
+      }).toList(),
+      onChanged: (value) {
+        setState(() {
+          widget.onChanged!(value);
+        });
+      },
+    );
+  }
+}
+
+class DropDownItem {
+  final String value;
+  final String label;
+  final Widget? leading;
+  DropDownItem(this.value, this.label, {this.leading});
+}

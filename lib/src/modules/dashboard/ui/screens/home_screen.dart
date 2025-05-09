@@ -310,120 +310,126 @@ class _EnergyConsumptionSection extends StatelessWidget {
         ? 100.0
         : (consumptionValue / 10).clamp(0, 100).toDouble();
 
-    return Column(
-      children: [
-        Text(
-          S.of(context).energyConsumption,
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-        SizedBox(height: 8.h),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Center(
-                child: TweenAnimationBuilder<double>(
-                  tween: Tween<double>(begin: 0, end: gaugeValue),
-                  duration: const Duration(seconds: 2),
-                  builder: (context, animatedValue, _) {
-                    return SfRadialGauge(
-                      axes: <RadialAxis>[
-                        RadialAxis(
-                          minimum: 0,
-                          maximum: 100,
-                          startAngle: 180,
-                          endAngle: 0,
-                          showLabels: false,
-                          showTicks: false,
-                          axisLineStyle: AxisLineStyle(
-                            thickness: 20,
-                            color: Colors.grey[200],
-                          ),
-                          ranges: _buildGaugeRanges(context),
-                          pointers: <GaugePointer>[
-                            NeedlePointer(
-                              value: animatedValue,
-                              needleColor: Colors.black,
-                              needleStartWidth: 2,
-                              needleEndWidth: 5,
-                              knobStyle: const KnobStyle(
-                                knobRadius: 0.05,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                          annotations: <GaugeAnnotation>[
-                            _buildGaugeAnnotation("0-50", 175, 0.9),
-                            _buildGaugeAnnotation("1000+", 5, 0.9),
-                            GaugeAnnotation(
-                              widget: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    '${consumptionValue.toInt()} kWh',
-                                    style: TextStyle(
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Tier $tierNumber',
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey[700],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              angle: 90,
-                              positionFactor: 0.5,
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
+    return SizedBox(
+      height: 300.h,
+      child: Column(
+        children: [
+          Text(
+            S.of(context).energyConsumption,
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
-            SizedBox(width: 12.w),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+          SizedBox(height: 8.h),
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ColorIndicator(color: Colors.green, label: S.of(context).tier1),
-                SizedBox(height: 10.h),
-                ColorIndicator(
-                    color: Colors.lightGreen, label: S.of(context).tier2),
-                SizedBox(height: 10.h),
-                ColorIndicator(
-                    color: Colors.yellow, label: S.of(context).tier3),
-                SizedBox(height: 10.h),
-                ColorIndicator(
-                    color: Colors.orange, label: S.of(context).tier4),
-                SizedBox(height: 10.h),
-                ColorIndicator(
-                    color: Colors.deepOrange, label: S.of(context).tier5),
-                SizedBox(height: 10.h),
-                ColorIndicator(
-                    color: Colors.red, label: S.of(context).tier6Plus),
+                Expanded(
+                  child: Center(
+                    child: TweenAnimationBuilder<double>(
+                      tween: Tween<double>(begin: 0, end: gaugeValue),
+                      duration: const Duration(seconds: 2),
+                      builder: (context, animatedValue, _) {
+                        return SfRadialGauge(
+                          axes: <RadialAxis>[
+                            RadialAxis(
+                              minimum: 0,
+                              maximum: 100,
+                              startAngle: 180,
+                              endAngle: 0,
+                              showLabels: false,
+                              showTicks: false,
+                              axisLineStyle: AxisLineStyle(
+                                thickness: 20,
+                                color: Colors.grey[200],
+                              ),
+                              ranges: _buildGaugeRanges(context),
+                              pointers: <GaugePointer>[
+                                NeedlePointer(
+                                  value: animatedValue,
+                                  needleColor: Colors.black,
+                                  needleStartWidth: 2,
+                                  needleEndWidth: 5,
+                                  knobStyle: const KnobStyle(
+                                    knobRadius: 0.05,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                              annotations: <GaugeAnnotation>[
+                                _buildGaugeAnnotation("0-50", 175, 0.9),
+                                _buildGaugeAnnotation("1000+", 5, 0.9),
+                                GaugeAnnotation(
+                                  widget: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        '${consumptionValue.toInt()} kWh',
+                                        style: TextStyle(
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Tier $tierNumber',
+                                        style: TextStyle(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.grey[700],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  angle: 90,
+                                  positionFactor: 0.5,
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(width: 12.w),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ColorIndicator(
+                        color: Colors.green, label: S.of(context).tier1),
+                    SizedBox(height: 10.h),
+                    ColorIndicator(
+                        color: Colors.lightGreen, label: S.of(context).tier2),
+                    SizedBox(height: 10.h),
+                    ColorIndicator(
+                        color: Colors.yellow, label: S.of(context).tier3),
+                    SizedBox(height: 10.h),
+                    ColorIndicator(
+                        color: Colors.orange, label: S.of(context).tier4),
+                    SizedBox(height: 10.h),
+                    ColorIndicator(
+                        color: Colors.deepOrange, label: S.of(context).tier5),
+                    SizedBox(height: 10.h),
+                    ColorIndicator(
+                        color: Colors.red, label: S.of(context).tier6Plus),
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
-        SizedBox(height: 8.h),
-        Center(
-          child: CustomTextWidget(
-            label: S.of(context).currentTier(tierNumber),
-            size: 12.sp,
           ),
-        ),
-      ],
+          Center(
+            child: CustomTextWidget(
+              label: S.of(context).currentTier(tierNumber),
+              size: 12.sp,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -507,24 +513,6 @@ class _EnergyConsumptionSection extends StatelessWidget {
       positionFactor: positionFactor,
     );
   }
-
-  int _getElectricityTierNumber(double consumption) {
-    if (consumption <= 50) {
-      return 1;
-    } else if (consumption <= 100) {
-      return 2;
-    } else if (consumption <= 200) {
-      return 3;
-    } else if (consumption <= 350) {
-      return 4;
-    } else if (consumption <= 650) {
-      return 5;
-    } else if (consumption <= 1000) {
-      return 6;
-    } else {
-      return 7;
-    }
-  }
 }
 
 class _HomeContentSection extends StatelessWidget {
@@ -535,8 +523,6 @@ class _HomeContentSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 20.h),
-          SizedBox(height: 32.h),
           _ActiveModeSection(),
           SizedBox(height: 24.h),
           _ConnectedDevicesSection(),
@@ -604,7 +590,25 @@ class _ConnectedDevicesSection extends StatelessWidget {
           child: BlocProvider(
             create: (context) => sl<DevicesCubit>()..getDevices(),
             child: BlocBuilder<DevicesCubit, DevicesState>(
+              buildWhen: (previous, current) =>
+                  current is GetDevicesLoading ||
+                  current is GetDevicesSuccess ||
+                  current is GetDevicesError,
               builder: (context, state) {
+                if (state is GetDevicesSuccess ||
+                    state.devices?.isNotEmpty == true) {
+                  return ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount:
+                          state.devices!.length > 3 ? 3 : state.devices!.length,
+                      separatorBuilder: (context, index) => const SizedBox(
+                            width: 10,
+                          ),
+                      itemBuilder: (context, index) {
+                        final device = state.devices?[index];
+                        return DeviceCardWrapper(device: device!);
+                      });
+                }
                 if (_checkIfDevicesLoading(state)) {
                   return const Center(child: CustomLoadingWidget());
                 } else if (_checkIfDevicesError(state)) {
@@ -615,27 +619,10 @@ class _ConnectedDevicesSection extends StatelessWidget {
                           (state as GetDevicesError).exception),
                     ),
                   );
-                } else if (_checkIfDevicesEmpty(state)) {
-                  return Center(
-                    child: NoDataWidget(),
-                  );
-                } else {
-                  return ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: state.devices!
-                                  .where((x) => x.state == true)
-                                  .length >
-                              3
-                          ? 3
-                          : state.devices!.where((x) => x.state == true).length,
-                      separatorBuilder: (context, index) => const SizedBox(
-                            width: 10,
-                          ),
-                      itemBuilder: (context, index) {
-                        final device = state.devices?[index];
-                        return DeviceCardWrapper(device: device!);
-                      });
                 }
+                return Center(
+                  child: NoDataWidget(),
+                );
               },
             ),
           ),
@@ -655,15 +642,6 @@ class _ConnectedDevicesSection extends StatelessWidget {
 
   bool _checkIfDevicesError(DevicesState state) {
     if (state is GetDevicesError) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  bool _checkIfDevicesEmpty(DevicesState state) {
-    if (state.devices == null ||
-        state.devices!.where((x) => x.state == true).isEmpty) {
       return true;
     } else {
       return false;

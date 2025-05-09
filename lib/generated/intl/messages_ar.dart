@@ -34,6 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "تم حذف الحساب بنجاح",
     ),
     "activeMode": MessageLookupByLibrary.simpleMessage("الوضع النشط"),
+    "addDevice": MessageLookupByLibrary.simpleMessage("اضافة جهاز"),
     "aiSuggestions": MessageLookupByLibrary.simpleMessage(
       "اقتراحات الذكاء الاصطناعي",
     ),
@@ -48,6 +49,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
     "cannotExceed": MessageLookupByLibrary.simpleMessage("لا يمكن أن يتجاوز"),
+    "category": MessageLookupByLibrary.simpleMessage("الفئة"),
+    "categoryRequired": MessageLookupByLibrary.simpleMessage(
+      "من فضلك اختر الفئة",
+    ),
     "characters": MessageLookupByLibrary.simpleMessage("حرفًا"),
     "codeMustBeAtLeast6Digits": MessageLookupByLibrary.simpleMessage(
       "يجب أن يتكون الرمز من 6 أرقام على الأقل",
@@ -90,6 +95,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "هل تريد حذف حسابك؟",
     ),
     "deleteMyAccount": MessageLookupByLibrary.simpleMessage("حذف حسابي"),
+    "description": MessageLookupByLibrary.simpleMessage("الوصف"),
+    "descriptionRequired": MessageLookupByLibrary.simpleMessage(
+      "من فضلك ادخل الوصف",
+    ),
+    "deviceAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تمت اضافة الجهاز بنجاح",
+    ),
     "devicesRunning": MessageLookupByLibrary.simpleMessage("أجهزة تعمل"),
     "didNotReceive": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
     "didNtReceiveCode": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
@@ -186,8 +198,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "nextMonthUsage": MessageLookupByLibrary.simpleMessage(
       "استهلاك الشهر القادم",
     ),
+    "noCategoriesAvailable": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد فئات متاحة",
+    ),
     "noDataFound": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على بيانات",
+    ),
+    "noRoomsAvailable": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد غرف متاحة",
     ),
     "noRouteFound": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على الصفحة المطلوبة",
@@ -228,11 +246,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordsDoNotMatch": MessageLookupByLibrary.simpleMessage(
       "كلمتا المرور غير متطابقتين",
     ),
+    "pinNumber": MessageLookupByLibrary.simpleMessage("رقم المدخل"),
     "pinNumberRequired": MessageLookupByLibrary.simpleMessage(
       "من فضلك ادخل رقم المدخل",
     ),
     "pleaseEnterVerificationCode": MessageLookupByLibrary.simpleMessage(
       "من فضلك أدخل رمز التحقق",
+    ),
+    "priority": MessageLookupByLibrary.simpleMessage("الاولوية"),
+    "priorityRequired": MessageLookupByLibrary.simpleMessage(
+      "من فضلك اختر الاولوية",
     ),
     "profile": MessageLookupByLibrary.simpleMessage("الحساب التعريفي"),
     "profileUpdatedSuccessfully": MessageLookupByLibrary.simpleMessage(
@@ -247,6 +270,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "resendCode": MessageLookupByLibrary.simpleMessage("إعادة إرسال الرمز"),
     "resendCodeIn": m1,
     "retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
+    "room": MessageLookupByLibrary.simpleMessage("الغرفة"),
     "roomRequired": MessageLookupByLibrary.simpleMessage("من فضلك اختر غرفة"),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("حفظ التغييرات"),

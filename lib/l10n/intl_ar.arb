@@ -145,6 +145,17 @@
   "typeRequired" : "من فضلك اختر النوع",
   "sensorAdded": "تمت اضافة المستشعر",
   "notifications" : "الإشعارات",
-  "profileUpdatedSuccessfully" : "تم تحديث الملف الشخصي بنجاح"
-
+  "profileUpdatedSuccessfully" : "تم تحديث الملف الشخصي بنجاح",
+  "addDevice" : "اضافة جهاز",
+  "description" : "الوصف",
+  "descriptionRequired" : "من فضلك ادخل الوصف",
+  "pinNumber" : "رقم المدخل",
+  "room" : "الغرفة",
+  "noRoomsAvailable" : "لا يوجد غرف متاحة",
+  "category" : "الفئة",
+  "noCategoriesAvailable" : "لا يوجد فئات متاحة",
+  "categoryRequired" : "من فضلك اختر الفئة",
+  "deviceAddedSuccessfully" : "تمت اضافة الجهاز بنجاح",
+  "priorityRequired" : "من فضلك اختر الاولوية",
+  "priority" : "الاولوية"
 }
