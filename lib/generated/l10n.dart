@@ -1259,6 +1259,96 @@ class S {
       args: [],
     );
   }
+
+  /// `Add Device`
+  String get addDevice {
+    return Intl.message('Add Device', name: 'addDevice', desc: '', args: []);
+  }
+
+  /// `Description`
+  String get description {
+    return Intl.message('Description', name: 'description', desc: '', args: []);
+  }
+
+  /// `Please enter description`
+  String get descriptionRequired {
+    return Intl.message(
+      'Please enter description',
+      name: 'descriptionRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pin Number`
+  String get pinNumber {
+    return Intl.message('Pin Number', name: 'pinNumber', desc: '', args: []);
+  }
+
+  /// `Room`
+  String get room {
+    return Intl.message('Room', name: 'room', desc: '', args: []);
+  }
+
+  /// `No rooms available`
+  String get noRoomsAvailable {
+    return Intl.message(
+      'No rooms available',
+      name: 'noRoomsAvailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category`
+  String get category {
+    return Intl.message('Category', name: 'category', desc: '', args: []);
+  }
+
+  /// `No categories available`
+  String get noCategoriesAvailable {
+    return Intl.message(
+      'No categories available',
+      name: 'noCategoriesAvailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select category`
+  String get categoryRequired {
+    return Intl.message(
+      'Please select category',
+      name: 'categoryRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Device added successfully`
+  String get deviceAddedSuccessfully {
+    return Intl.message(
+      'Device added successfully',
+      name: 'deviceAddedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Priority`
+  String get priority {
+    return Intl.message('Priority', name: 'priority', desc: '', args: []);
+  }
+
+  /// `Please select priority`
+  String get priorityRequired {
+    return Intl.message(
+      'Please select priority',
+      name: 'priorityRequired',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
