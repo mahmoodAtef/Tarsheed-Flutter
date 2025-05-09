@@ -8,7 +8,7 @@ extension NavigationMethods on BuildContext {
   void push(Widget route) {
     Navigator.push(
       this,
-      SlidePageRoute(child: route),
+      MaterialPageRoute(builder: (_) => route),
     );
   }
 

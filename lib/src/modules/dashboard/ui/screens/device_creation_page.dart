@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
+import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/core/widgets/large_button.dart';
@@ -168,7 +169,7 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
                       listener: (context, state) {
                         if (state is AddDeviceSuccess) {
                           showToast(S.of(context).deviceAddedSuccessfully);
-                          Navigator.of(context).pop();
+                          context.pop();
                         } else if (state is AddDeviceError) {
                           ExceptionManager.showMessage(state.exception);
                         }
