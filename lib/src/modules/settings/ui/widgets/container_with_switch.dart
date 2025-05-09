@@ -45,11 +45,11 @@ class _CustomContainerState extends State<CustomContainer> {
             width: double.infinity,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: ColorManager.white,
               borderRadius: BorderRadius.circular(12.r),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black12,
+                  color: ColorManager.black12,
                   blurRadius: 4.r,
                   offset: Offset(0, 2),
                 ),
@@ -73,7 +73,7 @@ class _CustomContainerState extends State<CustomContainer> {
                     padding: EdgeInsets.only(left: 8.w),
                     child: Switch(
                       inactiveThumbColor: ColorManager.primary,
-                      activeColor: Colors.white,
+                      activeColor: ColorManager.white,
                       inactiveTrackColor: ColorManager.inactiveBlue,
                       activeTrackColor: ColorManager.activeBlue,
                       value: status!,

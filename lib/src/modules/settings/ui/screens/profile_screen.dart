@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
+import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/utils/image_manager.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/data/models/user.dart';
@@ -116,10 +117,7 @@ class _ProfileContentState extends State<ProfileContent> {
           current is SettingsErrorState || current is UpdateProfileSuccessState,
       listener: (context, state) {
         if (state is SettingsErrorState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content: Text(ExceptionManager.getMessage(state.exception))),
-          );
+          ExceptionManager.showMessage(state.exception);
         } else if (state is UpdateProfileSuccessState) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(S.of(context).profileUpdatedSuccessfully)),
@@ -165,14 +163,14 @@ class _ProfileContentState extends State<ProfileContent> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: ColorManager.white,
                       shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 2),
+                      border: Border.all(color: ColorManager.white, width: 2),
                     ),
                     child: Icon(
                       Icons.camera_alt,
                       size: 24.r,
-                      color: Colors.grey,
+                      color: ColorManager.grey,
                     ),
                   ),
                 ],
@@ -216,12 +214,12 @@ class _ProfileContentState extends State<ProfileContent> {
                               child: CircularProgressIndicator(
                                 strokeWidth: 2.w,
                                 valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                                    AlwaysStoppedAnimation<Color>(ColorManager.white),
                               ),
                             )
                           : Text(
                               S.of(context).saveChanges,
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: ColorManager.white),
                             ),
                     ),
                   );
@@ -246,7 +244,7 @@ class _ProfileContentState extends State<ProfileContent> {
         Text(
           label,
           style: TextStyle(
-            color: Colors.grey,
+            color: ColorManager.grey,
             fontSize: 14.sp,
             fontWeight: FontWeight.w500,
           ),
@@ -260,15 +258,15 @@ class _ProfileContentState extends State<ProfileContent> {
             contentPadding:
                 EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).primaryColor),
+              borderSide: BorderSide(color: ColorManager.primary),
               borderRadius: BorderRadius.circular(8.r),
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blue.shade200),
+              borderSide: BorderSide(color: ColorManager.activeBlue),
               borderRadius: BorderRadius.circular(8.r),
             ),
             filled: true,
-            fillColor: Colors.white,
+            fillColor: ColorManager.white,
             suffixIconConstraints: BoxConstraints(
               minWidth: suffix != null ? 100.w : 40.w,
             ),

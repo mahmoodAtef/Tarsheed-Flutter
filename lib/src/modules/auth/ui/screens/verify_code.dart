@@ -104,7 +104,7 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                           style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w600,
-                              color: Colors.black54),
+                              color: ColorManager.darkGrey),
                         ),
                         if (state is ResendVerificationCodeTimerState)
                           Text(

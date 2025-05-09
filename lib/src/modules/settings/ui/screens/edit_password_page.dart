@@ -6,8 +6,11 @@ import '../../../../core/error/exception_manager.dart';
 import '../../../auth/bloc/auth_bloc.dart';
 import '../../../../core/widgets/appbar.dart';
 import '../../../../../generated/l10n.dart';
+import '../../../../core/utils/color_manager.dart';
 
 class EditPasswordPage extends StatefulWidget {
+  const EditPasswordPage({super.key});
+
   @override
   State<EditPasswordPage> createState() => _EditPasswordPageState();
 }
@@ -30,7 +33,10 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
         } else if (state is UpdatePasswordSuccessState) {
           Navigator.of(context).pop(); // close loading
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(S.of(context).passwordUpdatedSuccessfully)),
+            SnackBar(
+              content: Text(S.of(context).passwordUpdatedSuccessfully),
+              backgroundColor: ColorManager.primary,
+            ),
           );
           Navigator.pop(context); // go back
         } else if (state is AuthErrorState) {
@@ -40,38 +46,30 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
       child: Scaffold(
         appBar: CustomAppBar(text: S.of(context).editPassword),
         body: Padding(
-          padding: EdgeInsets.all(16.w),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
           child: Column(
             children: [
-              TextField(
+              _buildPasswordField(
                 controller: oldPasswordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: S.of(context).currentPassword,
-                ),
+                label: S.of(context).currentPassword,
               ),
               SizedBox(height: 16.h),
-              TextField(
+              _buildPasswordField(
                 controller: newPasswordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: S.of(context).newPassword,
-                ),
+                label: S.of(context).newPassword,
               ),
               SizedBox(height: 16.h),
-              TextField(
+              _buildPasswordField(
                 controller: confirmPasswordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: S.of(context).confirmNewPassword,
-                ),
+                label: S.of(context).confirmNewPassword,
               ),
               SizedBox(height: 32.h),
-              Container(
+              SizedBox(
                 width: double.infinity,
                 height: 50.h,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorManager.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.r),
                     ),
@@ -80,32 +78,59 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
                     final oldPassword = oldPasswordController.text.trim();
                     final newPassword = newPasswordController.text.trim();
                     final confirmPassword =
-                        confirmPasswordController.text.trim();
+                    confirmPasswordController.text.trim();
 
                     if (newPassword != confirmPassword) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(S.of(context).passwordsDoNotMatch),
+                          backgroundColor: ColorManager.red,
                         ),
                       );
                       return;
                     }
 
                     context.read<AuthBloc>().add(
-                          UpdatePasswordEvent(
-                            oldPassword: oldPassword,
-                            newPassword: newPassword,
-                          ),
-                        );
+                      UpdatePasswordEvent(
+                        oldPassword: oldPassword,
+                        newPassword: newPassword,
+                      ),
+                    );
                   },
                   child: Text(
                     S.of(context).updatePassword,
-                    style: TextStyle(fontSize: 18.sp),
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPasswordField({
+    required TextEditingController controller,
+    required String label,
+  }) {
+    return TextField(
+      controller: controller,
+      obscureText: true,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: ColorManager.darkGrey),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: ColorManager.grey),
+          borderRadius: BorderRadius.circular(10.r),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: ColorManager.primary, width: 1.5.w),
+          borderRadius: BorderRadius.circular(10.r),
         ),
       ),
     );

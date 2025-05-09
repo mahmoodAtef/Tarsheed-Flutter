@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:tarsheed/src/core/utils/color_manager.dart';
 
 class BackgroundCircle extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint circlePaint = Paint()
-      ..color = Color(0xFFF1F4FF)
+      ..color = ColorManager.lightBlue
       ..style = PaintingStyle.fill;
 
     Paint linePaint = Paint()
-      ..color = Color(0xFFE0E4FF)
+      ..color = ColorManager.lightPeriwinkle
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 

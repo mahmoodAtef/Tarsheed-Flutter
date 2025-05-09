@@ -34,7 +34,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Account deleted successfully",
     ),
     "activeMode": MessageLookupByLibrary.simpleMessage("Active Mode"),
-    "addDevice": MessageLookupByLibrary.simpleMessage("Add Device"),
     "aiSuggestions": MessageLookupByLibrary.simpleMessage("AI Suggestions"),
     "alreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
       "Already have an account?",
@@ -45,10 +44,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "backupSettings": MessageLookupByLibrary.simpleMessage("Backup Settings"),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "cannotExceed": MessageLookupByLibrary.simpleMessage("cannot exceed"),
-    "category": MessageLookupByLibrary.simpleMessage("Category"),
-    "categoryRequired": MessageLookupByLibrary.simpleMessage(
-      "Please select category",
-    ),
     "characters": MessageLookupByLibrary.simpleMessage("characters"),
     "codeMustBeAtLeast6Digits": MessageLookupByLibrary.simpleMessage(
       "The code must be at least 6 digits",
@@ -94,13 +89,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "deleteMyAccount": MessageLookupByLibrary.simpleMessage(
       "Delete My Account",
-    ),
-    "description": MessageLookupByLibrary.simpleMessage("Description"),
-    "descriptionRequired": MessageLookupByLibrary.simpleMessage(
-      "Please enter description",
-    ),
-    "deviceAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
-      "Device added successfully",
     ),
     "devicesRunning": MessageLookupByLibrary.simpleMessage("Devices running"),
     "didNotReceive": MessageLookupByLibrary.simpleMessage(
@@ -196,13 +184,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "nameRequired": MessageLookupByLibrary.simpleMessage("Please enter name"),
     "newPassword": MessageLookupByLibrary.simpleMessage("New Password"),
     "nextMonthUsage": MessageLookupByLibrary.simpleMessage("Next Month Usage"),
-    "noCategoriesAvailable": MessageLookupByLibrary.simpleMessage(
-      "No categories available",
-    ),
     "noDataFound": MessageLookupByLibrary.simpleMessage("No data found"),
-    "noRoomsAvailable": MessageLookupByLibrary.simpleMessage(
-      "No rooms available",
-    ),
     "noRouteFound": MessageLookupByLibrary.simpleMessage("No route found"),
     "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
     "orContinueWith": MessageLookupByLibrary.simpleMessage("Or continue with"),
@@ -240,16 +222,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordsDoNotMatch": MessageLookupByLibrary.simpleMessage(
       "Passwords do not match",
     ),
-    "pinNumber": MessageLookupByLibrary.simpleMessage("Pin Number"),
     "pinNumberRequired": MessageLookupByLibrary.simpleMessage(
       "Please enter Pin Number",
     ),
     "pleaseEnterVerificationCode": MessageLookupByLibrary.simpleMessage(
       "Please enter the verification code",
-    ),
-    "priority": MessageLookupByLibrary.simpleMessage("Priority"),
-    "priorityRequired": MessageLookupByLibrary.simpleMessage(
-      "Please select priority",
     ),
     "profile": MessageLookupByLibrary.simpleMessage("Profile"),
     "profileUpdatedSuccessfully": MessageLookupByLibrary.simpleMessage(
@@ -264,7 +241,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "resendCode": MessageLookupByLibrary.simpleMessage("Resend Code"),
     "resendCodeIn": m1,
     "retry": MessageLookupByLibrary.simpleMessage("Retry"),
-    "room": MessageLookupByLibrary.simpleMessage("Room"),
     "roomRequired": MessageLookupByLibrary.simpleMessage("Please select room"),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("Save Changes"),

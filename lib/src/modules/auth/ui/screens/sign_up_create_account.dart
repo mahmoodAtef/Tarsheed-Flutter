@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
+import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_code.dart';
@@ -208,7 +209,7 @@ class SignUpScreen extends StatelessWidget {
                       Center(
                         child: TextButton(
                           style: TextButton.styleFrom(
-                            foregroundColor: Colors.black,
+                            foregroundColor: ColorManager.black,
                             textStyle:
                                 const TextStyle(fontWeight: FontWeight.w800),
                           ),
@@ -224,7 +225,7 @@ class SignUpScreen extends StatelessWidget {
                           S.of(context).orContinueWith,
                           style: TextStyle(
                             fontSize: 14.sp,
-                            color: const Color(0xFF2666DE),
+                            color: ColorManager.primary,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
