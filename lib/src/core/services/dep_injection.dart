@@ -5,6 +5,9 @@ import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:tarsheed/src/modules/auth/data/repositories/auth_repository.dart';
 import 'package:tarsheed/src/modules/auth/data/services/auth_local_services.dart';
 import 'package:tarsheed/src/modules/auth/data/services/auth_remote_services.dart';
+import 'package:tarsheed/src/modules/dashboard/automation/cubit/automation_cubit.dart';
+import 'package:tarsheed/src/modules/dashboard/automation/data/repositories/repository.dart';
+import 'package:tarsheed/src/modules/dashboard/automation/data/services/automation_services.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/data/repositories/dashboard_repository.dart';
@@ -34,6 +37,8 @@ class ServiceLocator {
     sl.registerLazySingleton<DashboardBloc>(() => DashboardBloc());
     // cubits
     sl.registerSingleton<DevicesCubit>(DevicesCubit());
+
+    sl.registerLazySingleton(() => AutomationCubit());
   }
 
   static void _initializeRemoteServices() {
@@ -45,6 +50,8 @@ class ServiceLocator {
         () => DashboardRemoteServices());
     sl.registerLazySingleton<DevicesRemoteServices>(
         () => DevicesRemoteServices());
+
+    sl.registerLazySingleton(() => AutomationRemoteServices());
   }
 
   static void _initializeLocalServices() {
@@ -63,5 +70,7 @@ class ServiceLocator {
     sl.registerSingleton(SettingsRepository(sl(), sl()));
     sl.registerSingleton(DashboardRepository(sl(), sl(), sl()));
     sl.registerSingleton(DevicesRepository(sl()));
+
+    sl.registerSingleton(AutomationRepository(sl()));
   }
 }
