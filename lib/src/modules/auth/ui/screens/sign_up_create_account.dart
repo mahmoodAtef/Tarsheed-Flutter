@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
+import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_code.dart';
@@ -10,12 +11,12 @@ import 'package:tarsheed/src/modules/auth/ui/screens/verify_code.dart';
 import '../../../../core/error/exception_manager.dart';
 import '../../../../core/utils/image_manager.dart';
 import '../../data/models/email_and_password_registration_form.dart';
-import '../widgets/large_button.dart';
+import '../../../../core/widgets/large_button.dart';
 import '../widgets/main_title.dart';
-import '../widgets/rectangle_background.dart';
+import '../../../../core/widgets/rectangle_background.dart';
 import '../widgets/social_icon.dart';
 import '../widgets/sup_title.dart';
-import '../widgets/text_field.dart';
+import '../../../../core/widgets/text_field.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
@@ -154,7 +155,7 @@ class SignUpScreen extends StatelessWidget {
                           }
 
                           final digits = RegExp(r'\d').allMatches(trimmedValue);
-                          if (digits.length < 6) {
+                          if (digits.isEmpty) {
                             return S.of(context).passwordDigitsRequired;
                           }
 
@@ -208,7 +209,7 @@ class SignUpScreen extends StatelessWidget {
                       Center(
                         child: TextButton(
                           style: TextButton.styleFrom(
-                            foregroundColor: Colors.black,
+                            foregroundColor: ColorManager.black,
                             textStyle:
                                 const TextStyle(fontWeight: FontWeight.w800),
                           ),
@@ -224,7 +225,7 @@ class SignUpScreen extends StatelessWidget {
                           S.of(context).orContinueWith,
                           style: TextStyle(
                             fontSize: 14.sp,
-                            color: const Color(0xFF2666DE),
+                            color: ColorManager.primary,
                             fontWeight: FontWeight.w600,
                           ),
                         ),

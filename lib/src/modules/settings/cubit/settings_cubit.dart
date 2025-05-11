@@ -9,8 +9,20 @@ part 'settings_state.dart';
 
 class SettingsCubit extends HydratedCubit<SettingsState> {
   SettingsCubit() : super(SettingsInitial());
-
+  int currentPageIndex = 0;
+  int lastIndex = 0;
   SettingsRepository settingsRepository = sl();
+
+  void changeIndex(int index) {
+    lastIndex = currentPageIndex;
+    currentPageIndex = index;
+    emit(SelectPageState(index));
+  }
+
+  void backToLastPage() {
+    currentPageIndex = lastIndex;
+    emit(SelectPageState(lastIndex));
+  }
 
   Future<void> getProfile() async {
     emit(GetProfileLoadingState());

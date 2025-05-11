@@ -8,18 +8,19 @@ extension NavigationMethods on BuildContext {
   void push(Widget route) {
     Navigator.push(
       this,
-      SlidePageRoute(child: route),
+      MaterialPageRoute(builder: (_) => route),
     );
   }
 
-  void pushAndRemove(String route) {
-    Navigator.pushNamedAndRemoveUntil(this, route, (route) => false);
+  void pushAndRemove(Widget route) {
+    Navigator.pushAndRemoveUntil(
+        this, MaterialPageRoute(builder: (_) => route), (route) => false);
   }
 
   void pushReplacement(Widget route) {
     Navigator.pushReplacement(
       this,
-      SlidePageRoute(child: route),
+      MaterialPageRoute(builder: (_) => route),
     );
   }
 

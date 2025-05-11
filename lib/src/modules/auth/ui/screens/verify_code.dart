@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
+import 'package:tarsheed/src/core/widgets/text_field.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_finish.dart';
-import 'package:tarsheed/src/modules/auth/ui/widgets/text_field.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
+import '../../../../core/widgets/large_button.dart';
+import '../../../../core/widgets/rectangle_background.dart';
 import '../../bloc/auth_bloc.dart';
-import '../widgets/large_button.dart';
 import '../widgets/main_title.dart';
-import '../widgets/rectangle_background.dart';
 import '../widgets/sup_title.dart';
 
 class CodeVerificationScreen extends StatefulWidget {
@@ -87,7 +87,7 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           final code = _codeController.text.trim();
-                          authBloc.add(ConfirmForgotPasswordCode(code));
+                          authBloc.add(ConfirmForgotPasswordCodeEvent(code));
                         }
                       },
                     );
@@ -104,7 +104,7 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                           style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w600,
-                              color: Colors.black54),
+                              color: ColorManager.darkGrey),
                         ),
                         if (state is ResendVerificationCodeTimerState)
                           Text(
@@ -112,8 +112,7 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                             style: TextStyle(color: ColorManager.red),
                           ),
                         if (state is! ResendVerificationCodeTimerState ||
-                            (state is ResendVerificationCodeTimerState &&
-                                state.seconds == 0))
+                            (state.seconds == 0))
                           TextButton(
                             onPressed: () {
                               authBloc.add(ForgotPasswordEvent(widget.email));

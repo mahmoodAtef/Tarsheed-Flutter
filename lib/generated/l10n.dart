@@ -28,9 +28,10 @@ class S {
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false)
-        ? locale.languageCode
-        : locale.toString();
+    final name =
+        (locale.countryCode?.isEmpty ?? false)
+            ? locale.languageCode
+            : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
@@ -879,10 +880,10 @@ class S {
     );
   }
 
-  /// `You are now on the low-tier system`
+  /// `You are now on the tier:`
   String get lowTierSystemMessage {
     return Intl.message(
-      'You are now on the low-tier system',
+      'You are now on the tier:',
       name: 'lowTierSystemMessage',
       desc: '',
       args: [],
@@ -989,6 +990,16 @@ class S {
     return Intl.message('Home', name: 'home', desc: '', args: []);
   }
 
+  /// `Devices running`
+  String get devicesRunning {
+    return Intl.message(
+      'Devices running',
+      name: 'devicesRunning',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Energy consumption`
   String get energyConsumption {
     return Intl.message(
@@ -1027,6 +1038,71 @@ class S {
   /// `Unknown`
   String get unknown {
     return Intl.message('Unknown', name: 'unknown', desc: '', args: []);
+  }
+
+  /// `Tier 1 (0-50 kWh)`
+  String get tier1 {
+    return Intl.message('Tier 1 (0-50 kWh)', name: 'tier1', desc: '', args: []);
+  }
+
+  /// `Tier 2 (51-100 kWh)`
+  String get tier2 {
+    return Intl.message(
+      'Tier 2 (51-100 kWh)',
+      name: 'tier2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tier 3 (101-200 kWh)`
+  String get tier3 {
+    return Intl.message(
+      'Tier 3 (101-200 kWh)',
+      name: 'tier3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tier 4 (201-350 kWh)`
+  String get tier4 {
+    return Intl.message(
+      'Tier 4 (201-350 kWh)',
+      name: 'tier4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tier 5 (351-650 kWh)`
+  String get tier5 {
+    return Intl.message(
+      'Tier 5 (351-650 kWh)',
+      name: 'tier5',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tier 6+ (651+ kWh)`
+  String get tier6Plus {
+    return Intl.message(
+      'Tier 6+ (651+ kWh)',
+      name: 'tier6Plus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You are now in Electricity consumption bracket number {tierNumber}`
+  String currentTier(Object tierNumber) {
+    return Intl.message(
+      'You are now in Electricity consumption bracket number $tierNumber',
+      name: 'currentTier',
+      desc: '',
+      args: [tierNumber],
+    );
   }
 
   /// `Your Current Savings is`
@@ -1078,6 +1154,201 @@ class S {
   String get viewAll {
     return Intl.message('View all', name: 'viewAll', desc: '', args: []);
   }
+
+  /// `No data found`
+  String get noDataFound {
+    return Intl.message(
+      'No data found',
+      name: 'noDataFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `AI Suggestions`
+  String get aiSuggestions {
+    return Intl.message(
+      'AI Suggestions',
+      name: 'aiSuggestions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Current Month Usage`
+  String get currentMonthUsage {
+    return Intl.message(
+      'Current Month Usage',
+      name: 'currentMonthUsage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sensors`
+  String get sensors {
+    return Intl.message('Sensors', name: 'sensors', desc: '', args: []);
+  }
+
+  /// `Please enter name`
+  String get nameRequired {
+    return Intl.message(
+      'Please enter name',
+      name: 'nameRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter Pin Number`
+  String get pinNumberRequired {
+    return Intl.message(
+      'Please enter Pin Number',
+      name: 'pinNumberRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select room`
+  String get roomRequired {
+    return Intl.message(
+      'Please select room',
+      name: 'roomRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select type`
+  String get typeRequired {
+    return Intl.message(
+      'Please select type',
+      name: 'typeRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sensor added successfully`
+  String get sensorAdded {
+    return Intl.message(
+      'Sensor added successfully',
+      name: 'sensorAdded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications`
+  String get notifications {
+    return Intl.message(
+      'Notifications',
+      name: 'notifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile updated successfully`
+  String get profileUpdatedSuccessfully {
+    return Intl.message(
+      'Profile updated successfully',
+      name: 'profileUpdatedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Device`
+  String get addDevice {
+    return Intl.message('Add Device', name: 'addDevice', desc: '', args: []);
+  }
+
+  /// `Description`
+  String get description {
+    return Intl.message('Description', name: 'description', desc: '', args: []);
+  }
+
+  /// `Please enter description`
+  String get descriptionRequired {
+    return Intl.message(
+      'Please enter description',
+      name: 'descriptionRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pin Number`
+  String get pinNumber {
+    return Intl.message('Pin Number', name: 'pinNumber', desc: '', args: []);
+  }
+
+  /// `Room`
+  String get room {
+    return Intl.message('Room', name: 'room', desc: '', args: []);
+  }
+
+  /// `No rooms available`
+  String get noRoomsAvailable {
+    return Intl.message(
+      'No rooms available',
+      name: 'noRoomsAvailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category`
+  String get category {
+    return Intl.message('Category', name: 'category', desc: '', args: []);
+  }
+
+  /// `No categories available`
+  String get noCategoriesAvailable {
+    return Intl.message(
+      'No categories available',
+      name: 'noCategoriesAvailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select category`
+  String get categoryRequired {
+    return Intl.message(
+      'Please select category',
+      name: 'categoryRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Device added successfully`
+  String get deviceAddedSuccessfully {
+    return Intl.message(
+      'Device added successfully',
+      name: 'deviceAddedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Priority`
+  String get priority {
+    return Intl.message('Priority', name: 'priority', desc: '', args: []);
+  }
+
+  /// `Please select priority`
+  String get priorityRequired {
+    return Intl.message(
+      'Please select priority',
+      name: 'priorityRequired',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -1092,10 +1363,8 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   @override
   bool isSupported(Locale locale) => _isSupported(locale);
-
   @override
   Future<S> load(Locale locale) => S.load(locale);
-
   @override
   bool shouldReload(AppLocalizationDelegate old) => false;
 

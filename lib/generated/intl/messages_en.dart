@@ -20,7 +20,10 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(seconds) => "Resend code in: ${seconds}s";
+  static String m0(tierNumber) =>
+      "You are now in Electricity consumption bracket number ${tierNumber}";
+
+  static String m1(seconds) => "Resend code in: ${seconds}s";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -31,6 +34,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Account deleted successfully",
     ),
     "activeMode": MessageLookupByLibrary.simpleMessage("Active Mode"),
+    "addDevice": MessageLookupByLibrary.simpleMessage("Add Device"),
+    "aiSuggestions": MessageLookupByLibrary.simpleMessage("AI Suggestions"),
     "alreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
       "Already have an account?",
     ),
@@ -40,6 +45,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "backupSettings": MessageLookupByLibrary.simpleMessage("Backup Settings"),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "cannotExceed": MessageLookupByLibrary.simpleMessage("cannot exceed"),
+    "category": MessageLookupByLibrary.simpleMessage("Category"),
+    "categoryRequired": MessageLookupByLibrary.simpleMessage(
+      "Please select category",
+    ),
     "characters": MessageLookupByLibrary.simpleMessage("characters"),
     "codeMustBeAtLeast6Digits": MessageLookupByLibrary.simpleMessage(
       "The code must be at least 6 digits",
@@ -69,10 +78,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "createNewAccount": MessageLookupByLibrary.simpleMessage(
       "Create new account",
     ),
+    "currentMonthUsage": MessageLookupByLibrary.simpleMessage(
+      "Current Month Usage",
+    ),
     "currentPassword": MessageLookupByLibrary.simpleMessage("Current Password"),
     "currentSavings": MessageLookupByLibrary.simpleMessage(
       "Your Current Savings is",
     ),
+    "currentTier": m0,
     "deleteAccountMessage": MessageLookupByLibrary.simpleMessage(
       "Once you submit a request to delete data, there\'s a 72-hour window during which you can cancel the process. During this period, you can cancel your deletion request in your Intuit Account. After the window, you\'ll no longer be able to cancel the request, and we\'re unable to retrieve your data.",
     ),
@@ -82,6 +95,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteMyAccount": MessageLookupByLibrary.simpleMessage(
       "Delete My Account",
     ),
+    "description": MessageLookupByLibrary.simpleMessage("Description"),
+    "descriptionRequired": MessageLookupByLibrary.simpleMessage(
+      "Please enter description",
+    ),
+    "deviceAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Device added successfully",
+    ),
+    "devicesRunning": MessageLookupByLibrary.simpleMessage("Devices running"),
     "didNotReceive": MessageLookupByLibrary.simpleMessage(
       "Didn\'t receive a code?",
     ),
@@ -160,7 +181,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginHere": MessageLookupByLibrary.simpleMessage("Login Here"),
     "low": MessageLookupByLibrary.simpleMessage("LOW"),
     "lowTierSystemMessage": MessageLookupByLibrary.simpleMessage(
-      "You are now on the low-tier system",
+      "You are now on the tier:",
     ),
     "medium": MessageLookupByLibrary.simpleMessage("Medium"),
     "month": MessageLookupByLibrary.simpleMessage("Month"),
@@ -172,9 +193,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "nameMinLength": MessageLookupByLibrary.simpleMessage(
       "Name must be at least 2 characters",
     ),
+    "nameRequired": MessageLookupByLibrary.simpleMessage("Please enter name"),
     "newPassword": MessageLookupByLibrary.simpleMessage("New Password"),
     "nextMonthUsage": MessageLookupByLibrary.simpleMessage("Next Month Usage"),
+    "noCategoriesAvailable": MessageLookupByLibrary.simpleMessage(
+      "No categories available",
+    ),
+    "noDataFound": MessageLookupByLibrary.simpleMessage("No data found"),
+    "noRoomsAvailable": MessageLookupByLibrary.simpleMessage(
+      "No rooms available",
+    ),
     "noRouteFound": MessageLookupByLibrary.simpleMessage("No route found"),
+    "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
     "orContinueWith": MessageLookupByLibrary.simpleMessage("Or continue with"),
     "originalPasswordNotProvided": MessageLookupByLibrary.simpleMessage(
       "Original password is not provided",
@@ -210,10 +240,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordsDoNotMatch": MessageLookupByLibrary.simpleMessage(
       "Passwords do not match",
     ),
+    "pinNumber": MessageLookupByLibrary.simpleMessage("Pin Number"),
+    "pinNumberRequired": MessageLookupByLibrary.simpleMessage(
+      "Please enter Pin Number",
+    ),
     "pleaseEnterVerificationCode": MessageLookupByLibrary.simpleMessage(
       "Please enter the verification code",
     ),
+    "priority": MessageLookupByLibrary.simpleMessage("Priority"),
+    "priorityRequired": MessageLookupByLibrary.simpleMessage(
+      "Please select priority",
+    ),
     "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+    "profileUpdatedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Profile updated successfully",
+    ),
     "projectedBasedOnUsageHistory": MessageLookupByLibrary.simpleMessage(
       "Projected based on your usage history",
     ),
@@ -221,11 +262,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "register": MessageLookupByLibrary.simpleMessage("Register"),
     "reports": MessageLookupByLibrary.simpleMessage("Reports"),
     "resendCode": MessageLookupByLibrary.simpleMessage("Resend Code"),
-    "resendCodeIn": m0,
+    "resendCodeIn": m1,
     "retry": MessageLookupByLibrary.simpleMessage("Retry"),
+    "room": MessageLookupByLibrary.simpleMessage("Room"),
+    "roomRequired": MessageLookupByLibrary.simpleMessage("Please select room"),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("Save Changes"),
     "security": MessageLookupByLibrary.simpleMessage("Security"),
+    "sensorAdded": MessageLookupByLibrary.simpleMessage(
+      "Sensor added successfully",
+    ),
+    "sensors": MessageLookupByLibrary.simpleMessage("Sensors"),
     "sentEmailMessage": MessageLookupByLibrary.simpleMessage(
       "We have sent an email to mo****@gmail.",
     ),
@@ -242,10 +289,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Take Control of\nYour Energy Usage",
     ),
     "tier": MessageLookupByLibrary.simpleMessage("tier"),
+    "tier1": MessageLookupByLibrary.simpleMessage("Tier 1 (0-50 kWh)"),
+    "tier2": MessageLookupByLibrary.simpleMessage("Tier 2 (51-100 kWh)"),
+    "tier3": MessageLookupByLibrary.simpleMessage("Tier 3 (101-200 kWh)"),
+    "tier4": MessageLookupByLibrary.simpleMessage("Tier 4 (201-350 kWh)"),
+    "tier5": MessageLookupByLibrary.simpleMessage("Tier 5 (351-650 kWh)"),
+    "tier6Plus": MessageLookupByLibrary.simpleMessage("Tier 6+ (651+ kWh)"),
     "today": MessageLookupByLibrary.simpleMessage("Today"),
     "twoStepVerification": MessageLookupByLibrary.simpleMessage(
       "Two-Step Verification",
     ),
+    "typeRequired": MessageLookupByLibrary.simpleMessage("Please select type"),
     "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
     "updatePassword": MessageLookupByLibrary.simpleMessage("Update Password"),
     "verificationCode": MessageLookupByLibrary.simpleMessage(

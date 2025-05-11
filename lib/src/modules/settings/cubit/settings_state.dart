@@ -56,3 +56,11 @@ final class ChangeLanguageSuccessState extends SettingsState {
   @override
   List<Object> get props => [languageCode];
 }
+
+final class SelectPageState extends SettingsState {
+  final int index;
+
+  const SelectPageState(this.index);
+  @override
+  List<Object?> get props => [index];
+}

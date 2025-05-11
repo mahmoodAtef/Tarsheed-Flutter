@@ -22,10 +22,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository authRepository = sl();
 
   AuthBloc() : super(AuthInitial()) {
-    on<StartResendCodeTimerEvent>((event, emit) {
-      _startResendTimer(emit);
-    });
-
     /*
      */
     on<AuthEvent>((event, emit) async {
@@ -39,7 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await _handleResendVerificationCodeEvent(event, emit);
       } else if (event is ForgotPasswordEvent) {
         await _handleForgotPasswordEvent(event, emit);
-      } else if (event is ConfirmForgotPasswordCode) {
+      } else if (event is ConfirmForgotPasswordCodeEvent) {
         await _handleConfirmForgotPasswordCode(event, emit);
       } else if (event is ResetPasswordEvent) {
         await _handleResetPasswordEvent(event, emit);
@@ -51,6 +47,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await _handleLoginWithGoogleEvent(event, emit);
       } else if (event is LoginWithFacebookEvent) {
         await _handleLoginWithFacebookEvent(event, emit);
+      } else if (event is StartResendCodeTimerEvent) {
+        _startResendTimer(emit);
       }
     });
   }
@@ -119,7 +117,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _handleConfirmForgotPasswordCode(
-      ConfirmForgotPasswordCode event, Emitter<AuthState> emit) async {
+      ConfirmForgotPasswordCodeEvent event, Emitter<AuthState> emit) async {
     emit(ConfirmForgotPasswordCodeLoadingState());
 
     final result = await authRepository.confirmForgotPasswordCode(

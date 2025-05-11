@@ -20,7 +20,10 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ar';
 
-  static String m0(seconds) => "إعادة إرسال الرمز خلال: ${seconds} ثانية";
+  static String m0(tierNumber) =>
+      "أنت الآن في شريحة استهلاك الكهرباء رقم ${tierNumber}";
+
+  static String m1(seconds) => "إعادة إرسال الرمز خلال: ${seconds} ثانية";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -31,6 +34,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "تم حذف الحساب بنجاح",
     ),
     "activeMode": MessageLookupByLibrary.simpleMessage("الوضع النشط"),
+    "addDevice": MessageLookupByLibrary.simpleMessage("اضافة جهاز"),
+    "aiSuggestions": MessageLookupByLibrary.simpleMessage(
+      "اقتراحات الذكاء الاصطناعي",
+    ),
     "alreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
       "لديك حساب بالفعل؟",
     ),
@@ -42,6 +49,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
     "cannotExceed": MessageLookupByLibrary.simpleMessage("لا يمكن أن يتجاوز"),
+    "category": MessageLookupByLibrary.simpleMessage("الفئة"),
+    "categoryRequired": MessageLookupByLibrary.simpleMessage(
+      "من فضلك اختر الفئة",
+    ),
     "characters": MessageLookupByLibrary.simpleMessage("حرفًا"),
     "codeMustBeAtLeast6Digits": MessageLookupByLibrary.simpleMessage(
       "يجب أن يتكون الرمز من 6 أرقام على الأقل",
@@ -69,10 +80,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "أنشئ حسابًا حتى تتمكن من التحكم في منزلك بسهولة",
     ),
     "createNewAccount": MessageLookupByLibrary.simpleMessage("إنشاء حساب جديد"),
+    "currentMonthUsage": MessageLookupByLibrary.simpleMessage(
+      "استهلاك الشهر الحالي",
+    ),
     "currentPassword": MessageLookupByLibrary.simpleMessage(
       "كلمة المرور الحالية",
     ),
     "currentSavings": MessageLookupByLibrary.simpleMessage("توفيرك الحالي هو"),
+    "currentTier": m0,
     "deleteAccountMessage": MessageLookupByLibrary.simpleMessage(
       "بمجرد تقديم طلب لحذف البيانات، سيكون لديك نافذة مدتها 72 ساعة يمكنك خلالها إلغاء العملية. خلال هذه الفترة، يمكنك إلغاء طلب الحذف في حسابك على Intuit. بعد مرور هذه الفترة، لن تتمكن من إلغاء الطلب، ولن نتمكن من استرجاع بياناتك.",
     ),
@@ -80,6 +95,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "هل تريد حذف حسابك؟",
     ),
     "deleteMyAccount": MessageLookupByLibrary.simpleMessage("حذف حسابي"),
+    "description": MessageLookupByLibrary.simpleMessage("الوصف"),
+    "descriptionRequired": MessageLookupByLibrary.simpleMessage(
+      "من فضلك ادخل الوصف",
+    ),
+    "deviceAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تمت اضافة الجهاز بنجاح",
+    ),
+    "devicesRunning": MessageLookupByLibrary.simpleMessage("أجهزة تعمل"),
     "didNotReceive": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
     "didNtReceiveCode": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
     "editPassNaAddUseEm": MessageLookupByLibrary.simpleMessage(
@@ -156,7 +179,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginHere": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "low": MessageLookupByLibrary.simpleMessage("منخفض"),
     "lowTierSystemMessage": MessageLookupByLibrary.simpleMessage(
-      "أنت الآن على النظام منخفض المستوى",
+      "أنت الآن على الشرحة:",
     ),
     "medium": MessageLookupByLibrary.simpleMessage("متوسط"),
     "month": MessageLookupByLibrary.simpleMessage("الشهر"),
@@ -170,13 +193,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "nameMinLength": MessageLookupByLibrary.simpleMessage(
       "يجب أن يكون الاسم على الأقل 2 حرفًا",
     ),
+    "nameRequired": MessageLookupByLibrary.simpleMessage("من فضلك أدخل الاسم"),
     "newPassword": MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
     "nextMonthUsage": MessageLookupByLibrary.simpleMessage(
       "استهلاك الشهر القادم",
     ),
+    "noCategoriesAvailable": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد فئات متاحة",
+    ),
+    "noDataFound": MessageLookupByLibrary.simpleMessage(
+      "لم يتم العثور على بيانات",
+    ),
+    "noRoomsAvailable": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد غرف متاحة",
+    ),
     "noRouteFound": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على الصفحة المطلوبة",
     ),
+    "notifications": MessageLookupByLibrary.simpleMessage("الإشعارات"),
     "orContinueWith": MessageLookupByLibrary.simpleMessage("أو المتابعة عبر"),
     "originalPasswordNotProvided": MessageLookupByLibrary.simpleMessage(
       "لم يتم توفير كلمة المرور الأصلية",
@@ -212,10 +246,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordsDoNotMatch": MessageLookupByLibrary.simpleMessage(
       "كلمتا المرور غير متطابقتين",
     ),
+    "pinNumber": MessageLookupByLibrary.simpleMessage("رقم المدخل"),
+    "pinNumberRequired": MessageLookupByLibrary.simpleMessage(
+      "من فضلك ادخل رقم المدخل",
+    ),
     "pleaseEnterVerificationCode": MessageLookupByLibrary.simpleMessage(
       "من فضلك أدخل رمز التحقق",
     ),
+    "priority": MessageLookupByLibrary.simpleMessage("الاولوية"),
+    "priorityRequired": MessageLookupByLibrary.simpleMessage(
+      "من فضلك اختر الاولوية",
+    ),
     "profile": MessageLookupByLibrary.simpleMessage("الحساب التعريفي"),
+    "profileUpdatedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم تحديث الملف الشخصي بنجاح",
+    ),
     "projectedBasedOnUsageHistory": MessageLookupByLibrary.simpleMessage(
       "متوقع بناءً على سجل استهلاكك",
     ),
@@ -223,11 +268,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "register": MessageLookupByLibrary.simpleMessage("تسجيل"),
     "reports": MessageLookupByLibrary.simpleMessage("التقارير"),
     "resendCode": MessageLookupByLibrary.simpleMessage("إعادة إرسال الرمز"),
-    "resendCodeIn": m0,
+    "resendCodeIn": m1,
     "retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
+    "room": MessageLookupByLibrary.simpleMessage("الغرفة"),
+    "roomRequired": MessageLookupByLibrary.simpleMessage("من فضلك اختر غرفة"),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("حفظ التغييرات"),
     "security": MessageLookupByLibrary.simpleMessage("الأمان"),
+    "sensorAdded": MessageLookupByLibrary.simpleMessage("تمت اضافة المستشعر"),
+    "sensors": MessageLookupByLibrary.simpleMessage("أجهزة الاستشعار"),
     "sentEmailMessage": MessageLookupByLibrary.simpleMessage(
       "لقد أرسلنا بريدًا إلكترونيًا إلى mo****@gmail.",
     ),
@@ -244,10 +293,29 @@ class MessageLookup extends MessageLookupByLibrary {
       "تحكم في استهلاك طاقتك",
     ),
     "tier": MessageLookupByLibrary.simpleMessage("الفئة"),
+    "tier1": MessageLookupByLibrary.simpleMessage(
+      "الشريحة الأولى (0-50 كيلووات/ساعة)",
+    ),
+    "tier2": MessageLookupByLibrary.simpleMessage(
+      "الشريحة الثانية (51-100 كيلووات/ساعة)",
+    ),
+    "tier3": MessageLookupByLibrary.simpleMessage(
+      "الشريحة الثالثة (101-200 كيلووات/ساعة)",
+    ),
+    "tier4": MessageLookupByLibrary.simpleMessage(
+      "الشريحة الرابعة (201-350 كيلووات/ساعة)",
+    ),
+    "tier5": MessageLookupByLibrary.simpleMessage(
+      "الشريحة الخامسة (351-650 كيلووات/ساعة)",
+    ),
+    "tier6Plus": MessageLookupByLibrary.simpleMessage(
+      "الشريحة السادسة فأكثر (651+ كيلووات/ساعة)",
+    ),
     "today": MessageLookupByLibrary.simpleMessage("اليوم"),
     "twoStepVerification": MessageLookupByLibrary.simpleMessage(
       "التحقق بخطوتين",
     ),
+    "typeRequired": MessageLookupByLibrary.simpleMessage("من فضلك اختر النوع"),
     "unknown": MessageLookupByLibrary.simpleMessage("غير معروف"),
     "updatePassword": MessageLookupByLibrary.simpleMessage("تحديث كلمة المرور"),
     "verificationCode": MessageLookupByLibrary.simpleMessage("رمز التحقق"),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/services/app_initializer.dart';
 import 'package:tarsheed/src/core/services/bloc_observer.dart';
@@ -15,26 +15,21 @@ import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/splash_screen.dart';
 
-import 'home_page.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  final storageDirectory = await getApplicationDocumentsDirectory();
   HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: HydratedStorageDirectory(storageDirectory.path),
+    storageDirectory:
+        HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
-
-  await AppInitializer.init();
+  AppInitializer.initializeServiceLocator();
 
   Bloc.observer = TarsheedBlocObserver();
 
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => AuthBloc.instance),
-        BlocProvider(create: (context) => DashboardBloc()),
-        // إضافة DashboardBloc هنا
+        BlocProvider(create: (context) => sl<AuthBloc>()),
+        BlocProvider(create: (context) => sl<DashboardBloc>()),
       ],
       child: Tarsheed(),
     ),
@@ -50,25 +45,35 @@ class Tarsheed extends StatelessWidget {
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
+      enableScaleText: () => true,
       builder: (BuildContext context, child) {
         return BlocProvider(
-          create: (context) => SettingsCubit.getInstance,
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: LocalizationManager.getAppTitle(),
-            locale: LocalizationManager.getCurrentLocale(),
-            localizationsDelegates: const [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: S.delegate.supportedLocales,
-            theme: ThemeManager.appTheme(),
-            home: SplashScreen(),
+          lazy: true,
+          create: (context) => sl<SettingsCubit>(),
+          child: BlocBuilder<SettingsCubit, SettingsState>(
+            buildWhen: (previous, current) =>
+                current is ChangeLanguageSuccessState ||
+                current is SettingsInitial,
+            builder: (context, state) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: LocalizationManager.getAppTitle(),
+                locale: LocalizationManager.getCurrentLocale(),
+                localizationsDelegates: const [
+                  S.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: S.delegate.supportedLocales,
+                theme: ThemeManager.appTheme(),
+                home: SplashScreen(),
+              );
+            },
           ),
         );
       },
     );
   }
 }
+/**/

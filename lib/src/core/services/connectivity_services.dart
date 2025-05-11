@@ -15,6 +15,10 @@ class ConnectivityService {
     }
   }
 
+  void removeObserver(ConnectivityObserver observer) {
+    _observers.remove(observer);
+  }
+
   void _notifyObservers() {
     for (var observer in _observers) {
       observer.onConnectivityChanged(_isConnected);

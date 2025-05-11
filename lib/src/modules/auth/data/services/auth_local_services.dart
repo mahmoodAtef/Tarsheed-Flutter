@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:tarsheed/src/core/apis/api.dart';
 import 'package:tarsheed/src/core/services/secure_storage_helper.dart';
 import 'package:tarsheed/src/modules/auth/data/models/auth_info.dart';
 
@@ -24,7 +25,7 @@ class AuthLocalServices extends BaseAuthLocalServices {
   Future<void> saveAuthInfo(AuthInfo info) async {
     await SecureStorageHelper.saveData(
         key: "auth_info",
-        value: info.toJson(),
+        value: jsonEncode(info.toJson()),
         expiresAfter: Duration(
           days: 29,
           hours: 23,
@@ -37,6 +38,8 @@ class AuthLocalServices extends BaseAuthLocalServices {
     try {
       await SecureStorageHelper.removeData(key: "token");
       await SecureStorageHelper.removeData(key: "id");
+      ApiManager.userId = null;
+      ApiManager.authToken = null;
       return Right(unit);
     } on Exception catch (e) {
       return Left(e);

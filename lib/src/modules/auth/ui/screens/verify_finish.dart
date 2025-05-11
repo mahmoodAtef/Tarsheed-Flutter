@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tarsheed/home_page.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
+import '../../../../core/widgets/large_button.dart';
+import '../../../../core/widgets/rectangle_background.dart';
+import '../../../../core/widgets/text_field.dart';
 import '../../bloc/auth_bloc.dart';
-import '../widgets/large_button.dart';
 import '../widgets/main_title.dart';
-import '../widgets/rectangle_background.dart';
 import '../widgets/sup_title.dart';
-import '../widgets/text_field.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   ResetPasswordScreen({super.key});
@@ -36,8 +35,7 @@ class ResetPasswordScreen extends StatelessWidget {
               bloc: authBloc,
               listener: (context, state) {
                 if (state is ResetPasswordSuccessState) {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => LoginPage()));
+                  context.pushReplacement(LoginPage());
                 } else if (state is AuthErrorState) {
                   ExceptionManager.showMessage(state.exception);
                 }
@@ -78,7 +76,7 @@ class ResetPasswordScreen extends StatelessWidget {
                             }
                             final digits =
                                 RegExp(r'\d').allMatches(trimmedValue);
-                            if (digits.length < 6) {
+                            if (digits.length < 1) {
                               return S.of(context).passwordDigitsRequired;
                             }
                             return null;
