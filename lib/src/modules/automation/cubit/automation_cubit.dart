@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
-import 'package:tarsheed/src/modules/dashboard/automation/data/models/automation.dart';
-import 'package:tarsheed/src/modules/dashboard/automation/data/repositories/repository.dart';
+import 'package:tarsheed/src/modules/automation/data/models/automation.dart';
+import 'package:tarsheed/src/modules/automation/data/repositories/repository.dart';
 
 part 'automation_state.dart';
 

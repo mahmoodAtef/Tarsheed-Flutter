@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:tarsheed/src/modules/dashboard/automation/data/models/automation.dart';
-import 'package:tarsheed/src/modules/dashboard/automation/data/services/automation_services.dart';
+import 'package:tarsheed/src/modules/automation/data/models/automation.dart';
+import 'package:tarsheed/src/modules/automation/data/services/automation_services.dart';
 
 class AutomationRepository {
   final BaseAutomationServices baseAutomationServices;

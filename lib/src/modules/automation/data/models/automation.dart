@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:tarsheed/src/modules/dashboard/automation/data/models/action.dart';
-import 'package:tarsheed/src/modules/dashboard/automation/data/models/condition.dart';
-import 'package:tarsheed/src/modules/dashboard/automation/data/models/trigger.dart';
+import 'package:tarsheed/src/modules/automation/data/models/action/action.dart';
+import 'package:tarsheed/src/modules/automation/data/models/condition/condition.dart';
+import 'package:tarsheed/src/modules/automation/data/models/trigger/trigger.dart';
 
 class Automation extends Equatable {
   final String? id;

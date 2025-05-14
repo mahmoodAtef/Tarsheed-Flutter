@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:tarsheed/src/core/apis/dio_helper.dart';
 import 'package:tarsheed/src/core/apis/end_points.dart';
-import 'package:tarsheed/src/modules/dashboard/automation/data/models/automation.dart';
+import 'package:tarsheed/src/modules/automation/data/models/automation.dart';
 
 abstract class BaseAutomationServices {
   Future<Either<Exception, List<Automation>>> getAutomations();
