@@ -5,12 +5,15 @@ import 'package:tarsheed/src/modules/automation/data/models/trigger/trigger.dart
 
 class Automation extends Equatable {
   final String? id;
+  final String name;
+
   final List<Action> actions;
   final List<Condition> conditions;
   final Trigger trigger;
 
   const Automation({
     this.id,
+    required this.name,
     required this.actions,
     required this.conditions,
     required this.trigger,
@@ -18,6 +21,7 @@ class Automation extends Equatable {
 
   factory Automation.fromJson(Map<String, dynamic> json) => Automation(
         id: json['id'],
+        name: json['name'],
         actions:
             List<Action>.from(json['actions'].map((x) => Action.fromJson(x))),
         conditions: List<Condition>.from(
@@ -34,12 +38,14 @@ class Automation extends Equatable {
 
   Automation copyWith({
     String? id,
+    String? name,
     List<Action>? actions,
     List<Condition>? conditions,
     Trigger? trigger,
   }) {
     return Automation(
       id: id ?? this.id,
+      name: name ?? this.name,
       actions: actions ?? this.actions,
       conditions: conditions ?? this.conditions,
       trigger: trigger ?? this.trigger,
