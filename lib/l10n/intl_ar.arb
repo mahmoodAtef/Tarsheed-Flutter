@@ -157,5 +157,8 @@
   "categoryRequired" : "من فضلك اختر الفئة",
   "deviceAddedSuccessfully" : "تمت اضافة الجهاز بنجاح",
   "priorityRequired" : "من فضلك اختر الاولوية",
-  "priority" : "الاولوية"
+  "priority" : "الاولوية",
+  "editDevice": "تعديل الجهاز",
+  "rooms": "الغرف",
+  "consumption": "الاستهلاك"
 }

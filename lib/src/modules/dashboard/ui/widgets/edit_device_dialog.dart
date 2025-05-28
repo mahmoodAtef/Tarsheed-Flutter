@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tarsheed/generated/l10n.dart';
+import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 
 import '../../../../core/utils/color_manager.dart';
@@ -38,30 +40,28 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
         if (state is EditDeviceSuccess) {
           Navigator.of(context).pop();
         } else if (state is EditDeviceError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Failed to edit device')),
-          );
+          ExceptionManager.showMessage(state.exception);
         }
       },
       child: AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Edit Device'),
+        title: Text(S.of(context).editDevice),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _buildTextField('Device Name', nameController),
+              _buildTextField(S.of(context).name, nameController),
               const SizedBox(height: 10),
-              _buildTextField('Description', descriptionController),
+              _buildTextField(S.of(context).description, descriptionController),
               const SizedBox(height: 10),
-              _buildTextField('Pin Number', pinNumberController),
+              _buildTextField(S.of(context).pinNumber, pinNumberController),
             ],
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(S.of(context).cancel),
           ),
           BlocBuilder<DevicesCubit, DevicesState>(
             builder: (context, state) {
@@ -78,7 +78,7 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
                         child: CircularProgressIndicator(
                             color: Colors.white, strokeWidth: 2),
                       )
-                    : const Text('Save'),
+                    : Text(S.of(context).save),
               );
             },
           ),

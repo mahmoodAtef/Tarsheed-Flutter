@@ -156,9 +156,10 @@
   "categoryRequired" : "Please select category",
   "deviceAddedSuccessfully" : "Device added successfully",
   "priority" : "Priority",
-  "priorityRequired" : "Please select priority"
-
-
+  "priorityRequired" : "Please select priority",
+  "editDevice": "Edit Device",
+  "rooms": "Rooms",
+  "consumption": "Consumption"
 }
 
 

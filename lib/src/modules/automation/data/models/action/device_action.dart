@@ -1,6 +1,6 @@
 part of 'action.dart';
 
-class DeviceAction extends Action {
+class DeviceAction extends AutomationAction {
   final String deviceId;
   final String state;
 

@@ -51,7 +51,8 @@ class ServiceLocator {
     sl.registerLazySingleton<DevicesRemoteServices>(
         () => DevicesRemoteServices());
 
-    sl.registerLazySingleton(() => AutomationRemoteServices());
+    sl.registerLazySingleton<BaseAutomationServices>(
+        () => AutomationRemoteServices());
   }
 
   static void _initializeLocalServices() {
@@ -70,7 +71,6 @@ class ServiceLocator {
     sl.registerSingleton(SettingsRepository(sl(), sl()));
     sl.registerSingleton(DashboardRepository(sl(), sl(), sl()));
     sl.registerSingleton(DevicesRepository(sl()));
-
     sl.registerSingleton(AutomationRepository(sl()));
   }
 }

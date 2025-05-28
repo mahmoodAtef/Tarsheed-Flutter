@@ -44,4 +44,8 @@ class DevicesRepository {
   Future<Either<Exception, Unit>> deleteDevice(String id) {
     return _remote.deleteDevice(id);
   }
+
+  Future<Either<Exception, Unit>> toggleDeviceStatus(String id) {
+    return _remote.toggleDeviceStatus(id);
+  }
 }

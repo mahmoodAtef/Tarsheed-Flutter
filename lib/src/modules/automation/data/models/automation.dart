@@ -7,7 +7,7 @@ class Automation extends Equatable {
   final String? id;
   final String name;
 
-  final List<Action> actions;
+  final List<AutomationAction> actions;
   final List<Condition> conditions;
   final Trigger trigger;
 
@@ -22,8 +22,8 @@ class Automation extends Equatable {
   factory Automation.fromJson(Map<String, dynamic> json) => Automation(
         id: json['id'],
         name: json['name'],
-        actions:
-            List<Action>.from(json['actions'].map((x) => Action.fromJson(x))),
+        actions: List<AutomationAction>.from(
+            json['actions'].map((x) => AutomationAction.fromJson(x))),
         conditions: List<Condition>.from(
             json['conditions'].map((x) => Condition.fromJson(x))),
         trigger: Trigger.fromJson(json['trigger']),
@@ -39,7 +39,7 @@ class Automation extends Equatable {
   Automation copyWith({
     String? id,
     String? name,
-    List<Action>? actions,
+    List<AutomationAction>? actions,
     List<Condition>? conditions,
     Trigger? trigger,
   }) {

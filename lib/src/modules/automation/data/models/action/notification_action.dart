@@ -1,6 +1,6 @@
 part of 'action.dart';
 
-class NotificationAction extends Action {
+class NotificationAction extends AutomationAction {
   final String title;
   final String message;
 

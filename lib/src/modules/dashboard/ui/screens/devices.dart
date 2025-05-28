@@ -14,9 +14,7 @@ import '../../../../core/widgets/rectangle_background.dart';
 import '../../data/models/device.dart';
 import '../../data/models/room.dart';
 import '../widgets/card_devices.dart';
-import '../widgets/delete_confirmation_dialog.dart';
 import '../widgets/devices_filter_tabs.dart';
-import '../widgets/edit_device_dialog.dart';
 import 'device_creation_page.dart';
 
 class DevicesScreen extends StatefulWidget {
@@ -215,9 +213,8 @@ class DevicesListView extends StatelessWidget {
         final device = devices[index];
         return Padding(
           padding: EdgeInsets.all(5.w),
-          child: DeviceCardWrapper(
-            key: ValueKey(devices[index].id),
-            device: devices[index],
+          child: DeviceCard(
+            device: device,
           ),
         );
       },
@@ -257,42 +254,5 @@ class DevicesListView extends StatelessWidget {
       orElse: () => Room.empty,
     );
     return room.name;
-  }
-}
-
-class DeviceCardWrapper extends StatelessWidget {
-  final Device device;
-
-  const DeviceCardWrapper({
-    super.key,
-    required this.device,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onLongPress: () => _showDeleteConfirmation(context, device.id),
-      child: DeviceCard(
-        device: device,
-        onToggle: (bool newState) {
-          // Handle toggle action
-        },
-        onEdit: () => _showEditDialog(context, device),
-      ),
-    );
-  }
-
-  void _showEditDialog(BuildContext context, Device device) {
-    showDialog(
-      context: context,
-      builder: (context) => EditDeviceDialog(device: device),
-    );
-  }
-
-  void _showDeleteConfirmation(BuildContext context, String deviceId) {
-    showDialog(
-      context: context,
-      builder: (_) => DeleteDeviceDialog(deviceId: deviceId),
-    );
   }
 }

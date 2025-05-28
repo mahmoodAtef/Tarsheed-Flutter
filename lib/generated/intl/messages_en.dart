@@ -67,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "connectedDevices": MessageLookupByLibrary.simpleMessage(
       "Connected Devices",
     ),
+    "consumption": MessageLookupByLibrary.simpleMessage("Consumption"),
     "containsInvalidCharacters": MessageLookupByLibrary.simpleMessage(
       "contains invalid characters",
     ),
@@ -109,6 +110,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "didNtReceiveCode": MessageLookupByLibrary.simpleMessage(
       "Didn\'t receive a code?",
     ),
+    "editDevice": MessageLookupByLibrary.simpleMessage("Edit Device"),
     "editPassNaAddUseEm": MessageLookupByLibrary.simpleMessage(
       "Edit password, name, address, username, email",
     ),
@@ -266,6 +268,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "retry": MessageLookupByLibrary.simpleMessage("Retry"),
     "room": MessageLookupByLibrary.simpleMessage("Room"),
     "roomRequired": MessageLookupByLibrary.simpleMessage("Please select room"),
+    "rooms": MessageLookupByLibrary.simpleMessage("Rooms"),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("Save Changes"),
     "security": MessageLookupByLibrary.simpleMessage("Security"),

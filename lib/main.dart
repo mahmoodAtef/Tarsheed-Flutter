@@ -66,7 +66,7 @@ class Tarsheed extends StatelessWidget {
                   GlobalCupertinoLocalizations.delegate,
                 ],
                 supportedLocales: S.delegate.supportedLocales,
-                theme: ThemeManager.appTheme(),
+                theme: ThemeManager.lightTheme,
                 home: SplashScreen(),
               );
             },

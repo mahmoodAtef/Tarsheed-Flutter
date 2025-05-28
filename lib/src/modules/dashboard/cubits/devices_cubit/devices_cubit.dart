@@ -147,6 +147,40 @@ class DevicesCubit extends Cubit<DevicesState> {
     );
   }
 
+  Future<void> toggleDeviceStatus(String id) async {
+    final currentState = state;
+    final current = currentState.devices ?? <Device>[];
+
+    emit(ToggleDeviceStatusLoading(
+      deviceId: id,
+      devices: current,
+      filterType: currentState.filterType,
+      sortOrder: currentState.sortOrder,
+    ));
+
+    final result = await _repository.toggleDeviceStatus(id);
+    result.fold(
+      (err) => emit(ToggleDeviceStatusError(
+        err,
+        devices: current,
+        deviceId: id,
+        filterType: currentState.filterType,
+        sortOrder: currentState.sortOrder,
+      )),
+      (_) {
+        final updated = current.map((d) {
+          return d.id == id ? d.copyWith(state: !d.state) : d;
+        }).toList();
+        emit(ToggleDeviceStatusSuccess(
+          id,
+          devices: updated,
+          filterType: currentState.filterType,
+          sortOrder: currentState.sortOrder,
+        ));
+      },
+    );
+  }
+
   void updateFilterType(DeviceFilterType filterType) {
     final currentState = state;
     emit(FilterDevicesState(

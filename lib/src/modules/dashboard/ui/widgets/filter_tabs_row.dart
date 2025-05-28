@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/sensors_screen.dart';
+
 import '../../../../core/utils/color_manager.dart';
 
 class FilterTabsRow extends StatelessWidget {
@@ -11,33 +13,28 @@ class FilterTabsRow extends StatelessWidget {
     return Row(
       children: [
         FilterTab(
-          label: 'Consumption',
+          label: S.of(context).consumption,
           isActive: true,
-          onTap: () {
-          },
+          onTap: () {},
         ),
         const SizedBox(width: 10),
         FilterTab(
-          label: 'Rooms',
+          label: S.of(context).rooms,
           isActive: false,
-          onTap: () {
-
-          },
+          onTap: () {},
         ),
         const SizedBox(width: 10),
         FilterTab(
-          label: 'Priority',
+          label: S.of(context).priority,
           isActive: false,
-          onTap: () {
-
-          },
+          onTap: () {},
         ),
         const SizedBox(width: 10),
         FilterTab(
-          label: 'Sensor',
+          label: S.of(context).sensors,
           isActive: false,
           onTap: () {
-        context.push(SensorsScreen());
+            context.push(SensorsScreen());
           },
         ),
       ],

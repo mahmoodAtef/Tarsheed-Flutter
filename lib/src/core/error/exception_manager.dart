@@ -27,6 +27,6 @@ class ExceptionManager {
 
   static void showMessage(Exception exception) {
     Fluttertoast.showToast(
-        msg: getMessage(exception), backgroundColor: ThemeManager.errorColor);
+        msg: getMessage(exception), backgroundColor: ThemeManager.dangerRed);
   }
 }

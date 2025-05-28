@@ -37,6 +37,8 @@ class EndPoints {
   static const editDevice = '/device/update';
   static const editSensor = '/sensor/update';
 
+  static const String toggleDeviceStatus = '/device/toggle/';
+
   /// AUTOMATION ENDPOINTS
   static const String addAutomation = '/automation/create';
   static const String updateAutomation = '/automation/update';

@@ -12,6 +12,7 @@ import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/devices.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/widgets/card_devices.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/text_home_screen.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/profile_screen.dart';
 
@@ -606,7 +607,7 @@ class _ConnectedDevicesSection extends StatelessWidget {
                           ),
                       itemBuilder: (context, index) {
                         final device = state.devices?[index];
-                        return DeviceCardWrapper(device: device!);
+                        return DeviceCard(device: device!);
                       });
                 }
                 if (_checkIfDevicesLoading(state)) {

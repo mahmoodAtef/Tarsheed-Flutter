@@ -1,154 +1,176 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tarsheed/generated/l10n.dart';
+import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
+import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/category.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/widgets/delete_confirmation_dialog.dart'
+    show DeleteDeviceDialog;
+import 'package:tarsheed/src/modules/dashboard/ui/widgets/edit_device_dialog.dart';
 
-import '../../../../core/utils/color_manager.dart';
 import '../../data/models/device.dart';
 
 class DeviceCard extends StatelessWidget {
   final Device device;
-  final VoidCallback? onEdit;
-  final VoidCallback? onDelete;
-  final ValueChanged<bool> onToggle;
+  final bool editable;
+  final bool deletable;
+  final bool toggleable;
 
-  const DeviceCard({
-    super.key,
-    required this.device,
-    this.onEdit,
-    this.onDelete,
-    required this.onToggle,
-  });
+  const DeviceCard(
+      {super.key,
+      required this.device,
+      this.deletable = true,
+      this.editable = true,
+      this.toggleable = true});
 
   @override
   Widget build(BuildContext context) {
-    final textColor = device.state ? ColorManager.white : ColorManager.black;
     final dashboardBloc = context.read<DashboardBloc>();
-
     final deviceCategory = dashboardBloc.categories.firstWhere(
         (category) => category.id == device.categoryId,
         orElse: () => DeviceCategory.empty);
 
-    return SizedBox(
-      height: 160.h,
-      width: 180.w,
-      child: GestureDetector(
-        onLongPress: onDelete,
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: device.state ? ColorManager.primary : Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 6,
-                offset: Offset(0, 3),
-              ),
-            ],
-          ),
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      _buildCategoryIcon(deviceCategory, textColor),
-                      const Spacer(),
-                      Switch(
-                        value: device.state,
-                        onChanged: onToggle,
-                        activeColor: Colors.white,
-                        inactiveThumbColor: Colors.grey.shade400,
-                      ),
-                    ],
-                  ),
-                  Text(
-                    device.name,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: textColor,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    device.description,
-                    style: TextStyle(
-                      color: textColor.withOpacity(0.8),
-                      fontSize: 12,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.bolt,
-                        size: 16,
-                        color: textColor.withOpacity(0.9),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        '${device.consumption.toStringAsFixed(1)} kW/h',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: textColor.withOpacity(0.9),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.priority_high,
-                        size: 16,
-                        color: textColor.withOpacity(0.9),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        _getPriorityText(device.priority),
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: textColor.withOpacity(0.9),
-                        ),
-                      ),
-                    ],
+    return BlocBuilder<DevicesCubit, DevicesState>(
+      buildWhen: (current, previous) =>
+          ((current is ToggleDeviceStatusSuccess &&
+                  current.deviceId == device.id) ||
+              (current is ToggleDeviceStatusLoading &&
+                  current.deviceId == device.id) ||
+              (current is ToggleDeviceStatusError &&
+                  current.deviceId == device.id)),
+      builder: (context, state) {
+        bool isActive =
+            (state is ToggleDeviceStatusLoading && state.deviceId == device.id)
+                ? !device.state
+                : device.state;
+        final textColor = isActive ? ColorManager.white : ColorManager.black;
+
+        return SizedBox(
+          height: 160.h,
+          width: 180.w,
+          child: GestureDetector(
+            onLongPress: deletable ? () => _deleteDevice(context) : null,
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isActive ? ColorManager.primary : ColorManager.grey200,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 6,
+                    offset: Offset(0, 3),
                   ),
                 ],
               ),
-              Positioned(
-                bottom: 4,
-                right: 4,
-                child: GestureDetector(
-                  onTap: onEdit,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color:
-                          device.state ? Colors.white24 : Colors.grey.shade300,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.edit,
-                      size: 16,
-                      color: textColor,
+              child: Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          _buildCategoryIcon(deviceCategory, textColor),
+                          const Spacer(),
+                          Switch(
+                            value: isActive,
+                            onChanged: toggleable
+                                ? (s) => _toggleStatus(s, context)
+                                : null,
+                            activeColor: Colors.white,
+                            inactiveThumbColor: Colors.grey.shade400,
+                          ),
+                        ],
+                      ),
+                      Text(
+                        device.name,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: textColor,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        device.description,
+                        style: TextStyle(
+                          color: textColor.withOpacity(0.8),
+                          fontSize: 12,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.bolt,
+                            size: 16,
+                            color: textColor.withOpacity(0.9),
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            '${device.consumption.toStringAsFixed(1)} kW/h',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: textColor.withOpacity(0.9),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.priority_high,
+                            size: 16,
+                            color: textColor.withOpacity(0.9),
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            _getPriorityText(device.priority, context),
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: textColor.withOpacity(0.9),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    bottom: 4,
+                    right: 4,
+                    child: GestureDetector(
+                      onTap: editable ? () => _editDevice(context) : null,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: device.state
+                              ? Colors.white24
+                              : Colors.grey.shade300,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.edit,
+                          size: 16,
+                          color: textColor,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -182,7 +204,7 @@ class DeviceCard extends StatelessWidget {
         color: color,
         errorBuilder: (context, error, stackTrace) {
           return Icon(
-            _getCategoryIcon(category.id),
+            Icons.info,
             size: 40,
             color: color,
           );
@@ -191,46 +213,32 @@ class DeviceCard extends StatelessWidget {
     }
   }
 
-  String _getPriorityText(int priority) {
+  String _getPriorityText(int priority, BuildContext context) {
     if (priority <= 3) {
-      return 'Low';
+      return S.of(context).low;
     } else if (priority <= 7) {
-      return 'Medium';
+      return S.of(context).medium;
     } else {
-      return 'High';
+      return S.of(context).high;
     }
   }
 
-  IconData _getCategoryIcon(String categoryId) {
-    switch (categoryId.toLowerCase()) {
-      case 'light':
-      case 'lighting':
-        return Icons.lightbulb;
-      case 'ac':
-      case 'air_conditioner':
-        return Icons.ac_unit;
-      case 'tv':
-      case 'television':
-        return Icons.tv;
-      case 'refrigerator':
-      case 'fridge':
-        return Icons.kitchen;
-      case 'fan':
-        return Icons.air;
-      case 'heater':
-      case 'water_heater':
-        return Icons.hot_tub;
-      case 'washing_machine':
-        return Icons.local_laundry_service;
-      case 'vacuum':
-      case 'vacuum_cleaner':
-        return Icons.cleaning_services;
-      default:
-        return Icons.electrical_services;
-    }
+  void _deleteDevice(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => DeleteDeviceDialog(deviceId: device.id),
+    );
   }
-}
 
-extension DeviceExtension on Device {
-  String get categoryId => this.categoryId ?? 'default';
+  void _editDevice(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => EditDeviceDialog(device: device),
+    );
+  }
+
+  void _toggleStatus(bool status, BuildContext context) {
+    final DevicesCubit devicesCubit = context.read<DevicesCubit>();
+    devicesCubit.toggleDeviceStatus(device.id);
+  }
 }

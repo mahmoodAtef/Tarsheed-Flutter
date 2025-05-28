@@ -3,10 +3,10 @@ import 'package:equatable/equatable.dart';
 part 'device_action.dart';
 part 'notification_action.dart';
 
-abstract class Action extends Equatable {
-  const Action();
+abstract class AutomationAction extends Equatable {
+  const AutomationAction();
 
-  factory Action.fromJson(Map<String, dynamic> json) {
+  factory AutomationAction.fromJson(Map<String, dynamic> json) {
     switch (json['type']) {
       case "DEVICE":
         return DeviceAction.fromJson(json);
@@ -20,3 +20,10 @@ abstract class Action extends Equatable {
   @override
   List<Object?> get props => [];
 }
+/*
+
+ */
+
+/*
+
+ */

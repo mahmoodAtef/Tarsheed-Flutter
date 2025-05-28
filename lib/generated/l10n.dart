@@ -1349,6 +1349,21 @@ class S {
       args: [],
     );
   }
+
+  /// `Edit Device`
+  String get editDevice {
+    return Intl.message('Edit Device', name: 'editDevice', desc: '', args: []);
+  }
+
+  /// `Rooms`
+  String get rooms {
+    return Intl.message('Rooms', name: 'rooms', desc: '', args: []);
+  }
+
+  /// `Consumption`
+  String get consumption {
+    return Intl.message('Consumption', name: 'consumption', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

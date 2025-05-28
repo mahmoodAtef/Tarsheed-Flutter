@@ -71,6 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "تأكيد كلمة المرور مطلوب",
     ),
     "connectedDevices": MessageLookupByLibrary.simpleMessage("الأجهزة المتصلة"),
+    "consumption": MessageLookupByLibrary.simpleMessage("الاستهلاك"),
     "containsInvalidCharacters": MessageLookupByLibrary.simpleMessage(
       "يحتوي على أحرف غير صالحة",
     ),
@@ -105,6 +106,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "devicesRunning": MessageLookupByLibrary.simpleMessage("أجهزة تعمل"),
     "didNotReceive": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
     "didNtReceiveCode": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
+    "editDevice": MessageLookupByLibrary.simpleMessage("تعديل الجهاز"),
     "editPassNaAddUseEm": MessageLookupByLibrary.simpleMessage(
       "تعديل كلمة المرور، الاسم، العنوان، اسم المستخدم، البريد الإلكتروني",
     ),
@@ -272,6 +274,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
     "room": MessageLookupByLibrary.simpleMessage("الغرفة"),
     "roomRequired": MessageLookupByLibrary.simpleMessage("من فضلك اختر غرفة"),
+    "rooms": MessageLookupByLibrary.simpleMessage("الغرف"),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("حفظ التغييرات"),
     "security": MessageLookupByLibrary.simpleMessage("الأمان"),
