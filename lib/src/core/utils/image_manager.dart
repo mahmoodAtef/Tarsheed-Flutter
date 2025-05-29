@@ -7,5 +7,9 @@ class AssetsManager {
   static const String rectangle4 = "assets/images/Rectangle 4.png";
   static const String avatar = "assets/images/avatar.png";
   static const String errorIcon = "assets/images/error_icon.png";
+  static const String notFoundError = "assets/images/errors/not_found.png";
+  static const String forbiddenError = "assets/images/errors/forbidden.png";
+  static const String unauthorizedError = "assets/images/errors/un_auth.png";
+  static const String badRequestError = "assets/images/errors/bad_request.png";
   static const String noDataFound = "assets/images/no_data_found.png";
 }

@@ -10,6 +10,7 @@ import 'package:tarsheed/src/core/utils/theme_manager.dart';
 
 abstract class ExceptionHandler {
   String handle(Exception exception);
+  String getIconPath(Exception exception);
 }
 
 class ExceptionManager {
@@ -23,6 +24,11 @@ class ExceptionManager {
   static String getMessage(Exception exception) {
     return _handlers[exception.runtimeType]?.handle(exception) ??
         _handlers[UnexpectedExceptionHandler]!.handle(exception);
+  }
+
+  static String getIconPath(Exception exception) {
+    return _handlers[exception.runtimeType]?.getIconPath(exception) ??
+        _handlers[UnexpectedExceptionHandler]!.getIconPath(exception);
   }
 
   static void showMessage(Exception exception) {
