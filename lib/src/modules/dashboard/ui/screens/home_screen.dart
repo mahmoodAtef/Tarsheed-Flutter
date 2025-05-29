@@ -11,8 +11,8 @@ import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/screens/devices.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/widgets/card_devices.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/screens/devices/devices.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/widgets/devices/card_devices.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/text_home_screen.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/profile_screen.dart';
 

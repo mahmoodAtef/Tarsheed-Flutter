@@ -6,8 +6,8 @@ import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 
-import '../../../../core/utils/color_manager.dart';
-import '../../data/models/device.dart';
+import '../../../../../core/utils/color_manager.dart';
+import '../../../data/models/device.dart';
 
 class EditDeviceDialog extends StatefulWidget {
   final Device device;

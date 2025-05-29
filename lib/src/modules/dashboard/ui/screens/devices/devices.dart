@@ -8,13 +8,13 @@ import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 
-import '../../../../core/error/exception_manager.dart';
-import '../../../../core/widgets/appbar.dart';
-import '../../../../core/widgets/rectangle_background.dart';
-import '../../data/models/device.dart';
-import '../../data/models/room.dart';
-import '../widgets/card_devices.dart';
-import '../widgets/devices_filter_tabs.dart';
+import '../../../../../core/error/exception_manager.dart';
+import '../../../../../core/widgets/appbar.dart';
+import '../../../../../core/widgets/rectangle_background.dart';
+import '../../../data/models/device.dart';
+import '../../../data/models/room.dart';
+import '../../widgets/devices/card_devices.dart';
+import '../../widgets/devices/devices_filter_tabs.dart';
 import 'add_device_screen.dart';
 
 class DevicesScreen extends StatefulWidget {

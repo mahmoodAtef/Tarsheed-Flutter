@@ -5,12 +5,12 @@ import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/widgets/sensor/sensor_card.dart';
 
 import '../../../../core/widgets/appbar.dart';
 import '../../../../core/widgets/bottom_navigator_bar.dart';
 import '../../../../core/widgets/rectangle_background.dart';
 import '../../data/models/sensor_category.dart';
-import '../widgets/report_large_card.dart';
 import 'add_sensor_form_page.dart';
 
 class SensorsScreen extends StatelessWidget {
@@ -74,16 +74,7 @@ class SensorsScreen extends StatelessWidget {
                                 (e) => e.id == sensor.categoryId,
                                 orElse: () => SensorCategory.temperature,
                               );
-                              return BuildInfoCard(
-                                iconWidget: Image.asset(
-                                  category.imagePath,
-                                  width: 30,
-                                  height: 30,
-                                  fit: BoxFit.cover,
-                                ),
-                                title: "${category.name}: ${sensor.name}",
-                                value: sensor.description,
-                              );
+                              return SensorCard(sensor: sensor);
                             },
                           );
                         }

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/sensor_category.dart';
 
 class Sensor extends Equatable {
   final String? id;
@@ -7,9 +8,10 @@ class Sensor extends Equatable {
   final String description;
   final String roomId;
   final String categoryId;
-
+  final SensorCategory category;
   const Sensor(
       {this.id,
+      required this.category,
       required this.name,
       required this.pinNumber,
       required this.description,
@@ -18,6 +20,7 @@ class Sensor extends Equatable {
 
   factory Sensor.fromJson(Map<String, dynamic> json) {
     return Sensor(
+      category: fromId(json['categoryId']),
       id: json['id'] ?? json['_id'],
       name: json['name'],
       pinNumber: json['pinNumber'].toString(),
@@ -41,6 +44,7 @@ class Sensor extends Equatable {
         description: description ?? this.description,
         roomId: roomId ?? this.roomId,
         categoryId: categoryId ?? this.categoryId,
+        category: category,
       );
 
   Map<String, dynamic> toJson() => {
@@ -50,6 +54,19 @@ class Sensor extends Equatable {
         "roomId": roomId,
         "categoryId": categoryId
       };
+
+  static SensorCategory fromId(String id) {
+    switch (id) {
+      case "6817b4b7f927a0b34e0756d7":
+        return SensorCategory.temperature;
+      case "6817b5bda500e527dbafb536":
+        return SensorCategory.current;
+      case "6817b5e3dc386af5382343f3":
+        return SensorCategory.vibration;
+      default:
+        return SensorCategory.motion;
+    }
+  }
 
   @override
   List<Object?> get props => [id, name];

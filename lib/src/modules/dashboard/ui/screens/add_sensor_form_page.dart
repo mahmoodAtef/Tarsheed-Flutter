@@ -95,7 +95,7 @@ class _AddSensorFormPageState extends State<AddSensorFormPage> {
                   labelText: isArabic ? 'اختر جهاز الاستشعار' : 'Select Sensor',
                 ),
                 items: SensorCategory.values.map((type) {
-                  return DropdownMenuItem<SensorCategory>(
+                  return DropdownMenuItem(
                     value: type,
                     child: Row(
                       children: [
@@ -136,12 +136,13 @@ class _AddSensorFormPageState extends State<AddSensorFormPage> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         DashboardBloc.get().add(AddSensorEvent(Sensor(
-                            name: nameController.text,
-                            categoryId: selectedSensorType!.id,
-                            pinNumber: pinNumberController.text,
-                            roomId: selectedRoomId!,
-                            description: descriptionController.text,
-                            id: "")));
+                          name: nameController.text,
+                          categoryId: selectedSensorType!.id,
+                          pinNumber: pinNumberController.text,
+                          roomId: selectedRoomId!,
+                          category: selectedSensorType!,
+                          description: descriptionController.text,
+                        )));
                       }
                     },
                   ),

@@ -6,11 +6,11 @@ import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/category.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/widgets/delete_confirmation_dialog.dart'
+import 'package:tarsheed/src/modules/dashboard/ui/widgets/devices/delete_confirmation_dialog.dart'
     show DeleteDeviceDialog;
-import 'package:tarsheed/src/modules/dashboard/ui/widgets/edit_device_dialog.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/widgets/devices/edit_device_dialog.dart';
 
-import '../../data/models/device.dart';
+import '../../../data/models/device.dart';
 
 class DeviceCard extends StatelessWidget {
   final Device device;
@@ -69,14 +69,15 @@ class DeviceCard extends StatelessWidget {
                         children: [
                           _buildCategoryIcon(textColor),
                           const Spacer(),
-                          Switch(
-                            value: isActive,
-                            onChanged: toggleable
-                                ? (s) => _toggleStatus(s, context)
-                                : null,
-                            activeColor: Colors.white,
-                            inactiveThumbColor: Colors.grey.shade400,
-                          ),
+                          if (toggleable)
+                            Switch(
+                              value: isActive,
+                              onChanged: toggleable
+                                  ? (s) => _toggleStatus(s, context)
+                                  : null,
+                              activeColor: Colors.white,
+                              inactiveThumbColor: Colors.grey.shade400,
+                            ),
                         ],
                       ),
                       Text(
@@ -139,27 +140,28 @@ class DeviceCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Positioned(
-                    bottom: 4,
-                    right: 4,
-                    child: GestureDetector(
-                      onTap: editable ? () => _editDevice(context) : null,
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          color: device.state
-                              ? Colors.white24
-                              : Colors.grey.shade300,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.edit,
-                          size: 16,
-                          color: textColor,
+                  if (editable)
+                    Positioned(
+                      bottom: 4,
+                      right: 4,
+                      child: GestureDetector(
+                        onTap: editable ? () => _editDevice(context) : null,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: device.state
+                                ? Colors.white24
+                                : Colors.grey.shade300,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.edit,
+                            size: 16,
+                            color: textColor,
+                          ),
                         ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),
