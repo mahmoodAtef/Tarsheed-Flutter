@@ -9,7 +9,7 @@ class ThemeManager {
   static const Color warningOrange = Color(0xFFFF9800);
   static const Color dangerRed = Color(0xFFE53935);
 
-  static const Color backgroundColor = Color(0xFFF8F9FA);
+  static const Color backgroundColor = Color(0xFFFFFFFF);
   static const Color surfaceColor = Color(0xFFFFFFFF);
 
   static const Color textPrimary = Color(0xFF212121);

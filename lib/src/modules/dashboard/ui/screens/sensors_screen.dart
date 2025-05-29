@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
@@ -10,7 +9,6 @@ import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import '../../../../core/widgets/appbar.dart';
 import '../../../../core/widgets/bottom_navigator_bar.dart';
 import '../../../../core/widgets/rectangle_background.dart';
-import '../../data/models/room.dart';
 import '../../data/models/sensor_category.dart';
 import '../widgets/report_large_card.dart';
 import 'add_sensor_form_page.dart';
@@ -57,8 +55,8 @@ class SensorsScreen extends StatelessWidget {
                             child: SizedBox(
                               height: 120,
                               child: CustomErrorWidget(
-                                  message: ExceptionManager.getMessage(
-                                      state.exception)),
+                                exception: state.exception,
+                              ),
                             ),
                           );
                         } else if ((state is GetSensorsSuccessState &&
@@ -73,7 +71,7 @@ class SensorsScreen extends StatelessWidget {
                             itemBuilder: (context, index) {
                               final sensor = DashboardBloc.get().sensors[index];
                               final category = SensorCategory.values.firstWhere(
-                                    (e) => e.id == sensor.categoryId,
+                                (e) => e.id == sensor.categoryId,
                                 orElse: () => SensorCategory.temperature,
                               );
                               return BuildInfoCard(

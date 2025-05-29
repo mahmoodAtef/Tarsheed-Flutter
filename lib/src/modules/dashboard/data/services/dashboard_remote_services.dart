@@ -208,7 +208,10 @@ class DashboardRemoteServices implements BaseDashboardServices {
       var response = await DioHelper.getData(
         path: EndPoints.getAISuggestions,
       );
+
       return Right(response.data["recommendations"] ?? "No Usage Yet");
+    } on DioException catch (e) {
+      return Left(e);
     } on Exception catch (e) {
       return Left(e);
     }

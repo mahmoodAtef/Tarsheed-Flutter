@@ -9,7 +9,6 @@ import 'package:tarsheed/src/modules/dashboard/ui/widgets/ai-sugg_card.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/report_large_card.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/usage_card.dart';
 
-import '../../../../core/error/exception_manager.dart';
 import '../../../../core/widgets/appbar.dart';
 import '../../bloc/dashboard_bloc.dart';
 import '../widgets/chart.dart';
@@ -112,7 +111,7 @@ class _ReportContentSection extends StatelessWidget {
         if (state is GetUsageReportError) {
           return Center(
             child: CustomErrorWidget(
-              message: ExceptionManager.getMessage(state.exception),
+              exception: state.exception,
             ),
           );
         }
@@ -175,7 +174,7 @@ class _ChartSection extends StatelessWidget {
         if (state is GetUsageReportError) {
           return Center(
             child: CustomErrorWidget(
-              message: ExceptionManager.getMessage(state.exception),
+              exception: state.exception,
             ),
           );
         }
@@ -242,10 +241,17 @@ class _AISuggestionsSection extends StatelessWidget {
             }
 
             if (state is GetAISuggestionsError) {
+              print(
+                  "*************************************************************************************");
+              print("AI Suggestions Error: ${state.exception}");
+              print(
+                  "*************************************************************************************");
+
               return SizedBox(
                 height: 120.h,
                 child: CustomErrorWidget(
-                    message: ExceptionManager.getMessage(state.exception)),
+                  exception: state.exception,
+                ),
               );
             }
 
