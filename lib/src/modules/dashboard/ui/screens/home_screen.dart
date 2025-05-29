@@ -282,7 +282,7 @@ class _EnergyConsumptionSection extends StatelessWidget {
             height: 120.h,
             child: Center(
               child: CustomErrorWidget(
-                message: ExceptionManager.getMessage(state.exception),
+                exception: state.exception,
               ),
             ),
           );
@@ -616,8 +616,7 @@ class _ConnectedDevicesSection extends StatelessWidget {
                   return Center(
                     child: CustomErrorWidget(
                       height: 110.h,
-                      message: ExceptionManager.getMessage(
-                          (state as GetDevicesError).exception),
+                      exception: (state as GetDevicesError).exception,
                     ),
                   );
                 }

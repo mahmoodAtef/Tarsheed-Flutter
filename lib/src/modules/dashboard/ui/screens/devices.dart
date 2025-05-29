@@ -15,7 +15,7 @@ import '../../data/models/device.dart';
 import '../../data/models/room.dart';
 import '../widgets/card_devices.dart';
 import '../widgets/devices_filter_tabs.dart';
-import 'device_creation_page.dart';
+import 'add_device_screen.dart';
 
 class DevicesScreen extends StatefulWidget {
   const DevicesScreen({super.key});
@@ -174,7 +174,7 @@ class DevicesListView extends StatelessWidget {
 
         if (state is GetDevicesError && state.devices == null) {
           return CustomErrorWidget(
-            message: ExceptionManager.getMessage(state.exception),
+            exception: state.exception,
           );
         }
 

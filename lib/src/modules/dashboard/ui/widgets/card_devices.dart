@@ -27,11 +27,6 @@ class DeviceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dashboardBloc = context.read<DashboardBloc>();
-    final deviceCategory = dashboardBloc.categories.firstWhere(
-        (category) => category.id == device.categoryId,
-        orElse: () => DeviceCategory.empty);
-
     return BlocBuilder<DevicesCubit, DevicesState>(
       buildWhen: (current, previous) =>
           ((current is ToggleDeviceStatusSuccess &&
@@ -72,7 +67,7 @@ class DeviceCard extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          _buildCategoryIcon(deviceCategory, textColor),
+                          _buildCategoryIcon(textColor),
                           const Spacer(),
                           Switch(
                             value: isActive,
@@ -174,53 +169,44 @@ class DeviceCard extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryIcon(DeviceCategory category, Color color) {
-    if (category.iconUrl.startsWith('http')) {
-      return BlocBuilder<DashboardBloc, DashboardState>(
-        buildWhen: (current, previous) => current is DeviceCategoryState,
-        builder: (context, state) {
-          return state is GetDeviceCategoriesLoading
-              ? SizedBox()
-              : Image.network(
-                  category.iconUrl,
-                  height: 40,
-                  width: 40,
-                  color: color,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Icon(
-                      Icons.devices,
-                      size: 40,
-                      color: color,
-                    );
-                  },
-                );
-        },
-      );
-    } else {
-      return Image.asset(
-        category.iconUrl,
-        height: 40,
-        width: 40,
-        color: color,
-        errorBuilder: (context, error, stackTrace) {
-          return Icon(
-            Icons.info,
-            size: 40,
-            color: color,
-          );
-        },
-      );
-    }
+  Widget _buildCategoryIcon(Color color) {
+    return BlocBuilder<DashboardBloc, DashboardState>(
+      buildWhen: (current, previous) => current is DeviceCategoryState,
+      builder: (context, state) {
+        DeviceCategory category = context
+            .read<DashboardBloc>()
+            .categories
+            .firstWhere((category) => category.id == device.categoryId,
+                orElse: () => DeviceCategory.empty);
+        return state is GetDeviceCategoriesLoading
+            ? SizedBox()
+            : Image.network(
+                category.iconUrl,
+                height: 40,
+                width: 40,
+                color: color,
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(
+                    Icons.devices,
+                    size: 40,
+                    color: color,
+                  );
+                },
+              );
+      },
+    );
   }
 
   String _getPriorityText(int priority, BuildContext context) {
-    if (priority <= 3) {
-      return S.of(context).low;
-    } else if (priority <= 7) {
-      return S.of(context).medium;
-    } else {
+    if (priority == 1) {
+      return S.of(context).veryHigh;
+    } else if (priority == 2) {
       return S.of(context).high;
+    } else if (priority == 3) {
+      return S.of(context).medium;
     }
+
+    return S.of(context).low;
   }
 
   void _deleteDevice(BuildContext context) {

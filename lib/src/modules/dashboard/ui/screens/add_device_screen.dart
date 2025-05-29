@@ -136,14 +136,14 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
                   DropDownWidget(
                     label: S.of(context).priority,
                     items: [
-                      DropDownItem("0", S.of(context).veryHigh,
+                      DropDownItem("1", S.of(context).veryHigh,
                           leading: Icon(Icons.warning, color: Colors.red)),
-                      DropDownItem("1", S.of(context).high,
+                      DropDownItem("2", S.of(context).high,
                           leading: Icon(Icons.info, color: Colors.orange)),
-                      DropDownItem("2", S.of(context).medium,
+                      DropDownItem("3", S.of(context).medium,
                           leading:
                               Icon(Icons.info_outline, color: Colors.blue)),
-                      DropDownItem("3", S.of(context).low,
+                      DropDownItem("4", S.of(context).low,
                           leading:
                               Icon(Icons.low_priority, color: Colors.grey)),
                     ],
