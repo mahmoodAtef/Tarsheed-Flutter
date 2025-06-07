@@ -31,6 +31,7 @@ class Automation extends Equatable {
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'name': name,
         'actions': List<dynamic>.from(actions.map((x) => x.toJson())),
         'conditions': List<dynamic>.from(conditions.map((x) => x.toJson())),
         'trigger': trigger.toJson(),

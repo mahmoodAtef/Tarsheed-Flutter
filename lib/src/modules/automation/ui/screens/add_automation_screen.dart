@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
+import 'package:tarsheed/src/core/routing/navigation_manager.dart';
+import 'package:tarsheed/src/core/services/dep_injection.dart';
+import 'package:tarsheed/src/core/utils/color_manager.dart';
+import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/automation/cubit/automation_cubit.dart';
+import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
+import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/sensor.dart';
 
 import '../../data/models/action/action.dart';
 import '../../data/models/automation.dart';
@@ -26,11 +35,20 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
   String? _selectedSensorId;
   int? _triggerValue;
 
-  // Conditions
   List<ConditionData> _conditions = [];
 
-  // Actions
   List<ActionData> _actions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadInitialData();
+  }
+
+  void _loadInitialData() {
+    sl<DashboardBloc>().add(GetSensorsEvent());
+    sl<DevicesCubit>().getDevices();
+  }
 
   @override
   void dispose() {
@@ -40,53 +58,50 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-      appBar: AppBar(
-        title: const Text(
-          'Add New Automation',
-          style: TextStyle(fontWeight: FontWeight.bold),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => sl<AutomationCubit>()),
+        BlocProvider.value(value: DashboardBloc.get()),
+        BlocProvider.value(value: sl<DevicesCubit>()),
+      ],
+      child: Scaffold(
+        backgroundColor: Colors.grey.shade50,
+        appBar: AppBar(
+          title: Text(
+            S.of(context).addNewAutomation,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: ColorManager.white,
+          elevation: 1,
+          foregroundColor: Colors.black,
         ),
-        backgroundColor: Colors.white,
-        elevation: 1,
-        foregroundColor: Colors.black,
-      ),
-      body: BlocListener<AutomationCubit, AutomationState>(
-        listener: (context, state) {
-          if (state is AddAutomationSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Automation added successfully!'),
-                backgroundColor: Colors.green,
+        body: BlocListener<AutomationCubit, AutomationState>(
+          listener: (context, state) {
+            if (state is AddAutomationSuccess) {
+              showToast(S.of(context).automationAddedSuccessfully);
+              context.pop();
+            } else if (state is AddAutomationError) {
+              ExceptionManager.showMessage(state.exception);
+            }
+          },
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(16.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildNameSection(),
+                  SizedBox(height: 24.h),
+                  _buildTriggerSection(),
+                  SizedBox(height: 24.h),
+                  _buildConditionsSection(),
+                  SizedBox(height: 24.h),
+                  _buildActionsSection(),
+                  SizedBox(height: 32.h),
+                  _buildSaveButton(),
+                ],
               ),
-            );
-            Navigator.pop(context);
-          } else if (state is AddAutomationError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(ExceptionManager.getMessage(state.exception)),
-                backgroundColor: Colors.red,
-              ),
-            );
-          }
-        },
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            padding: EdgeInsets.all(16.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildNameSection(),
-                SizedBox(height: 24.h),
-                _buildTriggerSection(),
-                SizedBox(height: 24.h),
-                _buildConditionsSection(),
-                SizedBox(height: 24.h),
-                _buildActionsSection(),
-                SizedBox(height: 32.h),
-                _buildSaveButton(),
-              ],
             ),
           ),
         ),
@@ -96,13 +111,13 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
 
   Widget _buildNameSection() {
     return _buildSection(
-      title: 'Automation Name',
+      title: S.of(context).automationName,
       child: TextFormField(
         controller: _nameController,
         decoration: InputDecoration(
-          hintText: 'Enter automation name',
+          hintText: S.of(context).enterAutomationName,
           filled: true,
-          fillColor: Colors.white,
+          fillColor: ColorManager.white,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
@@ -111,7 +126,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
         ),
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'Please enter automation name';
+            return S.of(context).enterAutomationName;
           }
           return null;
         },
@@ -121,8 +136,8 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
 
   Widget _buildTriggerSection() {
     return _buildSection(
-      title: 'Trigger',
-      subtitle: 'When should this automation run?',
+      title: S.of(context).trigger,
+      subtitle: S.of(context).whenShouldAutomationRun,
       child: Column(
         children: [
           _buildTriggerTypeSelector(),
@@ -138,8 +153,8 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
       children: [
         Expanded(
           child: _buildSelectableCard(
-            title: 'Schedule',
-            subtitle: 'Run at specific time',
+            title: S.of(context).schedule,
+            subtitle: S.of(context).runAtSpecificTime,
             icon: Icons.schedule,
             isSelected: _selectedTriggerType == TriggerType.schedule,
             onTap: () => setState(() {
@@ -152,8 +167,8 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
         SizedBox(width: 12.w),
         Expanded(
           child: _buildSelectableCard(
-            title: 'Sensor',
-            subtitle: 'Run when sensor value changes',
+            title: S.of(context).sensor,
+            subtitle: S.of(context).runWhenSensorValueChanges,
             icon: Icons.sensors,
             isSelected: _selectedTriggerType == TriggerType.sensor,
             onTap: () => setState(() {
@@ -191,7 +206,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
       child: Container(
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: ColorManager.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.grey.shade300),
         ),
@@ -200,7 +215,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
             const Icon(Icons.access_time, color: Colors.blue),
             SizedBox(width: 12.w),
             Text(
-              _selectedTime ?? 'Select Time',
+              _selectedTime ?? S.of(context).selectTime,
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight:
@@ -216,46 +231,62 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
   }
 
   Widget _buildSensorTriggerSelector() {
-    return Column(
-      children: [
-        DropdownButtonFormField<String>(
-          value: _selectedSensorId,
-          decoration: InputDecoration(
-            labelText: 'Select Sensor',
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none,
+    return BlocBuilder<DashboardBloc, DashboardState>(
+      buildWhen: (previous, current) =>
+          current is GetSensorsSuccessState ||
+          current is GetSensorsLoadingState ||
+          current is GetSensorsErrorState,
+      builder: (context, state) {
+        if (state is GetSensorsLoadingState) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        // Get sensors directly from the bloc state
+        final sensors = context.read<DashboardBloc>().sensors;
+        final sensorItems = _buildSensorItems(sensors);
+
+        return Column(
+          children: [
+            DropdownButtonFormField<String>(
+              value: _selectedSensorId,
+              decoration: InputDecoration(
+                labelText: S.of(context).selectSensor,
+                filled: true,
+                fillColor: ColorManager.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+                prefixIcon: const Icon(Icons.sensors),
+              ),
+              items: sensorItems,
+              onChanged: (value) => setState(() => _selectedSensorId = value),
             ),
-            prefixIcon: const Icon(Icons.sensors),
-          ),
-          items: _getSensorItems(),
-          onChanged: (value) => setState(() => _selectedSensorId = value),
-        ),
-        SizedBox(height: 12.h),
-        TextFormField(
-          decoration: InputDecoration(
-            labelText: 'Trigger Value',
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none,
+            SizedBox(height: 12.h),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: S.of(context).triggerValue,
+                filled: true,
+                fillColor: ColorManager.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+                prefixIcon: const Icon(Icons.numbers),
+              ),
+              keyboardType: TextInputType.number,
+              onChanged: (value) => _triggerValue = int.tryParse(value),
             ),
-            prefixIcon: const Icon(Icons.numbers),
-          ),
-          keyboardType: TextInputType.number,
-          onChanged: (value) => _triggerValue = int.tryParse(value),
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 
   Widget _buildConditionsSection() {
     return _buildSection(
-      title: 'Conditions (Optional)',
-      subtitle: 'Additional conditions that must be met',
+      title: S.of(context).conditionsOptional,
+      subtitle: S.of(context).additionalConditions,
       child: Column(
         children: [
           ..._conditions
@@ -268,84 +299,125 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
   }
 
   Widget _buildConditionCard(ConditionData condition) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 12.h),
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Icon(
-                condition.type == ConditionType.device
-                    ? Icons.devices
-                    : Icons.sensors,
-                color: Colors.blue,
+    return BlocBuilder<DashboardBloc, DashboardState>(
+      builder: (context, dashboardState) {
+        return BlocBuilder<DevicesCubit, DevicesState>(
+          builder: (context, devicesState) {
+            final sensors = context.read<DashboardBloc>().sensors;
+            final devices = devicesState.devices ?? [];
+
+            return Container(
+              margin: EdgeInsets.only(bottom: 12.h),
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                color: ColorManager.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey.shade300),
               ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: Text(
-                  condition.type == ConditionType.device
-                      ? 'Device Condition'
-                      : 'Sensor Condition',
-                  style:
-                      TextStyle(fontWeight: FontWeight.w600, fontSize: 16.sp),
-                ),
-              ),
-              IconButton(
-                onPressed: () => setState(() => _conditions.remove(condition)),
-                icon: const Icon(Icons.delete, color: Colors.red),
-              ),
-            ],
-          ),
-          SizedBox(height: 12.h),
-          Row(
-            children: [
-              Expanded(
-                child: DropdownButtonFormField<String>(
-                  value: condition.id,
-                  decoration: InputDecoration(
-                    labelText: condition.type == ConditionType.device
-                        ? 'Select Device'
-                        : 'Select Sensor',
-                    filled: true,
-                    fillColor: Colors.grey.shade50,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        condition.type == ConditionType.device
+                            ? Icons.devices
+                            : Icons.sensors,
+                        color: Colors.blue,
+                      ),
+                      SizedBox(width: 12.w),
+                      Expanded(
+                        child: Text(
+                          condition.type == ConditionType.device
+                              ? S.of(context).deviceCondition
+                              : S.of(context).sensorCondition,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 16.sp),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () =>
+                            setState(() => _conditions.remove(condition)),
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                      ),
+                    ],
                   ),
-                  items: condition.type == ConditionType.device
-                      ? _getDeviceItems()
-                      : _getSensorItems(),
-                  onChanged: (value) => setState(() => condition.id = value),
-                ),
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'State/Value',
-                    filled: true,
-                    fillColor: Colors.grey.shade50,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
+                  SizedBox(height: 12.h),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DropdownButtonFormField<String>(
+                          value: condition.id,
+                          decoration: InputDecoration(
+                            labelText: condition.type == ConditionType.device
+                                ? S.of(context).selectDevice
+                                : S.of(context).selectSensor,
+                            filled: true,
+                            fillColor: Colors.grey.shade50,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                          items: condition.type == ConditionType.device
+                              ? _buildDeviceItems(devices)
+                              : _buildSensorItems(sensors),
+                          onChanged: (value) =>
+                              setState(() => condition.id = value),
+                        ),
+                      ),
+                      SizedBox(width: 12.w),
+                      Expanded(
+                        child: condition.type == ConditionType.device
+                            ? DropdownButtonFormField<int>(
+                                value:
+                                    condition.state == 0 || condition.state == 1
+                                        ? condition.state
+                                        : null,
+                                decoration: InputDecoration(
+                                  labelText: S.of(context).stateValue,
+                                  filled: true,
+                                  fillColor: Colors.grey.shade50,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                                items: [
+                                  DropdownMenuItem(
+                                    value: 1,
+                                    child: Text(S.of(context).turnOn),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: 0,
+                                    child: Text(S.of(context).turnOff),
+                                  ),
+                                ],
+                                onChanged: (value) => setState(
+                                    () => condition.state = value ?? 0),
+                              )
+                            : TextFormField(
+                                decoration: InputDecoration(
+                                  labelText: S.of(context).stateValue,
+                                  filled: true,
+                                  fillColor: Colors.grey.shade50,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                                keyboardType: TextInputType.number,
+                                onChanged: (value) =>
+                                    condition.state = int.tryParse(value) ?? 0,
+                              ),
+                      ),
+                    ],
                   ),
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) =>
-                      condition.state = int.tryParse(value) ?? 0,
-                ),
+                ],
               ),
-            ],
-          ),
-        ],
-      ),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -354,7 +426,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
       children: [
         Expanded(
           child: _buildAddButton(
-            title: 'Add Device Condition',
+            title: S.of(context).addDeviceCondition,
             icon: Icons.devices,
             onTap: () => setState(() {
               _conditions.add(ConditionData(type: ConditionType.device));
@@ -364,7 +436,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
         SizedBox(width: 12.w),
         Expanded(
           child: _buildAddButton(
-            title: 'Add Sensor Condition',
+            title: S.of(context).addSensorCondition,
             icon: Icons.sensors,
             onTap: () => setState(() {
               _conditions.add(ConditionData(type: ConditionType.sensor));
@@ -377,8 +449,8 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
 
   Widget _buildActionsSection() {
     return _buildSection(
-      title: 'Actions',
-      subtitle: 'What should happen when triggered?',
+      title: S.of(context).actions,
+      subtitle: S.of(context).whatShouldHappen,
       child: Column(
         children: [
           ..._actions.map((action) => _buildActionCard(action)).toList(),
@@ -389,113 +461,124 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
   }
 
   Widget _buildActionCard(ActionData action) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 12.h),
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Icon(
-                action.type == ActionType.device
-                    ? Icons.devices
-                    : Icons.notifications,
-                color: Colors.green,
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: Text(
-                  action.type == ActionType.device
-                      ? 'Device Action'
-                      : 'Notification Action',
-                  style:
-                      TextStyle(fontWeight: FontWeight.w600, fontSize: 16.sp),
-                ),
-              ),
-              IconButton(
-                onPressed: () => setState(() => _actions.remove(action)),
-                icon: const Icon(Icons.delete, color: Colors.red),
-              ),
-            ],
+    return BlocBuilder<DevicesCubit, DevicesState>(
+      builder: (context, devicesState) {
+        final devices = devicesState.devices ?? [];
+
+        return Container(
+          margin: EdgeInsets.only(bottom: 12.h),
+          padding: EdgeInsets.all(16.w),
+          decoration: BoxDecoration(
+            color: ColorManager.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey.shade300),
           ),
-          SizedBox(height: 12.h),
-          if (action.type == ActionType.device) ...[
-            Row(
-              children: [
-                Expanded(
-                  child: DropdownButtonFormField<String>(
-                    value: action.deviceId,
-                    decoration: InputDecoration(
-                      labelText: 'Select Device',
-                      filled: true,
-                      fillColor: Colors.grey.shade50,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    action.type == ActionType.device
+                        ? Icons.devices
+                        : Icons.notifications,
+                    color: Colors.green,
+                  ),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: Text(
+                      action.type == ActionType.device
+                          ? S.of(context).deviceAction
+                          : S.of(context).notificationAction,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 16.sp),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => setState(() => _actions.remove(action)),
+                    icon: const Icon(Icons.delete, color: Colors.red),
+                  ),
+                ],
+              ),
+              SizedBox(height: 12.h),
+              if (action.type == ActionType.device) ...[
+                Row(
+                  children: [
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        value: action.deviceId,
+                        decoration: InputDecoration(
+                          labelText: S.of(context).selectDevice,
+                          filled: true,
+                          fillColor: Colors.grey.shade50,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                        items: _buildDeviceItems(devices),
+                        onChanged: (value) =>
+                            setState(() => action.deviceId = value),
                       ),
                     ),
-                    items: _getDeviceItems(),
-                    onChanged: (value) =>
-                        setState(() => action.deviceId = value),
-                  ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        value: action.state,
+                        decoration: InputDecoration(
+                          labelText: S.of(context).action,
+                          filled: true,
+                          fillColor: Colors.grey.shade50,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                        items: [
+                          DropdownMenuItem(
+                              value: "turn_on",
+                              child: Text(S.of(context).turnOn)),
+                          DropdownMenuItem(
+                              value: "turn_off",
+                              child: Text(S.of(context).turnOff)),
+                        ],
+                        onChanged: (value) =>
+                            setState(() => action.state = value),
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: DropdownButtonFormField<String>(
-                    value: action.state,
-                    decoration: InputDecoration(
-                      labelText: 'Action',
-                      filled: true,
-                      fillColor: Colors.grey.shade50,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
+              ] else ...[
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: S.of(context).notificationTitle,
+                    filled: true,
+                    fillColor: Colors.grey.shade50,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide.none,
                     ),
-                    items: const [
-                      DropdownMenuItem(value: 'on', child: Text('Turn On')),
-                      DropdownMenuItem(value: 'off', child: Text('Turn Off')),
-                    ],
-                    onChanged: (value) => setState(() => action.state = value),
                   ),
+                  onChanged: (value) => action.title = value,
+                ),
+                SizedBox(height: 12.h),
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: S.of(context).notificationMessage,
+                    filled: true,
+                    fillColor: Colors.grey.shade50,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  maxLines: 2,
+                  onChanged: (value) => action.message = value,
                 ),
               ],
-            ),
-          ] else ...[
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Notification Title',
-                filled: true,
-                fillColor: Colors.grey.shade50,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-              onChanged: (value) => action.title = value,
-            ),
-            SizedBox(height: 12.h),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Notification Message',
-                filled: true,
-                fillColor: Colors.grey.shade50,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-              maxLines: 2,
-              onChanged: (value) => action.message = value,
-            ),
-          ],
-        ],
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -504,7 +587,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
       children: [
         Expanded(
           child: _buildAddButton(
-            title: 'Add Device Action',
+            title: S.of(context).addDeviceAction,
             icon: Icons.devices,
             onTap: () => setState(() {
               _actions.add(ActionData(type: ActionType.device));
@@ -514,7 +597,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
         SizedBox(width: 12.w),
         Expanded(
           child: _buildAddButton(
-            title: 'Add Notification',
+            title: S.of(context).addNotification,
             icon: Icons.notifications,
             onTap: () => setState(() {
               _actions.add(ActionData(type: ActionType.notification));
@@ -537,16 +620,16 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
             onPressed: isLoading ? null : _saveAutomation,
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
+              foregroundColor: ColorManager.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
               elevation: 2,
             ),
             child: isLoading
-                ? const CircularProgressIndicator(color: Colors.white)
-                : const Text(
-                    'Save Automation',
+                ? const CircularProgressIndicator(color: ColorManager.white)
+                : Text(
+                    S.of(context).saveAutomation,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
           ),
@@ -599,7 +682,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
       child: Container(
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue.shade50 : Colors.white,
+          color: isSelected ? Colors.blue.shade50 : ColorManager.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected ? Colors.blue : Colors.grey.shade300,
@@ -672,32 +755,47 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
     );
   }
 
-  List<DropdownMenuItem<String>> _getDeviceItems() {
-    // Replace with actual devices from your DashboardBloc
-    return [
-      const DropdownMenuItem(
-          value: 'device1', child: Text('Living Room Light')),
-      const DropdownMenuItem(value: 'device2', child: Text('Bedroom AC')),
-      const DropdownMenuItem(value: 'device3', child: Text('Kitchen Fan')),
-    ];
+  // Helper methods to build dropdown items
+  List<DropdownMenuItem<String>> _buildDeviceItems(List<Device> devices) {
+    if (devices.isEmpty) {
+      return [
+        DropdownMenuItem(
+          value: null,
+          child: Text(S.of(context).noDevicesAvailable),
+        ),
+      ];
+    }
+    return devices.map((device) {
+      return DropdownMenuItem(
+        value: device.id,
+        child: Text(device.name),
+      );
+    }).toList();
   }
 
-  List<DropdownMenuItem<String>> _getSensorItems() {
-    // Replace with actual sensors from your data source
-    return [
-      const DropdownMenuItem(
-          value: 'sensor1', child: Text('Temperature Sensor')),
-      const DropdownMenuItem(value: 'sensor2', child: Text('Motion Sensor')),
-      const DropdownMenuItem(value: 'sensor3', child: Text('Light Sensor')),
-    ];
+  List<DropdownMenuItem<String>> _buildSensorItems(List<Sensor> sensors) {
+    if (sensors.isEmpty) {
+      return [
+        DropdownMenuItem(
+          value: null,
+          child: Text(S.of(context).noSensorsAvailable),
+        ),
+      ];
+    }
+    return sensors.map((sensor) {
+      return DropdownMenuItem(
+        value: sensor.id,
+        child: Text(sensor.name),
+      );
+    }).toList();
   }
 
   void _saveAutomation() {
     if (_formKey.currentState!.validate()) {
       if (_actions.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please add at least one action'),
+          SnackBar(
+            content: Text(S.of(context).pleaseAddAtLeastOneAction),
             backgroundColor: Colors.orange,
           ),
         );
@@ -707,8 +805,8 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
       if (_selectedTriggerType == TriggerType.schedule &&
           _selectedTime == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please select a time for schedule trigger'),
+          SnackBar(
+            content: Text(S.of(context).pleaseSelectTimeForSchedule),
             backgroundColor: Colors.orange,
           ),
         );
@@ -718,8 +816,8 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
       if (_selectedTriggerType == TriggerType.sensor &&
           (_selectedSensorId == null || _triggerValue == null)) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please configure sensor trigger completely'),
+          SnackBar(
+            content: Text(S.of(context).pleaseConfigureSensorTrigger),
             backgroundColor: Colors.orange,
           ),
         );
@@ -727,7 +825,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
       }
 
       final automation = _createAutomation();
-      context.read<AutomationCubit>().addAutomation(automation);
+      sl<AutomationCubit>().addAutomation(automation);
     }
   }
 

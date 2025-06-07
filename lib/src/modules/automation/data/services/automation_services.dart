@@ -20,7 +20,7 @@ class AutomationRemoteServices implements BaseAutomationServices {
         path: EndPoints.addAutomation,
         data: automation.toJson(),
       );
-      String id = response.data['id'];
+      String id = response.data["automation"]['_id'];
       return Right(automation.copyWith(id: id));
     } on Exception catch (e) {
       return Left(e);
