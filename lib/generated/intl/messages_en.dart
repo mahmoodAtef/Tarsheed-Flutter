@@ -33,16 +33,39 @@ class MessageLookup extends MessageLookupByLibrary {
     "accountDeletedSuccess": MessageLookupByLibrary.simpleMessage(
       "Account deleted successfully",
     ),
+    "action": MessageLookupByLibrary.simpleMessage("Action"),
+    "actions": MessageLookupByLibrary.simpleMessage("Actions"),
     "activeMode": MessageLookupByLibrary.simpleMessage("Active Mode"),
     "addDevice": MessageLookupByLibrary.simpleMessage("Add Device"),
+    "addDeviceAction": MessageLookupByLibrary.simpleMessage(
+      "Add Device Action",
+    ),
+    "addDeviceCondition": MessageLookupByLibrary.simpleMessage(
+      "Add Device Condition",
+    ),
+    "addNewAutomation": MessageLookupByLibrary.simpleMessage(
+      "Add New Automation",
+    ),
+    "addNotification": MessageLookupByLibrary.simpleMessage("Add Notification"),
+    "addSensorCondition": MessageLookupByLibrary.simpleMessage(
+      "Add Sensor Condition",
+    ),
+    "additionalConditions": MessageLookupByLibrary.simpleMessage(
+      "Additional conditions that must be met",
+    ),
     "aiSuggestions": MessageLookupByLibrary.simpleMessage("AI Suggestions"),
     "alreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
       "Already have an account?",
     ),
     "appName": MessageLookupByLibrary.simpleMessage("Tarsheed"),
+    "automationAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Automation added successfully",
+    ),
+    "automationName": MessageLookupByLibrary.simpleMessage("Automation Name"),
     "avgCost": MessageLookupByLibrary.simpleMessage("Avg Cost"),
     "avgUsage": MessageLookupByLibrary.simpleMessage("Avg Usage"),
     "backupSettings": MessageLookupByLibrary.simpleMessage("Backup Settings"),
+    "bedroomAC": MessageLookupByLibrary.simpleMessage("Bedroom AC"),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "cannotExceed": MessageLookupByLibrary.simpleMessage("cannot exceed"),
     "category": MessageLookupByLibrary.simpleMessage("Category"),
@@ -56,7 +79,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "codeNumbersOnly": MessageLookupByLibrary.simpleMessage(
       "Code must contain numbers only",
     ),
+    "conditionsOptional": MessageLookupByLibrary.simpleMessage(
+      "Conditions (Optional)",
+    ),
     "confirmDelete": MessageLookupByLibrary.simpleMessage("Confirm Delete"),
+    "confirmDeleteDevice": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete this device",
+    ),
+    "confirmDeleteSensor": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete this sensor",
+    ),
     "confirmNewPassword": MessageLookupByLibrary.simpleMessage(
       "Confirm New Password",
     ),
@@ -93,15 +125,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteAccountTitle": MessageLookupByLibrary.simpleMessage(
       "Delete Your Account?",
     ),
+    "deleteDevice": MessageLookupByLibrary.simpleMessage("Delete Device"),
     "deleteMyAccount": MessageLookupByLibrary.simpleMessage(
       "Delete My Account",
     ),
+    "deleteSensor": MessageLookupByLibrary.simpleMessage("Delete Device"),
     "description": MessageLookupByLibrary.simpleMessage("Description"),
     "descriptionRequired": MessageLookupByLibrary.simpleMessage(
       "Please enter description",
     ),
+    "deviceAction": MessageLookupByLibrary.simpleMessage("Device Action"),
     "deviceAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "Device added successfully",
+    ),
+    "deviceCondition": MessageLookupByLibrary.simpleMessage("Device Condition"),
+    "deviceDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Device deleted successfully",
     ),
     "devicesRunning": MessageLookupByLibrary.simpleMessage("Devices running"),
     "didNotReceive": MessageLookupByLibrary.simpleMessage(
@@ -130,6 +169,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "energySaving": MessageLookupByLibrary.simpleMessage("Energy Saving"),
     "energySavingMode": MessageLookupByLibrary.simpleMessage(
       "Energy Saving Mode",
+    ),
+    "enterAutomationName": MessageLookupByLibrary.simpleMessage(
+      "Enter Automation Name",
     ),
     "enterCode": MessageLookupByLibrary.simpleMessage("Enter Code"),
     "enterEmailToReceiveCode": MessageLookupByLibrary.simpleMessage(
@@ -170,6 +212,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Invalid email format",
     ),
     "isRequired": MessageLookupByLibrary.simpleMessage("is required"),
+    "kitchenFan": MessageLookupByLibrary.simpleMessage("Kitchen Fan"),
     "lanBackEneMO": MessageLookupByLibrary.simpleMessage(
       "Language, Backup, Energy Modes...",
     ),
@@ -179,6 +222,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "lastNameRequired": MessageLookupByLibrary.simpleMessage(
       "Last name is required",
     ),
+    "lightSensor": MessageLookupByLibrary.simpleMessage("Light Sensor"),
+    "livingRoomLight": MessageLookupByLibrary.simpleMessage(
+      "Living Room Light",
+    ),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "loginHere": MessageLookupByLibrary.simpleMessage("Login Here"),
     "low": MessageLookupByLibrary.simpleMessage("LOW"),
@@ -187,6 +234,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "medium": MessageLookupByLibrary.simpleMessage("Medium"),
     "month": MessageLookupByLibrary.simpleMessage("Month"),
+    "motionSensor": MessageLookupByLibrary.simpleMessage("Motion Sensor"),
     "mustBeAtLeast": MessageLookupByLibrary.simpleMessage("must be at least"),
     "name": MessageLookupByLibrary.simpleMessage("Name"),
     "nameMaxLength": MessageLookupByLibrary.simpleMessage(
@@ -202,10 +250,25 @@ class MessageLookup extends MessageLookupByLibrary {
       "No categories available",
     ),
     "noDataFound": MessageLookupByLibrary.simpleMessage("No data found"),
+    "noDevicesAvailable": MessageLookupByLibrary.simpleMessage(
+      "No devices available",
+    ),
     "noRoomsAvailable": MessageLookupByLibrary.simpleMessage(
       "No rooms available",
     ),
     "noRouteFound": MessageLookupByLibrary.simpleMessage("No route found"),
+    "noSensorsAvailable": MessageLookupByLibrary.simpleMessage(
+      "No sensors available",
+    ),
+    "notificationAction": MessageLookupByLibrary.simpleMessage(
+      "Notification Action",
+    ),
+    "notificationMessage": MessageLookupByLibrary.simpleMessage(
+      "Notification Message",
+    ),
+    "notificationTitle": MessageLookupByLibrary.simpleMessage(
+      "Notification Title",
+    ),
     "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
     "orContinueWith": MessageLookupByLibrary.simpleMessage("Or continue with"),
     "originalPasswordNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -246,8 +309,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "pinNumberRequired": MessageLookupByLibrary.simpleMessage(
       "Please enter Pin Number",
     ),
+    "pleaseAddAtLeastOneAction": MessageLookupByLibrary.simpleMessage(
+      "Please add at least one action",
+    ),
+    "pleaseConfigureSensorTrigger": MessageLookupByLibrary.simpleMessage(
+      "Please configure sensor trigger completely",
+    ),
     "pleaseEnterVerificationCode": MessageLookupByLibrary.simpleMessage(
       "Please enter the verification code",
+    ),
+    "pleaseSelectTimeForSchedule": MessageLookupByLibrary.simpleMessage(
+      "Please select a time for schedule trigger",
     ),
     "priority": MessageLookupByLibrary.simpleMessage("Priority"),
     "priorityRequired": MessageLookupByLibrary.simpleMessage(
@@ -269,11 +341,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "room": MessageLookupByLibrary.simpleMessage("Room"),
     "roomRequired": MessageLookupByLibrary.simpleMessage("Please select room"),
     "rooms": MessageLookupByLibrary.simpleMessage("Rooms"),
+    "runAtSpecificTime": MessageLookupByLibrary.simpleMessage(
+      "Run at specific time",
+    ),
+    "runWhenSensorValueChanges": MessageLookupByLibrary.simpleMessage(
+      "Run when sensor value changes",
+    ),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
+    "saveAutomation": MessageLookupByLibrary.simpleMessage("Save Automation"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("Save Changes"),
+    "schedule": MessageLookupByLibrary.simpleMessage("Schedule"),
     "security": MessageLookupByLibrary.simpleMessage("Security"),
+    "selectDevice": MessageLookupByLibrary.simpleMessage("Select Device"),
+    "selectSensor": MessageLookupByLibrary.simpleMessage("Select Sensor"),
+    "selectTime": MessageLookupByLibrary.simpleMessage("Select Time"),
+    "sensor": MessageLookupByLibrary.simpleMessage("Sensor"),
     "sensorAdded": MessageLookupByLibrary.simpleMessage(
       "Sensor added successfully",
+    ),
+    "sensorCondition": MessageLookupByLibrary.simpleMessage("Sensor Condition"),
+    "sensorDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Sensor deleted successfully",
     ),
     "sensors": MessageLookupByLibrary.simpleMessage("Sensors"),
     "sentEmailMessage": MessageLookupByLibrary.simpleMessage(
@@ -285,11 +373,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "signUp": MessageLookupByLibrary.simpleMessage("Sign up"),
     "sleepMode": MessageLookupByLibrary.simpleMessage("Sleep Mode"),
     "softwareUpdate": MessageLookupByLibrary.simpleMessage("Software Update"),
+    "stateValue": MessageLookupByLibrary.simpleMessage("State/Value"),
     "superEnergySavingMode": MessageLookupByLibrary.simpleMessage(
       "Super Energy Saving Mode",
     ),
     "takeControl": MessageLookupByLibrary.simpleMessage(
       "Take Control of\nYour Energy Usage",
+    ),
+    "temperatureSensor": MessageLookupByLibrary.simpleMessage(
+      "Temperature Sensor",
     ),
     "tier": MessageLookupByLibrary.simpleMessage("tier"),
     "tier1": MessageLookupByLibrary.simpleMessage("Tier 1 (0-50 kWh)"),
@@ -299,6 +391,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "tier5": MessageLookupByLibrary.simpleMessage("Tier 5 (351-650 kWh)"),
     "tier6Plus": MessageLookupByLibrary.simpleMessage("Tier 6+ (651+ kWh)"),
     "today": MessageLookupByLibrary.simpleMessage("Today"),
+    "trigger": MessageLookupByLibrary.simpleMessage("Trigger"),
+    "triggerValue": MessageLookupByLibrary.simpleMessage("Trigger Value"),
+    "turnOff": MessageLookupByLibrary.simpleMessage("Turn Off"),
+    "turnOn": MessageLookupByLibrary.simpleMessage("Turn On"),
     "twoStepVerification": MessageLookupByLibrary.simpleMessage(
       "Two-Step Verification",
     ),
@@ -321,6 +417,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "welcomeBack": MessageLookupByLibrary.simpleMessage(
       "Welcome back you’ve been missed!",
     ),
+    "whatShouldHappen": MessageLookupByLibrary.simpleMessage(
+      "What should happen when triggered?",
+    ),
+    "whenShouldAutomationRun": MessageLookupByLibrary.simpleMessage(
+      "When should this automation run?",
+    ),
     "years": MessageLookupByLibrary.simpleMessage("Years"),
+    "yesDelete": MessageLookupByLibrary.simpleMessage("Yes, Delete"),
   };
 }

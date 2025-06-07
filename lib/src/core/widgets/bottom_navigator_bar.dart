@@ -39,8 +39,6 @@ class _BottomNavigatorState extends State<BottomNavigator> {
               BottomNavigationBarItem(
                   icon: Icon(Icons.notifications_outlined), label: ""),
               BottomNavigationBarItem(icon: Icon(Icons.settings), label: ""),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.person_outline), label: ""),
             ],
           );
         },

@@ -85,11 +85,7 @@ class _CustomContainerState extends State<CustomContainer> {
                     ),
                   ),
                 if (widget.icon != null)
-                  IconButton(
-                    onPressed: widget.onpressed,
-                    icon: Icon(widget.icon,
-                        size: 20.sp, color: ColorManager.black),
-                  ),
+                  Icon(widget.icon, color: ColorManager.black),
               ],
             ),
           ),

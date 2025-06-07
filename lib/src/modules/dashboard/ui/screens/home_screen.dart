@@ -10,6 +10,7 @@ import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
+import 'package:tarsheed/src/modules/dashboard/cubits/reports_cubit/reports_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/devices/devices.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/devices/card_devices.dart';
@@ -28,17 +29,20 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
-        child: Builder(builder: (context) {
-          _initializeData();
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _HeaderSection(),
-              _EnergyConsumptionSection(),
-              _HomeContentSection(),
-            ],
-          );
-        }),
+        child: BlocProvider<DevicesCubit>(
+          create: (context) => sl<DevicesCubit>(),
+          child: Builder(builder: (context) {
+            _initializeData();
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _HeaderSection(),
+                _EnergyConsumptionSection(),
+                _HomeContentSection(),
+              ],
+            );
+          }),
+        ),
       ),
     );
   }
@@ -46,9 +50,10 @@ class HomeScreen extends StatelessWidget {
   void _initializeData() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final bloc = sl<DashboardBloc>();
+      final reportsCubit = sl<ReportsCubit>();
       final DevicesCubit devicesCubit = sl<DevicesCubit>();
       final now = DateTime.now();
-      bloc.add(GetUsageReportEvent());
+      reportsCubit.getUsageReport(period: "${now.month}-${now.year}");
       bloc.add(GetRoomsEvent());
       bloc.add(GetDevicesCategoriesEvent());
       devicesCubit.getDevices();
@@ -189,33 +194,35 @@ class _ClockWidgetState extends State<_ClockWidget> {
 class _ConnectedDevicesIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 12.w,
-          height: 12.h,
-          decoration: const BoxDecoration(
-            color: Colors.green,
-            shape: BoxShape.circle,
-          ),
-        ),
-        SizedBox(width: 4.w),
-        BlocSelector<DashboardBloc, DashboardState, int>(
-          selector: (state) {
-            final bloc = context.read<DashboardBloc>();
-            return bloc.devices.where((e) => e.state).length;
-          },
-          builder: (context, activeDevicesCount) {
-            return Text(
-              " $activeDevicesCount ${S.of(context).connectedDevices} ",
+    return BlocBuilder<DevicesCubit, DevicesState>(
+      buildWhen: (previous, current) =>
+          current is GetDevicesLoading ||
+          current is GetDevicesSuccess ||
+          current is GetDevicesError ||
+          current is ToggleDeviceStatusSuccess,
+      builder: (context, state) {
+        return Row(
+          children: [
+            Container(
+              width: 12.w,
+              height: 12.h,
+              decoration: const BoxDecoration(
+                color: Colors.green,
+                shape: BoxShape.circle,
+              ),
+            ),
+            SizedBox(width: 4.w),
+            Text(
+              " ${state.devices?.where((e) => e.state == true).length}"
+              " ${S.of(context).connectedDevices} ",
               style: TextStyle(
                 fontSize: 16.sp,
                 color: Colors.grey,
               ),
-            );
-          },
-        ),
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -257,7 +264,7 @@ class _ProfileAvatar extends StatelessWidget {
 class _EnergyConsumptionSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DashboardBloc, DashboardState>(
+    return BlocConsumer<ReportsCubit, ReportsState>(
       listenWhen: (previous, current) =>
           current is GetUsageReportSuccess || current is GetUsageReportError,
       listener: (context, state) {

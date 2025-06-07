@@ -53,38 +53,41 @@ class _DevicesScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorManager.white,
-      extendBody: true,
-      body: RefreshIndicator(
-        onRefresh: () async {
-          context.read<DevicesCubit>().getDevices(refresh: true);
-        },
-        child: Stack(
-          children: [
-            const Positioned.fill(child: BackGroundRectangle()),
-            SingleChildScrollView(
-              child: Column(
-                spacing: 20.h,
-                children: [
-                  CustomAppBar(text: 'Devices'),
-                  DeviceFilterHeader(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: DevicesListView(),
-                  )
-                ],
+    return BlocProvider(
+      create: (context) => sl<DevicesCubit>(),
+      child: Scaffold(
+        backgroundColor: ColorManager.white,
+        extendBody: true,
+        body: RefreshIndicator(
+          onRefresh: () async {
+            context.read<DevicesCubit>().getDevices(refresh: true);
+          },
+          child: Stack(
+            children: [
+              const Positioned.fill(child: BackGroundRectangle()),
+              SingleChildScrollView(
+                child: Column(
+                  spacing: 20.h,
+                  children: [
+                    CustomAppBar(text: 'Devices'),
+                    DeviceFilterHeader(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: DevicesListView(),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.push(AddDeviceScreen());
-        },
-        backgroundColor: ColorManager.primary,
-        child: const Icon(Icons.add),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            context.push(AddDeviceScreen());
+          },
+          backgroundColor: ColorManager.primary,
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }

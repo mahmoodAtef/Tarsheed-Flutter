@@ -17,7 +17,7 @@ class ThemeManager {
   static const Color textHint = Color(0xFFBDBDBD);
   static const Color textLight = Color(0xFFFFFFFF);
 
-  static const Color cardBackground = Color(0xFFFFFFFF);
+  static const Color cardBackground = Colors.black;
   static const Color dividerColor = Color(0xFFE0E0E0);
   static const Color iconGray = Color(0xFF9E9E9E);
 
@@ -211,7 +211,7 @@ class ThemeManager {
       cardTheme: CardThemeData(
         color: cardBackground,
         elevation: 2,
-        shadowColor: Colors.black.withOpacity(0.1),
+        shadowColor: Colors.black,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),

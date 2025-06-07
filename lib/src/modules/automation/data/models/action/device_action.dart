@@ -13,6 +13,8 @@ class DeviceAction extends AutomationAction {
         deviceId: json['device_id'],
         state: json['state'],
       );
+
+  @override
   Map<String, dynamic> toJson() => {
         "type": "DEVICE",
         "data": {"deviceId": deviceId, "state": state}
