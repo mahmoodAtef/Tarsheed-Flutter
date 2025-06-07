@@ -12,4 +12,10 @@ class AssetsManager {
   static const String unauthorizedError = "assets/images/errors/un_auth.png";
   static const String badRequestError = "assets/images/errors/bad_request.png";
   static const String noDataFound = "assets/images/no_data_found.png";
+
+  // sensor images
+  static const String temperatureSensor = "assets/images/sensors/temp.png";
+  static const String currentSensor = "assets/images/sensors/current.png";
+  static const String motionSensor = "assets/images/sensors/motion.png";
+  static const String vibrationSensor = "assets/images/sensors/vibration.png";
 }

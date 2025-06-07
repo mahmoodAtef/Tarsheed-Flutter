@@ -8,7 +8,6 @@ import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/sensor/sensor_card.dart';
 
 import '../../../../core/widgets/appbar.dart';
-import '../../../../core/widgets/bottom_navigator_bar.dart';
 import '../../../../core/widgets/rectangle_background.dart';
 import '../../data/models/sensor_category.dart';
 import 'add_sensor_form_page.dart';
@@ -64,18 +63,23 @@ class SensorsScreen extends StatelessWidget {
                             DashboardBloc.get().sensors.isEmpty) {
                           return NoDataWidget();
                         } else {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: DashboardBloc.get().sensors.length,
-                            itemBuilder: (context, index) {
-                              final sensor = DashboardBloc.get().sensors[index];
-                              final category = SensorCategory.values.firstWhere(
-                                (e) => e.id == sensor.categoryId,
-                                orElse: () => SensorCategory.temperature,
-                              );
-                              return SensorCard(sensor: sensor);
-                            },
+                          return Padding(
+                            padding: EdgeInsets.all(8.0.w),
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: DashboardBloc.get().sensors.length,
+                              itemBuilder: (context, index) {
+                                final sensor =
+                                    DashboardBloc.get().sensors[index];
+                                final category =
+                                    SensorCategory.values.firstWhere(
+                                  (e) => e.id == sensor.categoryId,
+                                  orElse: () => SensorCategory.temperature,
+                                );
+                                return SensorCard(sensor: sensor);
+                              },
+                            ),
                           );
                         }
                       }),
@@ -94,7 +98,6 @@ class SensorsScreen extends StatelessWidget {
         },
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: const BottomNavigator(),
     );
   }
 }
