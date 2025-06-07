@@ -10,8 +10,10 @@ import 'package:tarsheed/src/modules/automation/data/repositories/repository.dar
 import 'package:tarsheed/src/modules/automation/data/services/automation_services.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
+import 'package:tarsheed/src/modules/dashboard/cubits/reports_cubit/reports_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/data/repositories/dashboard_repository.dart';
 import 'package:tarsheed/src/modules/dashboard/data/repositories/devices/devices_repository.dart';
+import 'package:tarsheed/src/modules/dashboard/data/repositories/report/report_repository.dart';
 import 'package:tarsheed/src/modules/dashboard/data/services/dashboard_local_services.dart';
 import 'package:tarsheed/src/modules/dashboard/data/services/dashboard_remote_services.dart';
 import 'package:tarsheed/src/modules/dashboard/data/services/devices/devices_remote_services.dart';
@@ -19,6 +21,7 @@ import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/data/services/settings_local_services.dart';
 import 'package:tarsheed/src/modules/settings/data/services/settings_remote_services.dart';
 
+import '../../modules/dashboard/data/services/report/report_remote_services.dart';
 import '../../modules/settings/data/repositories/settings_repository.dart';
 
 final sl = GetIt.instance;
@@ -37,8 +40,8 @@ class ServiceLocator {
     sl.registerLazySingleton<DashboardBloc>(() => DashboardBloc());
     // cubits
     sl.registerSingleton<DevicesCubit>(DevicesCubit());
-
     sl.registerLazySingleton(() => AutomationCubit());
+    sl.registerLazySingleton(() => ReportsCubit(sl<ReportsRepository>()));
   }
 
   static void _initializeRemoteServices() {
@@ -53,6 +56,7 @@ class ServiceLocator {
 
     sl.registerLazySingleton<BaseAutomationServices>(
         () => AutomationRemoteServices());
+    sl.registerLazySingleton<BaseReportService>(() => ReportRemoteServices());
   }
 
   static void _initializeLocalServices() {
@@ -72,5 +76,6 @@ class ServiceLocator {
     sl.registerSingleton(DashboardRepository(sl(), sl(), sl()));
     sl.registerSingleton(DevicesRepository(sl()));
     sl.registerSingleton(AutomationRepository(sl()));
+    sl.registerLazySingleton(() => ReportsRepository(sl()));
   }
 }

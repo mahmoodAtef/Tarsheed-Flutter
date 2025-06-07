@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
+import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
+import 'package:tarsheed/src/modules/dashboard/cubits/reports_cubit/reports_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/ai-sugg_card.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/report_large_card.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/usage_card.dart';
 
 import '../../../../core/widgets/appbar.dart';
-import '../../bloc/dashboard_bloc.dart';
 import '../widgets/chart.dart';
 
 class ReportsPage extends StatelessWidget {
@@ -35,7 +36,6 @@ class _ReportsContent extends StatefulWidget {
 }
 
 class _ReportsContentState extends State<_ReportsContent> {
-  final List<String> _periods = [S.current.month];
   int _selectedPeriodIndex = 0;
   String _currentPeriod = "";
 
@@ -55,9 +55,9 @@ class _ReportsContentState extends State<_ReportsContent> {
   }
 
   void _fetchInitialData() {
-    final bloc = context.read<DashboardBloc>();
-    bloc.add(GetUsageReportEvent()); // period: "04-${DateTime.now().year}"
-    bloc.add(GetAISuggestionsEvent());
+    final reportsCubit = sl<ReportsCubit>();
+    reportsCubit.getUsageReport(period: _currentPeriod, isRefresh: true);
+    reportsCubit.getAISuggestions();
   }
 
   void _onPeriodChanged(int index) {
@@ -66,16 +66,14 @@ class _ReportsContentState extends State<_ReportsContent> {
     });
     final now = DateTime.now();
     _currentPeriod = "${now.month}-${now.year}";
-    context
-        .read<DashboardBloc>()
-        .add(GetUsageReportEvent(period: _currentPeriod));
+    sl<ReportsCubit>().getUsageReport(period: _currentPeriod, isRefresh: true);
   }
 
   void _onMonthChanged(String period) {
     setState(() {
       _currentPeriod = period;
     });
-    context.read<DashboardBloc>().add(GetUsageReportEvent(period: period));
+    sl<ReportsCubit>().getUsageReport(period: _currentPeriod, isRefresh: true);
   }
 
   @override
@@ -99,7 +97,7 @@ class _ReportsContentState extends State<_ReportsContent> {
 class _ReportContentSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DashboardBloc, DashboardState>(
+    return BlocBuilder<ReportsCubit, ReportsState>(
       buildWhen: (previous, current) =>
           current is GetUsageReportSuccess ||
           current is GetUsageReportError ||
@@ -116,7 +114,7 @@ class _ReportContentSection extends StatelessWidget {
           );
         }
         if (state is GetUsageReportSuccess) {
-          return _buildReportContent(context, state.report);
+          return _buildReportContent(context, state.report!);
         }
         return Container();
       },
@@ -162,7 +160,7 @@ class _ReportContentSection extends StatelessWidget {
 class _ChartSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DashboardBloc, DashboardState>(
+    return BlocBuilder<ReportsCubit, ReportsState>(
       buildWhen: (previous, current) =>
           current is GetUsageReportSuccess ||
           current is GetUsageReportError ||
@@ -178,9 +176,10 @@ class _ChartSection extends StatelessWidget {
             ),
           );
         }
-        if (DashboardBloc.get().report != null) {
+
+        if (state.report != null || state is GetUsageReportSuccess) {
           return UsageChartWidget(
-            chartData: DashboardBloc.get().report!.consumptionIntervals,
+            chartData: state.report!.consumptionIntervals,
           );
         }
         return Container();
@@ -223,6 +222,7 @@ class _AISuggestionsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       spacing: 20.h,
       children: [
         Text(S.of(context).aiSuggestions,
@@ -230,7 +230,7 @@ class _AISuggestionsSection extends StatelessWidget {
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
                 color: ColorManager.black)),
-        BlocBuilder<DashboardBloc, DashboardState>(
+        BlocBuilder<ReportsCubit, ReportsState>(
           buildWhen: (previous, current) =>
               current is GetAISuggestionsLoading ||
               current is GetAISuggestionsSuccess ||
@@ -256,7 +256,14 @@ class _AISuggestionsSection extends StatelessWidget {
             }
 
             if (state is GetAISuggestionsSuccess) {
-              return AISuggestionCard(suggestion: state.suggestion);
+              return ListView.separated(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) => AISuggestionCard(
+                    suggestion: state.suggestion.recommendations[index]),
+                separatorBuilder: (context, index) => Divider(),
+                itemCount: state.suggestion.recommendations.length,
+              );
             }
 
             return const SizedBox.shrink();

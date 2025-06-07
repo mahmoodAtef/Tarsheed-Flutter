@@ -25,9 +25,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
   DashboardBloc() : super(DashboardInitial()) {
     on<DashboardEvent>((event, emit) async {
-      if (event is GetUsageReportEvent) {
-        await _handleGetUsageReportEvent(event, emit);
-      } else if (event is GetDevicesCategoriesEvent) {
+      if (event is GetDevicesCategoriesEvent) {
         await _handleGetCategoriesEvent(event, emit);
       } else if (event is GetRoomsEvent) {
         await _handleGetRoomsEvent(event, emit);
@@ -35,8 +33,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         await _handleAddRoomEvent(event, emit);
       } else if (event is DeleteRoomEvent) {
         await _handleDeleteRoomEvent(event, emit);
-      } else if (event is GetAISuggestionsEvent) {
-        await _handleGetAISuggestionsEvent(event, emit);
       } else if (event is AddSensorEvent) {
         await _handleAddSensorEvent(event, emit);
       } else if (event is GetSensorsEvent) {
@@ -60,30 +56,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     rooms = [];
     sensors = [];
     categories = [];
-  }
-
-  // Event handlers
-  _handleGetUsageReportEvent(
-      GetUsageReportEvent event, Emitter<DashboardState> emit) async {
-    if (report == null || event.isRefresh == true) {
-      emit(GetUsageReportLoading());
-      final result = await _repository.getUsageReport(period: event.period);
-      result.fold((l) => emit(GetUsageReportError(l)), (r) {
-        report = r;
-        emit(GetUsageReportSuccess(r));
-      });
-    } else {
-      emit(GetUsageReportSuccess(report!));
-    }
-  }
-
-  // AI SUGGESTIONS
-  _handleGetAISuggestionsEvent(
-      GetAISuggestionsEvent event, Emitter<DashboardState> emit) async {
-    emit(GetAISuggestionsLoading());
-    final result = await _repository.getAISuggestion();
-    result.fold((l) => emit(GetAISuggestionsError(l)),
-        (r) => emit(GetAISuggestionsSuccess(r)));
   }
 
   // rooms events handlers

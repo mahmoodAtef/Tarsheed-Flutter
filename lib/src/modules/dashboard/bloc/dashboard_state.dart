@@ -10,51 +10,6 @@ final class DashboardInitial extends DashboardState {
 }
 
 // usage reports
-class UsageReportState extends DashboardState {
-  const UsageReportState();
-  @override
-  List<Object?> get props => [];
-}
-
-final class GetUsageReportLoading extends UsageReportState {}
-
-final class GetUsageReportSuccess extends UsageReportState {
-  final Report report;
-  const GetUsageReportSuccess(this.report);
-
-  @override
-  List<Object?> get props => [report];
-}
-
-final class GetUsageReportError extends UsageReportState {
-  final Exception exception;
-  const GetUsageReportError(this.exception);
-  @override
-  List<Object?> get props => [exception];
-}
-
-// ai suggestions
-class AISuggestionsState extends DashboardState {
-  const AISuggestionsState();
-  @override
-  List<Object?> get props => [];
-}
-
-final class GetAISuggestionsLoading extends AISuggestionsState {}
-
-final class GetAISuggestionsSuccess extends AISuggestionsState {
-  final String suggestion;
-  const GetAISuggestionsSuccess(this.suggestion);
-  @override
-  List<Object?> get props => [suggestion];
-}
-
-final class GetAISuggestionsError extends AISuggestionsState {
-  final Exception exception;
-  const GetAISuggestionsError(this.exception);
-  @override
-  List<Object?> get props => [exception];
-}
 
 // rooms
 final class RoomState extends DashboardState {

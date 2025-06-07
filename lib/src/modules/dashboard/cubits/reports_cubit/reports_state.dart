@@ -2,7 +2,8 @@ part of 'reports_cubit.dart';
 
 sealed class ReportsState extends Equatable {
   final Report? report;
-  const ReportsState({this.report});
+  final AIRecommendations? aiSuggestions;
+  const ReportsState({this.report, this.aiSuggestions});
 }
 
 final class ReportsInitial extends ReportsState {
@@ -42,7 +43,7 @@ final class GetAISuggestionsLoading extends AISuggestionsState {
 }
 
 final class GetAISuggestionsSuccess extends AISuggestionsState {
-  final String suggestion;
+  final AIRecommendations suggestion;
   const GetAISuggestionsSuccess(this.suggestion, {super.report});
   @override
   List<Object?> get props => [suggestion];

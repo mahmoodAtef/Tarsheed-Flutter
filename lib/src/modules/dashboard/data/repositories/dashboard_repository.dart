@@ -5,7 +5,6 @@ import 'package:tarsheed/src/core/services/connectivity_services.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/category.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device_creation_form.dart';
-import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/room.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/sensor.dart';
 import 'package:tarsheed/src/modules/dashboard/data/services/dashboard_local_services.dart';
@@ -28,14 +27,6 @@ class DashboardRepository {
   }
 
   // Usage Report
-  Future<Either<Exception, Report>> getUsageReport({String? period}) async {
-    return await _remoteServices.getUsageReport(period: period);
-  }
-
-  // AI Suggestions
-  Future<Either<Exception, String>> getAISuggestion() async {
-    return await _remoteServices.getAISuggestions();
-  }
 
   // Devices
   Future<Either<Exception, List<Device>>> getDevices() async {
