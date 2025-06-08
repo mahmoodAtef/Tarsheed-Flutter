@@ -17,8 +17,4 @@ class NotificationsRepository {
   Future<Either<Exception, Unit>> markAllNotificationsAsRead() async {
     return _notificationsService.markAllNotificationsAsRead();
   }
-
-  Future<Either<Exception, Unit>> updateToken() {
-    return _notificationsService.updateToken();
-  }
 }

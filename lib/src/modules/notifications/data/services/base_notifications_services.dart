@@ -7,6 +7,4 @@ abstract class BaseNotificationsService {
   Future<Either<Exception, Unit>> markNotificationAsRead(String notificationId);
 
   Future<Either<Exception, Unit>> markAllNotificationsAsRead();
-
-  Future<Either<Exception, Unit>> updateToken();
 }
