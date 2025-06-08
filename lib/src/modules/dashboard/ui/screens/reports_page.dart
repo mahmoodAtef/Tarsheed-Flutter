@@ -241,12 +241,6 @@ class _AISuggestionsSection extends StatelessWidget {
             }
 
             if (state is GetAISuggestionsError) {
-              print(
-                  "*************************************************************************************");
-              print("AI Suggestions Error: ${state.exception}");
-              print(
-                  "*************************************************************************************");
-
               return SizedBox(
                 height: 120.h,
                 child: CustomErrorWidget(
@@ -265,7 +259,6 @@ class _AISuggestionsSection extends StatelessWidget {
                 itemCount: state.suggestion.recommendations.length,
               );
             }
-
             return const SizedBox.shrink();
           },
         ),
