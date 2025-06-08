@@ -5,8 +5,8 @@ import 'package:tarsheed/src/core/widgets/bottom_navigator_bar.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/reports_cubit/reports_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/home_screen.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/reports_page.dart';
+import 'package:tarsheed/src/modules/notifications/ui/screens/notification_page.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
-import 'package:tarsheed/src/modules/settings/ui/screens/notification_page.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/setting.dart';
 
 class MainScreen extends StatelessWidget {

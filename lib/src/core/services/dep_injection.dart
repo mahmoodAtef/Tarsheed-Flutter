@@ -17,6 +17,10 @@ import 'package:tarsheed/src/modules/dashboard/data/repositories/report/report_r
 import 'package:tarsheed/src/modules/dashboard/data/services/dashboard_local_services.dart';
 import 'package:tarsheed/src/modules/dashboard/data/services/dashboard_remote_services.dart';
 import 'package:tarsheed/src/modules/dashboard/data/services/devices/devices_remote_services.dart';
+import 'package:tarsheed/src/modules/notifications/cubit/notifications_cubit.dart';
+import 'package:tarsheed/src/modules/notifications/data/repositories/notifications_repository.dart';
+import 'package:tarsheed/src/modules/notifications/data/services/base_notifications_services.dart';
+import 'package:tarsheed/src/modules/notifications/data/services/notifications_services.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/data/services/settings_local_services.dart';
 import 'package:tarsheed/src/modules/settings/data/services/settings_remote_services.dart';
@@ -42,6 +46,8 @@ class ServiceLocator {
     sl.registerSingleton<DevicesCubit>(DevicesCubit());
     sl.registerLazySingleton(() => AutomationCubit());
     sl.registerLazySingleton(() => ReportsCubit(sl<ReportsRepository>()));
+    sl.registerLazySingleton(
+        () => NotificationsCubit(sl<NotificationsRepository>()));
   }
 
   static void _initializeRemoteServices() {
@@ -57,6 +63,9 @@ class ServiceLocator {
     sl.registerLazySingleton<BaseAutomationServices>(
         () => AutomationRemoteServices());
     sl.registerLazySingleton<BaseReportService>(() => ReportRemoteServices());
+    // notifications
+    sl.registerLazySingleton<BaseNotificationsService>(
+        () => NotificationsRemoteService());
   }
 
   static void _initializeLocalServices() {
@@ -77,5 +86,6 @@ class ServiceLocator {
     sl.registerSingleton(DevicesRepository(sl()));
     sl.registerSingleton(AutomationRepository(sl()));
     sl.registerLazySingleton(() => ReportsRepository(sl()));
+    sl.registerLazySingleton(() => NotificationsRepository(sl()));
   }
 }

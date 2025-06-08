@@ -45,4 +45,11 @@ class EndPoints {
   static const String deleteAutomation = '/automation/delete/';
   static const String getAutomations = '/automation/getAll/';
   static const String changeAutomationStatus = '/automation/status/';
+
+  // NOTIFICATIONS ENDPOINTS
+  static const String getNotifications = '/notifications/getAll/';
+  static const String markNotificationAsRead = '/notifications/markAsRead/';
+  static const String markAllNotificationsAsRead =
+      '/notifications/markAllAsRead/';
+  static const String updateToken = '/notifications/updateToken/';
 }
