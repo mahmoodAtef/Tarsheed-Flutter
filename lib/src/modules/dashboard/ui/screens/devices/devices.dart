@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
-import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
@@ -26,12 +25,11 @@ class DevicesScreen extends StatefulWidget {
 
 class _DevicesScreenState extends State<DevicesScreen> {
   late final DevicesCubit _devicesCubit;
-  bool _isFirstLoad = true;
 
   @override
   void initState() {
     super.initState();
-    _devicesCubit = sl<DevicesCubit>();
+    _devicesCubit = DevicesCubit.get();
 
     // Only fetch devices if they haven't been loaded yet
     if (_devicesCubit.state is DevicesInitial) {
@@ -41,8 +39,8 @@ class _DevicesScreenState extends State<DevicesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<DevicesCubit>.value(
-      value: _devicesCubit,
+    return BlocProvider(
+      create: (context) => _devicesCubit,
       child: const _DevicesScreenContent(),
     );
   }
@@ -53,41 +51,38 @@ class _DevicesScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<DevicesCubit>(),
-      child: Scaffold(
-        backgroundColor: ColorManager.white,
-        extendBody: true,
-        body: RefreshIndicator(
-          onRefresh: () async {
-            context.read<DevicesCubit>().getDevices(refresh: true);
-          },
-          child: Stack(
-            children: [
-              const Positioned.fill(child: BackGroundRectangle()),
-              SingleChildScrollView(
-                child: Column(
-                  spacing: 20.h,
-                  children: [
-                    CustomAppBar(text: 'Devices'),
-                    DeviceFilterHeader(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: DevicesListView(),
-                    )
-                  ],
-                ),
+    return Scaffold(
+      backgroundColor: ColorManager.white,
+      extendBody: true,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          DevicesCubit.get().getDevices(refresh: true);
+        },
+        child: Stack(
+          children: [
+            const Positioned.fill(child: BackGroundRectangle()),
+            SingleChildScrollView(
+              child: Column(
+                spacing: 20.h,
+                children: [
+                  CustomAppBar(text: 'Devices'),
+                  DeviceFilterHeader(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: DevicesListView(),
+                  )
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            context.push(AddDeviceScreen());
-          },
-          backgroundColor: ColorManager.primary,
-          child: const Icon(Icons.add),
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.push(AddDeviceScreen());
+        },
+        backgroundColor: ColorManager.primary,
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -113,8 +108,7 @@ class DeviceFilterHeader extends StatelessWidget {
               child: FilterTabsRow(
                 selectedTabIndex: filterType.index,
                 onTabSelected: (index) {
-                  context
-                      .read<DevicesCubit>()
+                  DevicesCubit.get()
                       .updateFilterType(DeviceFilterType.values[index]);
                 },
               ),
@@ -122,7 +116,7 @@ class DeviceFilterHeader extends StatelessWidget {
             // Sort Order Toggle Button
             IconButton(
               onPressed: () {
-                context.read<DevicesCubit>().toggleSortOrder();
+                DevicesCubit.get().toggleSortOrder();
               },
               icon: Icon(
                 sortOrder == SortOrder.ascending
@@ -186,9 +180,8 @@ class DevicesListView extends StatelessWidget {
           return NoDataWidget();
         }
 
-        final rooms = sl<DashboardBloc>().rooms;
-        final filteredData =
-            context.read<DevicesCubit>().getFilteredDevices(rooms);
+        final rooms = DashboardBloc.get().rooms;
+        final filteredData = DevicesCubit.get().getFilteredDevices(rooms);
 
         if (state.filterType == DeviceFilterType.rooms) {
           final devicesByRoom = filteredData as Map<String, List<Device>>;

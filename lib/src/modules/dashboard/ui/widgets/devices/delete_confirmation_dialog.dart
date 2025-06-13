@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
-import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 
 class DeleteDeviceDialog extends StatelessWidget {
@@ -14,7 +13,7 @@ class DeleteDeviceDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<DevicesCubit>(),
+      create: (context) => DevicesCubit.get(),
       child: BlocConsumer<DevicesCubit, DevicesState>(
         listener: (context, state) {
           if (state is DeleteDeviceSuccess) {
@@ -26,7 +25,7 @@ class DeleteDeviceDialog extends StatelessWidget {
             ExceptionManager.showMessage(state.exception);
           }
         },
-        bloc: sl<DevicesCubit>(),
+        bloc: DevicesCubit.get(),
         buildWhen: (current, previous) =>
             current is DeleteDeviceLoading ||
             current is DeleteDeviceSuccess ||
@@ -42,7 +41,7 @@ class DeleteDeviceDialog extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  sl<DevicesCubit>().deleteDevice(deviceId);
+                  DevicesCubit.get().deleteDevice(deviceId);
                 },
                 style:
                     ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),

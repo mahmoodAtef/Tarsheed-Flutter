@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
-import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 
 import '../../../../../core/utils/color_manager.dart';
@@ -36,7 +35,7 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<DevicesCubit>(
-      create: (context) => sl<DevicesCubit>(),
+      create: (context) => DevicesCubit.get(),
       child: BlocListener<DevicesCubit, DevicesState>(
         listenWhen: (previous, current) =>
             current is EditDeviceSuccess || current is EditDeviceError,
@@ -71,7 +70,7 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
               child: Text(S.of(context).cancel),
             ),
             BlocBuilder<DevicesCubit, DevicesState>(
-              bloc: sl<DevicesCubit>(),
+              bloc: DevicesCubit.get(),
               builder: (context, state) {
                 return ElevatedButton(
                   onPressed: isModified ? _onSavePressed : null,
@@ -107,7 +106,7 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
   }
 
   void _onSavePressed() {
-    sl<DevicesCubit>().editDevice(
+    DevicesCubit.get().editDevice(
       id: widget.device.id,
       name: nameController.text,
       description: descriptionController.text,

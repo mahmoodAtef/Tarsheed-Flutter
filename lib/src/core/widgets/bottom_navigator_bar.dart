@@ -22,9 +22,9 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         buildWhen: (previous, current) => current is SelectPageState,
         builder: (context, state) {
           return BottomNavigationBar(
-            currentIndex: context.read<SettingsCubit>().currentPageIndex,
+            currentIndex: SettingsCubit.get().currentPageIndex,
             onTap: (val) {
-              context.read<SettingsCubit>().changeIndex(val);
+              SettingsCubit.get().changeIndex(val);
             },
             type: BottomNavigationBarType.fixed,
             backgroundColor: ColorManager.white,
@@ -39,6 +39,8 @@ class _BottomNavigatorState extends State<BottomNavigator> {
               BottomNavigationBarItem(
                   icon: Icon(Icons.notifications_outlined), label: ""),
               BottomNavigationBarItem(icon: Icon(Icons.settings), label: ""),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.dashboard_customize_outlined), label: ""),
             ],
           );
         },
