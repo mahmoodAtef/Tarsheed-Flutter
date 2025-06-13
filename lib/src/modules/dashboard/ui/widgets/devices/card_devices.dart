@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
-import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
@@ -28,10 +27,17 @@ class DeviceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<DevicesCubit>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => DevicesCubit.get(),
+        ),
+        BlocProvider(
+          create: (context) => DashboardBloc.get(),
+        ),
+      ],
       child: BlocBuilder<DevicesCubit, DevicesState>(
-        bloc: sl<DevicesCubit>(),
+        bloc: DevicesCubit.get(),
         buildWhen: (current, previous) =>
             ((current is ToggleDeviceStatusSuccess &&
                     current.deviceId == device.id) ||
@@ -177,14 +183,22 @@ class DeviceCard extends StatelessWidget {
   }
 
   Widget _buildCategoryIcon(Color color) {
-    return BlocBuilder<DashboardBloc, DashboardState>(
+    List<DeviceCategory> categories = [];
+    return BlocConsumer<DashboardBloc, DashboardState>(
+      listener: (context, state) {
+        if (state is GetDeviceCategoriesError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.exception.toString())),
+          );
+        } else if (state is GetDeviceCategoriesSuccess) {
+          categories = state.deviceCategories;
+        }
+      },
       buildWhen: (current, previous) => current is DeviceCategoryState,
       builder: (context, state) {
-        DeviceCategory category = context
-            .read<DashboardBloc>()
-            .categories
-            .firstWhere((category) => category.id == device.categoryId,
-                orElse: () => DeviceCategory.empty);
+        DeviceCategory category = categories.firstWhere(
+            (category) => category.id == device.categoryId,
+            orElse: () => DeviceCategory.empty);
         return state is GetDeviceCategoriesLoading
             ? SizedBox()
             : Image.network(
@@ -231,7 +245,7 @@ class DeviceCard extends StatelessWidget {
   }
 
   void _toggleStatus(bool status, BuildContext context) {
-    final DevicesCubit devicesCubit = sl<DevicesCubit>();
+    final DevicesCubit devicesCubit = DevicesCubit.get();
     devicesCubit.toggleDeviceStatus(device.id);
   }
 }
