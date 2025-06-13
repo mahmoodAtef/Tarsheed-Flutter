@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
-import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/widgets/appbar.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/notifications/cubit/notifications_cubit.dart';
@@ -13,7 +13,7 @@ class NotificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<NotificationsCubit>()..getNotifications(),
+      create: (context) => NotificationsCubit.get()..getNotifications(),
       child: Column(
         children: [
           CustomAppBar(
@@ -26,7 +26,7 @@ class NotificationPage extends StatelessWidget {
                 builder: (context, state) {
                   if (state is GetNotificationsLoadingState) {
                     return const CustomLoadingWidget();
-                  } else if (state is GetNotificationsSuccessState ||
+                  } else if (state is GetNotificationsSuccessState &&
                       state.notifications.isNotEmpty) {
                     return ListView.builder(
                       itemCount: state.notifications.length,
@@ -35,8 +35,7 @@ class NotificationPage extends StatelessWidget {
                         return Dismissible(
                           key: Key(notification.id),
                           onDismissed: (direction) {
-                            context
-                                .read<NotificationsCubit>()
+                            NotificationsCubit.get()
                                 .markNotificationAsRead(notification.id);
                           },
                           child: NotificationWidget(
@@ -45,8 +44,20 @@ class NotificationPage extends StatelessWidget {
                         );
                       },
                     );
+                  } else if (state is GetNotificationsSuccessState &&
+                      state.notifications.isEmpty) {
+                    return Center(
+                      child: SizedBox(
+                        height: 120.h,
+                        child: NoDataWidget(),
+                      ),
+                    );
                   } else if (state is GetNotificationsErrorState) {
-                    return CustomErrorWidget(exception: state.exception);
+                    return Center(
+                      child: SizedBox(
+                          height: 120,
+                          child: CustomErrorWidget(exception: state.exception)),
+                    );
                   }
                   return const SizedBox.shrink();
                 },

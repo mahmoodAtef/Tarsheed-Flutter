@@ -7,6 +7,9 @@ class NotificationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return ListTile(
+      title: Text(notification.title),
+      subtitle: Text(notification.body),
+    );
   }
 }

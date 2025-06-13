@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/modules/notifications/data/models/app_notification.dart';
 import 'package:tarsheed/src/modules/notifications/data/repositories/notifications_repository.dart';
 
@@ -9,6 +10,16 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   NotificationsCubit(this._notificationRepository)
       : super(NotificationsInitial());
   final NotificationsRepository _notificationRepository;
+
+  static NotificationsCubit get() {
+    if (sl<NotificationsCubit>().isClosed) {
+      sl.unregister<NotificationsCubit>();
+      sl.registerLazySingleton<NotificationsCubit>(
+        () => NotificationsCubit(sl<NotificationsRepository>()),
+      );
+    }
+    return sl<NotificationsCubit>();
+  }
 
   Future<void> getNotifications() async {
     List<AppNotification> notifications = state.notifications;

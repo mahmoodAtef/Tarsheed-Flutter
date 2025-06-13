@@ -163,7 +163,7 @@ class NotificationsRemoteService extends BaseNotificationsService {
     try {
       final response =
           await DioHelper.getData(path: EndPoints.getNotifications);
-      final notifications = (response.data as List)
+      final notifications = (response.data["notification"] as List)
           .map((e) => AppNotification.fromJson(e))
           .toList();
       return Right(notifications);
@@ -179,7 +179,7 @@ class NotificationsRemoteService extends BaseNotificationsService {
     try {
       await DioHelper.postData(
         data: {},
-        path: EndPoints.markAllNotificationsAsRead,
+        path: EndPoints.markAllNotificationsAsRead + ApiManager.userId! + '/',
       );
       return const Right(unit);
     } on DioException catch (e) {
@@ -195,7 +195,7 @@ class NotificationsRemoteService extends BaseNotificationsService {
     try {
       await DioHelper.postData(
         data: {},
-        path: EndPoints.markNotificationAsRead,
+        path: EndPoints.markNotificationAsRead + notificationId,
       );
       return const Right(unit);
     } on DioException catch (e) {
