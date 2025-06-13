@@ -20,4 +20,10 @@ abstract class Trigger extends Equatable {
 
   @override
   List<Object?> get props => [];
+
+  factory Trigger.empty() {
+    return ScheduleTrigger(
+      time: "10:00",
+    );
+  }
 }

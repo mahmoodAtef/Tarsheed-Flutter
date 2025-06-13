@@ -11,8 +11,8 @@ class SensorCondition extends Condition {
 
   factory SensorCondition.fromJson(Map<String, dynamic> json) =>
       SensorCondition(
-        sensorID: json["sensor_id"],
-        state: json["state"],
+        sensorID: json["sensorId"].toString(),
+        state: int.parse(json["state"].toString()),
       );
   Map<String, dynamic> toJson() => {
         "type": "SENSOR",

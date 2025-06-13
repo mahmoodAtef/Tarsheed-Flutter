@@ -13,8 +13,15 @@ abstract class Condition extends Equatable {
       case 'SENSOR':
         return SensorCondition.fromJson(json);
       default:
-        return DeviceCondition.fromJson(json);
+        return Condition.empty();
     }
+  }
+
+  factory Condition.empty() {
+    return DeviceCondition(
+      deviceID: '',
+      state: -1,
+    );
   }
   Map<String, dynamic> toJson();
 
