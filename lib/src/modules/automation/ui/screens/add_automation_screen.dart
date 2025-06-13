@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
-import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/automation/cubit/automation_cubit.dart';
@@ -46,8 +45,8 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
   }
 
   void _loadInitialData() {
-    sl<DashboardBloc>().add(GetSensorsEvent());
-    sl<DevicesCubit>().getDevices();
+    DashboardBloc.get().add(GetSensorsEvent());
+    DevicesCubit.get().getDevices();
   }
 
   @override
@@ -60,9 +59,9 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => sl<AutomationCubit>()),
+        BlocProvider(create: (context) => AutomationCubit.get()),
         BlocProvider.value(value: DashboardBloc.get()),
-        BlocProvider.value(value: sl<DevicesCubit>()),
+        BlocProvider.value(value: DevicesCubit.get()),
       ],
       child: Scaffold(
         backgroundColor: Colors.grey.shade50,
@@ -825,7 +824,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
       }
 
       final automation = _createAutomation();
-      sl<AutomationCubit>().addAutomation(automation);
+      AutomationCubit.get().addAutomation(automation);
     }
   }
 

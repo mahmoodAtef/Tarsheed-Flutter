@@ -24,11 +24,20 @@ class Automation extends Equatable {
         name: json['name'],
         actions: List<AutomationAction>.from(
             json['actions'].map((x) => AutomationAction.fromJson(x))),
-        conditions: List<Condition>.from(
-            json['conditions'].map((x) => Condition.fromJson(x))),
-        trigger: Trigger.fromJson(json['trigger']),
+        conditions: json["conditions"].isEmpty
+            ? []
+            : List<Condition>.from(
+                json['conditions'].map((x) => Condition.fromJson(x))),
+        trigger: json["triggers"].isNotEmpty
+            ? Trigger.fromJson(
+                json['triggers'][0],
+              )
+            : Trigger.empty(),
       );
 
+  /*
+
+   */
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,

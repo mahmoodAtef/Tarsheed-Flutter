@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/modules/automation/data/models/automation.dart';
 import 'package:tarsheed/src/modules/automation/data/repositories/repository.dart';
@@ -8,14 +9,27 @@ part 'automation_state.dart';
 
 class AutomationCubit extends Cubit<AutomationState> {
   AutomationCubit() : super(AutomationInitial());
+  static AutomationCubit get() {
+    if (sl<AutomationCubit>().isClosed) {
+      sl.unregister<AutomationCubit>();
+      sl.registerLazySingleton<AutomationCubit>(() => AutomationCubit());
+    } else if (!sl.isRegistered<AutomationCubit>()) {
+      sl.registerLazySingleton<AutomationCubit>(() => AutomationCubit());
+    }
+    return sl<AutomationCubit>();
+  }
+
   final _repository = sl<AutomationRepository>();
   Future<void> getAllAutomations() async {
     List<Automation>? currentAutomations = state.automations;
     emit(GetAllAutomationsLoading(automations: currentAutomations));
     final result = await _repository.getAutomations();
+    debugPrint('getAllAutomations result: $result');
     result.fold(
       (err) => emit(GetAllAutomationsError(
-          exception: err, automations: currentAutomations)),
+        exception: err,
+        automations: currentAutomations,
+      )),
       (automations) => emit(GetAllAutomationsSuccess(automations: automations)),
     );
   }
