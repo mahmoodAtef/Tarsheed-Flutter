@@ -4,13 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
-import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/core/widgets/large_button.dart';
 import 'package:tarsheed/src/core/widgets/text_field.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/category.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device_creation_form.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/room.dart';
 
 class AddDeviceScreen extends StatefulWidget {
   const AddDeviceScreen({super.key});
@@ -27,6 +28,8 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
   String? selectedRoomId;
   String? selectedCategoryId;
   String? selectedDevicePriority;
+  List<DeviceCategory> categories = [];
+  List<Room> rooms = [];
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +38,17 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
       appBar: AppBar(
         title: Text(S.of(context).addDevice),
       ),
-      body: BlocProvider.value(
-        value: sl<DevicesCubit>(),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider.value(
+            value: DevicesCubit.get(),
+          ),
+          BlocProvider(
+            create: (context) => DashboardBloc.get()
+              ..add(GetRoomsEvent())
+              ..add(GetDevicesCategoriesEvent()),
+          ),
+        ],
         child: Padding(
           padding: EdgeInsets.all(12.w),
           child: Form(
@@ -80,14 +92,20 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
                     keyboardType: TextInputType.number,
                   ),
                   SizedBox(height: 20.h),
-                  BlocBuilder<DashboardBloc, DashboardState>(
+                  BlocConsumer<DashboardBloc, DashboardState>(
+                    listener: (context, state) {
+                      if (state is GetRoomsSuccess) {
+                        rooms = state.rooms;
+                      } else if (state is GetRoomsError) {
+                        ExceptionManager.showMessage(state.exception);
+                      }
+                    },
                     builder: (context, state) {
                       return DropDownWidget(
                         label: S.of(context).room,
-                        items: sl<DashboardBloc>().rooms.isEmpty
+                        items: rooms.isEmpty
                             ? [DropDownItem(S.of(context).noRoomsAvailable, "")]
-                            : sl<DashboardBloc>()
-                                .rooms
+                            : rooms
                                 .map((room) => DropDownItem(room.id, room.name))
                                 .toList(),
                         onChanged: (value) {
@@ -105,29 +123,44 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
                     },
                   ),
                   SizedBox(height: 20.h),
-                  BlocBuilder<DashboardBloc, DashboardState>(
+                  BlocConsumer<DashboardBloc, DashboardState>(
+                    listener: (context, state) {
+                      if (state is GetDeviceCategoriesSuccess) {
+                        categories = state.deviceCategories;
+                      } else if (state is GetDeviceCategoriesError) {
+                        ExceptionManager.showMessage(state.exception);
+                      }
+                      if (state is GetRoomsSuccess) {
+                        rooms = state.rooms;
+                      } else if (state is GetRoomsError) {
+                        ExceptionManager.showMessage(state.exception);
+                      }
+                    },
                     builder: (context, state) {
-                      return DropDownWidget(
-                        label: S.of(context).category,
-                        items: sl<DashboardBloc>().categories.isEmpty
-                            ? [
-                                DropDownItem(
-                                    S.of(context).noCategoriesAvailable, "")
-                              ]
-                            : sl<DashboardBloc>()
-                                .categories
-                                .map((category) =>
-                                    DropDownItem(category.id, category.name))
-                                .toList(),
-                        onChanged: (value) {
-                          selectedCategoryId = value;
-                          return null;
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return S.of(context).categoryRequired;
-                          }
-                          return null;
+                      return BlocBuilder<DashboardBloc, DashboardState>(
+                        builder: (context, state) {
+                          return DropDownWidget(
+                            label: S.of(context).category,
+                            items: categories.isEmpty
+                                ? [
+                                    DropDownItem(
+                                        S.of(context).noCategoriesAvailable, "")
+                                  ]
+                                : categories
+                                    .map((category) => DropDownItem(
+                                        category.id, category.name))
+                                    .toList(),
+                            onChanged: (value) {
+                              selectedCategoryId = value;
+                              return null;
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return S.of(context).categoryRequired;
+                              }
+                              return null;
+                            },
+                          );
                         },
                       );
                     },
@@ -188,7 +221,7 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
                                 priority: int.parse(selectedDevicePriority!),
                               );
 
-                              sl<DevicesCubit>().addDevice(form);
+                              DevicesCubit.get().addDevice(form);
                             }
                           },
                           isLoading: state is AddDeviceLoading,
