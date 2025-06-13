@@ -12,6 +12,20 @@ class DevicesCubit extends Cubit<DevicesState> {
   DevicesCubit() : super(DevicesInitial());
 
   final _repository = sl<DevicesRepository>();
+  static DevicesCubit get() {
+    if (sl.isRegistered<DevicesCubit>()) {
+      if (sl<DevicesCubit>().isClosed) {
+        final cubit = DevicesCubit();
+        // remove the old instance if it exists
+        sl.unregister<DevicesCubit>();
+        sl.registerLazySingleton<DevicesCubit>(() => cubit);
+      }
+    } else {
+      final cubit = DevicesCubit();
+      sl.registerLazySingleton<DevicesCubit>(() => cubit);
+    }
+    return sl<DevicesCubit>();
+  }
 
   Future<void> getDevices({bool refresh = false}) async {
     final currentState = state;
@@ -21,7 +35,7 @@ class DevicesCubit extends Cubit<DevicesState> {
         sortOrder: currentState.sortOrder,
         refresh: refresh));
 
-    final result = await _repository.getDevices();
+    final result = await _repository.getDevices(reFetch: refresh);
     result.fold(
       (err) {
         emit(GetDevicesError(

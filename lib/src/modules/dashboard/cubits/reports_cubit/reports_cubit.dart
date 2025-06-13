@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/ai_recommendations.dart';
 import 'package:tarsheed/src/modules/dashboard/data/repositories/report/report_repository.dart';
 
@@ -10,24 +11,29 @@ part 'reports_state.dart';
 class ReportsCubit extends Cubit<ReportsState> {
   final ReportsRepository _repository;
 
-  Report? report;
-
   ReportsCubit(this._repository) : super(ReportsInitial());
+
+  static ReportsCubit get() {
+    if (sl<ReportsCubit>().isClosed) {
+      sl.unregister<ReportsCubit>();
+      sl.registerLazySingleton<ReportsCubit>(
+        () => ReportsCubit(sl<ReportsRepository>()),
+      );
+    }
+    return sl<ReportsCubit>();
+  }
 
   Future<void> getUsageReport(
       {required String period, bool isRefresh = false}) async {
-    if (report == null || isRefresh) {
+    if (state.report == null || isRefresh) {
       emit(const GetUsageReportLoading());
       final result = await _repository.getUsageReport(period: period);
       result.fold(
         (e) => emit(GetUsageReportError(e)),
         (r) {
-          report = r;
           emit(GetUsageReportSuccess(report: r));
         },
       );
-    } else {
-      emit(GetUsageReportSuccess(report: report!));
     }
   }
 
@@ -39,9 +45,5 @@ class ReportsCubit extends Cubit<ReportsState> {
       (e) => emit(GetAISuggestionsError(e, report: lastReport)),
       (r) => emit(GetAISuggestionsSuccess(r, report: lastReport)),
     );
-  }
-
-  void clearData() {
-    report = null;
   }
 }

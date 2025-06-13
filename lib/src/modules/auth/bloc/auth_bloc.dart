@@ -16,7 +16,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   static AuthBloc? _authBloc;
 
   static AuthBloc get instance {
-    return sl();
+    if (sl<AuthBloc>().isClosed) {
+      sl.unregister<AuthBloc>();
+      sl.registerLazySingleton<AuthBloc>(
+        () => AuthBloc(),
+      );
+    }
+
+    return sl<AuthBloc>();
   }
 
   final AuthRepository authRepository = sl();

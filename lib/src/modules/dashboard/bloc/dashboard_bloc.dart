@@ -2,11 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/category.dart';
-import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
-import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/room.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/sensor.dart';
 import 'package:tarsheed/src/modules/dashboard/data/repositories/dashboard_repository.dart';
@@ -16,12 +13,20 @@ part 'dashboard_state.dart';
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   final DashboardRepository _repository = sl()..initialize();
-  static DashboardBloc get() => sl();
-  List<DeviceCategory> categories = [];
-  List<Device> devices = [];
+  static DashboardBloc get() {
+    // check if the bloc is already registered and not closed
+    if (sl<DashboardBloc>().isClosed) {
+      sl.unregister<DashboardBloc>();
+      sl.registerLazySingleton<DashboardBloc>(
+        () => DashboardBloc(),
+      );
+    }
+
+    return sl<DashboardBloc>();
+  }
+
   List<Room> rooms = [];
   List<Sensor> sensors = [];
-  Report? report;
 
   DashboardBloc() : super(DashboardInitial()) {
     on<DashboardEvent>((event, emit) async {
@@ -51,11 +56,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   }
 
   void _deleteAllData() {
-    devices = [];
-    report = null;
     rooms = [];
     sensors = [];
-    categories = [];
   }
 
   // rooms events handlers
@@ -89,17 +91,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
   _handleGetCategoriesEvent(
       GetDevicesCategoriesEvent event, Emitter<DashboardState> emit) async {
-    if (categories.isEmpty) {
-      emit(GetDeviceCategoriesLoading());
-      final result = await _repository.getCategories();
-      result.fold((l) => emit(GetDeviceCategoriesError(l)), (r) {
-        categories = r;
-        debugPrint(categories.toString());
-        emit(GetDeviceCategoriesSuccess(r));
-      });
-    } else {
-      emit(GetDeviceCategoriesSuccess(categories));
-    }
+    emit(GetDeviceCategoriesLoading());
+    final result = await _repository.getCategories();
+    result.fold((l) => emit(GetDeviceCategoriesError(l)), (r) {
+      emit(GetDeviceCategoriesSuccess(r));
+    });
   }
 
   // sensors handlers
