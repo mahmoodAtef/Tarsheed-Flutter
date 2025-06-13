@@ -44,9 +44,9 @@ class AuthRemoteServices implements BaseAuthRemoteServices {
       var response = await DioHelper.postData(
           path: EndPoints.register, data: registrationForm.toJson());
       AuthInfo authInfo = AuthInfo(
-          accessToken: response.data['token'],
-          userId: response.data['data']['id']);
-      verificationId = response.data['data']['id'];
+          accessToken: response.data['token'] ?? response.data['data']['token'],
+          userId: response.data['data']['id'] ?? response.data['id']);
+      verificationId = authInfo.userId;
       return Right(authInfo);
     } on Exception catch (e) {
       return Left(_classifyException(e,

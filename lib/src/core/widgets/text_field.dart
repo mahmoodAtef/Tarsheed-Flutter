@@ -7,7 +7,7 @@ class CustomTextField extends StatefulWidget {
   final TextInputType keyboardType;
   final bool isPassword;
   final Widget? suffixIcon;
-
+  final Iterable<String>? autofillHints;
   const CustomTextField({
     super.key,
     this.controller,
@@ -16,6 +16,7 @@ class CustomTextField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.isPassword = false,
     this.suffixIcon,
+    this.autofillHints,
   });
 
   @override
@@ -29,6 +30,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return TextFormField(
+      autofillHints: widget.autofillHints,
       controller: widget.controller,
       keyboardType: widget.keyboardType,
       obscureText: widget.isPassword ? _obscureText : false,
