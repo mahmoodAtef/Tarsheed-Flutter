@@ -209,7 +209,7 @@ class ThemeManager {
         ),
       ),
       cardTheme: CardThemeData(
-        color: cardBackground,
+        color: surfaceColor,
         elevation: 2,
         shadowColor: Colors.black,
         shape: RoundedRectangleBorder(

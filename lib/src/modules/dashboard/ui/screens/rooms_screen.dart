@@ -60,25 +60,28 @@ class RoomsScreen extends StatelessWidget {
               String? description;
               return AlertDialog(
                 title: Text(S.of(context).addRoom),
-                content: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextFormField(
-                        decoration:
-                            InputDecoration(labelText: S.of(context).roomName),
-                        validator: (value) => value == null || value.isEmpty
-                            ? S.of(context).requiredField
-                            : null,
-                        onSaved: (value) => name = value,
-                      ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            labelText: S.of(context).roomDescription),
-                        onSaved: (value) => description = value,
-                      ),
-                    ],
+                content: BlocProvider(
+                  create: (context) => DashboardBloc.get(),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextFormField(
+                          decoration: InputDecoration(
+                              labelText: S.of(context).roomName),
+                          validator: (value) => value == null || value.isEmpty
+                              ? S.of(context).requiredField
+                              : null,
+                          onSaved: (value) => name = value,
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(
+                              labelText: S.of(context).roomDescription),
+                          onSaved: (value) => description = value,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 actions: [
