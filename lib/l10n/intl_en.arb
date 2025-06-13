@@ -212,7 +212,35 @@
   "pleaseConfigureSensorTrigger": "Please configure sensor trigger completely",
   "action": "Action",
   "noDevicesAvailable": "No devices available",
-  "noSensorsAvailable": "No sensors available"
+  "noSensorsAvailable": "No sensors available",
+  "edit": "Edit",
+  "delete": "Delete",
+  "automationStatus": "Automation Status",
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+  "sensorValue": "Sensor value",
+  "conditions": "Conditions",
+  "noConditionsSet": "No conditions set",
+  "state": "State",
+  "value": "Value",
+  "deleteAutomation": "Delete Automation",
+  "deleteAutomationConfirmation": "Are you sure you want to delete this automation?",
+  "editAutomation": "Edit Automation",
+  "devices": "Devices",
+  "automations": "Automations",
+  "myHome": "My Home",
+  "manageYourDevices": "Manage Your Devices",
+  "manageYourSensors": "Add, edit, or delete sensors to organize your devices",
+  "manageYourAutomations": "Create, edit, or delete automations to control your devices based on conditions",
+  "manageYourRooms": "Add, edit, or delete rooms to organize your devices and sensors",
+  "addSensor": "Add Sensor",
+
+
+  "addRoom": "Add Room",
+  "roomName": "Room Name",
+  "roomDescription": "Room Description",
+  "requiredField": "This field is required",
+  "add": "Add"
 
 }
 

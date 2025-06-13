@@ -1814,6 +1814,196 @@ class S {
       args: [],
     );
   }
+
+  /// `Edit`
+  String get edit {
+    return Intl.message('Edit', name: 'edit', desc: '', args: []);
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message('Delete', name: 'delete', desc: '', args: []);
+  }
+
+  /// `Automation Status`
+  String get automationStatus {
+    return Intl.message(
+      'Automation Status',
+      name: 'automationStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enabled`
+  String get enabled {
+    return Intl.message('Enabled', name: 'enabled', desc: '', args: []);
+  }
+
+  /// `Disabled`
+  String get disabled {
+    return Intl.message('Disabled', name: 'disabled', desc: '', args: []);
+  }
+
+  /// `Sensor value`
+  String get sensorValue {
+    return Intl.message(
+      'Sensor value',
+      name: 'sensorValue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Conditions`
+  String get conditions {
+    return Intl.message('Conditions', name: 'conditions', desc: '', args: []);
+  }
+
+  /// `No conditions set`
+  String get noConditionsSet {
+    return Intl.message(
+      'No conditions set',
+      name: 'noConditionsSet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `State`
+  String get state {
+    return Intl.message('State', name: 'state', desc: '', args: []);
+  }
+
+  /// `Value`
+  String get value {
+    return Intl.message('Value', name: 'value', desc: '', args: []);
+  }
+
+  /// `Delete Automation`
+  String get deleteAutomation {
+    return Intl.message(
+      'Delete Automation',
+      name: 'deleteAutomation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this automation?`
+  String get deleteAutomationConfirmation {
+    return Intl.message(
+      'Are you sure you want to delete this automation?',
+      name: 'deleteAutomationConfirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Automation`
+  String get editAutomation {
+    return Intl.message(
+      'Edit Automation',
+      name: 'editAutomation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Devices`
+  String get devices {
+    return Intl.message('Devices', name: 'devices', desc: '', args: []);
+  }
+
+  /// `Automations`
+  String get automations {
+    return Intl.message('Automations', name: 'automations', desc: '', args: []);
+  }
+
+  /// `My Home`
+  String get myHome {
+    return Intl.message('My Home', name: 'myHome', desc: '', args: []);
+  }
+
+  /// `Manage Your Devices`
+  String get manageYourDevices {
+    return Intl.message(
+      'Manage Your Devices',
+      name: 'manageYourDevices',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add, edit, or delete sensors to organize your devices`
+  String get manageYourSensors {
+    return Intl.message(
+      'Add, edit, or delete sensors to organize your devices',
+      name: 'manageYourSensors',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create, edit, or delete automations to control your devices based on conditions`
+  String get manageYourAutomations {
+    return Intl.message(
+      'Create, edit, or delete automations to control your devices based on conditions',
+      name: 'manageYourAutomations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add, edit, or delete rooms to organize your devices and sensors`
+  String get manageYourRooms {
+    return Intl.message(
+      'Add, edit, or delete rooms to organize your devices and sensors',
+      name: 'manageYourRooms',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Sensor`
+  String get addSensor {
+    return Intl.message('Add Sensor', name: 'addSensor', desc: '', args: []);
+  }
+
+  /// `Add Room`
+  String get addRoom {
+    return Intl.message('Add Room', name: 'addRoom', desc: '', args: []);
+  }
+
+  /// `Room Name`
+  String get roomName {
+    return Intl.message('Room Name', name: 'roomName', desc: '', args: []);
+  }
+
+  /// `Room Description`
+  String get roomDescription {
+    return Intl.message(
+      'Room Description',
+      name: 'roomDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This field is required`
+  String get requiredField {
+    return Intl.message(
+      'This field is required',
+      name: 'requiredField',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add`
+  String get add {
+    return Intl.message('Add', name: 'add', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

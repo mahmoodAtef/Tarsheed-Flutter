@@ -69,22 +69,23 @@ class ServiceLocator {
   }
 
   static void _initializeLocalServices() {
-    sl.registerSingleton<LocalAuthentication>(
-        LocalAuthentication()); // for local auth package
+    sl.registerLazySingleton<LocalAuthentication>(
+        () => LocalAuthentication()); // for local auth package
     sl.registerLazySingleton<BaseAuthLocalServices>(
         () => AuthLocalServices(auth: sl()));
-    sl.registerSingleton<BaseSettingsLocalServices>(SettingsLocalServices());
+    sl.registerLazySingleton<BaseSettingsLocalServices>(
+        () => SettingsLocalServices());
     sl.registerLazySingleton<DashboardLocalServices>(
         () => DashboardLocalServices());
   }
 
   static void _initializeRepositories() {
     sl.registerLazySingleton(() => ConnectivityService()..initialize());
-    sl.registerSingleton(AuthRepository(sl(), sl()));
-    sl.registerSingleton(SettingsRepository(sl(), sl()));
-    sl.registerSingleton(DashboardRepository(sl(), sl(), sl()));
-    sl.registerSingleton(DevicesRepository(sl()));
-    sl.registerSingleton(AutomationRepository(sl()));
+    sl.registerLazySingleton(() => AuthRepository(sl(), sl()));
+    sl.registerLazySingleton(() => SettingsRepository(sl(), sl()));
+    sl.registerLazySingleton(() => DashboardRepository(sl(), sl(), sl()));
+    sl.registerLazySingleton(() => DevicesRepository(sl()));
+    sl.registerLazySingleton(() => AutomationRepository(sl()));
     sl.registerLazySingleton(() => ReportsRepository(sl()));
     sl.registerLazySingleton(() => NotificationsRepository(sl()));
   }

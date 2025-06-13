@@ -11,8 +11,8 @@ class NotificationAction extends AutomationAction {
 
   factory NotificationAction.fromJson(Map<String, dynamic> json) =>
       NotificationAction(
-        title: json['title'],
-        message: json['message'],
+        title: json["data"]['title'],
+        message: json["data"]['message'],
       );
   @override
   Map<String, dynamic> toJson() => {

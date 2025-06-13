@@ -43,13 +43,12 @@ class EndPoints {
   static const String addAutomation = '/automation/create/';
   static const String updateAutomation = '/automation/update/';
   static const String deleteAutomation = '/automation/delete/';
-  static const String getAutomations = '/automation/getAll/';
+  static const String getAutomations = '/automation/get/';
   static const String changeAutomationStatus = '/automation/status/';
 
   // NOTIFICATIONS ENDPOINTS
-  static const String getNotifications = '/notifications/getAll/';
-  static const String markNotificationAsRead = '/notifications/markAsRead/';
-  static const String markAllNotificationsAsRead =
-      '/notifications/markAllAsRead/';
+  static const String getNotifications = '/notification';
+  static const String markNotificationAsRead = 'notification/read/';
+  static const String markAllNotificationsAsRead = '/notification/all/read/';
   static const String updateToken = '/notifications/updateToken/';
 }

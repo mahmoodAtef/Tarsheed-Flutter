@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
-import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
@@ -19,7 +18,6 @@ import 'package:tarsheed/src/modules/settings/ui/screens/profile_screen.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
-import '../../../../core/widgets/large_button.dart';
 import '../widgets/color_indicator.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -30,7 +28,7 @@ class HomeScreen extends StatelessWidget {
     return SafeArea(
       child: SingleChildScrollView(
         child: BlocProvider<DevicesCubit>(
-          create: (context) => sl<DevicesCubit>(),
+          create: (context) => DevicesCubit.get(),
           child: Builder(builder: (context) {
             _initializeData();
             return Column(
@@ -49,9 +47,9 @@ class HomeScreen extends StatelessWidget {
 
   void _initializeData() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final bloc = sl<DashboardBloc>();
-      final reportsCubit = sl<ReportsCubit>();
-      final DevicesCubit devicesCubit = sl<DevicesCubit>();
+      final bloc = DashboardBloc.get();
+      final reportsCubit = ReportsCubit.get();
+      final DevicesCubit devicesCubit = DevicesCubit.get();
       final now = DateTime.now();
       reportsCubit.getUsageReport(period: "${now.month}-${now.year}");
       bloc.add(GetRoomsEvent());
@@ -531,7 +529,7 @@ class _HomeContentSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _ActiveModeSection(),
+          // _ActiveModeSection(),
           SizedBox(height: 24.h),
           _ConnectedDevicesSection(),
         ],
@@ -540,25 +538,25 @@ class _HomeContentSection extends StatelessWidget {
   }
 }
 
-class _ActiveModeSection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CustomTextWidget(label: S.of(context).activeMode, size: 24.sp),
-        SizedBox(height: 16.h),
-        Center(
-          child: DefaultButton(
-            title: S.of(context).energySaving,
-            icon: Image.asset("assets/images/Vector.png"),
-            width: 300.w,
-          ),
-        ),
-      ],
-    );
-  }
-}
+// class _ActiveModeSection extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         CustomTextWidget(label: S.of(context).activeMode, size: 24.sp),
+//         SizedBox(height: 16.h),
+//         Center(
+//           child: DefaultButton(
+//             title: S.of(context).energySaving,
+//             icon: Image.asset("assets/images/Vector.png"),
+//             width: 300.w,
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
 
 class _ConnectedDevicesSection extends StatelessWidget {
   @override
@@ -596,7 +594,7 @@ class _ConnectedDevicesSection extends StatelessWidget {
         SizedBox(
           height: 175.h,
           child: BlocProvider(
-            create: (context) => sl<DevicesCubit>()..getDevices(),
+            create: (context) => DevicesCubit.get()..getDevices(),
             child: BlocBuilder<DevicesCubit, DevicesState>(
               buildWhen: (previous, current) =>
                   current is GetDevicesLoading ||

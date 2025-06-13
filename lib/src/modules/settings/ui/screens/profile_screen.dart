@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
-import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/utils/image_manager.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
@@ -17,7 +16,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: sl<SettingsCubit>()..getProfile(),
+      value: SettingsCubit.get()..getProfile(),
       child: Scaffold(
         appBar: CustomAppBar(text: S.of(context).profile),
         body: const ProfileContent(),
@@ -107,7 +106,7 @@ class _ProfileContentState extends State<ProfileContent> {
       email: _emailController.text,
     );
 
-    context.read<SettingsCubit>().updateProfile(updatedUser);
+    SettingsCubit.get().updateProfile(updatedUser);
   }
 
   @override
@@ -213,8 +212,8 @@ class _ProfileContentState extends State<ProfileContent> {
                               width: 20.w,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2.w,
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(ColorManager.white),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    ColorManager.white),
                               ),
                             )
                           : Text(

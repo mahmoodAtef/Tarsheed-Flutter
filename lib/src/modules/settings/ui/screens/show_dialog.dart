@@ -64,7 +64,7 @@ void showDeleteAccountDialog(BuildContext context) {
                       ),
                       onPressed: () async {
                         Navigator.pop(context);
-                        final cubit = SettingsCubit.getInstance;
+                        final cubit = SettingsCubit.get();
                         await cubit.deleteProfile();
                       },
                       child: Text(S.of(context).confirmDelete,

@@ -9,14 +9,12 @@ import 'package:tarsheed/src/core/utils/localization_manager.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/screens/sensors_screen.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 
 import '../../../../core/error/exception_manager.dart';
 import '../../../../core/widgets/appbar.dart';
 import '../widgets/container_with_switch.dart';
 import 'edit_password_page.dart';
-import 'energy_mode.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -54,7 +52,7 @@ class SettingPage extends StatelessWidget {
                 children: [
                   BlocBuilder<SettingsCubit, SettingsState>(
                     builder: (context, state) {
-                      final cubit = SettingsCubit.getInstance;
+                      final cubit = SettingsCubit.get();
                       final currentLang =
                           LocalizationManager.getCurrentLocale().languageCode;
 
@@ -92,22 +90,9 @@ class SettingPage extends StatelessWidget {
                   ),
                   SizedBox(height: 20.h),
                   CustomContainer(
-                    text: S.of(context).energyMode,
-                    icon: Icons.arrow_forward_ios,
-                    onpressed: () {
-                      context.push(EnergyModePage());
-                    },
-                  ),
-                  CustomContainer(
                     text: S.of(context).editPassword,
                     onTap: () {
                       context.push(EditPasswordPage());
-                    },
-                  ),
-                  CustomContainer(
-                    text: S.of(context).sensors,
-                    onTap: () {
-                      context.push(SensorsScreen());
                     },
                   ),
                   SizedBox(height: 5.h),

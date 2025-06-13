@@ -7,11 +7,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/services/app_initializer.dart';
 import 'package:tarsheed/src/core/services/bloc_observer.dart';
-import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
 import 'package:tarsheed/src/core/utils/theme_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
-import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/splash_screen.dart';
 
@@ -28,8 +26,7 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => sl<AuthBloc>()),
-        BlocProvider(create: (context) => sl<DashboardBloc>()),
+        BlocProvider(create: (context) => AuthBloc.instance),
       ],
       child: Tarsheed(),
     ),
@@ -49,7 +46,7 @@ class Tarsheed extends StatelessWidget {
       builder: (BuildContext context, child) {
         return BlocProvider(
           lazy: true,
-          create: (context) => sl<SettingsCubit>(),
+          create: (context) => SettingsCubit.get(),
           child: BlocBuilder<SettingsCubit, SettingsState>(
             buildWhen: (previous, current) =>
                 current is ChangeLanguageSuccessState ||

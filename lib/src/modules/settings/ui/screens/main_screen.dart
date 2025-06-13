@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/widgets/bottom_navigator_bar.dart';
+import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
+import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/reports_cubit/reports_cubit.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/screens/home_dashboard_screen.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/home_screen.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/reports_page.dart';
+import 'package:tarsheed/src/modules/notifications/cubit/notifications_cubit.dart';
 import 'package:tarsheed/src/modules/notifications/ui/screens/notification_page.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/setting.dart';
@@ -14,8 +18,23 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<ReportsCubit>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          lazy: true,
+          create: (context) => ReportsCubit.get(),
+        ),
+        BlocProvider(
+          lazy: true,
+          create: (context) => DevicesCubit.get(),
+        ),
+        BlocProvider(
+          create: (context) => DashboardBloc.get(),
+        ),
+        BlocProvider(
+          create: (context) => sl<NotificationsCubit>(),
+        ),
+      ],
       child: Scaffold(
           body: BlocBuilder<SettingsCubit, SettingsState>(
             buildWhen: (previous, current) =>
@@ -33,5 +52,6 @@ class MainScreen extends StatelessWidget {
     ReportsPage(),
     NotificationPage(),
     SettingPage(),
+    DashBoardScreen()
   ];
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
-import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/reports_cubit/reports_cubit.dart';
@@ -36,7 +35,6 @@ class _ReportsContent extends StatefulWidget {
 }
 
 class _ReportsContentState extends State<_ReportsContent> {
-  int _selectedPeriodIndex = 0;
   String _currentPeriod = "";
 
   @override
@@ -55,25 +53,10 @@ class _ReportsContentState extends State<_ReportsContent> {
   }
 
   void _fetchInitialData() {
-    final reportsCubit = sl<ReportsCubit>();
-    reportsCubit.getUsageReport(period: _currentPeriod, isRefresh: true);
-    reportsCubit.getAISuggestions();
-  }
-
-  void _onPeriodChanged(int index) {
-    setState(() {
-      _selectedPeriodIndex = index;
-    });
-    final now = DateTime.now();
-    _currentPeriod = "${now.month}-${now.year}";
-    sl<ReportsCubit>().getUsageReport(period: _currentPeriod, isRefresh: true);
-  }
-
-  void _onMonthChanged(String period) {
-    setState(() {
-      _currentPeriod = period;
-    });
-    sl<ReportsCubit>().getUsageReport(period: _currentPeriod, isRefresh: true);
+    final reportsCubit = ReportsCubit.get()..getAISuggestions();
+    reportsCubit.getUsageReport(
+      period: _currentPeriod,
+    );
   }
 
   @override

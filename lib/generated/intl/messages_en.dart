@@ -36,6 +36,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "action": MessageLookupByLibrary.simpleMessage("Action"),
     "actions": MessageLookupByLibrary.simpleMessage("Actions"),
     "activeMode": MessageLookupByLibrary.simpleMessage("Active Mode"),
+    "add": MessageLookupByLibrary.simpleMessage("Add"),
     "addDevice": MessageLookupByLibrary.simpleMessage("Add Device"),
     "addDeviceAction": MessageLookupByLibrary.simpleMessage(
       "Add Device Action",
@@ -47,6 +48,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Add New Automation",
     ),
     "addNotification": MessageLookupByLibrary.simpleMessage("Add Notification"),
+    "addRoom": MessageLookupByLibrary.simpleMessage("Add Room"),
+    "addSensor": MessageLookupByLibrary.simpleMessage("Add Sensor"),
     "addSensorCondition": MessageLookupByLibrary.simpleMessage(
       "Add Sensor Condition",
     ),
@@ -62,6 +65,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Automation added successfully",
     ),
     "automationName": MessageLookupByLibrary.simpleMessage("Automation Name"),
+    "automationStatus": MessageLookupByLibrary.simpleMessage(
+      "Automation Status",
+    ),
+    "automations": MessageLookupByLibrary.simpleMessage("Automations"),
     "avgCost": MessageLookupByLibrary.simpleMessage("Avg Cost"),
     "avgUsage": MessageLookupByLibrary.simpleMessage("Avg Usage"),
     "backupSettings": MessageLookupByLibrary.simpleMessage("Backup Settings"),
@@ -79,6 +86,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "codeNumbersOnly": MessageLookupByLibrary.simpleMessage(
       "Code must contain numbers only",
     ),
+    "conditions": MessageLookupByLibrary.simpleMessage("Conditions"),
     "conditionsOptional": MessageLookupByLibrary.simpleMessage(
       "Conditions (Optional)",
     ),
@@ -119,11 +127,18 @@ class MessageLookup extends MessageLookupByLibrary {
       "Your Current Savings is",
     ),
     "currentTier": m0,
+    "delete": MessageLookupByLibrary.simpleMessage("Delete"),
     "deleteAccountMessage": MessageLookupByLibrary.simpleMessage(
       "Once you submit a request to delete data, there\'s a 72-hour window during which you can cancel the process. During this period, you can cancel your deletion request in your Intuit Account. After the window, you\'ll no longer be able to cancel the request, and we\'re unable to retrieve your data.",
     ),
     "deleteAccountTitle": MessageLookupByLibrary.simpleMessage(
       "Delete Your Account?",
+    ),
+    "deleteAutomation": MessageLookupByLibrary.simpleMessage(
+      "Delete Automation",
+    ),
+    "deleteAutomationConfirmation": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete this automation?",
     ),
     "deleteDevice": MessageLookupByLibrary.simpleMessage("Delete Device"),
     "deleteMyAccount": MessageLookupByLibrary.simpleMessage(
@@ -142,6 +157,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deviceDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "Device deleted successfully",
     ),
+    "devices": MessageLookupByLibrary.simpleMessage("Devices"),
     "devicesRunning": MessageLookupByLibrary.simpleMessage("Devices running"),
     "didNotReceive": MessageLookupByLibrary.simpleMessage(
       "Didn\'t receive a code?",
@@ -149,6 +165,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "didNtReceiveCode": MessageLookupByLibrary.simpleMessage(
       "Didn\'t receive a code?",
     ),
+    "disabled": MessageLookupByLibrary.simpleMessage("Disabled"),
+    "edit": MessageLookupByLibrary.simpleMessage("Edit"),
+    "editAutomation": MessageLookupByLibrary.simpleMessage("Edit Automation"),
     "editDevice": MessageLookupByLibrary.simpleMessage("Edit Device"),
     "editPassNaAddUseEm": MessageLookupByLibrary.simpleMessage(
       "Edit password, name, address, username, email",
@@ -162,6 +181,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailVerifiedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "Email verified successfully!",
     ),
+    "enabled": MessageLookupByLibrary.simpleMessage("Enabled"),
     "energyConsumption": MessageLookupByLibrary.simpleMessage(
       "Energy consumption",
     ),
@@ -232,10 +252,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "lowTierSystemMessage": MessageLookupByLibrary.simpleMessage(
       "You are now on the tier:",
     ),
+    "manageYourAutomations": MessageLookupByLibrary.simpleMessage(
+      "Create, edit, or delete automations to control your devices based on conditions",
+    ),
+    "manageYourDevices": MessageLookupByLibrary.simpleMessage(
+      "Manage Your Devices",
+    ),
+    "manageYourRooms": MessageLookupByLibrary.simpleMessage(
+      "Add, edit, or delete rooms to organize your devices and sensors",
+    ),
+    "manageYourSensors": MessageLookupByLibrary.simpleMessage(
+      "Add, edit, or delete sensors to organize your devices",
+    ),
     "medium": MessageLookupByLibrary.simpleMessage("Medium"),
     "month": MessageLookupByLibrary.simpleMessage("Month"),
     "motionSensor": MessageLookupByLibrary.simpleMessage("Motion Sensor"),
     "mustBeAtLeast": MessageLookupByLibrary.simpleMessage("must be at least"),
+    "myHome": MessageLookupByLibrary.simpleMessage("My Home"),
     "name": MessageLookupByLibrary.simpleMessage("Name"),
     "nameMaxLength": MessageLookupByLibrary.simpleMessage(
       "Name cannot exceed 50 characters",
@@ -248,6 +281,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "nextMonthUsage": MessageLookupByLibrary.simpleMessage("Next Month Usage"),
     "noCategoriesAvailable": MessageLookupByLibrary.simpleMessage(
       "No categories available",
+    ),
+    "noConditionsSet": MessageLookupByLibrary.simpleMessage(
+      "No conditions set",
     ),
     "noDataFound": MessageLookupByLibrary.simpleMessage("No data found"),
     "noDevicesAvailable": MessageLookupByLibrary.simpleMessage(
@@ -335,10 +371,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateApplication": MessageLookupByLibrary.simpleMessage("Rate Application"),
     "register": MessageLookupByLibrary.simpleMessage("Register"),
     "reports": MessageLookupByLibrary.simpleMessage("Reports"),
+    "requiredField": MessageLookupByLibrary.simpleMessage(
+      "This field is required",
+    ),
     "resendCode": MessageLookupByLibrary.simpleMessage("Resend Code"),
     "resendCodeIn": m1,
     "retry": MessageLookupByLibrary.simpleMessage("Retry"),
     "room": MessageLookupByLibrary.simpleMessage("Room"),
+    "roomDescription": MessageLookupByLibrary.simpleMessage("Room Description"),
+    "roomName": MessageLookupByLibrary.simpleMessage("Room Name"),
     "roomRequired": MessageLookupByLibrary.simpleMessage("Please select room"),
     "rooms": MessageLookupByLibrary.simpleMessage("Rooms"),
     "runAtSpecificTime": MessageLookupByLibrary.simpleMessage(
@@ -363,6 +404,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "sensorDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "Sensor deleted successfully",
     ),
+    "sensorValue": MessageLookupByLibrary.simpleMessage("Sensor value"),
     "sensors": MessageLookupByLibrary.simpleMessage("Sensors"),
     "sentEmailMessage": MessageLookupByLibrary.simpleMessage(
       "We have sent an email to mo****@gmail.",
@@ -373,6 +415,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "signUp": MessageLookupByLibrary.simpleMessage("Sign up"),
     "sleepMode": MessageLookupByLibrary.simpleMessage("Sleep Mode"),
     "softwareUpdate": MessageLookupByLibrary.simpleMessage("Software Update"),
+    "state": MessageLookupByLibrary.simpleMessage("State"),
     "stateValue": MessageLookupByLibrary.simpleMessage("State/Value"),
     "superEnergySavingMode": MessageLookupByLibrary.simpleMessage(
       "Super Energy Saving Mode",
@@ -401,6 +444,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "typeRequired": MessageLookupByLibrary.simpleMessage("Please select type"),
     "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
     "updatePassword": MessageLookupByLibrary.simpleMessage("Update Password"),
+    "value": MessageLookupByLibrary.simpleMessage("Value"),
     "verificationCode": MessageLookupByLibrary.simpleMessage(
       "Verification Code",
     ),
