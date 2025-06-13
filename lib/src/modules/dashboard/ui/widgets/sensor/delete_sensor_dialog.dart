@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
-import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 
@@ -16,7 +15,7 @@ class DeleteSensorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<DashboardBloc>(),
+      create: (context) => DashboardBloc.get(),
       child: BlocConsumer<DashboardBloc, DashboardState>(
         listener: (context, state) {
           if (state is DeleteSensorSuccessState) {
@@ -46,7 +45,7 @@ class DeleteSensorDialog extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   if (!isLoading) {
-                    sl<DashboardBloc>().add(DeleteSensorEvent(sensorId));
+                    DashboardBloc.get().add(DeleteSensorEvent(sensorId));
                   }
                 },
                 style:
