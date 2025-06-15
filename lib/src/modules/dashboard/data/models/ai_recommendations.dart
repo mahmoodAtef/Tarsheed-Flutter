@@ -25,7 +25,7 @@ class AIRecommendations extends Equatable {
 class HighConsumptionDevice extends Equatable {
   final String deviceId;
   final String deviceName;
-  final int usage;
+  final double usage;
 
   const HighConsumptionDevice({
     required this.deviceId,

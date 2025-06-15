@@ -26,6 +26,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     return sl<AuthBloc>();
   }
 
+  @override
+  close() async {}
   final AuthRepository authRepository = sl();
 
   AuthBloc() : super(AuthInitial()) {

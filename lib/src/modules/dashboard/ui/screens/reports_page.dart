@@ -90,9 +90,12 @@ class _ReportContentSection extends StatelessWidget {
           current is GetUsageReportError ||
           current is GetUsageReportLoading,
       builder: (context, state) {
+        // إذا كان loading
         if (state is GetUsageReportLoading) {
           return CustomLoadingWidget();
         }
+
+        // إذا كان error
         if (state is GetUsageReportError) {
           return Center(
             child: CustomErrorWidget(
@@ -100,9 +103,18 @@ class _ReportContentSection extends StatelessWidget {
             ),
           );
         }
-        if (state is GetUsageReportSuccess) {
+
+        // تحقق من وجود report في الـ state (حتى لو مش success)
+        final report = context.read<ReportsCubit>().state.report;
+        if (report != null) {
+          return _buildReportContent(context, report);
+        }
+
+        // إذا كان success ولكن report null (لا يفترض أن يحدث)
+        if (state is GetUsageReportSuccess && state.report != null) {
           return _buildReportContent(context, state.report!);
         }
+
         return Container();
       },
     );
