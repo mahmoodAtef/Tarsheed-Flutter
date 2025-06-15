@@ -8,8 +8,9 @@ class ScheduleTrigger extends Trigger {
       ScheduleTrigger(
         time: json['time'],
       );
+  @override
   Map<String, dynamic> toJson() => {
         "type": "SCHEDULE",
-        'time': time,
+        'value': time,
       };
 }

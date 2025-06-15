@@ -164,28 +164,41 @@ class DevicesCubit extends Cubit<DevicesState> {
   Future<void> toggleDeviceStatus(String id) async {
     final currentState = state;
     final current = currentState.devices ?? <Device>[];
+    final device = current.firstWhere(
+      (d) => d.id == id,
+    );
 
+    final optimisticState = !device.state;
     emit(ToggleDeviceStatusLoading(
       deviceId: id,
-      devices: current,
+      deviceState: optimisticState,
+      devices: current
+          .map((d) => d.id == id ? d.copyWith(state: optimisticState) : d)
+          .toList(),
       filterType: currentState.filterType,
       sortOrder: currentState.sortOrder,
     ));
 
     final result = await _repository.toggleDeviceStatus(id);
     result.fold(
-      (err) => emit(ToggleDeviceStatusError(
-        err,
-        devices: current,
-        deviceId: id,
-        filterType: currentState.filterType,
-        sortOrder: currentState.sortOrder,
-      )),
+      (err) {
+        // Revert to the original state on error
+        emit(ToggleDeviceStatusError(
+          deviceState: device.state,
+          err,
+          devices: current,
+          deviceId: id,
+          filterType: currentState.filterType,
+          sortOrder: currentState.sortOrder,
+        ));
+      },
       (_) {
+        // Confirm the optimistic update on success
         final updated = current.map((d) {
-          return d.id == id ? d.copyWith(state: !d.state) : d;
+          return d.id == id ? d.copyWith(state: optimisticState) : d;
         }).toList();
         emit(ToggleDeviceStatusSuccess(
+          deviceState: optimisticState,
           id,
           devices: updated,
           filterType: currentState.filterType,

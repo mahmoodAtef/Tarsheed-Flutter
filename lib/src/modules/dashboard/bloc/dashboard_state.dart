@@ -1,7 +1,8 @@
 part of 'dashboard_bloc.dart';
 
 sealed class DashboardState extends Equatable {
-  const DashboardState();
+  final List<Room>? rooms;
+  const DashboardState({this.rooms});
 }
 
 final class DashboardInitial extends DashboardState {
@@ -13,61 +14,86 @@ final class DashboardInitial extends DashboardState {
 
 // rooms
 final class RoomState extends DashboardState {
-  const RoomState();
+  const RoomState({super.rooms});
+  @override
+  List<Object?> get props => [rooms];
+}
+
+final class GetRoomsLoading extends RoomState {
+  const GetRoomsLoading({super.rooms});
   @override
   List<Object?> get props => [];
 }
 
-final class GetRoomsLoading extends RoomState {}
-
 final class GetRoomsSuccess extends RoomState {
-  final List<Room> rooms;
-  const GetRoomsSuccess(this.rooms);
+  const GetRoomsSuccess({required super.rooms});
   @override
   List<Object?> get props => [rooms];
 }
 
 final class GetRoomsError extends RoomState {
   final Exception exception;
-  const GetRoomsError(this.exception);
+  const GetRoomsError(this.exception, {super.rooms});
   @override
   List<Object?> get props => [exception];
 }
 
-final class AddRoomLoading extends RoomState {}
+final class AddRoomLoading extends RoomState {
+  const AddRoomLoading({super.rooms});
+  @override
+  List<Object?> get props => [];
+}
 
 final class AddRoomSuccess extends RoomState {
   final Room room;
-  const AddRoomSuccess(this.room);
+  const AddRoomSuccess(this.room, {super.rooms});
   @override
   List<Object?> get props => [room];
 }
 
 final class AddRoomError extends RoomState {
   final Exception exception;
-  const AddRoomError(this.exception);
+  const AddRoomError(this.exception, {super.rooms});
   @override
   List<Object?> get props => [exception];
 }
 
-final class EditRoomLoading extends RoomState {}
+final class EditRoomLoading extends RoomState {
+  const EditRoomLoading({super.rooms});
+  @override
+  List<Object?> get props => [];
+}
 
-final class EditRoomSuccess extends RoomState {}
+final class EditRoomSuccess extends RoomState {
+  final Room room;
+  const EditRoomSuccess(this.room);
+  @override
+  List<Object?> get props => [room];
+}
 
-final class EditRoomError extends RoomState {}
+final class EditRoomError extends RoomState {
+  final Exception exception;
+  const EditRoomError(this.exception, {super.rooms});
+  @override
+  List<Object?> get props => [exception];
+}
 
-final class DeleteRoomLoading extends RoomState {}
+final class DeleteRoomLoading extends RoomState {
+  const DeleteRoomLoading({super.rooms});
+  @override
+  List<Object?> get props => [];
+}
 
 final class DeleteRoomSuccess extends RoomState {
   final String roomId;
-  const DeleteRoomSuccess(this.roomId);
+  const DeleteRoomSuccess(this.roomId, {super.rooms});
   @override
   List<Object?> get props => [roomId];
 }
 
 final class DeleteRoomError extends RoomState {
   final Exception exception;
-  const DeleteRoomError(this.exception);
+  const DeleteRoomError(this.exception, {super.rooms});
   @override
   List<Object?> get props => [exception];
 }

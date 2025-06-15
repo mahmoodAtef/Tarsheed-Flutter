@@ -2004,6 +2004,36 @@ class S {
   String get add {
     return Intl.message('Add', name: 'add', desc: '', args: []);
   }
+
+  /// `Room Details`
+  String get roomDetails {
+    return Intl.message(
+      'Room Details',
+      name: 'roomDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Room added successfully`
+  String get roomAddedSuccessfully {
+    return Intl.message(
+      'Room added successfully',
+      name: 'roomAddedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No internet connection`
+  String get noInternetConnection {
+    return Intl.message(
+      'No internet connection',
+      name: 'noInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

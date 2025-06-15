@@ -25,7 +25,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     return sl<DashboardBloc>();
   }
 
-  List<Room> rooms = [];
   List<Sensor> sensors = [];
 
   DashboardBloc() : super(DashboardInitial()) {
@@ -56,37 +55,49 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   }
 
   void _deleteAllData() {
-    rooms = [];
     sensors = [];
   }
 
   // rooms events handlers
   _handleGetRoomsEvent(
       GetRoomsEvent event, Emitter<DashboardState> emit) async {
-    if (rooms.isEmpty || event.isRefresh == true) {
-      emit(GetRoomsLoading());
-      final result = await _repository.getRooms();
-      result.fold((l) => emit(GetRoomsError(l)), (r) {
-        rooms = r;
-        emit(GetRoomsSuccess(r));
-      });
-    } else {
-      emit(GetRoomsSuccess(rooms));
-    }
+    final List<Room> currentRooms = state.rooms ?? [];
+    emit(GetRoomsLoading(
+      rooms: currentRooms,
+    ));
+    final result = await _repository.getRooms(
+      forceRefresh: event.isRefresh ?? false,
+    );
+    result.fold((l) => emit(GetRoomsError(l, rooms: currentRooms)), (r) {
+      emit(GetRoomsSuccess(rooms: r));
+    });
   }
 
   _handleAddRoomEvent(AddRoomEvent event, Emitter<DashboardState> emit) async {
-    emit(AddRoomLoading());
+    final List<Room> currentRooms = state.rooms ?? [];
+
+    emit(AddRoomLoading(
+      rooms: currentRooms,
+    ));
     final result = await _repository.addRoom(event.room);
-    result.fold((l) => emit(AddRoomError(l)), (r) => emit(AddRoomSuccess(r)));
+    result.fold(
+        (l) => emit(AddRoomError(l, rooms: currentRooms)),
+        (r) => emit(AddRoomSuccess(
+              r,
+              rooms: [...currentRooms, r],
+            )));
   }
 
   _handleDeleteRoomEvent(
       DeleteRoomEvent event, Emitter<DashboardState> emit) async {
     emit(DeleteRoomLoading());
     final result = await _repository.deleteRoom(event.roomId);
-    result.fold((l) => emit(DeleteRoomError(l)),
-        (r) => emit(DeleteRoomSuccess(event.roomId)));
+    result.fold(
+        (l) => emit(DeleteRoomError(l)),
+        (r) => emit(DeleteRoomSuccess(event.roomId,
+            rooms: (state.rooms ?? <Room>[])
+                .where((room) => room.id != event.roomId)
+                .toList())));
   }
 
   _handleGetCategoriesEvent(

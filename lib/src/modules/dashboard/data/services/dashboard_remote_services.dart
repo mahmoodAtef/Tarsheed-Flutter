@@ -124,8 +124,7 @@ class DashboardRemoteServices implements BaseDashboardServices {
         path: EndPoints.addRoom,
         data: room.toJson(),
       );
-      Room savedRoom =
-          room.copyWith(id: response.data["data"]["createdRoom"]["_id"]);
+      Room savedRoom = room.copyWith(id: response.data["createdRoom"]["_id"]);
       return Right(savedRoom);
     } on Exception catch (e) {
       return Left(e);

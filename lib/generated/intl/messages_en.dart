@@ -289,6 +289,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noDevicesAvailable": MessageLookupByLibrary.simpleMessage(
       "No devices available",
     ),
+    "noInternetConnection": MessageLookupByLibrary.simpleMessage(
+      "No internet connection",
+    ),
     "noRoomsAvailable": MessageLookupByLibrary.simpleMessage(
       "No rooms available",
     ),
@@ -378,7 +381,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "resendCodeIn": m1,
     "retry": MessageLookupByLibrary.simpleMessage("Retry"),
     "room": MessageLookupByLibrary.simpleMessage("Room"),
+    "roomAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Room added successfully",
+    ),
     "roomDescription": MessageLookupByLibrary.simpleMessage("Room Description"),
+    "roomDetails": MessageLookupByLibrary.simpleMessage("Room Details"),
     "roomName": MessageLookupByLibrary.simpleMessage("Room Name"),
     "roomRequired": MessageLookupByLibrary.simpleMessage("Please select room"),
     "rooms": MessageLookupByLibrary.simpleMessage("Rooms"),

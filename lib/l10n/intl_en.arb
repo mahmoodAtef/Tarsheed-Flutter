@@ -240,8 +240,10 @@
   "roomName": "Room Name",
   "roomDescription": "Room Description",
   "requiredField": "This field is required",
-  "add": "Add"
-
+  "add": "Add",
+  "roomDetails": "Room Details",
+  "roomAddedSuccessfully": "Room added successfully",
+  "noInternetConnection": "No internet connection"
 }
 
 

@@ -285,6 +285,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noDevicesAvailable": MessageLookupByLibrary.simpleMessage(
       "لا توجد أجهزة متاحة",
     ),
+    "noInternetConnection": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد اتصال بالإنترنت",
+    ),
     "noRoomsAvailable": MessageLookupByLibrary.simpleMessage(
       "لا يوجد غرف متاحة",
     ),
@@ -370,7 +373,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "resendCodeIn": m1,
     "retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
     "room": MessageLookupByLibrary.simpleMessage("الغرفة"),
+    "roomAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تمت إضافة الغرفة بنجاح",
+    ),
     "roomDescription": MessageLookupByLibrary.simpleMessage("وصف الغرفة"),
+    "roomDetails": MessageLookupByLibrary.simpleMessage("تفاصيل الغرفة"),
     "roomName": MessageLookupByLibrary.simpleMessage("اسم الغرفة"),
     "roomRequired": MessageLookupByLibrary.simpleMessage("من فضلك اختر غرفة"),
     "rooms": MessageLookupByLibrary.simpleMessage("الغرف"),

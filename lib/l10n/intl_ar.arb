@@ -238,5 +238,8 @@
   "roomName": "اسم الغرفة",
   "roomDescription": "وصف الغرفة",
   "requiredField": "هذه الخانة مطلوبة",
-  "add": "إضافة"
+  "add": "إضافة",
+  "roomDetails": "تفاصيل الغرفة",
+  "roomAddedSuccessfully": "تمت إضافة الغرفة بنجاح",
+  "noInternetConnection": "لا يوجد اتصال بالإنترنت"
 }

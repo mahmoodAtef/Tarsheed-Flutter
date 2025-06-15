@@ -39,8 +39,8 @@ class _DevicesScreenState extends State<DevicesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => _devicesCubit,
+    return BlocProvider.value(
+      value: _devicesCubit,
       child: const _DevicesScreenContent(),
     );
   }
@@ -69,7 +69,10 @@ class _DevicesScreenContent extends StatelessWidget {
                   DeviceFilterHeader(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: DevicesListView(),
+                    child: BlocProvider(
+                      create: (context) => DashboardBloc.get(),
+                      child: DevicesListView(),
+                    ),
                   )
                 ],
               ),
@@ -137,59 +140,76 @@ class DevicesListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DevicesCubit, DevicesState>(
+    List<Room> rooms = [];
+    return BlocConsumer<DashboardBloc, DashboardState>(
       listenWhen: (previous, current) =>
-          current is DeleteDeviceSuccess || current is DeleteDeviceError,
+          current is GetRoomsSuccess || current is GetRoomsError,
+      buildWhen: (previous, current) =>
+          current is GetRoomsSuccess || current is GetRoomsError,
       listener: (context, state) {
-        if (state is DeleteDeviceSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Device deleted successfully')),
-          );
-        } else if (state is DeleteDeviceError) {
+        if (state is GetRoomsSuccess) {
+          rooms = state.rooms ?? [];
+        } else if (state is GetRoomsError) {
           ExceptionManager.showMessage(state.exception);
         }
       },
-      buildWhen: (previous, current) {
-        // Only rebuild when the device list changes or loading state changes
-        if (current is GetDevicesLoading && current.refresh == true) {
-          return true;
-        }
-        return previous.devices != current.devices ||
-            previous.filterType != current.filterType ||
-            previous.sortOrder != current.sortOrder ||
-            (current is GetDevicesLoading && previous is! GetDevicesLoading) ||
-            (previous is GetDevicesLoading && current is! GetDevicesLoading);
-      },
       builder: (context, state) {
-        // Show loading indicator only for initial load or refresh
-        if (state is GetDevicesLoading &&
-            (state.devices == null || state.refresh == true)) {
-          return Center(
-            child: CustomLoadingWidget(),
-          );
-        }
+        return BlocConsumer<DevicesCubit, DevicesState>(
+          listenWhen: (previous, current) =>
+              current is DeleteDeviceSuccess || current is DeleteDeviceError,
+          listener: (context, state) {
+            if (state is DeleteDeviceSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Device deleted successfully')),
+              );
+            } else if (state is DeleteDeviceError) {
+              ExceptionManager.showMessage(state.exception);
+            }
+          },
+          buildWhen: (previous, current) {
+            // Only rebuild when the device list changes or loading state changes
+            if (current is GetDevicesLoading && current.refresh == true) {
+              return true;
+            }
+            return previous.devices != current.devices ||
+                previous.filterType != current.filterType ||
+                previous.sortOrder != current.sortOrder ||
+                (current is GetDevicesLoading &&
+                    previous is! GetDevicesLoading) ||
+                (previous is GetDevicesLoading &&
+                    current is! GetDevicesLoading);
+          },
+          builder: (context, state) {
+            // Show loading indicator only for initial load or refresh
+            if (state is GetDevicesLoading &&
+                (state.devices == null || state.refresh == true)) {
+              return Center(
+                child: CustomLoadingWidget(),
+              );
+            }
 
-        if (state is GetDevicesError && state.devices == null) {
-          return CustomErrorWidget(
-            exception: state.exception,
-          );
-        }
+            if (state is GetDevicesError && state.devices == null) {
+              return CustomErrorWidget(
+                exception: state.exception,
+              );
+            }
 
-        final devices = state.devices;
-        if (devices == null || devices.isEmpty) {
-          return NoDataWidget();
-        }
+            final devices = state.devices;
+            if (devices == null || devices.isEmpty) {
+              return NoDataWidget();
+            }
 
-        final rooms = DashboardBloc.get().rooms;
-        final filteredData = DevicesCubit.get().getFilteredDevices(rooms);
+            final filteredData = DevicesCubit.get().getFilteredDevices(rooms);
 
-        if (state.filterType == DeviceFilterType.rooms) {
-          final devicesByRoom = filteredData as Map<String, List<Device>>;
-          return _buildRoomsView(devicesByRoom, context, rooms);
-        } else {
-          final devicesList = filteredData as List<Device>;
-          return _buildGridView(devicesList);
-        }
+            if (state.filterType == DeviceFilterType.rooms) {
+              final devicesByRoom = filteredData as Map<String, List<Device>>;
+              return _buildRoomsView(devicesByRoom, context, rooms);
+            } else {
+              final devicesList = filteredData as List<Device>;
+              return _buildGridView(devicesList);
+            }
+          },
+        );
       },
     );
   }
