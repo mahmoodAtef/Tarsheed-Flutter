@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/widgets/bottom_navigator_bar.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
@@ -32,7 +31,7 @@ class MainScreen extends StatelessWidget {
           create: (context) => DashboardBloc.get(),
         ),
         BlocProvider(
-          create: (context) => sl<NotificationsCubit>(),
+          create: (context) => NotificationsCubit.get(),
         ),
       ],
       child: Scaffold(

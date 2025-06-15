@@ -5,6 +5,7 @@ import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
+import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/automation/cubit/automation_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
@@ -74,32 +75,35 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
           elevation: 1,
           foregroundColor: Colors.black,
         ),
-        body: BlocListener<AutomationCubit, AutomationState>(
-          listener: (context, state) {
-            if (state is AddAutomationSuccess) {
-              showToast(S.of(context).automationAddedSuccessfully);
-              context.pop();
-            } else if (state is AddAutomationError) {
-              ExceptionManager.showMessage(state.exception);
-            }
-          },
-          child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildNameSection(),
-                  SizedBox(height: 24.h),
-                  _buildTriggerSection(),
-                  SizedBox(height: 24.h),
-                  _buildConditionsSection(),
-                  SizedBox(height: 24.h),
-                  _buildActionsSection(),
-                  SizedBox(height: 32.h),
-                  _buildSaveButton(),
-                ],
+        body: ConnectionWidget(
+          onRetry: _loadInitialData,
+          child: BlocListener<AutomationCubit, AutomationState>(
+            listener: (context, state) {
+              if (state is AddAutomationSuccess) {
+                showToast(S.of(context).automationAddedSuccessfully);
+                context.pop();
+              } else if (state is AddAutomationError) {
+                ExceptionManager.showMessage(state.exception);
+              }
+            },
+            child: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildNameSection(),
+                    SizedBox(height: 24.h),
+                    _buildTriggerSection(),
+                    SizedBox(height: 24.h),
+                    _buildConditionsSection(),
+                    SizedBox(height: 24.h),
+                    _buildActionsSection(),
+                    SizedBox(height: 32.h),
+                    _buildSaveButton(),
+                  ],
+                ),
               ),
             ),
           ),

@@ -95,7 +95,7 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
                   BlocConsumer<DashboardBloc, DashboardState>(
                     listener: (context, state) {
                       if (state is GetRoomsSuccess) {
-                        rooms = state.rooms;
+                        rooms = state.rooms ?? [];
                       } else if (state is GetRoomsError) {
                         ExceptionManager.showMessage(state.exception);
                       }
@@ -131,7 +131,7 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
                         ExceptionManager.showMessage(state.exception);
                       }
                       if (state is GetRoomsSuccess) {
-                        rooms = state.rooms;
+                        rooms = state.rooms ?? [];
                       } else if (state is GetRoomsError) {
                         ExceptionManager.showMessage(state.exception);
                       }

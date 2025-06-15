@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
+import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
 import 'package:tarsheed/src/modules/automation/cubit/automation_cubit.dart';
 import 'package:tarsheed/src/modules/automation/data/models/action/action.dart';
 import 'package:tarsheed/src/modules/automation/data/models/automation.dart';
@@ -84,19 +85,22 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.all(16.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildStatusCard(),
-              SizedBox(height: 16.h),
-              _buildTriggerSection(),
-              SizedBox(height: 16.h),
-              _buildConditionsSection(),
-              SizedBox(height: 16.h),
-              _buildActionsSection(),
-            ],
+        body: ConnectionWidget(
+          onRetry: _loadData,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(16.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildStatusCard(),
+                SizedBox(height: 16.h),
+                _buildTriggerSection(),
+                SizedBox(height: 16.h),
+                _buildConditionsSection(),
+                SizedBox(height: 16.h),
+                _buildActionsSection(),
+              ],
+            ),
           ),
         ),
       ),

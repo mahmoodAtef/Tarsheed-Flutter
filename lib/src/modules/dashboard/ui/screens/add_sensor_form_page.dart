@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tarsheed/generated/l10n.dart';
+import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/core/widgets/large_button.dart';
 import 'package:tarsheed/src/core/widgets/text_field.dart';
+import 'package:tarsheed/src/modules/dashboard/data/models/room.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/sensor.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/sensor_category.dart';
 
@@ -25,7 +27,7 @@ class _AddSensorFormPageState extends State<AddSensorFormPage> {
   final TextEditingController pinNumberController = TextEditingController();
   String? selectedPin;
   String? selectedRoomId;
-  List<String> rooms = [];
+  List<Room> rooms = [];
   SensorCategory? selectedSensorType;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -73,12 +75,19 @@ class _AddSensorFormPageState extends State<AddSensorFormPage> {
                   const SizedBox(height: 12),
 
                   ///Rooms Dropdown
-                  BlocBuilder<DashboardBloc, DashboardState>(
-                    buildWhen: (current, previous) =>
-                        current is RoomState ||
-                        current is AddSensorLoadingState,
+                  BlocConsumer<DashboardBloc, DashboardState>(
+                    listener: (context, state) {
+                      if (state is RoomState) {
+                        rooms = state.rooms ?? [];
+                        if (rooms.isNotEmpty && selectedRoomId == null) {
+                          selectedRoomId = rooms.first.id;
+                        }
+                      } else if (state is GetRoomsError) {
+                        ExceptionManager.showMessage(state.exception);
+                      }
+                    },
+                    buildWhen: (current, previous) => current is RoomState,
                     builder: (context, state) {
-                      final rooms = DashboardBloc.get().rooms;
                       return DropdownButtonFormField<String>(
                         value: selectedRoomId,
                         hint: const Text('Select Room'),

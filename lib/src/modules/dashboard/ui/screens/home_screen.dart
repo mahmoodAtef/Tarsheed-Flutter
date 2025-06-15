@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
+import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
@@ -26,20 +27,23 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: SingleChildScrollView(
-        child: BlocProvider<DevicesCubit>(
-          create: (context) => DevicesCubit.get(),
-          child: Builder(builder: (context) {
-            _initializeData();
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _HeaderSection(),
-                _EnergyConsumptionSection(),
-                _HomeContentSection(),
-              ],
-            );
-          }),
+      child: BlocProvider<DevicesCubit>(
+        create: (context) => DevicesCubit.get(),
+        child: ConnectionWidget(
+          onRetry: _initializeData,
+          child: SingleChildScrollView(
+            child: Builder(builder: (context) {
+              _initializeData();
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _HeaderSection(),
+                  _EnergyConsumptionSection(),
+                  _HomeContentSection(),
+                ],
+              );
+            }),
+          ),
         ),
       ),
     );
@@ -570,7 +574,10 @@ class _ConnectedDevicesSection extends StatelessWidget {
             CustomTextWidget(
                 label: S.of(context).connectedDevices, size: 22.sp),
             TextButton.icon(
-              onPressed: () => context.push(DevicesScreen()),
+              onPressed: () => context.push(BlocProvider.value(
+                value: DevicesCubit.get(),
+                child: DevicesScreen(),
+              )),
               style: TextButton.styleFrom(
                 foregroundColor: const Color(0xFF366692),
               ),

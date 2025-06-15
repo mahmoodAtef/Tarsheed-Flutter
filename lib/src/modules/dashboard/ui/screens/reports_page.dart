@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
+import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/reports_cubit/reports_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
@@ -61,16 +62,19 @@ class _ReportsContentState extends State<_ReportsContent> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(12.w),
-        child: Column(
-          spacing: 20.h,
-          children: [
-            _ChartSection(),
-            _ReportContentSection(),
-            _AISuggestionsSection()
-          ],
+    return ConnectionWidget(
+      onRetry: _fetchInitialData,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(12.w),
+          child: Column(
+            spacing: 20.h,
+            children: [
+              _ChartSection(),
+              _ReportContentSection(),
+              _AISuggestionsSection()
+            ],
+          ),
         ),
       ),
     );

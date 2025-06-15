@@ -5,6 +5,7 @@ import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/utils/image_manager.dart';
+import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/data/models/user.dart';
 
@@ -19,7 +20,11 @@ class ProfilePage extends StatelessWidget {
       value: SettingsCubit.get()..getProfile(),
       child: Scaffold(
         appBar: CustomAppBar(text: S.of(context).profile),
-        body: const ProfileContent(),
+        body: ConnectionWidget(
+            onRetry: () {
+              SettingsCubit.get().getProfile();
+            },
+            child: const ProfileContent()),
       ),
     );
   }
