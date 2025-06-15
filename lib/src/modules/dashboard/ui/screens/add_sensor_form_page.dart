@@ -37,8 +37,8 @@ class _AddSensorFormPageState extends State<AddSensorFormPage> {
 
     return Scaffold(
       appBar: AppBar(title: Text(S.of(context).addSensor)),
-      body: BlocProvider(
-        create: (context) => DashboardBloc.get()..add(GetRoomsEvent()),
+      body: BlocProvider.value(
+        value: DashboardBloc.get()..add(GetRoomsEvent()),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: SingleChildScrollView(

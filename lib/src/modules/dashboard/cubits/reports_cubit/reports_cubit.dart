@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/ai_recommendations.dart';
 import 'package:tarsheed/src/modules/dashboard/data/repositories/report/report_repository.dart';
@@ -21,6 +22,13 @@ class ReportsCubit extends Cubit<ReportsState> {
       );
     }
     return sl<ReportsCubit>();
+  }
+
+  @override
+  Future<void> close() async {
+    debugPrint('Closing ReportsCubit');
+    // Perform any necessary cleanup here
+    // return super.close();
   }
 
   Future<void> getUsageReport(

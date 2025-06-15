@@ -20,11 +20,9 @@ class MainScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          lazy: true,
           create: (context) => ReportsCubit.get(),
         ),
         BlocProvider(
-          lazy: true,
           create: (context) => DevicesCubit.get(),
         ),
         BlocProvider(

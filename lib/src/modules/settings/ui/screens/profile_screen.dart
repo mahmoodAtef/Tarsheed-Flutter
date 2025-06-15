@@ -195,7 +195,9 @@ class _ProfileContentState extends State<ProfileContent> {
                 buildWhen: (previous, current) =>
                     current is UpdateProfileLoadingState ||
                     !(previous is UpdateProfileLoadingState &&
-                        current is! UpdateProfileLoadingState),
+                        current is! UpdateProfileLoadingState) ||
+                    current is UpdateProfileSuccessState ||
+                    current is SettingsErrorState,
                 builder: (context, state) {
                   final isLoading = state is UpdateProfileLoadingState;
 

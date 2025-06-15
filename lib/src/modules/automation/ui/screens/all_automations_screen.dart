@@ -101,7 +101,7 @@ class _AllAutomationsScreenState extends State<AllAutomationsScreen> {
                           onTap: () async {
                             final result = await context.push(
                               BlocProvider.value(
-                                value: AutomationCubit.get(),
+                                value: context.read<AutomationCubit>(),
                                 child: AutomationDetailsScreen(
                                     automation: automation),
                               ),

@@ -19,6 +19,12 @@ class AutomationCubit extends Cubit<AutomationState> {
     return sl<AutomationCubit>();
   }
 
+  @override
+  Future<void> close() async {
+    debugPrint('trying to close AutomationCubit');
+    // return super.close();
+  }
+
   final _repository = sl<AutomationRepository>();
   Future<void> getAllAutomations() async {
     List<Automation>? currentAutomations = state.automations;

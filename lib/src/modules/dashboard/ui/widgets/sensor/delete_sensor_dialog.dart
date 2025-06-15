@@ -14,8 +14,8 @@ class DeleteSensorDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => DashboardBloc.get(),
+    return BlocProvider.value(
+      value: DashboardBloc.get(),
       child: BlocConsumer<DashboardBloc, DashboardState>(
         listener: (context, state) {
           if (state is DeleteSensorSuccessState) {

@@ -32,8 +32,8 @@ class DeviceCard extends StatelessWidget {
         BlocProvider.value(
           value: DevicesCubit.get(), // Use .value to get the same instance
         ),
-        BlocProvider(
-          create: (context) => DashboardBloc.get(),
+        BlocProvider.value(
+          value: DashboardBloc.get(),
         ),
       ],
       child: BlocBuilder<DevicesCubit, DevicesState>(

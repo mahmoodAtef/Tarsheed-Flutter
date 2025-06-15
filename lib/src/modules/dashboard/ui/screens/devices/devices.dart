@@ -69,8 +69,8 @@ class _DevicesScreenContent extends StatelessWidget {
                   DeviceFilterHeader(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: BlocProvider(
-                      create: (context) => DashboardBloc.get(),
+                    child: BlocProvider.value(
+                      value: DashboardBloc.get(),
                       child: DevicesListView(),
                     ),
                   )

@@ -21,123 +21,151 @@ class SettingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
+    return Scaffold(
+      body: Column(
         children: [
+          // Fixed AppBar at the top
           CustomAppBar(text: S.of(context).settings, withBackButton: false),
-          BlocListener<SettingsCubit, SettingsState>(
-            listener: (context, state) {
-              if (state is DeleteProfileLoadingState) {
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (_) => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              } else if (state is DeleteProfileSuccessState) {
-                context.pushAndRemove(LoginPage());
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(S.of(context).accountDeletedSuccess)));
-                context.pushReplacement(LoginPage());
-              } else if (state is SettingsErrorState) {
-                Navigator.of(context).pop();
-                ExceptionManager.showMessage(state.exception);
-              }
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  BlocBuilder<SettingsCubit, SettingsState>(
-                    builder: (context, state) {
-                      final cubit = SettingsCubit.get();
-                      final currentLang =
-                          LocalizationManager.getCurrentLocale().languageCode;
 
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(S.of(context).language,
+          // Scrollable content
+          Expanded(
+            child: BlocListener<SettingsCubit, SettingsState>(
+              listener: (context, state) {
+                if (state is DeleteProfileLoadingState) {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (_) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                } else if (state is DeleteProfileSuccessState) {
+                  context.pop(); // Close loading dialog
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(S.of(context).accountDeletedSuccess)));
+                  context.pushAndRemove(LoginPage());
+                } else if (state is SettingsErrorState) {
+                  context.pop(); // Close loading dialog
+                  ExceptionManager.showMessage(state.exception);
+                }
+              },
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Language Selection Section
+                    BlocBuilder<SettingsCubit, SettingsState>(
+                      builder: (context, state) {
+                        final cubit = SettingsCubit.get();
+                        final currentLang =
+                            LocalizationManager.getCurrentLocale().languageCode;
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              S.of(context).language,
                               style: TextStyle(
-                                  color: ColorManager.black,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.bold)),
-                          SizedBox(height: 10.h),
-                          DropdownButtonFormField<String>(
-                            value: currentLang,
-                            decoration: InputDecoration(
-                              border: const OutlineInputBorder(),
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 10.w),
+                                color: ColorManager.black,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            items: [
-                              DropdownMenuItem(
-                                  value: 'en', child: Text('English')),
-                              DropdownMenuItem(
-                                  value: 'ar', child: Text('العربية')),
-                            ],
-                            onChanged: (value) {
-                              if (value != null && value != currentLang) {
-                                cubit.changeLanguage(value);
-                              }
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                  SizedBox(height: 20.h),
-                  CustomContainer(
-                    text: S.of(context).editPassword,
-                    onTap: () {
-                      context.push(EditPasswordPage());
-                    },
-                  ),
-                  SizedBox(height: 5.h),
-                  BlocConsumer<AuthBloc, AuthState>(
-                    listenWhen: (previous, current) =>
-                        current is LogoutSuccessState ||
-                        current is LogoutLoadingState,
-                    listener: (context, state) {
-                      if (state is LogoutSuccessState) {
-                        context.pushAndRemove(LoginPage());
-                      }
-                    },
-                    builder: (context, state) {
-                      return state is LogoutLoadingState
-                          ? Center(child: CustomLoadingWidget())
-                          : CustomContainer(
-                              text: S.of(context).signOut,
-                              icon: Icons.logout,
-                              onTap: () {
-                                context.read<AuthBloc>().add(LogoutEvent());
+                            SizedBox(height: 10.h),
+                            DropdownButtonFormField<String>(
+                              value: currentLang,
+                              decoration: InputDecoration(
+                                border: const OutlineInputBorder(),
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 10.w),
+                              ),
+                              items: const [
+                                DropdownMenuItem(
+                                  value: 'en',
+                                  child: Text('English'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'ar',
+                                  child: Text('العربية'),
+                                ),
+                              ],
+                              onChanged: (value) {
+                                if (value != null && value != currentLang) {
+                                  cubit.changeLanguage(value);
+                                }
                               },
-                            );
-                    },
-                  ),
-                  SizedBox(height: 5.h),
-                  TextButton(
-                    onPressed: () {
-                      Fluttertoast.showToast(msg: "قولنا محدش يحذف الأكونت");
-                      // showDeleteAccountDialog(context);
-                    },
-                    child: Center(
-                      child: Text(
-                        S.of(context).deleteMyAccount,
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                          color: ColorManager.red,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+
+                    SizedBox(height: 20.h),
+
+                    // Edit Password Section
+                    CustomContainer(
+                      text: S.of(context).editPassword,
+                      onTap: () {
+                        context.push(EditPasswordPage());
+                      },
+                    ),
+
+                    SizedBox(height: 5.h),
+
+                    // Logout Section
+                    BlocProvider(
+                      create: (context) => AuthBloc.instance,
+                      child: BlocConsumer<AuthBloc, AuthState>(
+                        listenWhen: (previous, current) =>
+                            current is LogoutSuccessState ||
+                            current is LogoutLoadingState,
+                        listener: (context, state) {
+                          if (state is LogoutSuccessState) {
+                            context.pushAndRemove(LoginPage());
+                          }
+                        },
+                        builder: (context, state) {
+                          return state is LogoutLoadingState
+                              ? Center(child: CustomLoadingWidget())
+                              : CustomContainer(
+                                  text: S.of(context).signOut,
+                                  icon: Icons.logout,
+                                  onTap: () {
+                                    context.read<AuthBloc>().add(LogoutEvent());
+                                  },
+                                );
+                        },
+                      ),
+                    ),
+
+                    SizedBox(height: 5.h),
+
+                    // Delete Account Section
+                    TextButton(
+                      onPressed: () {
+                        Fluttertoast.showToast(msg: "قولنا محدش يحذف الأكونت");
+                        // showDeleteAccountDialog(context);
+                      },
+                      child: Center(
+                        child: Text(
+                          S.of(context).deleteMyAccount,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                            color: ColorManager.red,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+
+                    // Add some bottom padding to prevent content from being cut off
+                    SizedBox(height: 20.h),
+                  ],
+                ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

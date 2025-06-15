@@ -60,7 +60,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => AutomationCubit.get()),
+        BlocProvider.value(value: AutomationCubit.get()),
         BlocProvider.value(value: DashboardBloc.get()),
         BlocProvider.value(value: DevicesCubit.get()),
       ],

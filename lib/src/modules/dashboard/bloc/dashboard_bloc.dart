@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/category.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/room.dart';
@@ -23,6 +24,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
 
     return sl<DashboardBloc>();
+  }
+
+  @override
+  close() async {
+    debugPrint('trying to close DashboardBloc');
+    // return super.close();
   }
 
   List<Sensor> sensors = [];
@@ -47,8 +54,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     });
   }
 
-  @override
-  Future<void> close() async {
+  Future<void> closeBloc() async {
     _deleteAllData();
     await _repository.dispose();
     return super.close();

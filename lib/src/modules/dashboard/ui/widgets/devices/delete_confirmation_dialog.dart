@@ -12,8 +12,8 @@ class DeleteDeviceDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => DevicesCubit.get(),
+    return BlocProvider.value(
+      value: DevicesCubit.get(),
       child: BlocConsumer<DevicesCubit, DevicesState>(
         listener: (context, state) {
           if (state is DeleteDeviceSuccess) {

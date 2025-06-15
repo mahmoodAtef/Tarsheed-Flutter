@@ -542,26 +542,6 @@ class _HomeContentSection extends StatelessWidget {
   }
 }
 
-// class _ActiveModeSection extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         CustomTextWidget(label: S.of(context).activeMode, size: 24.sp),
-//         SizedBox(height: 16.h),
-//         Center(
-//           child: DefaultButton(
-//             title: S.of(context).energySaving,
-//             icon: Image.asset("assets/images/Vector.png"),
-//             width: 300.w,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
-
 class _ConnectedDevicesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

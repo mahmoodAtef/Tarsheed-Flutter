@@ -43,8 +43,8 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
           BlocProvider.value(
             value: DevicesCubit.get(),
           ),
-          BlocProvider(
-            create: (context) => DashboardBloc.get()
+          BlocProvider.value(
+            value: DashboardBloc.get()
               ..add(GetRoomsEvent())
               ..add(GetDevicesCategoriesEvent()),
           ),

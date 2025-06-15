@@ -24,12 +24,7 @@ void main() async {
   Bloc.observer = TarsheedBlocObserver();
 
   runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => AuthBloc.instance),
-      ],
-      child: Tarsheed(),
-    ),
+    Tarsheed(),
   );
 }
 
@@ -44,9 +39,16 @@ class Tarsheed extends StatelessWidget {
       splitScreenMode: true,
       enableScaleText: () => true,
       builder: (BuildContext context, child) {
-        return BlocProvider(
-          lazy: true,
-          create: (context) => SettingsCubit.get(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              lazy: true,
+              create: (context) => SettingsCubit.get(),
+            ),
+            BlocProvider(
+              create: (context) => AuthBloc.instance,
+            ),
+          ],
           child: BlocBuilder<SettingsCubit, SettingsState>(
             buildWhen: (previous, current) =>
                 current is ChangeLanguageSuccessState ||
@@ -73,4 +75,6 @@ class Tarsheed extends StatelessWidget {
     );
   }
 }
-/**/
+/*
+
+  */

@@ -19,8 +19,8 @@ class SensorsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => DashboardBloc.get()..add(GetSensorsEvent()),
+    return BlocProvider.value(
+      value: DashboardBloc.get()..add(GetSensorsEvent()),
       child: RefreshIndicator(
         onRefresh: () async {
           DashboardBloc.get().add(GetSensorsEvent(isRefresh: true));

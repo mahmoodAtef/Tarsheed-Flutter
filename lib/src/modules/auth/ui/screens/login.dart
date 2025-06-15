@@ -139,13 +139,12 @@ class _LoginPageState extends State<LoginPage> {
                             title: S.of(context).signIn,
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
-                                context.read<AuthBloc>().add(
-                                      LoginWithEmailAndPasswordEvent(
-                                        email: emailController.text.trim(),
-                                        password:
-                                            passwordController.text.trim(),
-                                      ),
-                                    );
+                                AuthBloc.instance.add(
+                                  LoginWithEmailAndPasswordEvent(
+                                    email: emailController.text.trim(),
+                                    password: passwordController.text.trim(),
+                                  ),
+                                );
                               }
                             },
                           );
@@ -187,8 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                                 onTap: state is LoginWithGoogleLoadingState
                                     ? null
                                     : () {
-                                        context
-                                            .read<AuthBloc>()
+                                        AuthBloc.instance
                                             .add(const LoginWithGoogleEvent());
                                       },
                                 child: state is LoginWithGoogleLoadingState
@@ -203,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                                 onTap: state is LoginWithFacebookLoadingState
                                     ? null
                                     : () {
-                                        context.read<AuthBloc>().add(
+                                        AuthBloc.instance.add(
                                             const LoginWithFacebookEvent());
                                       },
                                 child: state is LoginWithFacebookLoadingState
