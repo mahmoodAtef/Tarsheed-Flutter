@@ -167,13 +167,14 @@ class DevicesListView extends StatelessWidget {
             }
           },
           buildWhen: (previous, current) {
-            // Only rebuild when the device list changes or loading state changes
-            if (current is GetDevicesLoading && current.refresh == true) {
-              return true;
-            }
+            // Rebuild when device list changes, filter changes, or any device status changes
             return previous.devices != current.devices ||
                 previous.filterType != current.filterType ||
                 previous.sortOrder != current.sortOrder ||
+                current is ToggleDeviceStatusLoading ||
+                current is ToggleDeviceStatusSuccess ||
+                current is ToggleDeviceStatusError ||
+                (current is GetDevicesLoading && current.refresh == true) ||
                 (current is GetDevicesLoading &&
                     previous is! GetDevicesLoading) ||
                 (previous is GetDevicesLoading &&

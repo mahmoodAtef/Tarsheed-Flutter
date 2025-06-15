@@ -2034,6 +2034,86 @@ class S {
       args: [],
     );
   }
+
+  /// `Automation deleted successfully`
+  String get automationDeletedSuccessfully {
+    return Intl.message(
+      'Automation deleted successfully',
+      name: 'automationDeletedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Automation status changed successfully`
+  String get automationStatusChanged {
+    return Intl.message(
+      'Automation status changed successfully',
+      name: 'automationStatusChanged',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Automation disabled`
+  String get automationDisabled {
+    return Intl.message(
+      'Automation disabled',
+      name: 'automationDisabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Automation enabled`
+  String get automationEnabled {
+    return Intl.message(
+      'Automation enabled',
+      name: 'automationEnabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Updating status...`
+  String get updatingStatus {
+    return Intl.message(
+      'Updating status...',
+      name: 'updatingStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Automation`
+  String get updateAutomation {
+    return Intl.message(
+      'Update Automation',
+      name: 'updateAutomation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Editing automation:`
+  String get editingAutomationInfo {
+    return Intl.message(
+      'Editing automation:',
+      name: 'editingAutomationInfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Automation updated successfully`
+  String get automationUpdatedSuccessfully {
+    return Intl.message(
+      'Automation updated successfully',
+      name: 'automationUpdatedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

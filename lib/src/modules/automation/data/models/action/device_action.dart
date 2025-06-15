@@ -10,8 +10,10 @@ class DeviceAction extends AutomationAction {
   });
 
   factory DeviceAction.fromJson(Map<String, dynamic> json) => DeviceAction(
-        deviceId: json['device_id'].toString(),
-        state: json['state'] == "turned_on" ? "turned_on" : "turned_off",
+        deviceId: json['data']['deviceId'] is Map
+            ? json['data']['deviceId']['_id'] ?? ''
+            : json['data']['deviceId'] ?? '',
+        state: json['data']['state'] == "ON" ? "turned_on" : "turned_off",
       );
 
   @override

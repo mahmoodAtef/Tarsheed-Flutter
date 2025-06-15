@@ -8,6 +8,7 @@ import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/automation/cubit/automation_cubit.dart';
+import 'package:tarsheed/src/modules/automation/ui/screens/add_automation_screen.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
@@ -18,31 +19,83 @@ import '../../data/models/automation.dart';
 import '../../data/models/condition/condition.dart';
 import '../../data/models/trigger/trigger.dart';
 
-class AddAutomationScreen extends StatefulWidget {
-  const AddAutomationScreen({super.key});
+class EditAutomationScreen extends StatefulWidget {
+  final Automation automation;
+
+  const EditAutomationScreen({super.key, required this.automation});
 
   @override
-  State<AddAutomationScreen> createState() => _AddAutomationScreenState();
+  State<EditAutomationScreen> createState() => _EditAutomationScreenState();
 }
 
-class _AddAutomationScreenState extends State<AddAutomationScreen> {
+class _EditAutomationScreenState extends State<EditAutomationScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
+  late TextEditingController _nameController;
 
   // Trigger
-  TriggerType _selectedTriggerType = TriggerType.schedule;
+  late TriggerType _selectedTriggerType;
   String? _selectedTime;
   String? _selectedSensorId;
   int? _triggerValue;
 
   List<ConditionData> _conditions = [];
-
   List<ActionData> _actions = [];
 
   @override
   void initState() {
     super.initState();
+    _initializeControllers();
+    _loadAutomationData();
     _loadInitialData();
+  }
+
+  void _initializeControllers() {
+    _nameController = TextEditingController(text: widget.automation.name);
+  }
+
+  void _loadAutomationData() {
+    // Load trigger data
+    if (widget.automation.trigger is ScheduleTrigger) {
+      _selectedTriggerType = TriggerType.schedule;
+      _selectedTime = (widget.automation.trigger as ScheduleTrigger).time;
+    } else if (widget.automation.trigger is SensorTrigger) {
+      _selectedTriggerType = TriggerType.sensor;
+      final sensorTrigger = widget.automation.trigger as SensorTrigger;
+      _selectedSensorId = sensorTrigger.sensorID;
+      _triggerValue = sensorTrigger.value;
+    } else {
+      _selectedTriggerType = TriggerType.schedule;
+    }
+
+    // Load conditions data
+    _conditions = widget.automation.conditions.map((condition) {
+      if (condition is DeviceCondition) {
+        return ConditionData(type: ConditionType.device)
+          ..id = condition.deviceID
+          ..state = condition.state;
+      } else if (condition is SensorCondition) {
+        return ConditionData(type: ConditionType.sensor)
+          ..id = condition.sensorID
+          ..state = condition.state;
+      } else {
+        return ConditionData(type: ConditionType.device);
+      }
+    }).toList();
+
+    // Load actions data
+    _actions = widget.automation.actions.map((action) {
+      if (action is DeviceAction) {
+        return ActionData(type: ActionType.device)
+          ..deviceId = action.deviceId
+          ..state = action.state;
+      } else if (action is NotificationAction) {
+        return ActionData(type: ActionType.notification)
+          ..title = action.title
+          ..message = action.message;
+      } else {
+        return ActionData(type: ActionType.device);
+      }
+    }).toList();
   }
 
   void _loadInitialData() {
@@ -68,8 +121,8 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
         backgroundColor: Colors.grey.shade50,
         appBar: AppBar(
           title: Text(
-            S.of(context).addNewAutomation,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            S.of(context).editAutomation,
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           backgroundColor: ColorManager.white,
           elevation: 1,
@@ -79,10 +132,10 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
           onRetry: _loadInitialData,
           child: BlocListener<AutomationCubit, AutomationState>(
             listener: (context, state) {
-              if (state is AddAutomationSuccess) {
-                showToast(S.of(context).automationAddedSuccessfully);
+              if (state is UpdateAutomationSuccess) {
+                showToast(S.of(context).automationUpdatedSuccessfully);
                 context.pop();
-              } else if (state is AddAutomationError) {
+              } else if (state is UpdateAutomationError) {
                 ExceptionManager.showMessage(state.exception);
               }
             },
@@ -93,6 +146,8 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    _buildInfoCard(),
+                    SizedBox(height: 24.h),
                     _buildNameSection(),
                     SizedBox(height: 24.h),
                     _buildTriggerSection(),
@@ -101,13 +156,40 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
                     SizedBox(height: 24.h),
                     _buildActionsSection(),
                     SizedBox(height: 32.h),
-                    _buildSaveButton(),
+                    _buildUpdateButton(),
                   ],
                 ),
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildInfoCard() {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.blue.shade50,
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: Colors.blue.shade200),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.info_outline, color: Colors.blue, size: 24),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: Text(
+              S.of(context).editingAutomationInfo,
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: Colors.blue.shade700,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -195,9 +277,20 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
   Widget _buildTimeSelector() {
     return GestureDetector(
       onTap: () async {
+        TimeOfDay? initialTime;
+        if (_selectedTime != null) {
+          final parts = _selectedTime!.split(':');
+          initialTime = TimeOfDay(
+            hour: int.parse(parts[0]),
+            minute: int.parse(parts[1]),
+          );
+        } else {
+          initialTime = TimeOfDay.now();
+        }
+
         final time = await showTimePicker(
           context: context,
-          initialTime: TimeOfDay.now(),
+          initialTime: initialTime,
         );
         if (time != null) {
           setState(() {
@@ -241,10 +334,9 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
           current is GetSensorsErrorState,
       builder: (context, state) {
         if (state is GetSensorsLoadingState) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
-        // Get sensors directly from the bloc state
         final sensors = context.read<DashboardBloc>().sensors;
         final sensorItems = _buildSensorItems(sensors);
 
@@ -267,6 +359,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
             ),
             SizedBox(height: 12.h),
             TextFormField(
+              initialValue: _triggerValue?.toString(),
               decoration: InputDecoration(
                 labelText: S.of(context).triggerValue,
                 filled: true,
@@ -399,6 +492,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
                                     () => condition.state = value ?? 0),
                               )
                             : TextFormField(
+                                initialValue: condition.state.toString(),
                                 decoration: InputDecoration(
                                   labelText: S.of(context).stateValue,
                                   filled: true,
@@ -526,7 +620,10 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
                     SizedBox(width: 12.w),
                     Expanded(
                       child: DropdownButtonFormField<String>(
-                        value: action.state,
+                        // Fix: تأكد من أن القيمة صحيحة أو null
+                        value: (action.state == "ON" || action.state == "OFF")
+                            ? action.state
+                            : null,
                         decoration: InputDecoration(
                           labelText: S.of(context).action,
                           filled: true,
@@ -540,7 +637,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
                           DropdownMenuItem(
                               value: "ON", child: Text(S.of(context).turnOn)),
                           DropdownMenuItem(
-                              value: "Of", child: Text(S.of(context).turnOff)),
+                              value: "OFF", child: Text(S.of(context).turnOff)),
                         ],
                         onChanged: (value) =>
                             setState(() => action.state = value),
@@ -550,6 +647,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
                 ),
               ] else ...[
                 TextFormField(
+                  initialValue: action.title,
                   decoration: InputDecoration(
                     labelText: S.of(context).notificationTitle,
                     filled: true,
@@ -563,6 +661,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
                 ),
                 SizedBox(height: 12.h),
                 TextFormField(
+                  initialValue: action.message,
                   decoration: InputDecoration(
                     labelText: S.of(context).notificationMessage,
                     filled: true,
@@ -609,18 +708,18 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
     );
   }
 
-  Widget _buildSaveButton() {
+  Widget _buildUpdateButton() {
     return BlocBuilder<AutomationCubit, AutomationState>(
       builder: (context, state) {
-        final isLoading = state is AddAutomationLoading;
+        final isLoading = state is UpdateAutomationLoading;
 
         return SizedBox(
           width: double.infinity,
           height: 50.h,
           child: ElevatedButton(
-            onPressed: isLoading ? null : _saveAutomation,
+            onPressed: isLoading ? null : _updateAutomation,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.orange,
               foregroundColor: ColorManager.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -630,8 +729,9 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
             child: isLoading
                 ? const CircularProgressIndicator(color: ColorManager.white)
                 : Text(
-                    S.of(context).saveAutomation,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    S.of(context).updateAutomation,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                   ),
           ),
         );
@@ -791,7 +891,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
     }).toList();
   }
 
-  void _saveAutomation() {
+  void _updateAutomation() {
     if (_formKey.currentState!.validate()) {
       if (_actions.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -825,36 +925,36 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
         return;
       }
 
-      final automation = _createAutomation();
-      AutomationCubit.get().addAutomation(automation);
+      final updatedAutomation = _createUpdatedAutomation();
+      AutomationCubit.get().updateAutomation(updatedAutomation);
     }
   }
 
-  Automation _createAutomation() {
+  Automation _createUpdatedAutomation() {
     // Create trigger
     Trigger trigger;
     if (_selectedTriggerType == TriggerType.schedule) {
       trigger = ScheduleTrigger(time: _selectedTime!);
     } else {
-      trigger =
-          SensorTrigger(sensorID: _selectedSensorId!, value: _triggerValue!);
+      trigger = SensorTrigger(
+        sensorID: _selectedSensorId!,
+        value: _triggerValue!,
+      );
     }
-
     // Create conditions
     List<Condition> conditions = _conditions.map((conditionData) {
       if (conditionData.type == ConditionType.device) {
         return DeviceCondition(
           deviceID: conditionData.id!,
-          state: conditionData.state,
+          state: conditionData.state ?? 0,
         );
       } else {
         return SensorCondition(
           sensorID: conditionData.id!,
-          state: conditionData.state,
+          state: conditionData.state ?? 0,
         );
       }
     }).toList();
-
     // Create actions
     List<AutomationAction> actions = _actions.map((actionData) {
       if (actionData.type == ActionType.device) {
@@ -869,37 +969,12 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
         );
       }
     }).toList();
-
-    return Automation(
+    // Create updated automation
+    return widget.automation.copyWith(
       name: _nameController.text,
       trigger: trigger,
       conditions: conditions,
       actions: actions,
     );
   }
-}
-
-// Helper enums and classes
-enum TriggerType { schedule, sensor }
-
-enum ConditionType { device, sensor }
-
-enum ActionType { device, notification }
-
-class ConditionData {
-  final ConditionType type;
-  String? id;
-  int state = 0;
-
-  ConditionData({required this.type});
-}
-
-class ActionData {
-  final ActionType type;
-  String? deviceId;
-  String? state;
-  String? title;
-  String? message;
-
-  ActionData({required this.type});
 }

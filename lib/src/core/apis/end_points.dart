@@ -44,7 +44,7 @@ class EndPoints {
   static const String updateAutomation = '/automation/update/';
   static const String deleteAutomation = '/automation/delete/';
   static const String getAutomations = '/automation/get/';
-  static const String changeAutomationStatus = '/automation/status/';
+  static const String changeAutomationStatus = '/automation/apply/';
 
   // NOTIFICATIONS ENDPOINTS
   static const String getNotifications = '/notification';

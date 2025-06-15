@@ -19,49 +19,45 @@ class AutomationCard extends StatelessWidget {
     this.onTap,
     this.onToggle,
     this.onDelete,
-    this.isEnabled = true,
+    required this.isEnabled,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 160.w,
-      height: 200.h,
-      child: GestureDetector(
+    return Card(
+      elevation: 2,
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.r),
+        side: BorderSide(
+          color: isEnabled
+              ? ColorManager.primary.withOpacity(0.2)
+              : Colors.grey.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: InkWell(
         onTap: onTap,
+        borderRadius: BorderRadius.circular(16.r),
         child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(16.w),
           decoration: BoxDecoration(
-            color: ColorManager.white,
             borderRadius: BorderRadius.circular(16.r),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
-                spreadRadius: 1,
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
-            border: Border.all(
-              color: isEnabled
-                  ? ColorManager.primary.withOpacity(0.2)
-                  : Colors.grey.withOpacity(0.2),
-              width: 1,
-            ),
+            color: isEnabled ? Colors.white : Colors.grey.shade50,
           ),
-          child: Padding(
-            padding: EdgeInsets.all(16.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildHeader(context),
-                SizedBox(height: 12.h),
-                _buildTriggerInfo(context),
-                SizedBox(height: 8.h),
-                _buildActionsInfo(context),
-                const Spacer(),
-                _buildStatusToggle(context),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildHeader(context),
+              SizedBox(height: 12.h),
+              _buildTriggerInfo(context),
+              SizedBox(height: 8.h),
+              _buildActionsInfo(context),
+              SizedBox(height: 12.h),
+              _buildStatusToggle(context),
+            ],
           ),
         ),
       ),
@@ -77,7 +73,7 @@ class AutomationCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              color: isEnabled ? Colors.black87 : Colors.grey.shade600,
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -133,7 +129,7 @@ class AutomationCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
       decoration: BoxDecoration(
-        color: triggerColor.withOpacity(0.1),
+        color: (isEnabled ? triggerColor : Colors.grey).withOpacity(0.1),
         borderRadius: BorderRadius.circular(20.r),
       ),
       child: Row(
@@ -142,7 +138,7 @@ class AutomationCard extends StatelessWidget {
           Icon(
             triggerIcon,
             size: 16,
-            color: triggerColor,
+            color: isEnabled ? triggerColor : Colors.grey.shade600,
           ),
           SizedBox(width: 6.w),
           Flexible(
@@ -150,7 +146,7 @@ class AutomationCard extends StatelessWidget {
               triggerText,
               style: TextStyle(
                 fontSize: 12.sp,
-                color: triggerColor,
+                color: isEnabled ? triggerColor : Colors.grey.shade600,
                 fontWeight: FontWeight.w500,
               ),
               overflow: TextOverflow.ellipsis,
@@ -173,30 +169,29 @@ class AutomationCard extends StatelessWidget {
           S.of(context).actions,
           style: TextStyle(
             fontSize: 12.sp,
-            color: Colors.grey.shade600,
+            color: isEnabled ? Colors.grey.shade600 : Colors.grey.shade500,
             fontWeight: FontWeight.w500,
           ),
         ),
         SizedBox(height: 4.h),
-        Row(
+        Wrap(
+          spacing: 8.w,
+          runSpacing: 4.h,
           children: [
-            if (deviceActions > 0) ...[
+            if (deviceActions > 0)
               _buildActionChip(
                 context,
                 Icons.devices,
                 '$deviceActions ${S.of(context).devices}',
                 Colors.green,
               ),
-              SizedBox(width: 8.w),
-            ],
-            if (notificationActions > 0) ...[
+            if (notificationActions > 0)
               _buildActionChip(
                 context,
                 Icons.notifications,
                 '$notificationActions ${S.of(context).notifications}',
                 Colors.purple,
               ),
-            ],
           ],
         ),
       ],
@@ -205,22 +200,24 @@ class AutomationCard extends StatelessWidget {
 
   Widget _buildActionChip(
       BuildContext context, IconData icon, String text, Color color) {
+    final effectiveColor = isEnabled ? color : Colors.grey.shade600;
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: effectiveColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 12, color: color),
+          Icon(icon, size: 12, color: effectiveColor),
           SizedBox(width: 4.w),
           Text(
             text,
             style: TextStyle(
               fontSize: 10.sp,
-              color: color,
+              color: effectiveColor,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -238,7 +235,7 @@ class AutomationCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 12.sp,
               color: isEnabled ? Colors.green : Colors.grey,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
@@ -246,6 +243,8 @@ class AutomationCard extends StatelessWidget {
           value: isEnabled,
           onChanged: (value) => onToggle?.call(),
           activeColor: ColorManager.activeBlue,
+          inactiveThumbColor: Colors.grey.shade400,
+          inactiveTrackColor: Colors.grey.shade300,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
       ],

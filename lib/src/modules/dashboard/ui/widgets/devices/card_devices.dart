@@ -29,27 +29,34 @@ class DeviceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => DevicesCubit.get(),
+        BlocProvider.value(
+          value: DevicesCubit.get(), // Use .value to get the same instance
         ),
         BlocProvider(
           create: (context) => DashboardBloc.get(),
         ),
       ],
       child: BlocBuilder<DevicesCubit, DevicesState>(
-        bloc: DevicesCubit.get(),
-        buildWhen: (current, previous) =>
-            ((current is ToggleDeviceStatusSuccess &&
-                    current.deviceId == device.id) ||
-                (current is ToggleDeviceStatusLoading &&
-                    current.deviceId == device.id) ||
-                (current is ToggleDeviceStatusError &&
-                    current.deviceId == device.id)),
+        buildWhen: (previous, current) {
+          // Build when any device status changes or when this specific device is affected
+          return current is ToggleDeviceStatusLoading ||
+              current is ToggleDeviceStatusSuccess ||
+              current is ToggleDeviceStatusError ||
+              current is GetDevicesSuccess ||
+              previous.devices != current.devices;
+        },
         builder: (context, state) {
-          bool isActive = (state is ToggleDeviceStatusLoading &&
-                  state.deviceId == device.id)
-              ? !device.state
-              : device.state;
+          // Get the current device from the state's device list
+          final currentDevice = _getCurrentDevice(state);
+          bool isActive = currentDevice?.state ?? device.state;
+
+          // Check if this device is currently being toggled
+          bool isToggling = false;
+          if (state is ToggleDeviceStatusLoading &&
+              state.deviceId == device.id) {
+            isToggling = true;
+          }
+
           final textColor = isActive ? ColorManager.white : ColorManager.black;
 
           return SizedBox(
@@ -80,18 +87,35 @@ class DeviceCard extends StatelessWidget {
                             _buildCategoryIcon(textColor),
                             const Spacer(),
                             if (toggleable)
-                              Switch(
-                                value: isActive,
-                                onChanged: toggleable
-                                    ? (s) => _toggleStatus(s, context)
-                                    : null,
-                                activeColor: Colors.white,
-                                inactiveThumbColor: Colors.grey.shade400,
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Switch(
+                                    value: isActive,
+                                    onChanged: toggleable && !isToggling
+                                        ? (s) => _toggleStatus(s, context)
+                                        : null,
+                                    activeColor: Colors.white,
+                                    inactiveThumbColor: Colors.grey.shade400,
+                                  ),
+                                  if (isToggling)
+                                    SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                          textColor,
+                                        ),
+                                      ),
+                                    ),
+                                ],
                               ),
                           ],
                         ),
                         Text(
-                          device.name,
+                          currentDevice?.name ?? device.name,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -102,7 +126,7 @@ class DeviceCard extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          device.description,
+                          currentDevice?.description ?? device.description,
                           style: TextStyle(
                             color: textColor.withOpacity(0.8),
                             fontSize: 12,
@@ -120,7 +144,7 @@ class DeviceCard extends StatelessWidget {
                             ),
                             const SizedBox(width: 4),
                             Text(
-                              '${device.consumption.toStringAsFixed(1)} kW/h',
+                              '${(currentDevice?.consumption ?? device.consumption).toStringAsFixed(1)} kW/h',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
@@ -139,7 +163,9 @@ class DeviceCard extends StatelessWidget {
                             ),
                             const SizedBox(width: 4),
                             Text(
-                              _getPriorityText(device.priority, context),
+                              _getPriorityText(
+                                  currentDevice?.priority ?? device.priority,
+                                  context),
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
@@ -159,7 +185,7 @@ class DeviceCard extends StatelessWidget {
                           child: Container(
                             padding: const EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              color: device.state
+                              color: isActive
                                   ? Colors.white24
                                   : Colors.grey.shade300,
                               shape: BoxShape.circle,
@@ -180,6 +206,18 @@ class DeviceCard extends StatelessWidget {
         },
       ),
     );
+  }
+
+  // Helper method to get the current device from the state
+  Device? _getCurrentDevice(DevicesState state) {
+    final devices = state.devices;
+    if (devices == null) return null;
+
+    try {
+      return devices.firstWhere((d) => d.id == device.id);
+    } catch (e) {
+      return null;
+    }
   }
 
   Widget _buildCategoryIcon(Color color) {

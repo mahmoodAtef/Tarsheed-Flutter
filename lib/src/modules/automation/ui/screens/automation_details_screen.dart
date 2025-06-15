@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
+import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
+import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/automation/cubit/automation_cubit.dart';
 import 'package:tarsheed/src/modules/automation/data/models/action/action.dart';
 import 'package:tarsheed/src/modules/automation/data/models/automation.dart';
 import 'package:tarsheed/src/modules/automation/data/models/condition/condition.dart';
 import 'package:tarsheed/src/modules/automation/data/models/trigger/trigger.dart';
+import 'package:tarsheed/src/modules/automation/ui/screens/edit_automation_screen.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 
@@ -27,11 +30,13 @@ class AutomationDetailsScreen extends StatefulWidget {
 }
 
 class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
-  bool _isEnabled = true;
+  late Automation _currentAutomation;
+  bool _isChangingStatus = false;
 
   @override
   void initState() {
     super.initState();
+    _currentAutomation = widget.automation;
     _loadData();
   }
 
@@ -46,60 +51,68 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
       providers: [
         BlocProvider.value(value: DashboardBloc.get()),
         BlocProvider.value(value: DevicesCubit.get()),
-        BlocProvider(create: (context) => AutomationCubit.get()),
       ],
-      child: Scaffold(
-        backgroundColor: Colors.grey.shade50,
-        appBar: AppBar(
-          title: Text(
-            widget.automation.name,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: ColorManager.white,
-          elevation: 1,
-          foregroundColor: Colors.black,
-          actions: [
-            IconButton(
-              onPressed: _editAutomation,
-              icon: const Icon(Icons.edit),
-              tooltip: S.of(context).edit,
+      child: BlocListener<AutomationCubit, AutomationState>(
+        listener: (context, state) {
+          _handleAutomationStateChanges(state);
+        },
+        child: Scaffold(
+          backgroundColor: Colors.grey.shade50,
+          appBar: AppBar(
+            title: Text(
+              _currentAutomation.name,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            PopupMenuButton<String>(
-              onSelected: (value) {
-                if (value == 'delete') {
-                  _showDeleteDialog();
-                }
-              },
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: 'delete',
-                  child: Row(
+            backgroundColor: ColorManager.white,
+            elevation: 1,
+            foregroundColor: Colors.black,
+            actions: [
+              IconButton(
+                onPressed: _editAutomation,
+                icon: const Icon(Icons.edit),
+                tooltip: S.of(context).edit,
+              ),
+              PopupMenuButton<String>(
+                onSelected: (value) {
+                  if (value == 'delete') {
+                    _showDeleteDialog();
+                  }
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        const Icon(Icons.delete, color: Colors.red),
+                        SizedBox(width: 8.w),
+                        Text(S.of(context).delete),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          body: ConnectionWidget(
+            onRetry: _loadData,
+            child: BlocBuilder<AutomationCubit, AutomationState>(
+              builder: (context, state) {
+                return SingleChildScrollView(
+                  padding: EdgeInsets.all(16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(Icons.delete, color: Colors.red),
-                      SizedBox(width: 8.w),
-                      Text(S.of(context).delete),
+                      _buildStatusCard(state),
+                      SizedBox(height: 16.h),
+                      _buildTriggerSection(),
+                      SizedBox(height: 16.h),
+                      _buildConditionsSection(),
+                      SizedBox(height: 16.h),
+                      _buildActionsSection(),
                     ],
                   ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        body: ConnectionWidget(
-          onRetry: _loadData,
-          child: SingleChildScrollView(
-            padding: EdgeInsets.all(16.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildStatusCard(),
-                SizedBox(height: 16.h),
-                _buildTriggerSection(),
-                SizedBox(height: 16.h),
-                _buildConditionsSection(),
-                SizedBox(height: 16.h),
-                _buildActionsSection(),
-              ],
+                );
+              },
             ),
           ),
         ),
@@ -107,7 +120,44 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
     );
   }
 
-  Widget _buildStatusCard() {
+  void _handleAutomationStateChanges(AutomationState state) {
+    if (state is ChangeAutomationStatusSuccess) {
+      setState(() {
+        _isChangingStatus = false;
+        // Update the current automation with the new status
+        final updatedAutomation = state.automations?.firstWhere(
+          (automation) => automation.id == _currentAutomation.id,
+          orElse: () => _currentAutomation,
+        );
+        if (updatedAutomation != null) {
+          _currentAutomation = updatedAutomation;
+        }
+      });
+
+      showToast(
+        S.of(context).automationStatusChanged,
+      );
+    } else if (state is ChangeAutomationStatusError) {
+      setState(() {
+        _isChangingStatus = false;
+      });
+      ExceptionManager.showMessage(state.exception);
+    } else if (state is ChangeAutomationStatusLoading) {
+      setState(() {
+        _isChangingStatus = true;
+      });
+    } else if (state is DeleteAutomationSuccess) {
+      showToast(S.of(context).automationDeletedSuccessfully);
+      Navigator.of(context).pop();
+    } else if (state is DeleteAutomationError) {
+      ExceptionManager.showMessage(state.exception);
+    }
+  }
+
+  Widget _buildStatusCard(AutomationState state) {
+    bool isLoading =
+        _isChangingStatus || state is ChangeAutomationStatusLoading;
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(20.w),
@@ -130,17 +180,34 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
               Container(
                 padding: EdgeInsets.all(12.w),
                 decoration: BoxDecoration(
-                  color: (_isEnabled ? Colors.green : Colors.grey)
+                  color: (_currentAutomation.isEnabled
+                          ? Colors.green
+                          : Colors.grey)
                       .withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
-                child: Icon(
-                  _isEnabled
-                      ? Icons.play_circle_filled
-                      : Icons.pause_circle_filled,
-                  color: _isEnabled ? Colors.green : Colors.grey,
-                  size: 24,
-                ),
+                child: isLoading
+                    ? SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            _currentAutomation.isEnabled
+                                ? Colors.green
+                                : Colors.grey,
+                          ),
+                        ),
+                      )
+                    : Icon(
+                        _currentAutomation.isEnabled
+                            ? Icons.play_circle_filled
+                            : Icons.pause_circle_filled,
+                        color: _currentAutomation.isEnabled
+                            ? Colors.green
+                            : Colors.grey,
+                        size: 24,
+                      ),
               ),
               SizedBox(width: 16.w),
               Expanded(
@@ -154,29 +221,78 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
                         color: Colors.grey.shade600,
                       ),
                     ),
-                    Text(
-                      _isEnabled
-                          ? S.of(context).enabled
-                          : S.of(context).disabled,
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                        color: _isEnabled ? Colors.green : Colors.grey,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          _currentAutomation.isEnabled
+                              ? S.of(context).enabled
+                              : S.of(context).disabled,
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                            color: _currentAutomation.isEnabled
+                                ? Colors.green
+                                : Colors.grey,
+                          ),
+                        ),
+                        if (isLoading) ...[
+                          SizedBox(width: 8.w),
+                          SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.grey.shade400,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
                   ],
                 ),
               ),
               Switch(
-                value: _isEnabled,
-                onChanged: (value) {
-                  setState(() => _isEnabled = value);
-                  _toggleAutomationStatus();
-                },
+                value: _currentAutomation.isEnabled,
+                onChanged:
+                    isLoading ? null : (value) => _toggleAutomationStatus(),
                 activeColor: ColorManager.primary,
               ),
             ],
           ),
+          if (isLoading) ...[
+            SizedBox(height: 16.h),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+              decoration: BoxDecoration(
+                color: Colors.blue.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                    ),
+                  ),
+                  SizedBox(width: 8.w),
+                  Text(
+                    S.of(context).updatingStatus,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Colors.blue,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ],
       ),
     );
@@ -196,14 +312,14 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
     String subtitle;
     Color color;
 
-    if (widget.automation.trigger is ScheduleTrigger) {
-      final scheduleTrigger = widget.automation.trigger as ScheduleTrigger;
+    if (_currentAutomation.trigger is ScheduleTrigger) {
+      final scheduleTrigger = _currentAutomation.trigger as ScheduleTrigger;
       icon = Icons.schedule;
       title = S.of(context).schedule;
       subtitle = '${S.of(context).runAtSpecificTime}: ${scheduleTrigger.time}';
       color = Colors.blue;
-    } else if (widget.automation.trigger is SensorTrigger) {
-      final sensorTrigger = widget.automation.trigger as SensorTrigger;
+    } else if (_currentAutomation.trigger is SensorTrigger) {
+      final sensorTrigger = _currentAutomation.trigger as SensorTrigger;
       icon = Icons.sensors;
       title = S.of(context).sensor;
       subtitle = '${S.of(context).sensorValue}: ${sensorTrigger.value}';
@@ -264,7 +380,7 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
   }
 
   Widget _buildConditionsSection() {
-    if (widget.automation.conditions.isEmpty) {
+    if (_currentAutomation.conditions.isEmpty) {
       return _buildSection(
         title: S.of(context).conditions,
         subtitle: S.of(context).noConditionsSet,
@@ -296,7 +412,7 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
       title: S.of(context).conditions,
       subtitle: S.of(context).additionalConditions,
       child: Column(
-        children: widget.automation.conditions
+        children: _currentAutomation.conditions
             .map((condition) => _buildConditionCard(condition))
             .toList(),
       ),
@@ -381,7 +497,7 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
       title: S.of(context).actions,
       subtitle: S.of(context).whatShouldHappen,
       child: Column(
-        children: widget.automation.actions
+        children: _currentAutomation.actions
             .map((action) => _buildActionCard(action))
             .toList(),
       ),
@@ -496,21 +612,19 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
   }
 
   void _editAutomation() {
-    // Navigate to edit automation screen
-    // You'll need to implement EditAutomationScreen
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) =>
-            EditAutomationScreen(automation: widget.automation),
+            EditAutomationScreen(automation: _currentAutomation),
       ),
     );
   }
 
   void _toggleAutomationStatus() {
-    if (widget.automation.id != null) {
+    if (_currentAutomation.id != null && !_isChangingStatus) {
       context
           .read<AutomationCubit>()
-          .changeAutomationStatus(widget.automation.id!);
+          .changeAutomationStatus(_currentAutomation.id!);
     }
   }
 
@@ -541,33 +655,8 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
   }
 
   void _deleteAutomation() {
-    if (widget.automation.id != null) {
-      context.read<AutomationCubit>().deleteAutomation(widget.automation.id!);
-      Navigator.of(context).pop(); // Go back after deletion
+    if (_currentAutomation.id != null) {
+      context.read<AutomationCubit>().deleteAutomation(_currentAutomation.id!);
     }
-  }
-}
-
-// Placeholder for EditAutomationScreen - you'll need to implement this
-class EditAutomationScreen extends StatefulWidget {
-  final Automation automation;
-
-  const EditAutomationScreen({super.key, required this.automation});
-
-  @override
-  State<EditAutomationScreen> createState() => _EditAutomationScreenState();
-}
-
-class _EditAutomationScreenState extends State<EditAutomationScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(S.of(context).editAutomation),
-      ),
-      body: const Center(
-        child: Text('Edit Automation Screen - To be implemented'),
-      ),
-    );
   }
 }

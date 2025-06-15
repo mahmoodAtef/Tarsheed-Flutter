@@ -243,7 +243,15 @@
   "add": "Add",
   "roomDetails": "Room Details",
   "roomAddedSuccessfully": "Room added successfully",
-  "noInternetConnection": "No internet connection"
+  "noInternetConnection": "No internet connection",
+  "automationDeletedSuccessfully" : "Automation deleted successfully",
+  "automationStatusChanged" : "Automation status changed successfully",
+  "automationDisabled" : "Automation disabled",
+    "automationEnabled" : "Automation enabled",
+  "updatingStatus": "Updating status...",
+  "updateAutomation": "Update Automation",
+  "editingAutomationInfo": "Editing automation:",
+  "automationUpdatedSuccessfully" : "Automation updated successfully"
 }
 
 

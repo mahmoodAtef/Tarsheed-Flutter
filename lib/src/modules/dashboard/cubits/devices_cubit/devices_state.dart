@@ -117,19 +117,27 @@ final class FilterDevicesState extends DevicesState {
 
 final class ToggleDeviceStatusLoading extends DevicesState {
   final String deviceId;
+  final bool deviceState;
+
   const ToggleDeviceStatusLoading(
       {super.devices,
       super.filterType,
       super.sortOrder,
-      required this.deviceId});
+      required this.deviceId,
+      required this.deviceState});
   @override
   List<Object?> get props => [devices, filterType, sortOrder];
 }
 
 final class ToggleDeviceStatusSuccess extends DevicesState {
   final String deviceId;
+  final bool deviceState;
+
   const ToggleDeviceStatusSuccess(this.deviceId,
-      {super.devices, super.filterType, super.sortOrder});
+      {super.devices,
+      super.filterType,
+      super.sortOrder,
+      required this.deviceState});
   @override
   List<Object?> get props => [deviceId, devices, filterType, sortOrder];
 }
@@ -137,11 +145,14 @@ final class ToggleDeviceStatusSuccess extends DevicesState {
 final class ToggleDeviceStatusError extends DevicesState {
   final Exception exception;
   final String deviceId;
+  final bool deviceState;
+
   const ToggleDeviceStatusError(this.exception,
       {super.devices,
       super.filterType,
       super.sortOrder,
-      required this.deviceId});
+      required this.deviceId,
+      required this.deviceState});
   @override
   List<Object?> get props => [exception, devices, filterType, sortOrder];
 }

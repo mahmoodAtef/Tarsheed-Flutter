@@ -600,13 +600,20 @@ class _ConnectedDevicesSection extends StatelessWidget {
         SizedBox(height: 16.h),
         SizedBox(
           height: 175.h,
-          child: BlocProvider(
-            create: (context) => DevicesCubit.get()..getDevices(),
+          child: BlocProvider.value(
+            value: DevicesCubit
+                .get(), // Use .value to get the same singleton instance
             child: BlocBuilder<DevicesCubit, DevicesState>(
-              buildWhen: (previous, current) =>
-                  current is GetDevicesLoading ||
-                  current is GetDevicesSuccess ||
-                  current is GetDevicesError,
+              buildWhen: (previous, current) {
+                // Rebuild on any device state change
+                return current is GetDevicesLoading ||
+                    current is GetDevicesSuccess ||
+                    current is GetDevicesError ||
+                    current is ToggleDeviceStatusLoading ||
+                    current is ToggleDeviceStatusSuccess ||
+                    current is ToggleDeviceStatusError ||
+                    previous.devices != current.devices;
+              },
               builder: (context, state) {
                 if (state is GetDevicesSuccess ||
                     state.devices?.isNotEmpty == true) {

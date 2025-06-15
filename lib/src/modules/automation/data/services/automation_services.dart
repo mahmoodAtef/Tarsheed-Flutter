@@ -32,7 +32,7 @@ class AutomationRemoteServices implements BaseAutomationServices {
     try {
       await DioHelper.postData(
         path: EndPoints.changeAutomationStatus + id,
-        query: {"id": id},
+        // query: {"id": id},
       );
       return Right(unit);
     } on Exception catch (e) {
@@ -75,8 +75,8 @@ class AutomationRemoteServices implements BaseAutomationServices {
   Future<Either<Exception, Automation>> updateAutomation(
       Automation automation) async {
     try {
-      var response = await DioHelper.putData(
-        path: EndPoints.updateAutomation,
+      await DioHelper.putData(
+        path: EndPoints.updateAutomation + automation.id!,
         data: automation.toJson(),
       );
       return Right(automation);

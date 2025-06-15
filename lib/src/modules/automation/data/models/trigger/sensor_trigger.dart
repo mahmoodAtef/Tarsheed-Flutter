@@ -6,7 +6,7 @@ class SensorTrigger extends Trigger {
   const SensorTrigger({required this.sensorID, required this.value});
 
   factory SensorTrigger.fromJson(Map<String, dynamic> json) => SensorTrigger(
-        sensorID: json['sensor_id'],
+        sensorID: json['sensorId']["_id"] ?? json['sensorId'] ?? '',
         value: json['value'],
       );
   Map<String, dynamic> toJson() => {

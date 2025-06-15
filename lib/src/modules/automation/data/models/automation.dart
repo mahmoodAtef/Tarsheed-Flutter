@@ -6,7 +6,7 @@ import 'package:tarsheed/src/modules/automation/data/models/trigger/trigger.dart
 class Automation extends Equatable {
   final String? id;
   final String name;
-
+  final bool isEnabled; // Default value, can be changed later if needed
   final List<AutomationAction> actions;
   final List<Condition> conditions;
   final Trigger trigger;
@@ -17,10 +17,11 @@ class Automation extends Equatable {
     required this.actions,
     required this.conditions,
     required this.trigger,
+    this.isEnabled = true,
   });
 
   factory Automation.fromJson(Map<String, dynamic> json) => Automation(
-        id: json['id'],
+        id: json['id'] ?? json['_id'] ?? '',
         name: json['name'],
         actions: List<AutomationAction>.from(
             json['actions'].map((x) => AutomationAction.fromJson(x))),
@@ -33,6 +34,7 @@ class Automation extends Equatable {
                 json['triggers'][0],
               )
             : Trigger.empty(),
+        isEnabled: json['isEnabled'] ?? true,
       );
 
   /*
@@ -52,6 +54,7 @@ class Automation extends Equatable {
     List<AutomationAction>? actions,
     List<Condition>? conditions,
     Trigger? trigger,
+    bool? isEnabled,
   }) {
     return Automation(
       id: id ?? this.id,
@@ -59,6 +62,7 @@ class Automation extends Equatable {
       actions: actions ?? this.actions,
       conditions: conditions ?? this.conditions,
       trigger: trigger ?? this.trigger,
+      isEnabled: isEnabled ?? this.isEnabled,
     );
   }
 

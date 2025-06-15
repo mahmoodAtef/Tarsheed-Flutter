@@ -36,10 +36,14 @@ class AutomationCubit extends Cubit<AutomationState> {
 
   Future<void> addAutomation(Automation automation) async {
     List<Automation>? currentAutomations = state.automations;
-    emit(AddAutomationLoading());
+    emit(AddAutomationLoading(
+      automations: currentAutomations,
+    ));
     final result = await _repository.addAutomation(automation);
     result.fold(
-      (err) => emit(AddAutomationError(exception: err)),
+      (err) => emit(
+        AddAutomationError(exception: err, automations: currentAutomations),
+      ),
       (automation) => emit(AddAutomationSuccess(
         automations: [automation] + (currentAutomations ?? []),
       )),
@@ -48,10 +52,11 @@ class AutomationCubit extends Cubit<AutomationState> {
 
   Future<void> updateAutomation(Automation automation) async {
     List<Automation>? currentAutomations = state.automations;
-    emit(UpdateAutomationLoading());
+    emit(UpdateAutomationLoading(automations: currentAutomations));
     final result = await _repository.updateAutomation(automation);
     result.fold(
-      (err) => emit(UpdateAutomationError(exception: err)),
+      (err) => emit(UpdateAutomationError(
+          exception: err, automations: currentAutomations)),
       (automation) => emit(UpdateAutomationSuccess(
         automations: [automation] + (currentAutomations ?? []),
       )),
@@ -60,10 +65,13 @@ class AutomationCubit extends Cubit<AutomationState> {
 
   Future<void> deleteAutomation(String id) async {
     List<Automation>? currentAutomations = state.automations;
-    emit(DeleteAutomationLoading());
+    emit(DeleteAutomationLoading(
+      automations: currentAutomations?.where((e) => e.id != id).toList(),
+    ));
     final result = await _repository.deleteAutomation(id);
     result.fold(
-      (err) => emit(DeleteAutomationError(exception: err)),
+      (err) => emit(DeleteAutomationError(
+          exception: err, automations: currentAutomations)),
       (automation) => emit(DeleteAutomationSuccess(
         automations: currentAutomations?.where((e) => e.id != id).toList(),
       )),
@@ -72,13 +80,26 @@ class AutomationCubit extends Cubit<AutomationState> {
 
   Future<void> changeAutomationStatus(String id) async {
     List<Automation>? currentAutomations = state.automations;
-    emit(ChangeAutomationStatusLoading());
+    emit(ChangeAutomationStatusLoading(
+      automations: currentAutomations,
+    ));
     final result = await _repository.changeAutomationStatus(id);
     result.fold(
-      (err) => emit(ChangeAutomationStatusError(exception: err)),
-      (automation) => emit(ChangeAutomationStatusSuccess(
-        automations: currentAutomations?.where((e) => e.id != id).toList(),
+      (err) => emit(ChangeAutomationStatusError(
+        exception: err,
+        automations: currentAutomations,
       )),
+      (updatedAutomation) {
+        final updatedList = currentAutomations?.map((automation) {
+              if (automation.id == id) {
+                return automation.copyWith(isEnabled: !automation.isEnabled);
+              }
+              return automation;
+            }).toList() ??
+            [];
+
+        emit(ChangeAutomationStatusSuccess(automations: updatedList));
+      },
     );
   }
 }

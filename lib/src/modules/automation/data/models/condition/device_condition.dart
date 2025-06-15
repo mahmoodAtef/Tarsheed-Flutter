@@ -12,9 +12,9 @@ class DeviceCondition extends Condition {
   factory DeviceCondition.fromJson(Map<String, dynamic> json) =>
       DeviceCondition(
         deviceID: json["deviceId"]["_id"] ?? json["deviceId"] ?? '',
-        state: json["state"] == "turned_on"
+        state: json["state"] == "ON"
             ? 1
-            : json["state"] == "turned_off"
+            : json["state"] == "OFF"
                 ? 0
                 : -1,
       );
@@ -23,6 +23,10 @@ class DeviceCondition extends Condition {
   Map<String, dynamic> toJson() => {
         "type": "DEVICE",
         "deviceId": deviceID,
-        "state": state,
+        "deviceState": state == 1
+            ? "ON"
+            : state == 0
+                ? "OF"
+                : "unknown",
       };
 }

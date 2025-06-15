@@ -241,5 +241,9 @@
   "add": "إضافة",
   "roomDetails": "تفاصيل الغرفة",
   "roomAddedSuccessfully": "تمت إضافة الغرفة بنجاح",
-  "noInternetConnection": "لا يوجد اتصال بالإنترنت"
+  "noInternetConnection": "لا يوجد اتصال بالإنترنت",
+  "automationDeletedSuccessfully" : "تم حذف العملية بنجاح",
+  "automationStatusChanged" : "تم تغيير حالة الأتمتة بنجاح",
+  "automationEnabled" : "تم تفعيل الأتمتة",
+  "automationDisabled" : "تم تعطيل الأتمتة"
 }

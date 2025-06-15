@@ -64,9 +64,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "automationAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "Automation added successfully",
     ),
+    "automationDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Automation deleted successfully",
+    ),
+    "automationDisabled": MessageLookupByLibrary.simpleMessage(
+      "Automation disabled",
+    ),
+    "automationEnabled": MessageLookupByLibrary.simpleMessage(
+      "Automation enabled",
+    ),
     "automationName": MessageLookupByLibrary.simpleMessage("Automation Name"),
     "automationStatus": MessageLookupByLibrary.simpleMessage(
       "Automation Status",
+    ),
+    "automationStatusChanged": MessageLookupByLibrary.simpleMessage(
+      "Automation status changed successfully",
+    ),
+    "automationUpdatedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Automation updated successfully",
     ),
     "automations": MessageLookupByLibrary.simpleMessage("Automations"),
     "avgCost": MessageLookupByLibrary.simpleMessage("Avg Cost"),
@@ -173,6 +188,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Edit password, name, address, username, email",
     ),
     "editPassword": MessageLookupByLibrary.simpleMessage("Edit Password"),
+    "editingAutomationInfo": MessageLookupByLibrary.simpleMessage(
+      "Editing automation:",
+    ),
     "email": MessageLookupByLibrary.simpleMessage("Email"),
     "emailMaxLength": MessageLookupByLibrary.simpleMessage(
       "Email must not exceed 100 characters",
@@ -450,7 +468,13 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "typeRequired": MessageLookupByLibrary.simpleMessage("Please select type"),
     "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
+    "updateAutomation": MessageLookupByLibrary.simpleMessage(
+      "Update Automation",
+    ),
     "updatePassword": MessageLookupByLibrary.simpleMessage("Update Password"),
+    "updatingStatus": MessageLookupByLibrary.simpleMessage(
+      "Updating status...",
+    ),
     "value": MessageLookupByLibrary.simpleMessage("Value"),
     "verificationCode": MessageLookupByLibrary.simpleMessage(
       "Verification Code",

@@ -64,8 +64,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "automationAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "تمت إضافة الأتمتة بنجاح",
     ),
+    "automationDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم حذف العملية بنجاح",
+    ),
+    "automationDisabled": MessageLookupByLibrary.simpleMessage(
+      "تم تعطيل الأتمتة",
+    ),
+    "automationEnabled": MessageLookupByLibrary.simpleMessage(
+      "تم تفعيل الأتمتة",
+    ),
     "automationName": MessageLookupByLibrary.simpleMessage("اسم الأتمتة"),
     "automationStatus": MessageLookupByLibrary.simpleMessage("حالة الأتمتة"),
+    "automationStatusChanged": MessageLookupByLibrary.simpleMessage(
+      "تم تغيير حالة الأتمتة بنجاح",
+    ),
     "automations": MessageLookupByLibrary.simpleMessage("الأتمتة"),
     "avgCost": MessageLookupByLibrary.simpleMessage("متوسط التكلفة"),
     "avgUsage": MessageLookupByLibrary.simpleMessage("متوسط الاستهلاك"),

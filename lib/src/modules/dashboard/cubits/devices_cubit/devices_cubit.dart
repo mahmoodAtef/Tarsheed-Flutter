@@ -12,17 +12,11 @@ class DevicesCubit extends Cubit<DevicesState> {
   DevicesCubit() : super(DevicesInitial());
 
   final _repository = sl<DevicesRepository>();
+
+  // Simplified singleton pattern - always return the same instance
   static DevicesCubit get() {
-    if (sl.isRegistered<DevicesCubit>()) {
-      if (sl<DevicesCubit>().isClosed) {
-        final cubit = DevicesCubit();
-        // remove the old instance if it exists
-        sl.unregister<DevicesCubit>();
-        sl.registerLazySingleton<DevicesCubit>(() => cubit);
-      }
-    } else {
-      final cubit = DevicesCubit();
-      sl.registerLazySingleton<DevicesCubit>(() => cubit);
+    if (!sl.isRegistered<DevicesCubit>()) {
+      sl.registerLazySingleton<DevicesCubit>(() => DevicesCubit());
     }
     return sl<DevicesCubit>();
   }
@@ -164,17 +158,21 @@ class DevicesCubit extends Cubit<DevicesState> {
   Future<void> toggleDeviceStatus(String id) async {
     final currentState = state;
     final current = currentState.devices ?? <Device>[];
-    final device = current.firstWhere(
-      (d) => d.id == id,
-    );
+    final deviceIndex = current.indexWhere((d) => d.id == id);
 
+    if (deviceIndex == -1) return; // Device not found
+
+    final device = current[deviceIndex];
     final optimisticState = !device.state;
+
+    // Update the device in the list optimistically
+    final optimisticDevices = List<Device>.from(current);
+    optimisticDevices[deviceIndex] = device.copyWith(state: optimisticState);
+
     emit(ToggleDeviceStatusLoading(
       deviceId: id,
       deviceState: optimisticState,
-      devices: current
-          .map((d) => d.id == id ? d.copyWith(state: optimisticState) : d)
-          .toList(),
+      devices: optimisticDevices,
       filterType: currentState.filterType,
       sortOrder: currentState.sortOrder,
     ));
@@ -186,7 +184,7 @@ class DevicesCubit extends Cubit<DevicesState> {
         emit(ToggleDeviceStatusError(
           deviceState: device.state,
           err,
-          devices: current,
+          devices: current, // Revert to original list
           deviceId: id,
           filterType: currentState.filterType,
           sortOrder: currentState.sortOrder,
@@ -194,13 +192,10 @@ class DevicesCubit extends Cubit<DevicesState> {
       },
       (_) {
         // Confirm the optimistic update on success
-        final updated = current.map((d) {
-          return d.id == id ? d.copyWith(state: optimisticState) : d;
-        }).toList();
         emit(ToggleDeviceStatusSuccess(
           deviceState: optimisticState,
           id,
-          devices: updated,
+          devices: optimisticDevices, // Keep the updated list
           filterType: currentState.filterType,
           sortOrder: currentState.sortOrder,
         ));
