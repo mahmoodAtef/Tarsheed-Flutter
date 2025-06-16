@@ -33,8 +33,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "accountDeletedSuccess": MessageLookupByLibrary.simpleMessage(
       "تم حذف الحساب بنجاح",
     ),
+    "action": MessageLookupByLibrary.simpleMessage("الإجراء"),
+    "actions": MessageLookupByLibrary.simpleMessage("الإجراءات"),
     "activeMode": MessageLookupByLibrary.simpleMessage("الوضع النشط"),
+    "add": MessageLookupByLibrary.simpleMessage("إضافة"),
     "addDevice": MessageLookupByLibrary.simpleMessage("اضافة جهاز"),
+    "addDeviceAction": MessageLookupByLibrary.simpleMessage("إضافة إجراء جهاز"),
+    "addDeviceCondition": MessageLookupByLibrary.simpleMessage(
+      "إضافة شرط جهاز",
+    ),
+    "addNewAutomation": MessageLookupByLibrary.simpleMessage(
+      "إضافة أتمتة جديدة",
+    ),
+    "addNotification": MessageLookupByLibrary.simpleMessage("إضافة إشعار"),
+    "addRoom": MessageLookupByLibrary.simpleMessage("إضافة غرفة"),
+    "addSensor": MessageLookupByLibrary.simpleMessage("إضافة مستشعر"),
+    "addSensorCondition": MessageLookupByLibrary.simpleMessage(
+      "إضافة شرط مستشعر",
+    ),
+    "additionalConditions": MessageLookupByLibrary.simpleMessage(
+      "شروط إضافية يجب تحققها",
+    ),
     "aiSuggestions": MessageLookupByLibrary.simpleMessage(
       "اقتراحات الذكاء الاصطناعي",
     ),
@@ -42,11 +61,30 @@ class MessageLookup extends MessageLookupByLibrary {
       "لديك حساب بالفعل؟",
     ),
     "appName": MessageLookupByLibrary.simpleMessage("ترشيد"),
+    "automationAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تمت إضافة الأتمتة بنجاح",
+    ),
+    "automationDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم حذف العملية بنجاح",
+    ),
+    "automationDisabled": MessageLookupByLibrary.simpleMessage(
+      "تم تعطيل الأتمتة",
+    ),
+    "automationEnabled": MessageLookupByLibrary.simpleMessage(
+      "تم تفعيل الأتمتة",
+    ),
+    "automationName": MessageLookupByLibrary.simpleMessage("اسم الأتمتة"),
+    "automationStatus": MessageLookupByLibrary.simpleMessage("حالة الأتمتة"),
+    "automationStatusChanged": MessageLookupByLibrary.simpleMessage(
+      "تم تغيير حالة الأتمتة بنجاح",
+    ),
+    "automations": MessageLookupByLibrary.simpleMessage("الأتمتة"),
     "avgCost": MessageLookupByLibrary.simpleMessage("متوسط التكلفة"),
     "avgUsage": MessageLookupByLibrary.simpleMessage("متوسط الاستهلاك"),
     "backupSettings": MessageLookupByLibrary.simpleMessage(
       "إعدادات النسخ الاحتياطي",
     ),
+    "bedroomAC": MessageLookupByLibrary.simpleMessage("مكيف غرفة النوم"),
     "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
     "cannotExceed": MessageLookupByLibrary.simpleMessage("لا يمكن أن يتجاوز"),
     "category": MessageLookupByLibrary.simpleMessage("الفئة"),
@@ -60,7 +98,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "codeNumbersOnly": MessageLookupByLibrary.simpleMessage(
       "يجب أن يحتوي الكود على أرقام فقط",
     ),
+    "conditions": MessageLookupByLibrary.simpleMessage("الشروط"),
+    "conditionsOptional": MessageLookupByLibrary.simpleMessage(
+      "الشروط (اختياري)",
+    ),
     "confirmDelete": MessageLookupByLibrary.simpleMessage("تأكيد الحذف"),
+    "confirmDeleteDevice": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد أنك تريد حذف هذا الجهاز؟",
+    ),
+    "confirmDeleteSensor": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد أنك تريد حذف هذا المستشعر؟",
+    ),
     "confirmNewPassword": MessageLookupByLibrary.simpleMessage(
       "تأكيد كلمة المرور الجديدة",
     ),
@@ -71,6 +119,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "تأكيد كلمة المرور مطلوب",
     ),
     "connectedDevices": MessageLookupByLibrary.simpleMessage("الأجهزة المتصلة"),
+    "consumption": MessageLookupByLibrary.simpleMessage("الاستهلاك"),
     "containsInvalidCharacters": MessageLookupByLibrary.simpleMessage(
       "يحتوي على أحرف غير صالحة",
     ),
@@ -88,23 +137,40 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "currentSavings": MessageLookupByLibrary.simpleMessage("توفيرك الحالي هو"),
     "currentTier": m0,
+    "delete": MessageLookupByLibrary.simpleMessage("حذف"),
     "deleteAccountMessage": MessageLookupByLibrary.simpleMessage(
       "بمجرد تقديم طلب لحذف البيانات، سيكون لديك نافذة مدتها 72 ساعة يمكنك خلالها إلغاء العملية. خلال هذه الفترة، يمكنك إلغاء طلب الحذف في حسابك على Intuit. بعد مرور هذه الفترة، لن تتمكن من إلغاء الطلب، ولن نتمكن من استرجاع بياناتك.",
     ),
     "deleteAccountTitle": MessageLookupByLibrary.simpleMessage(
       "هل تريد حذف حسابك؟",
     ),
+    "deleteAutomation": MessageLookupByLibrary.simpleMessage("حذف الأتمتة"),
+    "deleteAutomationConfirmation": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد من أنك تريد حذف هذه الأتمتة؟",
+    ),
+    "deleteDevice": MessageLookupByLibrary.simpleMessage(" حذف الجهاز"),
     "deleteMyAccount": MessageLookupByLibrary.simpleMessage("حذف حسابي"),
+    "deleteSensor": MessageLookupByLibrary.simpleMessage("حذف المستشعر"),
     "description": MessageLookupByLibrary.simpleMessage("الوصف"),
     "descriptionRequired": MessageLookupByLibrary.simpleMessage(
       "من فضلك ادخل الوصف",
     ),
+    "deviceAction": MessageLookupByLibrary.simpleMessage("إجراء الجهاز"),
     "deviceAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "تمت اضافة الجهاز بنجاح",
     ),
+    "deviceCondition": MessageLookupByLibrary.simpleMessage("شرط الجهاز"),
+    "deviceDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم حذف الجهاز بنجاح",
+    ),
+    "devices": MessageLookupByLibrary.simpleMessage("الأجهزة"),
     "devicesRunning": MessageLookupByLibrary.simpleMessage("أجهزة تعمل"),
     "didNotReceive": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
     "didNtReceiveCode": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
+    "disabled": MessageLookupByLibrary.simpleMessage("معطّل"),
+    "edit": MessageLookupByLibrary.simpleMessage("تعديل"),
+    "editAutomation": MessageLookupByLibrary.simpleMessage("تعديل الأتمتة"),
+    "editDevice": MessageLookupByLibrary.simpleMessage("تعديل الجهاز"),
     "editPassNaAddUseEm": MessageLookupByLibrary.simpleMessage(
       "تعديل كلمة المرور، الاسم، العنوان، اسم المستخدم، البريد الإلكتروني",
     ),
@@ -119,11 +185,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailVerifiedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "تم التحقق من البريد الإلكتروني بنجاح!",
     ),
+    "enabled": MessageLookupByLibrary.simpleMessage("مُفعّل"),
     "energyConsumption": MessageLookupByLibrary.simpleMessage("استهلاك الطاقة"),
     "energyMode": MessageLookupByLibrary.simpleMessage("وضع الطاقة"),
     "energySaving": MessageLookupByLibrary.simpleMessage("توفير الطاقة"),
     "energySavingMode": MessageLookupByLibrary.simpleMessage(
       "وضع توفير الطاقة",
+    ),
+    "enterAutomationName": MessageLookupByLibrary.simpleMessage(
+      "أدخل اسم الأتمتة",
     ),
     "enterCode": MessageLookupByLibrary.simpleMessage("أدخل الرمز"),
     "enterEmailToReceiveCode": MessageLookupByLibrary.simpleMessage(
@@ -164,6 +234,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "صيغة البريد الإلكتروني غير صحيحة",
     ),
     "isRequired": MessageLookupByLibrary.simpleMessage("مطلوب"),
+    "kitchenFan": MessageLookupByLibrary.simpleMessage("مروحة المطبخ"),
     "lanBackEneMO": MessageLookupByLibrary.simpleMessage(
       "اللغة، والنسخ الاحتياطي، وأوضاع الطاقة...",
     ),
@@ -175,17 +246,33 @@ class MessageLookup extends MessageLookupByLibrary {
     "lastNameRequired": MessageLookupByLibrary.simpleMessage(
       "الاسم الأخير مطلوب",
     ),
+    "lightSensor": MessageLookupByLibrary.simpleMessage("مستشعر الإضاءة"),
+    "livingRoomLight": MessageLookupByLibrary.simpleMessage(
+      "إضاءة غرفة المعيشة",
+    ),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "loginHere": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "low": MessageLookupByLibrary.simpleMessage("منخفض"),
     "lowTierSystemMessage": MessageLookupByLibrary.simpleMessage(
       "أنت الآن على الشرحة:",
     ),
+    "manageYourAutomations": MessageLookupByLibrary.simpleMessage(
+      " أنشئ، حرر، أو احذف الأتمتة للتحكم في أجهزتك بناءً على شروط معينة",
+    ),
+    "manageYourDevices": MessageLookupByLibrary.simpleMessage("إدارة أجهزتك"),
+    "manageYourRooms": MessageLookupByLibrary.simpleMessage(
+      "أضف، حرر، أو احذف الغرف لتنظيم أجهزتك ومستشعراتك",
+    ),
+    "manageYourSensors": MessageLookupByLibrary.simpleMessage(
+      "أضف، حرر، أو احذف المستشعرات لمراقبة بيئة منزلك",
+    ),
     "medium": MessageLookupByLibrary.simpleMessage("متوسط"),
     "month": MessageLookupByLibrary.simpleMessage("الشهر"),
+    "motionSensor": MessageLookupByLibrary.simpleMessage("مستشعر الحركة"),
     "mustBeAtLeast": MessageLookupByLibrary.simpleMessage(
       "يجب أن يكون على الأقل",
     ),
+    "myHome": MessageLookupByLibrary.simpleMessage("منزلي"),
     "name": MessageLookupByLibrary.simpleMessage("الاسم"),
     "nameMaxLength": MessageLookupByLibrary.simpleMessage(
       "يجب ألا يتجاوز الاسم 50 حرفًا",
@@ -201,8 +288,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "noCategoriesAvailable": MessageLookupByLibrary.simpleMessage(
       "لا يوجد فئات متاحة",
     ),
+    "noConditionsSet": MessageLookupByLibrary.simpleMessage(
+      "لا توجد شروط محددة",
+    ),
     "noDataFound": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على بيانات",
+    ),
+    "noDevicesAvailable": MessageLookupByLibrary.simpleMessage(
+      "لا توجد أجهزة متاحة",
+    ),
+    "noInternetConnection": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد اتصال بالإنترنت",
     ),
     "noRoomsAvailable": MessageLookupByLibrary.simpleMessage(
       "لا يوجد غرف متاحة",
@@ -210,6 +306,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "noRouteFound": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على الصفحة المطلوبة",
     ),
+    "noSensorsAvailable": MessageLookupByLibrary.simpleMessage(
+      "لا توجد مستشعرات متاحة",
+    ),
+    "notificationAction": MessageLookupByLibrary.simpleMessage("إجراء الإشعار"),
+    "notificationMessage": MessageLookupByLibrary.simpleMessage(
+      "رسالة الإشعار",
+    ),
+    "notificationTitle": MessageLookupByLibrary.simpleMessage("عنوان الإشعار"),
     "notifications": MessageLookupByLibrary.simpleMessage("الإشعارات"),
     "orContinueWith": MessageLookupByLibrary.simpleMessage("أو المتابعة عبر"),
     "originalPasswordNotProvided": MessageLookupByLibrary.simpleMessage(
@@ -250,8 +354,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "pinNumberRequired": MessageLookupByLibrary.simpleMessage(
       "من فضلك ادخل رقم المدخل",
     ),
+    "pleaseAddAtLeastOneAction": MessageLookupByLibrary.simpleMessage(
+      "يرجى إضافة إجراء واحد على الأقل",
+    ),
+    "pleaseConfigureSensorTrigger": MessageLookupByLibrary.simpleMessage(
+      "يرجى إعداد مُشغل المستشعر بالكامل",
+    ),
     "pleaseEnterVerificationCode": MessageLookupByLibrary.simpleMessage(
       "من فضلك أدخل رمز التحقق",
+    ),
+    "pleaseSelectTimeForSchedule": MessageLookupByLibrary.simpleMessage(
+      "يرجى تحديد وقت لتشغيل الأتمتة المجدولة",
     ),
     "priority": MessageLookupByLibrary.simpleMessage("الاولوية"),
     "priorityRequired": MessageLookupByLibrary.simpleMessage(
@@ -267,15 +380,40 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateApplication": MessageLookupByLibrary.simpleMessage("تقييم التطبيق"),
     "register": MessageLookupByLibrary.simpleMessage("تسجيل"),
     "reports": MessageLookupByLibrary.simpleMessage("التقارير"),
+    "requiredField": MessageLookupByLibrary.simpleMessage("هذه الخانة مطلوبة"),
     "resendCode": MessageLookupByLibrary.simpleMessage("إعادة إرسال الرمز"),
     "resendCodeIn": m1,
     "retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
     "room": MessageLookupByLibrary.simpleMessage("الغرفة"),
+    "roomAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تمت إضافة الغرفة بنجاح",
+    ),
+    "roomDescription": MessageLookupByLibrary.simpleMessage("وصف الغرفة"),
+    "roomDetails": MessageLookupByLibrary.simpleMessage("تفاصيل الغرفة"),
+    "roomName": MessageLookupByLibrary.simpleMessage("اسم الغرفة"),
     "roomRequired": MessageLookupByLibrary.simpleMessage("من فضلك اختر غرفة"),
+    "rooms": MessageLookupByLibrary.simpleMessage("الغرف"),
+    "runAtSpecificTime": MessageLookupByLibrary.simpleMessage(
+      "تشغيل في وقت محدد",
+    ),
+    "runWhenSensorValueChanges": MessageLookupByLibrary.simpleMessage(
+      "تشغيل عند تغيير قيمة المستشعر",
+    ),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
+    "saveAutomation": MessageLookupByLibrary.simpleMessage("حفظ الأتمتة"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("حفظ التغييرات"),
+    "schedule": MessageLookupByLibrary.simpleMessage("جدولة"),
     "security": MessageLookupByLibrary.simpleMessage("الأمان"),
+    "selectDevice": MessageLookupByLibrary.simpleMessage("اختر الجهاز"),
+    "selectSensor": MessageLookupByLibrary.simpleMessage("اختر المستشعر"),
+    "selectTime": MessageLookupByLibrary.simpleMessage("اختر الوقت"),
+    "sensor": MessageLookupByLibrary.simpleMessage("مستشعر"),
     "sensorAdded": MessageLookupByLibrary.simpleMessage("تمت اضافة المستشعر"),
+    "sensorCondition": MessageLookupByLibrary.simpleMessage("شرط المستشعر"),
+    "sensorDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم حذف المستشعر بنجاح",
+    ),
+    "sensorValue": MessageLookupByLibrary.simpleMessage("قيمة الحساس"),
     "sensors": MessageLookupByLibrary.simpleMessage("أجهزة الاستشعار"),
     "sentEmailMessage": MessageLookupByLibrary.simpleMessage(
       "لقد أرسلنا بريدًا إلكترونيًا إلى mo****@gmail.",
@@ -286,11 +424,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "signUp": MessageLookupByLibrary.simpleMessage("تسجيل حساب"),
     "sleepMode": MessageLookupByLibrary.simpleMessage("وضع السكون"),
     "softwareUpdate": MessageLookupByLibrary.simpleMessage("تحديث النظام"),
+    "state": MessageLookupByLibrary.simpleMessage("الحالة"),
+    "stateValue": MessageLookupByLibrary.simpleMessage("الحالة / القيمة"),
     "superEnergySavingMode": MessageLookupByLibrary.simpleMessage(
       "وضع توفير الطاقة الفائق",
     ),
     "takeControl": MessageLookupByLibrary.simpleMessage(
       "تحكم في استهلاك طاقتك",
+    ),
+    "temperatureSensor": MessageLookupByLibrary.simpleMessage(
+      "مستشعر درجة الحرارة",
     ),
     "tier": MessageLookupByLibrary.simpleMessage("الفئة"),
     "tier1": MessageLookupByLibrary.simpleMessage(
@@ -312,12 +455,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "الشريحة السادسة فأكثر (651+ كيلووات/ساعة)",
     ),
     "today": MessageLookupByLibrary.simpleMessage("اليوم"),
+    "trigger": MessageLookupByLibrary.simpleMessage("المُشغل"),
+    "triggerValue": MessageLookupByLibrary.simpleMessage("قيمة المُشغل"),
+    "turnOff": MessageLookupByLibrary.simpleMessage("إيقاف"),
+    "turnOn": MessageLookupByLibrary.simpleMessage("تشغيل"),
     "twoStepVerification": MessageLookupByLibrary.simpleMessage(
       "التحقق بخطوتين",
     ),
     "typeRequired": MessageLookupByLibrary.simpleMessage("من فضلك اختر النوع"),
     "unknown": MessageLookupByLibrary.simpleMessage("غير معروف"),
     "updatePassword": MessageLookupByLibrary.simpleMessage("تحديث كلمة المرور"),
+    "value": MessageLookupByLibrary.simpleMessage("القيمة"),
     "verificationCode": MessageLookupByLibrary.simpleMessage("رمز التحقق"),
     "verify": MessageLookupByLibrary.simpleMessage("تحقق"),
     "verifyYourEmail": MessageLookupByLibrary.simpleMessage(
@@ -330,6 +478,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "welcomeBack": MessageLookupByLibrary.simpleMessage(
       "مرحبًا بعودتك! لقد افتقدناك",
     ),
+    "whatShouldHappen": MessageLookupByLibrary.simpleMessage(
+      "ماذا يجب أن يحدث عند التفعيل؟",
+    ),
+    "whenShouldAutomationRun": MessageLookupByLibrary.simpleMessage(
+      "متى يجب تشغيل هذه الأتمتة؟",
+    ),
     "years": MessageLookupByLibrary.simpleMessage("السنوات"),
+    "yesDelete": MessageLookupByLibrary.simpleMessage("نعم، حذف"),
   };
 }

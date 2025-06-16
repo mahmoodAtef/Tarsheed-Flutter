@@ -6,25 +6,11 @@ import 'package:tarsheed/src/core/apis/end_points.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/category.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device_creation_form.dart';
-import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/room.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/sensor.dart';
 import 'package:tarsheed/src/modules/dashboard/data/services/base_dashboard_services.dart';
 
 class DashboardRemoteServices implements BaseDashboardServices {
-  @override
-  Future<Either<Exception, Report>> getUsageReport({String? period}) async {
-    try {
-      var response = await DioHelper.getData(
-        query: {"targetPeriod": period},
-        path: EndPoints.getUsageReport,
-      );
-      return Right(Report.fromJson(response.data));
-    } on Exception catch (e) {
-      return Left(e);
-    }
-  }
-
   @override
   Future<Either<Exception, List<DeviceCategory>>> getCategories() async {
     try {
@@ -138,8 +124,7 @@ class DashboardRemoteServices implements BaseDashboardServices {
         path: EndPoints.addRoom,
         data: room.toJson(),
       );
-      Room savedRoom =
-          room.copyWith(id: response.data["data"]["createdRoom"]["_id"]);
+      Room savedRoom = room.copyWith(id: response.data["createdRoom"]["_id"]);
       return Right(savedRoom);
     } on Exception catch (e) {
       return Left(e);
@@ -197,18 +182,6 @@ class DashboardRemoteServices implements BaseDashboardServices {
         },
       );
       return Right(unit);
-    } on Exception catch (e) {
-      return Left(e);
-    }
-  }
-
-  @override
-  Future<Either<Exception, String>> getAISuggestions() async {
-    try {
-      var response = await DioHelper.getData(
-        path: EndPoints.getAISuggestions,
-      );
-      return Right(response.data["recommendations"] ?? "No Usage Yet");
     } on Exception catch (e) {
       return Left(e);
     }

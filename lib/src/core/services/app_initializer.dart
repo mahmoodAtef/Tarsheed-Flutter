@@ -11,6 +11,7 @@ import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/services/secure_storage_helper.dart';
 import 'package:tarsheed/src/modules/auth/data/models/auth_info.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
+import 'package:tarsheed/src/modules/notifications/data/services/notifications_services.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/main_screen.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/welcome_screen.dart';
 
@@ -33,6 +34,7 @@ class AppInitializer {
     if (ApiManager.authToken != null) {
       DioHelper.setToken(ApiManager.authToken!);
     }
+    NotificationsRemoteService.initialize();
     return _isFirstRun == true
         ? WelcomeScreen()
         : _isLoggedIn()

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
+import 'package:tarsheed/src/core/utils/image_manager.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
 
 class DioExceptionHandler implements ExceptionHandler {
@@ -264,6 +265,23 @@ class DioExceptionHandler implements ExceptionHandler {
         return "المصادقة على الشبكة مطلوبة";
       default:
         return "خطأ غير معروف";
+    }
+  }
+
+  @override
+  String getIconPath(Exception exception) {
+    switch ((exception as DioException).response?.statusCode ?? 0) {
+      case 401:
+        return AssetsManager.unauthorizedError;
+      case 403:
+        return AssetsManager.forbiddenError;
+      case 404:
+        return AssetsManager.notFoundError;
+      case 400:
+        return AssetsManager.badRequestError;
+
+      default:
+        return AssetsManager.errorIcon;
     }
   }
 }

@@ -4,27 +4,6 @@ sealed class DashboardEvent extends Equatable {
   const DashboardEvent();
 }
 
-/// usage
-final class GetUsageReportEvent extends DashboardEvent {
-  final String? period;
-  final bool? isRefresh;
-  const GetUsageReportEvent({this.period, this.isRefresh});
-  @override
-  List<Object?> get props => [period];
-}
-
-final class UpdateUsageReportEvent extends DashboardEvent {
-  final Report usageReport;
-  const UpdateUsageReportEvent({required this.usageReport});
-  @override
-  List<Object?> get props => [usageReport];
-}
-
-final class GetAISuggestionsEvent extends DashboardEvent {
-  @override
-  List<Object?> get props => [];
-}
-
 // rooms
 final class GetRoomsEvent extends DashboardEvent {
   final bool? isRefresh;

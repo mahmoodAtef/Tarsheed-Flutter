@@ -5,8 +5,8 @@ extension NavigationMethods on BuildContext {
     Navigator.pop(this);
   }
 
-  void push(Widget route) {
-    Navigator.push(
+  push(Widget route) {
+    return Navigator.push(
       this,
       MaterialPageRoute(builder: (_) => route),
     );

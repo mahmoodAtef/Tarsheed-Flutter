@@ -1,3 +1,4 @@
+import 'package:tarsheed/src/core/utils/image_manager.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
 
 enum SensorCategory {
@@ -38,13 +39,13 @@ extension SensorData on SensorCategory {
   String get imagePath {
     switch (this) {
       case SensorCategory.temperature:
-        return 'assets/images/temp.jpeg';
+        return AssetsManager.temperatureSensor;
       case SensorCategory.current:
-        return 'assets/images/cuur.jpeg';
+        return AssetsManager.currentSensor;
       case SensorCategory.motion:
-        return 'assets/images/mothion.jpg';
+        return AssetsManager.motionSensor;
       case SensorCategory.vibration:
-        return 'assets/images/vib.jpeg';
+        return AssetsManager.vibrationSensor;
     }
   }
 }

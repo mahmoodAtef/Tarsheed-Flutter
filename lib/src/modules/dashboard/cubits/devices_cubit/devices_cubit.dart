@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device_creation_form.dart';
@@ -13,6 +14,21 @@ class DevicesCubit extends Cubit<DevicesState> {
 
   final _repository = sl<DevicesRepository>();
 
+  // Simplified singleton pattern - always return the same instance
+  static DevicesCubit get() {
+    if (!sl.isRegistered<DevicesCubit>()) {
+      sl.registerLazySingleton<DevicesCubit>(() => DevicesCubit());
+    }
+    return sl<DevicesCubit>();
+  }
+
+  @override
+  Future<void> close() async {
+    debugPrint('Closing DevicesCubit');
+    // Perform any necessary cleanup here
+    // return super.close();
+  }
+
   Future<void> getDevices({bool refresh = false}) async {
     final currentState = state;
     emit(GetDevicesLoading(
@@ -21,7 +37,7 @@ class DevicesCubit extends Cubit<DevicesState> {
         sortOrder: currentState.sortOrder,
         refresh: refresh));
 
-    final result = await _repository.getDevices();
+    final result = await _repository.getDevices(reFetch: refresh);
     result.fold(
       (err) {
         emit(GetDevicesError(
@@ -140,6 +156,54 @@ class DevicesCubit extends Cubit<DevicesState> {
         emit(DeleteDeviceSuccess(
           id,
           devices: updated,
+          filterType: currentState.filterType,
+          sortOrder: currentState.sortOrder,
+        ));
+      },
+    );
+  }
+
+  Future<void> toggleDeviceStatus(String id) async {
+    final currentState = state;
+    final current = currentState.devices ?? <Device>[];
+    final deviceIndex = current.indexWhere((d) => d.id == id);
+
+    if (deviceIndex == -1) return; // Device not found
+
+    final device = current[deviceIndex];
+    final optimisticState = !device.state;
+
+    // Update the device in the list optimistically
+    final optimisticDevices = List<Device>.from(current);
+    optimisticDevices[deviceIndex] = device.copyWith(state: optimisticState);
+
+    emit(ToggleDeviceStatusLoading(
+      deviceId: id,
+      deviceState: optimisticState,
+      devices: optimisticDevices,
+      filterType: currentState.filterType,
+      sortOrder: currentState.sortOrder,
+    ));
+
+    final result = await _repository.toggleDeviceStatus(id);
+    result.fold(
+      (err) {
+        // Revert to the original state on error
+        emit(ToggleDeviceStatusError(
+          deviceState: device.state,
+          err,
+          devices: current, // Revert to original list
+          deviceId: id,
+          filterType: currentState.filterType,
+          sortOrder: currentState.sortOrder,
+        ));
+      },
+      (_) {
+        // Confirm the optimistic update on success
+        emit(ToggleDeviceStatusSuccess(
+          deviceState: optimisticState,
+          id,
+          devices: optimisticDevices, // Keep the updated list
           filterType: currentState.filterType,
           sortOrder: currentState.sortOrder,
         ));

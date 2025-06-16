@@ -19,7 +19,11 @@ class DevicesRepository {
     // TODO: use it after reusing offline first
   }
 
-  Future<Either<Exception, List<Device>>> getDevices() {
+  List<Device> lastDevices = [];
+  Future<Either<Exception, List<Device>>> getDevices({bool? reFetch}) async {
+    if (lastDevices.isNotEmpty && reFetch != true) {
+      return Right(lastDevices);
+    }
     return _remote.getDevices();
   }
 
@@ -43,5 +47,9 @@ class DevicesRepository {
 
   Future<Either<Exception, Unit>> deleteDevice(String id) {
     return _remote.deleteDevice(id);
+  }
+
+  Future<Either<Exception, Unit>> toggleDeviceStatus(String id) {
+    return _remote.toggleDeviceStatus(id);
   }
 }

@@ -1349,6 +1349,771 @@ class S {
       args: [],
     );
   }
+
+  /// `Edit Device`
+  String get editDevice {
+    return Intl.message('Edit Device', name: 'editDevice', desc: '', args: []);
+  }
+
+  /// `Rooms`
+  String get rooms {
+    return Intl.message('Rooms', name: 'rooms', desc: '', args: []);
+  }
+
+  /// `Consumption`
+  String get consumption {
+    return Intl.message('Consumption', name: 'consumption', desc: '', args: []);
+  }
+
+  /// `Delete Device`
+  String get deleteDevice {
+    return Intl.message(
+      'Delete Device',
+      name: 'deleteDevice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this device`
+  String get confirmDeleteDevice {
+    return Intl.message(
+      'Are you sure you want to delete this device',
+      name: 'confirmDeleteDevice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes, Delete`
+  String get yesDelete {
+    return Intl.message('Yes, Delete', name: 'yesDelete', desc: '', args: []);
+  }
+
+  /// `Delete Device`
+  String get deleteSensor {
+    return Intl.message(
+      'Delete Device',
+      name: 'deleteSensor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this sensor`
+  String get confirmDeleteSensor {
+    return Intl.message(
+      'Are you sure you want to delete this sensor',
+      name: 'confirmDeleteSensor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sensor deleted successfully`
+  String get sensorDeletedSuccessfully {
+    return Intl.message(
+      'Sensor deleted successfully',
+      name: 'sensorDeletedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Device deleted successfully`
+  String get deviceDeletedSuccessfully {
+    return Intl.message(
+      'Device deleted successfully',
+      name: 'deviceDeletedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add New Automation`
+  String get addNewAutomation {
+    return Intl.message(
+      'Add New Automation',
+      name: 'addNewAutomation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Automation added successfully`
+  String get automationAddedSuccessfully {
+    return Intl.message(
+      'Automation added successfully',
+      name: 'automationAddedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Automation Name`
+  String get automationName {
+    return Intl.message(
+      'Automation Name',
+      name: 'automationName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Automation Name`
+  String get enterAutomationName {
+    return Intl.message(
+      'Enter Automation Name',
+      name: 'enterAutomationName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Trigger`
+  String get trigger {
+    return Intl.message('Trigger', name: 'trigger', desc: '', args: []);
+  }
+
+  /// `When should this automation run?`
+  String get whenShouldAutomationRun {
+    return Intl.message(
+      'When should this automation run?',
+      name: 'whenShouldAutomationRun',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Schedule`
+  String get schedule {
+    return Intl.message('Schedule', name: 'schedule', desc: '', args: []);
+  }
+
+  /// `Run at specific time`
+  String get runAtSpecificTime {
+    return Intl.message(
+      'Run at specific time',
+      name: 'runAtSpecificTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sensor`
+  String get sensor {
+    return Intl.message('Sensor', name: 'sensor', desc: '', args: []);
+  }
+
+  /// `Run when sensor value changes`
+  String get runWhenSensorValueChanges {
+    return Intl.message(
+      'Run when sensor value changes',
+      name: 'runWhenSensorValueChanges',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Time`
+  String get selectTime {
+    return Intl.message('Select Time', name: 'selectTime', desc: '', args: []);
+  }
+
+  /// `Select Sensor`
+  String get selectSensor {
+    return Intl.message(
+      'Select Sensor',
+      name: 'selectSensor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Trigger Value`
+  String get triggerValue {
+    return Intl.message(
+      'Trigger Value',
+      name: 'triggerValue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Conditions (Optional)`
+  String get conditionsOptional {
+    return Intl.message(
+      'Conditions (Optional)',
+      name: 'conditionsOptional',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Additional conditions that must be met`
+  String get additionalConditions {
+    return Intl.message(
+      'Additional conditions that must be met',
+      name: 'additionalConditions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Device Condition`
+  String get deviceCondition {
+    return Intl.message(
+      'Device Condition',
+      name: 'deviceCondition',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sensor Condition`
+  String get sensorCondition {
+    return Intl.message(
+      'Sensor Condition',
+      name: 'sensorCondition',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Device`
+  String get selectDevice {
+    return Intl.message(
+      'Select Device',
+      name: 'selectDevice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `State/Value`
+  String get stateValue {
+    return Intl.message('State/Value', name: 'stateValue', desc: '', args: []);
+  }
+
+  /// `Add Device Condition`
+  String get addDeviceCondition {
+    return Intl.message(
+      'Add Device Condition',
+      name: 'addDeviceCondition',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Sensor Condition`
+  String get addSensorCondition {
+    return Intl.message(
+      'Add Sensor Condition',
+      name: 'addSensorCondition',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Actions`
+  String get actions {
+    return Intl.message('Actions', name: 'actions', desc: '', args: []);
+  }
+
+  /// `What should happen when triggered?`
+  String get whatShouldHappen {
+    return Intl.message(
+      'What should happen when triggered?',
+      name: 'whatShouldHappen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Device Action`
+  String get deviceAction {
+    return Intl.message(
+      'Device Action',
+      name: 'deviceAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notification Action`
+  String get notificationAction {
+    return Intl.message(
+      'Notification Action',
+      name: 'notificationAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Turn On`
+  String get turnOn {
+    return Intl.message('Turn On', name: 'turnOn', desc: '', args: []);
+  }
+
+  /// `Turn Off`
+  String get turnOff {
+    return Intl.message('Turn Off', name: 'turnOff', desc: '', args: []);
+  }
+
+  /// `Notification Title`
+  String get notificationTitle {
+    return Intl.message(
+      'Notification Title',
+      name: 'notificationTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notification Message`
+  String get notificationMessage {
+    return Intl.message(
+      'Notification Message',
+      name: 'notificationMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Device Action`
+  String get addDeviceAction {
+    return Intl.message(
+      'Add Device Action',
+      name: 'addDeviceAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Notification`
+  String get addNotification {
+    return Intl.message(
+      'Add Notification',
+      name: 'addNotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save Automation`
+  String get saveAutomation {
+    return Intl.message(
+      'Save Automation',
+      name: 'saveAutomation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Living Room Light`
+  String get livingRoomLight {
+    return Intl.message(
+      'Living Room Light',
+      name: 'livingRoomLight',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bedroom AC`
+  String get bedroomAC {
+    return Intl.message('Bedroom AC', name: 'bedroomAC', desc: '', args: []);
+  }
+
+  /// `Kitchen Fan`
+  String get kitchenFan {
+    return Intl.message('Kitchen Fan', name: 'kitchenFan', desc: '', args: []);
+  }
+
+  /// `Temperature Sensor`
+  String get temperatureSensor {
+    return Intl.message(
+      'Temperature Sensor',
+      name: 'temperatureSensor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Motion Sensor`
+  String get motionSensor {
+    return Intl.message(
+      'Motion Sensor',
+      name: 'motionSensor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Light Sensor`
+  String get lightSensor {
+    return Intl.message(
+      'Light Sensor',
+      name: 'lightSensor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please add at least one action`
+  String get pleaseAddAtLeastOneAction {
+    return Intl.message(
+      'Please add at least one action',
+      name: 'pleaseAddAtLeastOneAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select a time for schedule trigger`
+  String get pleaseSelectTimeForSchedule {
+    return Intl.message(
+      'Please select a time for schedule trigger',
+      name: 'pleaseSelectTimeForSchedule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please configure sensor trigger completely`
+  String get pleaseConfigureSensorTrigger {
+    return Intl.message(
+      'Please configure sensor trigger completely',
+      name: 'pleaseConfigureSensorTrigger',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Action`
+  String get action {
+    return Intl.message('Action', name: 'action', desc: '', args: []);
+  }
+
+  /// `No devices available`
+  String get noDevicesAvailable {
+    return Intl.message(
+      'No devices available',
+      name: 'noDevicesAvailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No sensors available`
+  String get noSensorsAvailable {
+    return Intl.message(
+      'No sensors available',
+      name: 'noSensorsAvailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get edit {
+    return Intl.message('Edit', name: 'edit', desc: '', args: []);
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message('Delete', name: 'delete', desc: '', args: []);
+  }
+
+  /// `Automation Status`
+  String get automationStatus {
+    return Intl.message(
+      'Automation Status',
+      name: 'automationStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enabled`
+  String get enabled {
+    return Intl.message('Enabled', name: 'enabled', desc: '', args: []);
+  }
+
+  /// `Disabled`
+  String get disabled {
+    return Intl.message('Disabled', name: 'disabled', desc: '', args: []);
+  }
+
+  /// `Sensor value`
+  String get sensorValue {
+    return Intl.message(
+      'Sensor value',
+      name: 'sensorValue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Conditions`
+  String get conditions {
+    return Intl.message('Conditions', name: 'conditions', desc: '', args: []);
+  }
+
+  /// `No conditions set`
+  String get noConditionsSet {
+    return Intl.message(
+      'No conditions set',
+      name: 'noConditionsSet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `State`
+  String get state {
+    return Intl.message('State', name: 'state', desc: '', args: []);
+  }
+
+  /// `Value`
+  String get value {
+    return Intl.message('Value', name: 'value', desc: '', args: []);
+  }
+
+  /// `Delete Automation`
+  String get deleteAutomation {
+    return Intl.message(
+      'Delete Automation',
+      name: 'deleteAutomation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this automation?`
+  String get deleteAutomationConfirmation {
+    return Intl.message(
+      'Are you sure you want to delete this automation?',
+      name: 'deleteAutomationConfirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Automation`
+  String get editAutomation {
+    return Intl.message(
+      'Edit Automation',
+      name: 'editAutomation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Devices`
+  String get devices {
+    return Intl.message('Devices', name: 'devices', desc: '', args: []);
+  }
+
+  /// `Automations`
+  String get automations {
+    return Intl.message('Automations', name: 'automations', desc: '', args: []);
+  }
+
+  /// `My Home`
+  String get myHome {
+    return Intl.message('My Home', name: 'myHome', desc: '', args: []);
+  }
+
+  /// `Manage Your Devices`
+  String get manageYourDevices {
+    return Intl.message(
+      'Manage Your Devices',
+      name: 'manageYourDevices',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add, edit, or delete sensors to organize your devices`
+  String get manageYourSensors {
+    return Intl.message(
+      'Add, edit, or delete sensors to organize your devices',
+      name: 'manageYourSensors',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create, edit, or delete automations to control your devices based on conditions`
+  String get manageYourAutomations {
+    return Intl.message(
+      'Create, edit, or delete automations to control your devices based on conditions',
+      name: 'manageYourAutomations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add, edit, or delete rooms to organize your devices and sensors`
+  String get manageYourRooms {
+    return Intl.message(
+      'Add, edit, or delete rooms to organize your devices and sensors',
+      name: 'manageYourRooms',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Sensor`
+  String get addSensor {
+    return Intl.message('Add Sensor', name: 'addSensor', desc: '', args: []);
+  }
+
+  /// `Add Room`
+  String get addRoom {
+    return Intl.message('Add Room', name: 'addRoom', desc: '', args: []);
+  }
+
+  /// `Room Name`
+  String get roomName {
+    return Intl.message('Room Name', name: 'roomName', desc: '', args: []);
+  }
+
+  /// `Room Description`
+  String get roomDescription {
+    return Intl.message(
+      'Room Description',
+      name: 'roomDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This field is required`
+  String get requiredField {
+    return Intl.message(
+      'This field is required',
+      name: 'requiredField',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add`
+  String get add {
+    return Intl.message('Add', name: 'add', desc: '', args: []);
+  }
+
+  /// `Room Details`
+  String get roomDetails {
+    return Intl.message(
+      'Room Details',
+      name: 'roomDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Room added successfully`
+  String get roomAddedSuccessfully {
+    return Intl.message(
+      'Room added successfully',
+      name: 'roomAddedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No internet connection`
+  String get noInternetConnection {
+    return Intl.message(
+      'No internet connection',
+      name: 'noInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Automation deleted successfully`
+  String get automationDeletedSuccessfully {
+    return Intl.message(
+      'Automation deleted successfully',
+      name: 'automationDeletedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Automation status changed successfully`
+  String get automationStatusChanged {
+    return Intl.message(
+      'Automation status changed successfully',
+      name: 'automationStatusChanged',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Automation disabled`
+  String get automationDisabled {
+    return Intl.message(
+      'Automation disabled',
+      name: 'automationDisabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Automation enabled`
+  String get automationEnabled {
+    return Intl.message(
+      'Automation enabled',
+      name: 'automationEnabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Updating status...`
+  String get updatingStatus {
+    return Intl.message(
+      'Updating status...',
+      name: 'updatingStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Automation`
+  String get updateAutomation {
+    return Intl.message(
+      'Update Automation',
+      name: 'updateAutomation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Editing automation:`
+  String get editingAutomationInfo {
+    return Intl.message(
+      'Editing automation:',
+      name: 'editingAutomationInfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Automation updated successfully`
+  String get automationUpdatedSuccessfully {
+    return Intl.message(
+      'Automation updated successfully',
+      name: 'automationUpdatedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

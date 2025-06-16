@@ -16,9 +16,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   static AuthBloc? _authBloc;
 
   static AuthBloc get instance {
-    return sl();
+    if (sl<AuthBloc>().isClosed) {
+      sl.unregister<AuthBloc>();
+      sl.registerLazySingleton<AuthBloc>(
+        () => AuthBloc(),
+      );
+    }
+
+    return sl<AuthBloc>();
   }
 
+  @override
+  close() async {}
   final AuthRepository authRepository = sl();
 
   AuthBloc() : super(AuthInitial()) {
@@ -195,7 +204,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Timer? _resendCodeTimer;
   int? _remainingSeconds;
 
-  void _startResendTimer(Emitter<AuthState> emit) {
+  void _startResendTimer(Emitter<AuthState> emit) async {
     const oneSec = Duration(seconds: 1);
     _remainingSeconds = 60;
     _resendCodeTimer = Timer.periodic(oneSec, (timer) {

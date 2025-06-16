@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
-import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/utils/image_manager.dart';
+import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/data/models/user.dart';
 
@@ -17,10 +17,14 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: sl<SettingsCubit>()..getProfile(),
+      value: SettingsCubit.get()..getProfile(),
       child: Scaffold(
         appBar: CustomAppBar(text: S.of(context).profile),
-        body: const ProfileContent(),
+        body: ConnectionWidget(
+            onRetry: () {
+              SettingsCubit.get().getProfile();
+            },
+            child: const ProfileContent()),
       ),
     );
   }
@@ -107,7 +111,7 @@ class _ProfileContentState extends State<ProfileContent> {
       email: _emailController.text,
     );
 
-    context.read<SettingsCubit>().updateProfile(updatedUser);
+    SettingsCubit.get().updateProfile(updatedUser);
   }
 
   @override
@@ -191,7 +195,9 @@ class _ProfileContentState extends State<ProfileContent> {
                 buildWhen: (previous, current) =>
                     current is UpdateProfileLoadingState ||
                     !(previous is UpdateProfileLoadingState &&
-                        current is! UpdateProfileLoadingState),
+                        current is! UpdateProfileLoadingState) ||
+                    current is UpdateProfileSuccessState ||
+                    current is SettingsErrorState,
                 builder: (context, state) {
                   final isLoading = state is UpdateProfileLoadingState;
 
@@ -213,8 +219,8 @@ class _ProfileContentState extends State<ProfileContent> {
                               width: 20.w,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2.w,
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(ColorManager.white),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    ColorManager.white),
                               ),
                             )
                           : Text(

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:sqflite/sqflite.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
+import 'package:tarsheed/src/core/utils/image_manager.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
 
 class SQLiteExceptionHandler implements ExceptionHandler {
@@ -187,5 +188,10 @@ class SQLiteExceptionHandler implements ExceptionHandler {
     }
 
     return "0";
+  }
+
+  @override
+  String getIconPath(Exception exception) {
+    return AssetsManager.errorIcon;
   }
 }

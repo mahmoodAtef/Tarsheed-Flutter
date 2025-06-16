@@ -10,13 +10,13 @@ import 'package:tarsheed/src/modules/auth/ui/screens/verify_code.dart';
 
 import '../../../../core/error/exception_manager.dart';
 import '../../../../core/utils/image_manager.dart';
-import '../../data/models/email_and_password_registration_form.dart';
 import '../../../../core/widgets/large_button.dart';
-import '../widgets/main_title.dart';
 import '../../../../core/widgets/rectangle_background.dart';
+import '../../../../core/widgets/text_field.dart';
+import '../../data/models/email_and_password_registration_form.dart';
+import '../widgets/main_title.dart';
 import '../widgets/social_icon.dart';
 import '../widgets/sup_title.dart';
-import '../../../../core/widgets/text_field.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
@@ -41,8 +41,9 @@ class SignUpScreen extends StatelessWidget {
             bloc: authBloc,
             listener: (context, state) {
               if (state is RegisterSuccessState) {
-                context.push(
-                    CodeVerificationScreen(email: emailController.text.trim()));
+                context.push(CodeVerificationScreen(
+                    email: emailController.text.trim(),
+                    isFromForgotPassword: false));
               } else if (state is AuthErrorState) {
                 ExceptionManager.showMessage(state.exception);
               }
@@ -98,7 +99,7 @@ class SignUpScreen extends StatelessWidget {
                                 if (trimmedValue.length < 2) {
                                   return S.of(context).nameMinLength;
                                 }
-                                if (trimmedValue.length > 10) {
+                                if (trimmedValue.length > 20) {
                                   return S.of(context).nameMaxLength;
                                 }
                                 return null;
@@ -119,7 +120,7 @@ class SignUpScreen extends StatelessWidget {
                             return S.of(context).emailRequired;
                           }
                           final trimmedValue = value.trim();
-                          if (trimmedValue.length > 30) {
+                          if (trimmedValue.length > 50) {
                             return S.of(context).emailMaxLength;
                           }
                           if (!value.contains('@')) {
@@ -142,7 +143,7 @@ class SignUpScreen extends StatelessWidget {
                           if (trimmedValue.length < 8) {
                             return S.of(context).passwordMinLength;
                           }
-                          if (trimmedValue.length > 30) {
+                          if (trimmedValue.length > 50) {
                             return S.of(context).passwordMaxLength;
                           }
 
@@ -266,8 +267,6 @@ class SignUpScreen extends StatelessWidget {
                                         scale: 2,
                                       ),
                               ),
-                              SizedBox(width: 8.w),
-                              SocialIcon(image: AssetsManager.apple),
                             ],
                           );
                         },

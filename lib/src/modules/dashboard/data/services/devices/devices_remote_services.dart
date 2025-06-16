@@ -80,4 +80,14 @@ class DevicesRemoteServices implements BaseDevicesRemoteServices {
       return Left(e as Exception);
     }
   }
+
+  Future<Either<Exception, Unit>> toggleDeviceStatus(String id) async {
+    try {
+      await DioHelper.patchData(
+          path: EndPoints.toggleDeviceStatus + id, data: {});
+      return Right(unit);
+    } catch (e) {
+      return Left(e as Exception);
+    }
+  }
 }

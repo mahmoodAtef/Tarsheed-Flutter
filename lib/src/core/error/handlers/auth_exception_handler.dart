@@ -1,6 +1,7 @@
 import 'package:tarsheed/src/core/error/custom_exceptions/auth_exceptions.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/error/handlers/dio_exception_handler.dart';
+import 'package:tarsheed/src/core/utils/image_manager.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
 
 class AuthExceptionHandler implements ExceptionHandler {
@@ -58,7 +59,24 @@ class AuthExceptionHandler implements ExceptionHandler {
         return "خدمة المصادقة غير متوفرة حالياً";
 
       default:
-        return DioExceptionHandler().handle(exception);
+        return AssetsManager.errorIcon;
+    }
+  }
+
+  @override
+  String getIconPath(Exception exception) {
+    switch ((exception as AuthException).response?.statusCode ?? 0) {
+      case 401:
+        return AssetsManager.unauthorizedError;
+      case 403:
+        return AssetsManager.forbiddenError;
+      case 404:
+        return AssetsManager.notFoundError;
+      case 400:
+        return AssetsManager.badRequestError;
+
+      default:
+        return AssetsManager.errorIcon;
     }
   }
 }

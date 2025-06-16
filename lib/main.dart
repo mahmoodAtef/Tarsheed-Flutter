@@ -7,11 +7,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/services/app_initializer.dart';
 import 'package:tarsheed/src/core/services/bloc_observer.dart';
-import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
 import 'package:tarsheed/src/core/utils/theme_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
-import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/splash_screen.dart';
 
@@ -26,13 +24,7 @@ void main() async {
   Bloc.observer = TarsheedBlocObserver();
 
   runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => sl<AuthBloc>()),
-        BlocProvider(create: (context) => sl<DashboardBloc>()),
-      ],
-      child: Tarsheed(),
-    ),
+    Tarsheed(),
   );
 }
 
@@ -47,9 +39,16 @@ class Tarsheed extends StatelessWidget {
       splitScreenMode: true,
       enableScaleText: () => true,
       builder: (BuildContext context, child) {
-        return BlocProvider(
-          lazy: true,
-          create: (context) => sl<SettingsCubit>(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              lazy: true,
+              create: (context) => SettingsCubit.get(),
+            ),
+            BlocProvider(
+              create: (context) => AuthBloc.instance,
+            ),
+          ],
           child: BlocBuilder<SettingsCubit, SettingsState>(
             buildWhen: (previous, current) =>
                 current is ChangeLanguageSuccessState ||
@@ -66,7 +65,7 @@ class Tarsheed extends StatelessWidget {
                   GlobalCupertinoLocalizations.delegate,
                 ],
                 supportedLocales: S.delegate.supportedLocales,
-                theme: ThemeManager.appTheme(),
+                theme: ThemeManager.lightTheme,
                 home: SplashScreen(),
               );
             },
@@ -76,4 +75,6 @@ class Tarsheed extends StatelessWidget {
     );
   }
 }
-/**/
+/*
+
+  */

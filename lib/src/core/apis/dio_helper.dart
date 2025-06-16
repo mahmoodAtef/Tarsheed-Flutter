@@ -7,17 +7,21 @@ class DioHelper {
   static late Dio dio;
 
   static init() {
-    dio = Dio(BaseOptions(
-      baseUrl: ApiManager.baseUrl,
-      headers: {
-        "Authorization": ApiManager.authToken != null
-            ? "Bearer ${ApiManager.authToken}"
-            : null,
-        "Connection": "keep-alive",
-      },
-      connectTimeout: const Duration(minutes: 10),
-      receiveTimeout: const Duration(minutes: 10),
-    ));
+    dio = Dio(
+      BaseOptions(
+          baseUrl: ApiManager.baseUrl,
+          headers: {
+            "Authorization": ApiManager.authToken != null
+                ? "Bearer ${ApiManager.authToken}"
+                : null,
+            "Connection": "keep-alive",
+          },
+          connectTimeout: const Duration(minutes: 10),
+          receiveTimeout: const Duration(minutes: 10),
+          validateStatus: (int? status) =>
+              status != null &&
+              (status >= 200 && status < 300 || status == 304)),
+    );
     // customization
     dio.interceptors.add(PrettyDioLogger(
         request: true,

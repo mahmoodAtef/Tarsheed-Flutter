@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 
-import '../../../../core/error/exception_manager.dart';
-import '../../../auth/bloc/auth_bloc.dart';
-import '../../../../core/widgets/appbar.dart';
 import '../../../../../generated/l10n.dart';
+import '../../../../core/error/exception_manager.dart';
 import '../../../../core/utils/color_manager.dart';
+import '../../../../core/widgets/appbar.dart';
+import '../../../auth/bloc/auth_bloc.dart';
 
 class EditPasswordPage extends StatefulWidget {
   const EditPasswordPage({super.key});
@@ -31,7 +32,7 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
             builder: (_) => const Center(child: CircularProgressIndicator()),
           );
         } else if (state is UpdatePasswordSuccessState) {
-          Navigator.of(context).pop(); // close loading
+          context.pop(); // close loading
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(S.of(context).passwordUpdatedSuccessfully),
@@ -78,7 +79,7 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
                     final oldPassword = oldPasswordController.text.trim();
                     final newPassword = newPasswordController.text.trim();
                     final confirmPassword =
-                    confirmPasswordController.text.trim();
+                        confirmPasswordController.text.trim();
 
                     if (newPassword != confirmPassword) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -90,7 +91,7 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
                       return;
                     }
 
-                    context.read<AuthBloc>().add(
+                    AuthBloc.instance.add(
                       UpdatePasswordEvent(
                         oldPassword: oldPassword,
                         newPassword: newPassword,

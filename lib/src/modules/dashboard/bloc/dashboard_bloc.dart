@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/category.dart';
-import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
-import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/room.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/sensor.dart';
 import 'package:tarsheed/src/modules/dashboard/data/repositories/dashboard_repository.dart';
@@ -16,18 +14,29 @@ part 'dashboard_state.dart';
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   final DashboardRepository _repository = sl()..initialize();
-  static DashboardBloc get() => sl();
-  List<DeviceCategory> categories = [];
-  List<Device> devices = [];
-  List<Room> rooms = [];
+  static DashboardBloc get() {
+    // check if the bloc is already registered and not closed
+    if (sl<DashboardBloc>().isClosed) {
+      sl.unregister<DashboardBloc>();
+      sl.registerLazySingleton<DashboardBloc>(
+        () => DashboardBloc(),
+      );
+    }
+
+    return sl<DashboardBloc>();
+  }
+
+  @override
+  close() async {
+    debugPrint('trying to close DashboardBloc');
+    // return super.close();
+  }
+
   List<Sensor> sensors = [];
-  Report? report;
 
   DashboardBloc() : super(DashboardInitial()) {
     on<DashboardEvent>((event, emit) async {
-      if (event is GetUsageReportEvent) {
-        await _handleGetUsageReportEvent(event, emit);
-      } else if (event is GetDevicesCategoriesEvent) {
+      if (event is GetDevicesCategoriesEvent) {
         await _handleGetCategoriesEvent(event, emit);
       } else if (event is GetRoomsEvent) {
         await _handleGetRoomsEvent(event, emit);
@@ -35,8 +44,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         await _handleAddRoomEvent(event, emit);
       } else if (event is DeleteRoomEvent) {
         await _handleDeleteRoomEvent(event, emit);
-      } else if (event is GetAISuggestionsEvent) {
-        await _handleGetAISuggestionsEvent(event, emit);
       } else if (event is AddSensorEvent) {
         await _handleAddSensorEvent(event, emit);
       } else if (event is GetSensorsEvent) {
@@ -47,87 +54,73 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     });
   }
 
-  @override
-  Future<void> close() async {
+  Future<void> closeBloc() async {
     _deleteAllData();
     await _repository.dispose();
     return super.close();
   }
 
   void _deleteAllData() {
-    devices = [];
-    report = null;
-    rooms = [];
     sensors = [];
-    categories = [];
-  }
-
-  // Event handlers
-  _handleGetUsageReportEvent(
-      GetUsageReportEvent event, Emitter<DashboardState> emit) async {
-    if (report == null || event.isRefresh == true) {
-      emit(GetUsageReportLoading());
-      final result = await _repository.getUsageReport(period: event.period);
-      result.fold((l) => emit(GetUsageReportError(l)), (r) {
-        report = r;
-        emit(GetUsageReportSuccess(r));
-      });
-    } else {
-      emit(GetUsageReportSuccess(report!));
-    }
-  }
-
-  // AI SUGGESTIONS
-  _handleGetAISuggestionsEvent(
-      GetAISuggestionsEvent event, Emitter<DashboardState> emit) async {
-    emit(GetAISuggestionsLoading());
-    final result = await _repository.getAISuggestion();
-    result.fold((l) => emit(GetAISuggestionsError(l)),
-        (r) => emit(GetAISuggestionsSuccess(r)));
   }
 
   // rooms events handlers
   _handleGetRoomsEvent(
       GetRoomsEvent event, Emitter<DashboardState> emit) async {
-    if (rooms.isEmpty || event.isRefresh == true) {
-      emit(GetRoomsLoading());
-      final result = await _repository.getRooms();
-      result.fold((l) => emit(GetRoomsError(l)), (r) {
-        rooms = r;
-        emit(GetRoomsSuccess(r));
-      });
-    } else {
-      emit(GetRoomsSuccess(rooms));
-    }
+    final List<Room> currentRooms = state.rooms ?? [];
+
+    emit(GetRoomsLoading(
+      rooms: currentRooms,
+    ));
+    final result = await _repository.getRooms(
+      forceRefresh: event.isRefresh ?? false,
+    );
+    debugPrint(
+        'result rooms: ${result.isRight() ? result.getOrElse(() => []).length : 'error'}');
+
+    result.fold((l) => emit(GetRoomsError(l, rooms: currentRooms)), (r) {
+      emit(GetRoomsSuccess(rooms: r));
+    });
+    debugPrint('${state.rooms}');
   }
 
   _handleAddRoomEvent(AddRoomEvent event, Emitter<DashboardState> emit) async {
-    emit(AddRoomLoading());
+    final List<Room> currentRooms = state.rooms ?? [];
+
+    emit(AddRoomLoading(
+      rooms: currentRooms,
+    ));
     final result = await _repository.addRoom(event.room);
-    result.fold((l) => emit(AddRoomError(l)), (r) => emit(AddRoomSuccess(r)));
+    result.fold(
+        (l) => emit(AddRoomError(l, rooms: currentRooms)),
+        (r) => emit(AddRoomSuccess(
+              r,
+              rooms: [...currentRooms],
+            )));
   }
 
   _handleDeleteRoomEvent(
       DeleteRoomEvent event, Emitter<DashboardState> emit) async {
-    emit(DeleteRoomLoading());
+    final List<Room> currentRooms = state.rooms ?? [];
+    emit(DeleteRoomLoading(
+      rooms: currentRooms,
+    ));
     final result = await _repository.deleteRoom(event.roomId);
-    result.fold((l) => emit(DeleteRoomError(l)),
-        (r) => emit(DeleteRoomSuccess(event.roomId)));
+    result.fold(
+        (l) => emit(DeleteRoomError(l, rooms: currentRooms)),
+        (r) => emit(DeleteRoomSuccess(event.roomId,
+            rooms: (state.rooms ?? <Room>[])
+                .where((room) => room.id != event.roomId)
+                .toList())));
   }
 
   _handleGetCategoriesEvent(
       GetDevicesCategoriesEvent event, Emitter<DashboardState> emit) async {
-    if (categories.isEmpty) {
-      emit(GetDeviceCategoriesLoading());
-      final result = await _repository.getCategories();
-      result.fold((l) => emit(GetDeviceCategoriesError(l)), (r) {
-        categories = r;
-        debugPrint(categories.toString());
-        emit(GetDeviceCategoriesSuccess(r));
-      });
-    } else {
-      emit(GetDeviceCategoriesSuccess(categories));
-    }
+    emit(GetDeviceCategoriesLoading());
+    final result = await _repository.getCategories();
+    result.fold((l) => emit(GetDeviceCategoriesError(l)), (r) {
+      emit(GetDeviceCategoriesSuccess(r));
+    });
   }
 
   // sensors handlers

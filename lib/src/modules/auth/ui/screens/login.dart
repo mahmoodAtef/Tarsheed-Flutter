@@ -10,7 +10,6 @@ import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/sign_up_create_account.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_email.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/sup_title.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/screens/home_screen.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/main_screen.dart';
 
 import '../../../../core/utils/image_manager.dart';
@@ -69,6 +68,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: 50.h),
                       CustomTextField(
+                        autofillHints: [
+                          AutofillHints.email,
+                        ],
                         controller: emailController,
                         hintText: S.of(context).email,
                         keyboardType: TextInputType.emailAddress,
@@ -93,6 +95,9 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 20.h),
                       CustomTextField(
                         controller: passwordController,
+                        autofillHints: [
+                          AutofillHints.password,
+                        ],
                         hintText: S.of(context).password,
                         isPassword: true,
                         validator: (value) {
@@ -134,13 +139,12 @@ class _LoginPageState extends State<LoginPage> {
                             title: S.of(context).signIn,
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
-                                context.read<AuthBloc>().add(
-                                      LoginWithEmailAndPasswordEvent(
-                                        email: emailController.text.trim(),
-                                        password:
-                                            passwordController.text.trim(),
-                                      ),
-                                    );
+                                AuthBloc.instance.add(
+                                  LoginWithEmailAndPasswordEvent(
+                                    email: emailController.text.trim(),
+                                    password: passwordController.text.trim(),
+                                  ),
+                                );
                               }
                             },
                           );
@@ -182,8 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                                 onTap: state is LoginWithGoogleLoadingState
                                     ? null
                                     : () {
-                                        context
-                                            .read<AuthBloc>()
+                                        AuthBloc.instance
                                             .add(const LoginWithGoogleEvent());
                                       },
                                 child: state is LoginWithGoogleLoadingState
@@ -198,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                                 onTap: state is LoginWithFacebookLoadingState
                                     ? null
                                     : () {
-                                        context.read<AuthBloc>().add(
+                                        AuthBloc.instance.add(
                                             const LoginWithFacebookEvent());
                                       },
                                 child: state is LoginWithFacebookLoadingState
@@ -208,8 +211,6 @@ class _LoginPageState extends State<LoginPage> {
                                         scale: 2,
                                       ),
                               ),
-                              SizedBox(width: 8.w),
-                              SocialIcon(image: AssetsManager.apple),
                             ],
                           );
                         },

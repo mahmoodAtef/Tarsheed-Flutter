@@ -5,7 +5,6 @@ import 'package:tarsheed/src/core/services/connectivity_services.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/category.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device_creation_form.dart';
-import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/room.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/sensor.dart';
 import 'package:tarsheed/src/modules/dashboard/data/services/dashboard_local_services.dart';
@@ -28,14 +27,6 @@ class DashboardRepository {
   }
 
   // Usage Report
-  Future<Either<Exception, Report>> getUsageReport({String? period}) async {
-    return await _remoteServices.getUsageReport(period: period);
-  }
-
-  // AI Suggestions
-  Future<Either<Exception, String>> getAISuggestion() async {
-    return await _remoteServices.getAISuggestions();
-  }
 
   // Devices
   Future<Either<Exception, List<Device>>> getDevices() async {
@@ -60,21 +51,59 @@ class DashboardRepository {
   }
 
   // Categories
-  Future<Either<Exception, List<DeviceCategory>>> getCategories() async {
-    return await _remoteServices.getCategories();
+  List<DeviceCategory> lastCategories = [];
+  Future<Either<Exception, List<DeviceCategory>>> getCategories({
+    bool forceRefresh = false,
+  }) async {
+    if (lastCategories.isNotEmpty && !forceRefresh) {
+      return Right(lastCategories);
+    }
+    final result = await _remoteServices.getCategories();
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        lastCategories = r;
+        return Right(r);
+      },
+    );
   }
 
   // Rooms
-  Future<Either<Exception, List<Room>>> getRooms() async {
-    return await _remoteServices.getRooms();
+  List<Room> lastRooms = [];
+  Future<Either<Exception, List<Room>>> getRooms({bool? forceRefresh}) async {
+    if (lastRooms.isNotEmpty && forceRefresh != true) {
+      return Right(lastRooms);
+    }
+    final result = await _remoteServices.getRooms();
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        lastRooms = r;
+        return Right(r);
+      },
+    );
   }
 
   Future<Either<Exception, Room>> addRoom(Room room) async {
-    return await _remoteServices.addRoom(room);
+    var result = await _remoteServices.addRoom(room);
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        lastRooms.add(r);
+        return Right(r);
+      },
+    );
   }
 
   Future<Either<Exception, Unit>> deleteRoom(String id) async {
-    return await _remoteServices.deleteRoom(id);
+    var result = await _remoteServices.deleteRoom(id);
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        lastRooms.removeWhere((room) => room.id == id);
+        return Right(unit);
+      },
+    );
   }
 
   // Sensors

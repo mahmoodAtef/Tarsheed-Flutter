@@ -6,18 +6,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
-import 'package:tarsheed/src/core/services/dep_injection.dart';
+import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
+import 'package:tarsheed/src/modules/dashboard/cubits/reports_cubit/reports_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/screens/devices.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/screens/devices/devices.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/widgets/devices/card_devices.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/text_home_screen.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/profile_screen.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
-import '../../../../core/widgets/large_button.dart';
 import '../widgets/color_indicator.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -26,28 +27,35 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Builder(builder: (context) {
-          _initializeData();
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _HeaderSection(),
-              _EnergyConsumptionSection(),
-              _HomeContentSection(),
-            ],
-          );
-        }),
+      child: BlocProvider<DevicesCubit>(
+        create: (context) => DevicesCubit.get(),
+        child: ConnectionWidget(
+          onRetry: _initializeData,
+          child: SingleChildScrollView(
+            child: Builder(builder: (context) {
+              _initializeData();
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _HeaderSection(),
+                  _EnergyConsumptionSection(),
+                  _HomeContentSection(),
+                ],
+              );
+            }),
+          ),
+        ),
       ),
     );
   }
 
   void _initializeData() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final bloc = sl<DashboardBloc>();
-      final DevicesCubit devicesCubit = sl<DevicesCubit>();
+      final bloc = DashboardBloc.get();
+      final reportsCubit = ReportsCubit.get();
+      final DevicesCubit devicesCubit = DevicesCubit.get();
       final now = DateTime.now();
-      bloc.add(GetUsageReportEvent());
+      reportsCubit.getUsageReport(period: "${now.month}-${now.year}");
       bloc.add(GetRoomsEvent());
       bloc.add(GetDevicesCategoriesEvent());
       devicesCubit.getDevices();
@@ -188,33 +196,35 @@ class _ClockWidgetState extends State<_ClockWidget> {
 class _ConnectedDevicesIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 12.w,
-          height: 12.h,
-          decoration: const BoxDecoration(
-            color: Colors.green,
-            shape: BoxShape.circle,
-          ),
-        ),
-        SizedBox(width: 4.w),
-        BlocSelector<DashboardBloc, DashboardState, int>(
-          selector: (state) {
-            final bloc = context.read<DashboardBloc>();
-            return bloc.devices.where((e) => e.state).length;
-          },
-          builder: (context, activeDevicesCount) {
-            return Text(
-              " $activeDevicesCount ${S.of(context).connectedDevices} ",
+    return BlocBuilder<DevicesCubit, DevicesState>(
+      buildWhen: (previous, current) =>
+          current is GetDevicesLoading ||
+          current is GetDevicesSuccess ||
+          current is GetDevicesError ||
+          current is ToggleDeviceStatusSuccess,
+      builder: (context, state) {
+        return Row(
+          children: [
+            Container(
+              width: 12.w,
+              height: 12.h,
+              decoration: const BoxDecoration(
+                color: Colors.green,
+                shape: BoxShape.circle,
+              ),
+            ),
+            SizedBox(width: 4.w),
+            Text(
+              " ${state.devices?.where((e) => e.state == true).length}"
+              " ${S.of(context).connectedDevices} ",
               style: TextStyle(
                 fontSize: 16.sp,
                 color: Colors.grey,
               ),
-            );
-          },
-        ),
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -256,7 +266,7 @@ class _ProfileAvatar extends StatelessWidget {
 class _EnergyConsumptionSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DashboardBloc, DashboardState>(
+    return BlocConsumer<ReportsCubit, ReportsState>(
       listenWhen: (previous, current) =>
           current is GetUsageReportSuccess || current is GetUsageReportError,
       listener: (context, state) {
@@ -281,7 +291,7 @@ class _EnergyConsumptionSection extends StatelessWidget {
             height: 120.h,
             child: Center(
               child: CustomErrorWidget(
-                message: ExceptionManager.getMessage(state.exception),
+                exception: state.exception,
               ),
             ),
           );
@@ -523,31 +533,11 @@ class _HomeContentSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _ActiveModeSection(),
+          // _ActiveModeSection(),
           SizedBox(height: 24.h),
           _ConnectedDevicesSection(),
         ],
       ),
-    );
-  }
-}
-
-class _ActiveModeSection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CustomTextWidget(label: S.of(context).activeMode, size: 24.sp),
-        SizedBox(height: 16.h),
-        Center(
-          child: DefaultButton(
-            title: S.of(context).energySaving,
-            icon: Image.asset("assets/images/Vector.png"),
-            width: 300.w,
-          ),
-        ),
-      ],
     );
   }
 }
@@ -564,7 +554,10 @@ class _ConnectedDevicesSection extends StatelessWidget {
             CustomTextWidget(
                 label: S.of(context).connectedDevices, size: 22.sp),
             TextButton.icon(
-              onPressed: () => context.push(DevicesScreen()),
+              onPressed: () => context.push(BlocProvider.value(
+                value: DevicesCubit.get(),
+                child: DevicesScreen(),
+              )),
               style: TextButton.styleFrom(
                 foregroundColor: const Color(0xFF366692),
               ),
@@ -587,13 +580,20 @@ class _ConnectedDevicesSection extends StatelessWidget {
         SizedBox(height: 16.h),
         SizedBox(
           height: 175.h,
-          child: BlocProvider(
-            create: (context) => sl<DevicesCubit>()..getDevices(),
+          child: BlocProvider.value(
+            value: DevicesCubit
+                .get(), // Use .value to get the same singleton instance
             child: BlocBuilder<DevicesCubit, DevicesState>(
-              buildWhen: (previous, current) =>
-                  current is GetDevicesLoading ||
-                  current is GetDevicesSuccess ||
-                  current is GetDevicesError,
+              buildWhen: (previous, current) {
+                // Rebuild on any device state change
+                return current is GetDevicesLoading ||
+                    current is GetDevicesSuccess ||
+                    current is GetDevicesError ||
+                    current is ToggleDeviceStatusLoading ||
+                    current is ToggleDeviceStatusSuccess ||
+                    current is ToggleDeviceStatusError ||
+                    previous.devices != current.devices;
+              },
               builder: (context, state) {
                 if (state is GetDevicesSuccess ||
                     state.devices?.isNotEmpty == true) {
@@ -606,7 +606,7 @@ class _ConnectedDevicesSection extends StatelessWidget {
                           ),
                       itemBuilder: (context, index) {
                         final device = state.devices?[index];
-                        return DeviceCardWrapper(device: device!);
+                        return DeviceCard(device: device!);
                       });
                 }
                 if (_checkIfDevicesLoading(state)) {
@@ -615,8 +615,7 @@ class _ConnectedDevicesSection extends StatelessWidget {
                   return Center(
                     child: CustomErrorWidget(
                       height: 110.h,
-                      message: ExceptionManager.getMessage(
-                          (state as GetDevicesError).exception),
+                      exception: (state as GetDevicesError).exception,
                     ),
                   );
                 }

@@ -3,13 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tarsheed/generated/l10n.dart';
+import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/utils/image_manager.dart';
 
 class CustomErrorWidget extends StatelessWidget {
-  final String message;
+  final Exception exception;
   final double? height;
-  const CustomErrorWidget({super.key, required this.message, this.height});
+  const CustomErrorWidget({super.key, required this.exception, this.height});
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +24,13 @@ class CustomErrorWidget extends StatelessWidget {
               child: Image(
                 height: 80.h,
                 width: 80.w,
-                image: AssetImage(AssetsManager.errorIcon),
+                image: AssetImage(ExceptionManager.getIconPath(exception)),
                 fit: BoxFit.fill,
               ),
             ),
             SizedBox(height: 20.h),
             Text(
-              message,
+              ExceptionManager.getMessage(exception),
               style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold,

@@ -13,6 +13,16 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
   int lastIndex = 0;
   SettingsRepository settingsRepository = sl();
 
+  static SettingsCubit get() {
+    if (sl<SettingsCubit>().isClosed) {
+      sl.unregister<SettingsCubit>();
+      sl.registerLazySingleton<SettingsCubit>(() => SettingsCubit());
+    } else if (!sl.isRegistered<SettingsCubit>()) {
+      sl.registerLazySingleton<SettingsCubit>(() => SettingsCubit());
+    }
+    return sl<SettingsCubit>();
+  }
+
   void changeIndex(int index) {
     lastIndex = currentPageIndex;
     currentPageIndex = index;
@@ -62,7 +72,6 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
 
   static SettingsCubit? _cubit;
 
-  static SettingsCubit get getInstance => _cubit ??= sl();
   //  Save language
   @override
   SettingsState? fromJson(Map<String, dynamic> json) {

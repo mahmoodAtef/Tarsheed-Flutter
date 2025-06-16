@@ -36,8 +36,7 @@ class AuthLocalServices extends BaseAuthLocalServices {
   @override
   Future<Either<Exception, Unit>> logout() async {
     try {
-      await SecureStorageHelper.removeData(key: "token");
-      await SecureStorageHelper.removeData(key: "id");
+      await SecureStorageHelper.removeData(key: "auth_info");
       ApiManager.userId = null;
       ApiManager.authToken = null;
       return Right(unit);

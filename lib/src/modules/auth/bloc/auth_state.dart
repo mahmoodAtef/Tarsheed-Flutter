@@ -43,11 +43,6 @@ final class LoginWithGoogleLoadingState extends AuthState {
   List<Object> get props => [];
 }
 
-final class LoginWithAppleLoadingState extends AuthState {
-  @override
-  List<Object> get props => [];
-}
-
 final class LoginSuccessState extends AuthState {
   @override
   List<Object> get props => [];
