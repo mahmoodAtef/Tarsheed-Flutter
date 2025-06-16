@@ -5,14 +5,39 @@ import 'package:tarsheed/src/modules/dashboard/data/services/report/report_remot
 
 class ReportsRepository {
   final BaseReportService _remoteServices;
-  const ReportsRepository(this._remoteServices);
+  ReportsRepository(this._remoteServices);
 
-  Future<Either<Exception, Report>> getUsageReport({String? period}) async {
-    return await _remoteServices.getUsageReport(period: period);
+  Report? lastReport;
+
+  Future<Either<Exception, Report>> getUsageReport(
+      {String? period, bool forceRefresh = false}) async {
+    if (lastReport != null && !forceRefresh) {
+      return Right(lastReport!);
+    }
+    final result = await _remoteServices.getUsageReport(period: period);
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        lastReport = r;
+        return Right(r);
+      },
+    );
   }
 
   // AI Suggestions
-  Future<Either<Exception, AIRecommendations>> getAISuggestion() async {
-    return await _remoteServices.getAIRecommendations();
+  AIRecommendations? lastAIRecommendations;
+  Future<Either<Exception, AIRecommendations>> getAISuggestion(
+      {bool forceRefresh = false}) async {
+    if (lastAIRecommendations != null && !forceRefresh) {
+      return Right(lastAIRecommendations!);
+    }
+    final result = await _remoteServices.getAIRecommendations();
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        lastAIRecommendations = r;
+        return Right(r);
+      },
+    );
   }
 }

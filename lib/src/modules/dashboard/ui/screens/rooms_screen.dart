@@ -41,16 +41,21 @@ class RoomsScreen extends StatelessWidget {
                       height: 120.h,
                       child: CustomErrorWidget(exception: state.exception)),
                 );
-              } else if (state is GetRoomsSuccess) {
-                if (state.rooms!.isEmpty) {
+              } else if (state is GetRoomsSuccess ||
+                  state is DeleteRoomSuccess ||
+                  state is AddRoomSuccess) {
+                // استخدم الـ rooms من الـ state الحالي
+                final rooms = state.rooms ?? [];
+
+                if (rooms.isEmpty) {
                   return Center(child: const NoDataWidget());
                 }
                 return ListView.separated(
                   padding: const EdgeInsets.all(16),
-                  itemCount: state.rooms!.length,
+                  itemCount: rooms.length,
                   separatorBuilder: (_, __) => const SizedBox(height: 12),
                   itemBuilder: (context, index) {
-                    final room = state.rooms![index];
+                    final room = rooms[index];
                     return RoomCard(
                       room: room,
                       onDelete: () {

@@ -40,7 +40,7 @@ class HighConsumptionDevice extends Equatable {
     return HighConsumptionDevice(
       deviceId: json['deviceId'],
       deviceName: json['deviceName'],
-      usage: json['usage'],
+      usage: json['usage'].toDouble(),
     );
   }
 }

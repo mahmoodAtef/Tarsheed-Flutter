@@ -68,15 +68,20 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   _handleGetRoomsEvent(
       GetRoomsEvent event, Emitter<DashboardState> emit) async {
     final List<Room> currentRooms = state.rooms ?? [];
+
     emit(GetRoomsLoading(
       rooms: currentRooms,
     ));
     final result = await _repository.getRooms(
       forceRefresh: event.isRefresh ?? false,
     );
+    debugPrint(
+        'result rooms: ${result.isRight() ? result.getOrElse(() => []).length : 'error'}');
+
     result.fold((l) => emit(GetRoomsError(l, rooms: currentRooms)), (r) {
       emit(GetRoomsSuccess(rooms: r));
     });
+    debugPrint('${state.rooms}');
   }
 
   _handleAddRoomEvent(AddRoomEvent event, Emitter<DashboardState> emit) async {
@@ -90,16 +95,19 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         (l) => emit(AddRoomError(l, rooms: currentRooms)),
         (r) => emit(AddRoomSuccess(
               r,
-              rooms: [...currentRooms, r],
+              rooms: [...currentRooms],
             )));
   }
 
   _handleDeleteRoomEvent(
       DeleteRoomEvent event, Emitter<DashboardState> emit) async {
-    emit(DeleteRoomLoading());
+    final List<Room> currentRooms = state.rooms ?? [];
+    emit(DeleteRoomLoading(
+      rooms: currentRooms,
+    ));
     final result = await _repository.deleteRoom(event.roomId);
     result.fold(
-        (l) => emit(DeleteRoomError(l)),
+        (l) => emit(DeleteRoomError(l, rooms: currentRooms)),
         (r) => emit(DeleteRoomSuccess(event.roomId,
             rooms: (state.rooms ?? <Room>[])
                 .where((room) => room.id != event.roomId)

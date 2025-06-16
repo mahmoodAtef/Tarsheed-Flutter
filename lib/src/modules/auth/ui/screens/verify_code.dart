@@ -5,6 +5,7 @@ import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/text_field.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_finish.dart';
+import 'package:tarsheed/src/modules/settings/ui/screens/main_screen.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
@@ -16,8 +17,9 @@ import '../widgets/sup_title.dart';
 
 class CodeVerificationScreen extends StatefulWidget {
   final String email;
-
-  const CodeVerificationScreen({Key? key, required this.email})
+  final bool? isFromForgotPassword;
+  const CodeVerificationScreen(
+      {Key? key, required this.email, this.isFromForgotPassword = true})
       : super(key: key);
 
   @override
@@ -71,7 +73,11 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                   bloc: authBloc,
                   listener: (context, state) {
                     if (state is ConfirmForgotPasswordCodeSuccessState) {
-                      context.push(ResetPasswordScreen());
+                      if (widget.isFromForgotPassword == true) {
+                        context.push(ResetPasswordScreen());
+                      } else {
+                        context.push(MainScreen());
+                      }
                     } else if (state is AuthErrorState) {
                       ExceptionManager.showMessage(state.exception);
                     }
@@ -85,9 +91,12 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                       title: S.of(context).Continue,
                       isLoading: state is ConfirmForgotPasswordCodeLoadingState,
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          final code = _codeController.text.trim();
-                          authBloc.add(ConfirmForgotPasswordCodeEvent(code));
+                        if (widget.isFromForgotPassword == true) {
+                          authBloc.add(ConfirmForgotPasswordCodeEvent(
+                              _codeController.text.trim()));
+                        } else {
+                          authBloc.add(
+                              VerifyEmailEvent(_codeController.text.trim()));
                         }
                       },
                     );
@@ -115,7 +124,7 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                             (state.seconds == 0))
                           TextButton(
                             onPressed: () {
-                              authBloc.add(ForgotPasswordEvent(widget.email));
+                              authBloc.add(ResendVerificationCodeEvent());
                               authBloc.add(const StartResendCodeTimerEvent());
                             },
                             child: Text(

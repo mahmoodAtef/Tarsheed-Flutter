@@ -204,7 +204,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Timer? _resendCodeTimer;
   int? _remainingSeconds;
 
-  void _startResendTimer(Emitter<AuthState> emit) {
+  void _startResendTimer(Emitter<AuthState> emit) async {
     const oneSec = Duration(seconds: 1);
     _remainingSeconds = 60;
     _resendCodeTimer = Timer.periodic(oneSec, (timer) {
