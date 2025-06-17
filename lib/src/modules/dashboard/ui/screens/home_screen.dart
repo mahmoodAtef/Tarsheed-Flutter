@@ -263,7 +263,55 @@ class _ProfileAvatar extends StatelessWidget {
   }
 }
 
-class _EnergyConsumptionSection extends StatelessWidget {
+class _EnergyConsumptionSection extends StatefulWidget {
+  @override
+  State<_EnergyConsumptionSection> createState() =>
+      _EnergyConsumptionSectionState();
+}
+
+class _EnergyConsumptionSectionState extends State<_EnergyConsumptionSection>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+  double _currentGaugeValue = 0.0;
+  bool _hasAnimated = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+    _animation = Tween<double>(begin: 0, end: 0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _updateGaugeValue(double newValue) {
+    if (_currentGaugeValue != newValue) {
+      setState(() {
+        _currentGaugeValue = newValue;
+        _animation = Tween<double>(
+          begin: _hasAnimated ? _animation.value : 0,
+          end: newValue,
+        ).animate(CurvedAnimation(
+          parent: _animationController,
+          curve: Curves.easeInOut,
+        ));
+        _hasAnimated = true;
+      });
+      _animationController.reset();
+      _animationController.forward();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ReportsCubit, ReportsState>(
@@ -312,13 +360,17 @@ class _EnergyConsumptionSection extends StatelessWidget {
     int tierNumber = 1;
 
     if (report != null) {
-      consumptionValue = (report.totalConsumption ?? 0) * 15;
+      consumptionValue = (report.totalConsumption);
       tierNumber = report.tier;
     }
 
     final gaugeValue = (consumptionValue > 1000)
         ? 100.0
         : (consumptionValue / 10).clamp(0, 100).toDouble();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateGaugeValue(gaugeValue);
+    });
 
     return SizedBox(
       height: 300.h,
@@ -339,10 +391,9 @@ class _EnergyConsumptionSection extends StatelessWidget {
               children: [
                 Expanded(
                   child: Center(
-                    child: TweenAnimationBuilder<double>(
-                      tween: Tween<double>(begin: 0, end: gaugeValue),
-                      duration: const Duration(seconds: 2),
-                      builder: (context, animatedValue, _) {
+                    child: AnimatedBuilder(
+                      animation: _animation,
+                      builder: (context, child) {
                         return SfRadialGauge(
                           axes: <RadialAxis>[
                             RadialAxis(
@@ -359,7 +410,7 @@ class _EnergyConsumptionSection extends StatelessWidget {
                               ranges: _buildGaugeRanges(context),
                               pointers: <GaugePointer>[
                                 NeedlePointer(
-                                  value: animatedValue,
+                                  value: _animation.value,
                                   needleColor: Colors.black,
                                   needleStartWidth: 2,
                                   needleEndWidth: 5,
@@ -385,7 +436,7 @@ class _EnergyConsumptionSection extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        'Tier $tierNumber',
+                                        '${S.of(context).tier} $tierNumber',
                                         style: TextStyle(
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.w600,
@@ -596,16 +647,30 @@ class _ConnectedDevicesSection extends StatelessWidget {
               },
               builder: (context, state) {
                 if (state is GetDevicesSuccess ||
-                    state.devices?.isNotEmpty == true) {
+                    state.devices
+                            ?.where((e) => e.state == true)
+                            .toList()
+                            .isNotEmpty ==
+                        true) {
                   return ListView.separated(
                       scrollDirection: Axis.horizontal,
-                      itemCount:
-                          state.devices!.length > 3 ? 3 : state.devices!.length,
+                      itemCount: state.devices!
+                                  .where((e) => e.state == true)
+                                  .toList()
+                                  .length >
+                              3
+                          ? 3
+                          : state.devices!
+                              .where((e) => e.state == true)
+                              .toList()
+                              .length,
                       separatorBuilder: (context, index) => const SizedBox(
                             width: 10,
                           ),
                       itemBuilder: (context, index) {
-                        final device = state.devices?[index];
+                        final device = state.devices
+                            ?.where((e) => e.state == true)
+                            .toList()[index];
                         return DeviceCard(device: device!);
                       });
                 }

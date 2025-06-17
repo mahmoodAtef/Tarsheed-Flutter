@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/widgets/appbar.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/card_item.dart';
 import 'package:tarsheed/src/modules/automation/ui/screens/all_automations_screen.dart';
+import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/devices/devices.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/rooms_screen.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/sensors_screen.dart';
@@ -29,7 +31,10 @@ class DashBoardScreen extends StatelessWidget {
                   title: S.of(context).devices,
                   subtitle: S.of(context).manageYourDevices,
                   onTap: () {
-                    context.push(DevicesScreen());
+                    context.push(BlocProvider.value(
+                      value: DevicesCubit.get(),
+                      child: DevicesScreen(),
+                    ));
                   },
                 ),
                 BuildItem(

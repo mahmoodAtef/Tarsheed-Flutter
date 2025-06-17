@@ -10,6 +10,7 @@ import 'package:tarsheed/src/core/services/bloc_observer.dart';
 import 'package:tarsheed/src/core/utils/localization_manager.dart';
 import 'package:tarsheed/src/core/utils/theme_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
+import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
 import 'package:tarsheed/src/modules/settings/ui/screens/splash_screen.dart';
 
@@ -46,7 +47,12 @@ class Tarsheed extends StatelessWidget {
               create: (context) => SettingsCubit.get(),
             ),
             BlocProvider(
+              lazy: true,
               create: (context) => AuthBloc.instance,
+            ),
+            BlocProvider(
+              lazy: true,
+              create: (context) => DashboardBloc.get(),
             ),
           ],
           child: BlocBuilder<SettingsCubit, SettingsState>(
@@ -75,6 +81,3 @@ class Tarsheed extends StatelessWidget {
     );
   }
 }
-/*
-
-  */

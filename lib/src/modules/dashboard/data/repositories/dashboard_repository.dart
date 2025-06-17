@@ -127,4 +127,9 @@ class DashboardRepository {
   Future<Either<Exception, Unit>> deleteSensor(String id) async {
     return await _remoteServices.deleteSensor(id);
   }
+
+  void clearData() {
+    lastCategories = [];
+    lastRooms = [];
+  }
 }

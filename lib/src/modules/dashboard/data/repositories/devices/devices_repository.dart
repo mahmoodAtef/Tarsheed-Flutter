@@ -52,4 +52,8 @@ class DevicesRepository {
   Future<Either<Exception, Unit>> toggleDeviceStatus(String id) {
     return _remote.toggleDeviceStatus(id);
   }
+
+  void clearData() {
+    lastDevices = [];
+  }
 }

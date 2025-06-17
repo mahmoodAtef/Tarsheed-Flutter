@@ -108,8 +108,8 @@ class _LoginPageState extends State<LoginPage> {
                           if (trimmedValue.length < 6) {
                             return '${S.of(context).password} ${S.of(context).mustBeAtLeast} 6 ${S.of(context).characters}';
                           }
-                          if (trimmedValue.length > 25) {
-                            return '${S.of(context).password} ${S.of(context).cannotExceed} 25 ${S.of(context).characters}';
+                          if (trimmedValue.length > 40) {
+                            return '${S.of(context).password} ${S.of(context).cannotExceed} 40 ${S.of(context).characters}';
                           }
                           return null;
                         },

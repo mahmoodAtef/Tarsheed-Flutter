@@ -12,8 +12,8 @@ extension NavigationMethods on BuildContext {
     );
   }
 
-  void pushAndRemove(Widget route) {
-    Navigator.pushAndRemoveUntil(
+  pushAndRemove(Widget route) {
+    return Navigator.pushAndRemoveUntil(
         this, MaterialPageRoute(builder: (_) => route), (route) => false);
   }
 

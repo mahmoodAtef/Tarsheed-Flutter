@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/modules/notifications/data/models/app_notification.dart';
 import 'package:tarsheed/src/modules/notifications/data/repositories/notifications_repository.dart';
@@ -10,6 +11,14 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   NotificationsCubit(this._notificationRepository)
       : super(NotificationsInitial());
   final NotificationsRepository _notificationRepository;
+
+  @override
+  Future<void> close() async {
+    _notificationRepository.clearData();
+    debugPrint('Closing NotificationsCubit');
+    // Perform any necessary cleanup here
+    // return super.close();
+  }
 
   static NotificationsCubit get() {
     if (sl<NotificationsCubit>().isClosed) {

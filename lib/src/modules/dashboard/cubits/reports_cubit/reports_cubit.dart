@@ -26,7 +26,9 @@ class ReportsCubit extends Cubit<ReportsState> {
 
   @override
   Future<void> close() async {
+    _repository.clearData();
     debugPrint('Closing ReportsCubit');
+    emit(ReportsInitial());
     // Perform any necessary cleanup here
     // return super.close();
   }

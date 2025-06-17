@@ -251,7 +251,8 @@
   "updatingStatus": "Updating status...",
   "updateAutomation": "Update Automation",
   "editingAutomationInfo": "Editing automation:",
-  "automationUpdatedSuccessfully" : "Automation updated successfully"
+  "automationUpdatedSuccessfully" : "Automation updated successfully",
+
 }
 
 

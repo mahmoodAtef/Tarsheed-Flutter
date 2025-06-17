@@ -61,7 +61,6 @@ class Device extends Equatable {
     return Device(
         name: name ?? this.name,
         id: id ?? this.id,
-        // type: type ?? this.type,
         description: description ?? this.description,
         roomId: roomId ?? this.roomId,
         consumption: consumption ?? this.consumption,
@@ -74,5 +73,3 @@ class Device extends Equatable {
   @override
   List<Object?> get props => [id, name];
 }
-/*
- */

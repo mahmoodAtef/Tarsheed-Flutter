@@ -43,11 +43,7 @@ class AuthRemoteServices implements BaseAuthRemoteServices {
     try {
       var response = await DioHelper.postData(
           path: EndPoints.register, data: registrationForm.toJson());
-      AuthInfo authInfo = AuthInfo(
-          accessToken: response.data['token'] ?? response.data['data']['token'],
-          userId: response.data['id'] ??
-              response.data['data']['id'] ??
-              response.data['data']['userId']);
+      AuthInfo authInfo = AuthInfo.fromJson(response.data);
       verificationId = authInfo.userId;
       return Right(authInfo);
     } on Exception catch (e) {
@@ -74,7 +70,8 @@ class AuthRemoteServices implements BaseAuthRemoteServices {
   Future<Either<Exception, Unit>> resendEmailVerificationCode() async {
     try {
       var response = await DioHelper.postData(
-          path: EndPoints.resendCode + ApiManager.userId!,
+          path: EndPoints.resendCode +
+              (ApiManager.userId ?? verificationId ?? ""),
           query: {
             "userId": ApiManager.userId,
           },
@@ -95,9 +92,7 @@ class AuthRemoteServices implements BaseAuthRemoteServices {
     try {
       var response = await DioHelper.postData(
           path: EndPoints.login, data: {"email": email, "password": password});
-      AuthInfo authInfo = AuthInfo(
-          accessToken: response.data['token'] ?? response.data['data']['token'],
-          userId: response.data['data']['id']);
+      AuthInfo authInfo = AuthInfo.fromJson(response.data);
       return Right(authInfo);
     } on Exception catch (e) {
       return Left(

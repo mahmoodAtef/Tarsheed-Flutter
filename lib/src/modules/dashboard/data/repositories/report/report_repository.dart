@@ -40,4 +40,9 @@ class ReportsRepository {
       },
     );
   }
+
+  void clearData() {
+    lastReport = null;
+    lastAIRecommendations = null;
+  }
 }
