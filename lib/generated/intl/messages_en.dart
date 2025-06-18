@@ -173,6 +173,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deviceDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "Device deleted successfully",
     ),
+    "deviceState": MessageLookupByLibrary.simpleMessage("Device State"),
     "devices": MessageLookupByLibrary.simpleMessage("Devices"),
     "devicesRunning": MessageLookupByLibrary.simpleMessage("Devices running"),
     "didNotReceive": MessageLookupByLibrary.simpleMessage(
@@ -377,8 +378,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "pleaseConfigureSensorTrigger": MessageLookupByLibrary.simpleMessage(
       "Please configure sensor trigger completely",
     ),
+    "pleaseEnterMessage": MessageLookupByLibrary.simpleMessage(
+      "Please enter message",
+    ),
+    "pleaseEnterTitle": MessageLookupByLibrary.simpleMessage(
+      "Please enter title",
+    ),
     "pleaseEnterVerificationCode": MessageLookupByLibrary.simpleMessage(
       "Please enter the verification code",
+    ),
+    "pleaseSelectDevice": MessageLookupByLibrary.simpleMessage(
+      "Please select device",
+    ),
+    "pleaseSelectState": MessageLookupByLibrary.simpleMessage(
+      "Please select state",
     ),
     "pleaseSelectTimeForSchedule": MessageLookupByLibrary.simpleMessage(
       "Please select a time for schedule trigger",

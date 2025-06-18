@@ -19,8 +19,12 @@ class DeviceAction extends AutomationAction {
   @override
   Map<String, dynamic> toJson() => {
         "type": "DEVICE",
-        "data": {"deviceId": deviceId, "state": state}
+        "data": {"deviceId": deviceId, "state": actionName}
       };
   @override
   List<Object?> get props => [deviceId, state];
+
+  String get actionName {
+    return state == "turned_on" || state == "ON" ? "ON" : "OFF";
+  }
 }

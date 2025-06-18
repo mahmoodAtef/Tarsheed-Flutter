@@ -2114,6 +2114,56 @@ class S {
   String get count {
     return Intl.message('Count', name: 'count', desc: '', args: []);
   }
+
+  /// `Please select state`
+  String get pleaseSelectState {
+    return Intl.message(
+      'Please select state',
+      name: 'pleaseSelectState',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select device`
+  String get pleaseSelectDevice {
+    return Intl.message(
+      'Please select device',
+      name: 'pleaseSelectDevice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Device State`
+  String get deviceState {
+    return Intl.message(
+      'Device State',
+      name: 'deviceState',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter title`
+  String get pleaseEnterTitle {
+    return Intl.message(
+      'Please enter title',
+      name: 'pleaseEnterTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter message`
+  String get pleaseEnterMessage {
+    return Intl.message(
+      'Please enter message',
+      name: 'pleaseEnterMessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

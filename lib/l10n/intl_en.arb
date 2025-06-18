@@ -253,7 +253,13 @@
   "automationUpdatedSuccessfully" : "Automation updated successfully",
   "pleaseConfigureAllDeviceActions" : "Please configure all device actions completely",
   "montlyUsage": "Monthly Usage",
-  "count": "Count"
+  "count": "Count",
+
+  "pleaseSelectState" : "Please select state",
+  "pleaseSelectDevice" : "Please select device",
+  "deviceState": "Device State",
+  "pleaseEnterTitle": "Please enter title",
+  "pleaseEnterMessage": "Please enter message"
 
 }
 

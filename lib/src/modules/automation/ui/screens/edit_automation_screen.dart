@@ -8,21 +8,22 @@ import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/automation/cubit/automation_cubit.dart';
-import 'package:tarsheed/src/modules/automation/ui/widgets/components.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
-import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
-import 'package:tarsheed/src/modules/dashboard/data/models/sensor.dart';
 
 import '../../data/models/action/action.dart';
 import '../../data/models/automation.dart';
 import '../../data/models/condition/condition.dart';
 import '../../data/models/trigger/trigger.dart';
+import '../widgets/components.dart';
 
 class EditAutomationScreen extends StatefulWidget {
   final Automation automation;
 
-  const EditAutomationScreen({super.key, required this.automation});
+  const EditAutomationScreen({
+    super.key,
+    required this.automation,
+  });
 
   @override
   State<EditAutomationScreen> createState() => _EditAutomationScreenState();
@@ -30,7 +31,7 @@ class EditAutomationScreen extends StatefulWidget {
 
 class _EditAutomationScreenState extends State<EditAutomationScreen> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _nameController;
+  late final TextEditingController _nameController;
 
   // Trigger
   late TriggerType _selectedTriggerType;
@@ -44,30 +45,43 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
   @override
   void initState() {
     super.initState();
-    _initializeControllers();
-    _loadAutomationData();
     _loadInitialData();
+    _initializeFormData();
   }
 
-  void _initializeControllers() {
+  void _loadInitialData() {
+    DashboardBloc.get().add(GetSensorsEvent());
+    DevicesCubit.get().getDevices();
+  }
+
+  void _initializeFormData() {
+    // Initialize name
     _nameController = TextEditingController(text: widget.automation.name);
+
+    // Initialize trigger
+    _initializeTrigger();
+
+    // Initialize conditions
+    _initializeConditions();
+
+    // Initialize actions
+    _initializeActions();
   }
 
-  void _loadAutomationData() {
-    // Load trigger data
-    if (widget.automation.trigger is ScheduleTrigger) {
-      _selectedTriggerType = TriggerType.schedule;
-      _selectedTime = (widget.automation.trigger as ScheduleTrigger).time;
-    } else if (widget.automation.trigger is SensorTrigger) {
-      _selectedTriggerType = TriggerType.sensor;
-      final sensorTrigger = widget.automation.trigger as SensorTrigger;
-      _selectedSensorId = sensorTrigger.sensorID;
-      _triggerValue = sensorTrigger.value;
-    } else {
-      _selectedTriggerType = TriggerType.schedule;
-    }
+  void _initializeTrigger() {
+    final trigger = widget.automation.trigger;
 
-    // Load conditions data
+    if (trigger is ScheduleTrigger) {
+      _selectedTriggerType = TriggerType.schedule;
+      _selectedTime = trigger.time;
+    } else if (trigger is SensorTrigger) {
+      _selectedTriggerType = TriggerType.sensor;
+      _selectedSensorId = trigger.sensorID;
+      _triggerValue = trigger.value;
+    }
+  }
+
+  void _initializeConditions() {
     _conditions = widget.automation.conditions.map((condition) {
       if (condition is DeviceCondition) {
         return ConditionData(type: ConditionType.device)
@@ -77,12 +91,13 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
         return ConditionData(type: ConditionType.sensor)
           ..id = condition.sensorID
           ..state = condition.state;
-      } else {
-        return ConditionData(type: ConditionType.device);
       }
+      // Fallback
+      return ConditionData(type: ConditionType.device);
     }).toList();
+  }
 
-    // Load actions data
+  void _initializeActions() {
     _actions = widget.automation.actions.map((action) {
       if (action is DeviceAction) {
         return ActionData(type: ActionType.device)
@@ -92,15 +107,10 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
         return ActionData(type: ActionType.notification)
           ..title = action.title
           ..message = action.message;
-      } else {
-        return ActionData(type: ActionType.device);
       }
+      // Fallback
+      return ActionData(type: ActionType.device);
     }).toList();
-  }
-
-  void _loadInitialData() {
-    DashboardBloc.get().add(GetSensorsEvent());
-    DevicesCubit.get().getDevices();
   }
 
   @override
@@ -121,12 +131,18 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
         backgroundColor: Colors.grey.shade50,
         appBar: AppBar(
           title: Text(
-            S.of(context).editAutomation,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            S.of(context).editAutomation, // Add this to your localization
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
           backgroundColor: ColorManager.white,
           elevation: 1,
           foregroundColor: Colors.black,
+          actions: [
+            IconButton(
+              onPressed: () => _showDeleteConfirmation(),
+              icon: Icon(Icons.delete_outline, color: Colors.red),
+            ),
+          ],
         ),
         body: ConnectionWidget(
           onRetry: _loadInitialData,
@@ -137,6 +153,11 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
                 context.pop();
               } else if (state is UpdateAutomationError) {
                 ExceptionManager.showMessage(state.exception);
+              } else if (state is DeleteAutomationSuccess) {
+                showToast(S.of(context).automationDeletedSuccessfully);
+                context.pop();
+              } else if (state is DeleteAutomationError) {
+                ExceptionManager.showMessage(state.exception);
               }
             },
             child: Form(
@@ -146,8 +167,6 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildInfoCard(),
-                    SizedBox(height: 24.h),
                     _buildNameSection(),
                     SizedBox(height: 24.h),
                     _buildTriggerSection(),
@@ -167,35 +186,8 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
     );
   }
 
-  Widget _buildInfoCard() {
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Colors.blue.shade50,
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: Colors.blue.shade200),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.info_outline, color: Colors.blue, size: 24),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Text(
-              S.of(context).editingAutomationInfo,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.blue.shade700,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildNameSection() {
-    return _buildSection(
+    return AutomationSection(
       title: S.of(context).automationName,
       child: TextFormField(
         controller: _nameController,
@@ -220,491 +212,134 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
   }
 
   Widget _buildTriggerSection() {
-    return _buildSection(
+    return AutomationSection(
       title: S.of(context).trigger,
       subtitle: S.of(context).whenShouldAutomationRun,
       child: Column(
         children: [
-          _buildTriggerTypeSelector(),
+          TriggerTypeSelector(
+            selectedTriggerType: _selectedTriggerType,
+            onTriggerTypeChanged: (type) {
+              setState(() {
+                _selectedTriggerType = type;
+                if (type == TriggerType.schedule) {
+                  _selectedSensorId = null;
+                  _triggerValue = null;
+                } else {
+                  _selectedTime = null;
+                }
+              });
+            },
+          ),
           SizedBox(height: 16.h),
-          _buildTriggerDetails(),
+          TriggerDetails(
+            triggerType: _selectedTriggerType,
+            selectedTime: _selectedTime,
+            selectedSensorId: _selectedSensorId,
+            triggerValue: _triggerValue,
+            onTimeSelected: (time) {
+              setState(() {
+                _selectedTime = time;
+              });
+            },
+            onSensorSelected: (sensorId) {
+              setState(() {
+                _selectedSensorId = sensorId;
+              });
+            },
+            onTriggerValueChanged: (value) {
+              setState(() {
+                _triggerValue = value;
+              });
+            },
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _buildTriggerTypeSelector() {
-    return Row(
-      children: [
-        Expanded(
-          child: _buildSelectableCard(
-            title: S.of(context).schedule,
-            subtitle: S.of(context).runAtSpecificTime,
-            icon: Icons.schedule,
-            isSelected: _selectedTriggerType == TriggerType.schedule,
-            onTap: () => setState(() {
-              _selectedTriggerType = TriggerType.schedule;
-              _selectedSensorId = null;
-              _triggerValue = null;
-            }),
-          ),
-        ),
-        SizedBox(width: 12.w),
-        Expanded(
-          child: _buildSelectableCard(
-            title: S.of(context).sensor,
-            subtitle: S.of(context).runWhenSensorValueChanges,
-            icon: Icons.sensors,
-            isSelected: _selectedTriggerType == TriggerType.sensor,
-            onTap: () => setState(() {
-              _selectedTriggerType = TriggerType.sensor;
-              _selectedTime = null;
-            }),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTriggerDetails() {
-    if (_selectedTriggerType == TriggerType.schedule) {
-      return _buildTimeSelector();
-    } else {
-      return _buildSensorTriggerSelector();
-    }
-  }
-
-  Widget _buildTimeSelector() {
-    return GestureDetector(
-      onTap: () async {
-        TimeOfDay? initialTime;
-        if (_selectedTime != null) {
-          final parts = _selectedTime!.split(':');
-          initialTime = TimeOfDay(
-            hour: int.parse(parts[0]),
-            minute: int.parse(parts[1]),
-          );
-        } else {
-          initialTime = TimeOfDay.now();
-        }
-
-        final time = await showTimePicker(
-          context: context,
-          initialTime: initialTime,
-        );
-        if (time != null) {
-          setState(() {
-            _selectedTime =
-                '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
-          });
-        }
-      },
-      child: Container(
-        padding: EdgeInsets.all(16.w),
-        decoration: BoxDecoration(
-          color: ColorManager.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.shade300),
-        ),
-        child: Row(
-          children: [
-            const Icon(Icons.access_time, color: Colors.blue),
-            SizedBox(width: 12.w),
-            Text(
-              _selectedTime ?? S.of(context).selectTime,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight:
-                    _selectedTime != null ? FontWeight.w600 : FontWeight.normal,
-              ),
-            ),
-            const Spacer(),
-            const Icon(Icons.arrow_forward_ios, size: 16),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSensorTriggerSelector() {
-    return BlocBuilder<DashboardBloc, DashboardState>(
-      buildWhen: (previous, current) =>
-          current is GetSensorsSuccessState ||
-          current is GetSensorsLoadingState ||
-          current is GetSensorsErrorState,
-      builder: (context, state) {
-        if (state is GetSensorsLoadingState) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        final sensors = context.read<DashboardBloc>().sensors;
-        final sensorItems = _buildSensorItems(sensors);
-
-        return Column(
-          children: [
-            DropdownButtonFormField<String>(
-              value: _selectedSensorId,
-              decoration: InputDecoration(
-                labelText: S.of(context).selectSensor,
-                filled: true,
-                fillColor: ColorManager.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
-                prefixIcon: const Icon(Icons.sensors),
-              ),
-              items: sensorItems,
-              onChanged: (value) => setState(() => _selectedSensorId = value),
-            ),
-            SizedBox(height: 12.h),
-            TextFormField(
-              initialValue: _triggerValue?.toString(),
-              decoration: InputDecoration(
-                labelText: S.of(context).triggerValue,
-                filled: true,
-                fillColor: ColorManager.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
-                prefixIcon: const Icon(Icons.numbers),
-              ),
-              keyboardType: TextInputType.number,
-              onChanged: (value) => _triggerValue = int.tryParse(value),
-            ),
-          ],
-        );
-      },
     );
   }
 
   Widget _buildConditionsSection() {
-    return _buildSection(
+    return AutomationSection(
       title: S.of(context).conditionsOptional,
       subtitle: S.of(context).additionalConditions,
       child: Column(
         children: [
-          ..._conditions
-              .map((condition) => _buildConditionCard(condition))
-              .toList(),
-          _buildAddConditionButton(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildConditionCard(ConditionData condition) {
-    return BlocBuilder<DashboardBloc, DashboardState>(
-      builder: (context, dashboardState) {
-        return BlocBuilder<DevicesCubit, DevicesState>(
-          builder: (context, devicesState) {
-            final sensors = context.read<DashboardBloc>().sensors;
-            final devices = devicesState.devices ?? [];
-
-            return Container(
-              margin: EdgeInsets.only(bottom: 12.h),
-              padding: EdgeInsets.all(16.w),
-              decoration: BoxDecoration(
-                color: ColorManager.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey.shade300),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        condition.type == ConditionType.device
-                            ? Icons.devices
-                            : Icons.sensors,
-                        color: Colors.blue,
-                      ),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                        child: Text(
-                          condition.type == ConditionType.device
-                              ? S.of(context).deviceCondition
-                              : S.of(context).sensorCondition,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600, fontSize: 16.sp),
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () =>
-                            setState(() => _conditions.remove(condition)),
-                        icon: const Icon(Icons.delete, color: Colors.red),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: DropdownButtonFormField<String>(
-                          value: condition.id,
-                          decoration: InputDecoration(
-                            labelText: condition.type == ConditionType.device
-                                ? S.of(context).selectDevice
-                                : S.of(context).selectSensor,
-                            filled: true,
-                            fillColor: Colors.grey.shade50,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
-                          items: condition.type == ConditionType.device
-                              ? _buildDeviceItems(devices)
-                              : _buildSensorItems(sensors),
-                          onChanged: (value) =>
-                              setState(() => condition.id = value),
-                        ),
-                      ),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                        child: condition.type == ConditionType.device
-                            ? DropdownButtonFormField<int>(
-                                value:
-                                    condition.state == 0 || condition.state == 1
-                                        ? condition.state
-                                        : null,
-                                decoration: InputDecoration(
-                                  labelText: S.of(context).stateValue,
-                                  filled: true,
-                                  fillColor: Colors.grey.shade50,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                ),
-                                items: [
-                                  DropdownMenuItem(
-                                    value: 1,
-                                    child: Text(S.of(context).turnOn),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: 0,
-                                    child: Text(S.of(context).turnOff),
-                                  ),
-                                ],
-                                onChanged: (value) => setState(
-                                    () => condition.state = value ?? 0),
-                              )
-                            : TextFormField(
-                                initialValue: condition.state.toString(),
-                                decoration: InputDecoration(
-                                  labelText: S.of(context).stateValue,
-                                  filled: true,
-                                  fillColor: Colors.grey.shade50,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                ),
-                                keyboardType: TextInputType.number,
-                                onChanged: (value) =>
-                                    condition.state = int.tryParse(value) ?? 0,
-                              ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildAddConditionButton() {
-    return Row(
-      children: [
-        Expanded(
-          child: _buildAddButton(
-            title: S.of(context).addDeviceCondition,
-            icon: Icons.devices,
-            onTap: () => setState(() {
+          ConditionsList(
+            conditions: _conditions,
+            onDeleteCondition: (condition) {
+              setState(() {
+                _conditions.remove(condition);
+              });
+            },
+            onConditionIdChanged: (condition, id) {
+              setState(() {
+                condition.id = id;
+              });
+            },
+            onConditionStateChanged: (condition, state) {
+              setState(() {
+                condition.state = state;
+              });
+            },
+          ),
+          AddConditionButtons(
+            onAddDeviceCondition: () => setState(() {
               _conditions.add(ConditionData(type: ConditionType.device));
             }),
-          ),
-        ),
-        SizedBox(width: 12.w),
-        Expanded(
-          child: _buildAddButton(
-            title: S.of(context).addSensorCondition,
-            icon: Icons.sensors,
-            onTap: () => setState(() {
+            onAddSensorCondition: () => setState(() {
               _conditions.add(ConditionData(type: ConditionType.sensor));
             }),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildActionsSection() {
-    return _buildSection(
+    return AutomationSection(
       title: S.of(context).actions,
       subtitle: S.of(context).whatShouldHappen,
       child: Column(
         children: [
-          ..._actions.map((action) => _buildActionCard(action)).toList(),
-          _buildAddActionButton(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActionCard(ActionData action) {
-    return BlocBuilder<DevicesCubit, DevicesState>(
-      builder: (context, devicesState) {
-        final devices = devicesState.devices ?? [];
-
-        return Container(
-          margin: EdgeInsets.only(bottom: 12.h),
-          padding: EdgeInsets.all(16.w),
-          decoration: BoxDecoration(
-            color: ColorManager.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.shade300),
+          ActionsList(
+            actions: _actions,
+            onDeleteAction: (action) {
+              setState(() {
+                _actions.remove(action);
+              });
+            },
+            onDeviceIdChanged: (action, value) {
+              setState(() {
+                action.deviceId = value;
+              });
+            },
+            onStateChanged: (action, value) {
+              setState(() {
+                action.state = value;
+              });
+            },
+            onTitleChanged: (action, value) {
+              setState(() {
+                action.title = value;
+              });
+            },
+            onMessageChanged: (action, value) {
+              setState(() {
+                action.message = value;
+              });
+            },
           ),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    action.type == ActionType.device
-                        ? Icons.devices
-                        : Icons.notifications,
-                    color: Colors.green,
-                  ),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    child: Text(
-                      action.type == ActionType.device
-                          ? S.of(context).deviceAction
-                          : S.of(context).notificationAction,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 16.sp),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () => setState(() => _actions.remove(action)),
-                    icon: const Icon(Icons.delete, color: Colors.red),
-                  ),
-                ],
-              ),
-              SizedBox(height: 12.h),
-              if (action.type == ActionType.device) ...[
-                Row(
-                  children: [
-                    Expanded(
-                      child: DropdownButtonFormField<String>(
-                        value: action.deviceId,
-                        decoration: InputDecoration(
-                          labelText: S.of(context).selectDevice,
-                          filled: true,
-                          fillColor: Colors.grey.shade50,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                        items: _buildDeviceItems(devices),
-                        onChanged: (value) =>
-                            setState(() => action.deviceId = value),
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: DropdownButtonFormField<String>(
-                        // Fix: تأكد من أن القيمة صحيحة أو null
-                        value: (action.state == "ON" || action.state == "OFF")
-                            ? action.state
-                            : null,
-                        decoration: InputDecoration(
-                          labelText: S.of(context).action,
-                          filled: true,
-                          fillColor: Colors.grey.shade50,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                        items: [
-                          DropdownMenuItem(
-                              value: "ON", child: Text(S.of(context).turnOn)),
-                          DropdownMenuItem(
-                              value: "OFF", child: Text(S.of(context).turnOff)),
-                        ],
-                        onChanged: (value) =>
-                            setState(() => action.state = value),
-                      ),
-                    ),
-                  ],
-                ),
-              ] else ...[
-                TextFormField(
-                  initialValue: action.title,
-                  decoration: InputDecoration(
-                    labelText: S.of(context).notificationTitle,
-                    filled: true,
-                    fillColor: Colors.grey.shade50,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                  onChanged: (value) => action.title = value,
-                ),
-                SizedBox(height: 12.h),
-                TextFormField(
-                  initialValue: action.message,
-                  decoration: InputDecoration(
-                    labelText: S.of(context).notificationMessage,
-                    filled: true,
-                    fillColor: Colors.grey.shade50,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                  maxLines: 2,
-                  onChanged: (value) => action.message = value,
-                ),
-              ],
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildAddActionButton() {
-    return Row(
-      children: [
-        Expanded(
-          child: _buildAddButton(
-            title: S.of(context).addDeviceAction,
-            icon: Icons.devices,
-            onTap: () => setState(() {
+          SizedBox(height: 16.h),
+          AddActionButtons(
+            onAddDeviceAction: () => setState(() {
               _actions.add(ActionData(type: ActionType.device));
             }),
-          ),
-        ),
-        SizedBox(width: 12.w),
-        Expanded(
-          child: _buildAddButton(
-            title: S.of(context).addNotification,
-            icon: Icons.notifications,
-            onTap: () => setState(() {
+            onAddNotificationAction: () => setState(() {
               _actions.add(ActionData(type: ActionType.notification));
             }),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -713,182 +348,13 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
       builder: (context, state) {
         final isLoading = state is UpdateAutomationLoading;
 
-        return SizedBox(
-          width: double.infinity,
-          height: 50.h,
-          child: ElevatedButton(
-            onPressed: isLoading ? null : _updateAutomation,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange,
-              foregroundColor: ColorManager.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              elevation: 2,
-            ),
-            child: isLoading
-                ? const CircularProgressIndicator(color: ColorManager.white)
-                : Text(
-                    S.of(context).updateAutomation,
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-          ),
+        return AutomationSaveButton(
+          isLoading: isLoading,
+          onPressed: isLoading ? null : _updateAutomation,
+          buttonText: S.of(context).updateAutomation,
         );
       },
     );
-  }
-
-  Widget _buildSection({
-    required String title,
-    String? subtitle,
-    required Widget child,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-        if (subtitle != null) ...[
-          SizedBox(height: 4.h),
-          Text(
-            subtitle,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.grey.shade600,
-            ),
-          ),
-        ],
-        SizedBox(height: 16.h),
-        child,
-      ],
-    );
-  }
-
-  Widget _buildSelectableCard({
-    required String title,
-    required String subtitle,
-    required IconData icon,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(16.w),
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.blue.shade50 : ColorManager.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? Colors.blue : Colors.grey.shade300,
-            width: isSelected ? 2 : 1,
-          ),
-        ),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              size: 32,
-              color: isSelected ? Colors.blue : Colors.grey.shade600,
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: isSelected ? Colors.blue : Colors.black87,
-              ),
-            ),
-            SizedBox(height: 4.h),
-            Text(
-              subtitle,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: Colors.grey.shade600,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAddButton({
-    required String title,
-    required IconData icon,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 12.w),
-        decoration: BoxDecoration(
-          color: Colors.blue.shade50,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.blue.shade200),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: Colors.blue, size: 20),
-            SizedBox(width: 8.w),
-            Flexible(
-              child: Text(
-                title,
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12.sp,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // Helper methods to build dropdown items
-  List<DropdownMenuItem<String>> _buildDeviceItems(List<Device> devices) {
-    if (devices.isEmpty) {
-      return [
-        DropdownMenuItem(
-          value: null,
-          child: Text(S.of(context).noDevicesAvailable),
-        ),
-      ];
-    }
-    return devices.map((device) {
-      return DropdownMenuItem(
-        value: device.id,
-        child: Text(device.name),
-      );
-    }).toList();
-  }
-
-  List<DropdownMenuItem<String>> _buildSensorItems(List<Sensor> sensors) {
-    if (sensors.isEmpty) {
-      return [
-        DropdownMenuItem(
-          value: null,
-          child: Text(S.of(context).noSensorsAvailable),
-        ),
-      ];
-    }
-    return sensors.map((sensor) {
-      return DropdownMenuItem(
-        value: sensor.id,
-        child: Text(sensor.name),
-      );
-    }).toList();
   }
 
   void _updateAutomation() {
@@ -936,25 +402,25 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
     if (_selectedTriggerType == TriggerType.schedule) {
       trigger = ScheduleTrigger(time: _selectedTime!);
     } else {
-      trigger = SensorTrigger(
-        sensorID: _selectedSensorId!,
-        value: _triggerValue!,
-      );
+      trigger =
+          SensorTrigger(sensorID: _selectedSensorId!, value: _triggerValue!);
     }
+
     // Create conditions
     List<Condition> conditions = _conditions.map((conditionData) {
       if (conditionData.type == ConditionType.device) {
         return DeviceCondition(
           deviceID: conditionData.id!,
-          state: conditionData.state ?? 0,
+          state: conditionData.state,
         );
       } else {
         return SensorCondition(
           sensorID: conditionData.id!,
-          state: conditionData.state ?? 0,
+          state: conditionData.state,
         );
       }
     }).toList();
+
     // Create actions
     List<AutomationAction> actions = _actions.map((actionData) {
       if (actionData.type == ActionType.device) {
@@ -969,12 +435,55 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
         );
       }
     }).toList();
-    // Create updated automation
+
     return widget.automation.copyWith(
       name: _nameController.text,
       trigger: trigger,
       conditions: conditions,
       actions: actions,
+    );
+  }
+
+  void _showDeleteConfirmation() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(S.of(context).deleteAutomation),
+          content: Text(S.of(context).deleteAutomationConfirmation),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(S.of(context).cancel),
+            ),
+            BlocBuilder<AutomationCubit, AutomationState>(
+              builder: (context, state) {
+                final isDeleting = state is DeleteAutomationLoading;
+
+                return TextButton(
+                  onPressed: isDeleting
+                      ? null
+                      : () {
+                          Navigator.of(context).pop();
+                          AutomationCubit.get()
+                              .deleteAutomation(widget.automation.id!);
+                        },
+                  child: isDeleting
+                      ? SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Text(
+                          S.of(context).delete,
+                          style: TextStyle(color: Colors.red),
+                        ),
+                );
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

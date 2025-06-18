@@ -541,13 +541,15 @@ class ConditionCard extends StatelessWidget {
 }
 
 // 9. Action Card Widget
+// Fix for ActionCard widget - replace the existing ActionCard in your components.dart
+
 class ActionCard extends StatelessWidget {
   final ActionData action;
   final VoidCallback onDelete;
-  final Function(String?) onDeviceIdChanged;
-  final Function(String?) onStateChanged;
-  final Function(String?) onTitleChanged;
-  final Function(String?) onMessageChanged;
+  final Function(String) onDeviceIdChanged;
+  final Function(String) onStateChanged;
+  final Function(String) onTitleChanged;
+  final Function(String) onMessageChanged;
 
   const ActionCard({
     super.key,
@@ -561,141 +563,209 @@ class ActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DevicesCubit, DevicesState>(
-      builder: (context, devicesState) {
-        final devices = devicesState.devices ?? [];
-
-        return Container(
-          margin: EdgeInsets.only(bottom: 12.h),
-          padding: EdgeInsets.all(16.w),
-          decoration: BoxDecoration(
-            color: ColorManager.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.shade300),
-          ),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    action.type == ActionType.device
-                        ? Icons.devices
-                        : Icons.notifications,
-                    color: Colors.green,
-                  ),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    child: Text(
-                      action.type == ActionType.device
-                          ? S.of(context).deviceAction
-                          : S.of(context).notificationAction,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 16.sp),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: onDelete,
-                    icon: const Icon(Icons.delete, color: Colors.red),
-                  ),
-                ],
-              ),
-              SizedBox(height: 12.h),
-              if (action.type == ActionType.device) ...[
-                Row(
-                  children: [
-                    Expanded(
-                      child: DropdownButtonFormField<String>(
-                        value: action.deviceId,
-                        decoration: InputDecoration(
-                          labelText: S.of(context).selectDevice,
-                          filled: true,
-                          fillColor: Colors.grey.shade50,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                        items: _buildDeviceItems(context, devices),
-                        onChanged: onDeviceIdChanged,
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: DropdownButtonFormField<String>(
-                        value: action.state,
-                        decoration: InputDecoration(
-                          labelText: S.of(context).action,
-                          filled: true,
-                          fillColor: Colors.grey.shade50,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                        items: [
-                          DropdownMenuItem(
-                              value: "ON", child: Text(S.of(context).turnOn)),
-                          DropdownMenuItem(
-                              value: "OFF", child: Text(S.of(context).turnOff)),
-                        ],
-                        onChanged: onStateChanged,
-                      ),
-                    ),
-                  ],
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: EdgeInsets.all(16.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  action.type == ActionType.device
+                      ? Icons.power_settings_new
+                      : Icons.notifications,
+                  color: ColorManager.primary,
                 ),
-              ] else ...[
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: S.of(context).notificationTitle,
-                    filled: true,
-                    fillColor: Colors.grey.shade50,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
+                SizedBox(width: 8.w),
+                Text(
+                  action.type == ActionType.device
+                      ? S.of(context).deviceAction
+                      : S.of(context).notificationAction,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.sp,
                   ),
-                  initialValue: action.title,
-                  onChanged: onTitleChanged,
                 ),
-                SizedBox(height: 12.h),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: S.of(context).notificationMessage,
-                    filled: true,
-                    fillColor: Colors.grey.shade50,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                  maxLines: 2,
-                  initialValue: action.message,
-                  onChanged: onMessageChanged,
+                const Spacer(),
+                IconButton(
+                  onPressed: onDelete,
+                  icon: const Icon(Icons.delete_outline, color: Colors.red),
                 ),
               ],
+            ),
+            SizedBox(height: 16.h),
+            if (action.type == ActionType.device) ...[
+              _buildDeviceActionFields(context),
+            ] else ...[
+              _buildNotificationActionFields(context),
             ],
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 
-  List<DropdownMenuItem<String>> _buildDeviceItems(
-      BuildContext context, List<Device> devices) {
-    if (devices.isEmpty) {
-      return [
-        DropdownMenuItem(
-          value: null,
-          child: Text(S.of(context).noDevicesAvailable),
+  Widget _buildDeviceActionFields(BuildContext context) {
+    return Column(
+      children: [
+        // Device Selector
+        BlocBuilder<DevicesCubit, DevicesState>(
+          builder: (context, state) {
+            if (state is GetDevicesSuccess) {
+              // Create unique device options
+              final devices = state.devices;
+              final deviceItems = devices?.map((device) {
+                return DropdownMenuItem<String>(
+                  value: device.id,
+                  child: Text(device.name),
+                );
+              }).toList();
+
+              // Ensure the selected value exists in the list
+              String? validSelectedValue = action.deviceId;
+              if (validSelectedValue != null &&
+                  !devices!.any((device) => device.id == validSelectedValue)) {
+                validSelectedValue = null;
+                // Reset the invalid value
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  onDeviceIdChanged('');
+                });
+              }
+
+              return DropdownButtonFormField<String>(
+                key: ValueKey('device_${action.hashCode}'),
+                value: validSelectedValue,
+                decoration: InputDecoration(
+                  labelText: S.of(context).selectDevice,
+                  filled: true,
+                  fillColor: ColorManager.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                items: deviceItems,
+                onChanged: (value) {
+                  if (value != null) {
+                    onDeviceIdChanged(value);
+                  }
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return S.of(context).pleaseSelectDevice;
+                  }
+                  return null;
+                },
+              );
+            }
+            return const CircularProgressIndicator();
+          },
         ),
-      ];
+        SizedBox(height: 16.h),
+
+        // State Selector
+        DropdownButtonFormField<String>(
+          key: ValueKey('state_${action.hashCode}'),
+          value: _getValidStateValue(),
+          decoration: InputDecoration(
+            labelText: S.of(context).deviceState,
+            filled: true,
+            fillColor: ColorManager.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+          ),
+          items: _getStateDropdownItems(context),
+          onChanged: (value) {
+            if (value != null) {
+              onStateChanged(value);
+            }
+          },
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return S.of(context).pleaseSelectState;
+            }
+            return null;
+          },
+        ),
+      ],
+    );
+  }
+
+  List<DropdownMenuItem<String>> _getStateDropdownItems(BuildContext context) {
+    return [
+      DropdownMenuItem<String>(
+        value: 'turned_on',
+        child: Text(S.of(context).turnOn),
+      ),
+      DropdownMenuItem<String>(
+        value: 'turned_off',
+        child: Text(S.of(context).turnOff),
+      ),
+    ];
+  }
+
+  String? _getValidStateValue() {
+    const validStates = ['turned_on', 'turned_off'];
+    if (action.state != null && validStates.contains(action.state)) {
+      return action.state;
     }
-    return devices.map((device) {
-      return DropdownMenuItem(
-        value: device.id,
-        child: Text(device.name),
-      );
-    }).toList();
+    return null;
+  }
+
+  Widget _buildNotificationActionFields(BuildContext context) {
+    return Column(
+      children: [
+        TextFormField(
+          key: ValueKey('title_${action.hashCode}'),
+          initialValue: action.title,
+          decoration: InputDecoration(
+            labelText: S.of(context).notificationTitle,
+            filled: true,
+            fillColor: ColorManager.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+            prefixIcon: const Icon(Icons.title),
+          ),
+          onChanged: onTitleChanged,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return S.of(context).pleaseEnterTitle;
+            }
+            return null;
+          },
+        ),
+        SizedBox(height: 16.h),
+        TextFormField(
+          key: ValueKey('message_${action.hashCode}'),
+          initialValue: action.message,
+          decoration: InputDecoration(
+            labelText: S.of(context).notificationMessage,
+            filled: true,
+            fillColor: ColorManager.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+            prefixIcon: const Icon(Icons.message),
+          ),
+          maxLines: 3,
+          onChanged: onMessageChanged,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return S.of(context).pleaseEnterMessage;
+            }
+            return null;
+          },
+        ),
+      ],
+    );
   }
 }
 
