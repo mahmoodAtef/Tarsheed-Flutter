@@ -13,7 +13,6 @@ class ScheduleTrigger extends Trigger {
   @override
   Map<String, dynamic> toJson() => {
         "type": "SCHEDULE",
-        'value': time,
-        'time': time, // Added 'time' to match the JSON structure
+        'time': time,
       };
 }
