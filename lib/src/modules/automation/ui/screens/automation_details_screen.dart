@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
+import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
@@ -148,7 +149,7 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
       });
     } else if (state is DeleteAutomationSuccess) {
       showToast(S.of(context).automationDeletedSuccessfully);
-      Navigator.of(context).pop();
+      context.pop();
     } else if (state is DeleteAutomationError) {
       ExceptionManager.showMessage(state.exception);
     }
@@ -612,11 +613,8 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
   }
 
   void _editAutomation() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) =>
-            EditAutomationScreen(automation: _currentAutomation),
-      ),
+    context.push(
+      EditAutomationScreen(automation: _currentAutomation),
     );
   }
 
@@ -636,12 +634,12 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
         content: Text(S.of(context).deleteAutomationConfirmation),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => context.pop(),
             child: Text(S.of(context).cancel),
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              context.pop();
               _deleteAutomation();
             },
             child: Text(
