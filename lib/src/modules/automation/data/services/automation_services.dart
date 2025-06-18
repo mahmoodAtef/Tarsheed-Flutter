@@ -75,7 +75,7 @@ class AutomationRemoteServices implements BaseAutomationServices {
   Future<Either<Exception, Automation>> updateAutomation(
       Automation automation) async {
     try {
-      await DioHelper.putData(
+      await DioHelper.patchData(
         path: EndPoints.updateAutomation + automation.id!,
         data: automation.toJson(),
       );
