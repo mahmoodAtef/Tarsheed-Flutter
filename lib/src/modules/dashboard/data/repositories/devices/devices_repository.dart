@@ -35,7 +35,7 @@ class DevicesRepository {
     required String id,
     String? name,
     String? description,
-    String? pinNumber,
+    int? pinNumber,
   }) {
     return _remote.editDevice(
       id: id,

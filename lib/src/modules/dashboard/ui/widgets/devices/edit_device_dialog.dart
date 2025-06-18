@@ -110,7 +110,8 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
       id: widget.device.id,
       name: nameController.text,
       description: descriptionController.text,
-      pinNumber: pinNumberController.text,
+      pinNumber:
+          int.tryParse(pinNumberController.text) ?? widget.device.pinNumber,
     );
   }
 }

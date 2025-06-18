@@ -76,7 +76,7 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                       if (widget.isFromForgotPassword == true) {
                         context.push(ResetPasswordScreen());
                       } else if (state is VerifyEmailSuccessState) {
-                        context.push(MainScreen());
+                        context.pushReplacement(MainScreen());
                       }
                     } else if (state is AuthErrorState) {
                       ExceptionManager.showMessage(state.exception);

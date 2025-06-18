@@ -69,9 +69,9 @@ class NotificationsRemoteService extends BaseNotificationsService {
   static Future<Either<Exception, Unit>> _updateToken() async {
     try {
       final String token = await getTokenFromFirebase();
-      await DioHelper.postData(
-        data: {'token': token},
-        path: EndPoints.updateToken,
+      await DioHelper.putData(
+        data: {'deviceToken': token},
+        path: EndPoints.updateToken + ApiManager.userId! + '/',
       );
       return const Right(unit);
     } on DioException catch (e) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:tarsheed/generated/l10n.dart';
 
 import '../../../../core/utils/color_manager.dart';
 import '../../data/models/consumption_interval.dart';
@@ -23,7 +24,7 @@ class UsageChartWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Monthly Usage',
+                S.of(context).montlyUsage,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,

@@ -45,4 +45,8 @@ class LocalizationManager {
   static List<String> getDays() {
     return currentLocaleIndex == 0 ? arabicDays : englishDays;
   }
+
+  static String getLanguageName() {
+    return currentLocaleIndex == 0 ? "arabic" : "english";
+  }
 }

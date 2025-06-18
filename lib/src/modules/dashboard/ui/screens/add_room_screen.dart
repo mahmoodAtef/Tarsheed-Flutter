@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
-import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/core/widgets/large_button.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/room.dart';
@@ -38,7 +37,6 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                 state is AddRoomSuccess || state is AddRoomError,
             listener: (context, state) {
               if (state is AddRoomSuccess) {
-                context.pop();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(S.of(context).roomAddedSuccessfully ??
@@ -50,16 +48,6 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
               }
             },
             builder: (context, state) {
-              if (state is AddRoomLoading) {
-                return const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CustomLoadingWidget(),
-                  ),
-                );
-              }
               return TextButton(
                 onPressed: _saveRoom,
                 child: Text(

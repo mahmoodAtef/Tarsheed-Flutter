@@ -45,7 +45,7 @@ class Automation extends Equatable {
         'name': name,
         'actions': List<dynamic>.from(actions.map((x) => x.toJson())),
         'conditions': List<dynamic>.from(conditions.map((x) => x.toJson())),
-        'trigger': trigger.toJson(),
+        'triggers': [trigger.toJson()],
       };
 
   Automation copyWith({

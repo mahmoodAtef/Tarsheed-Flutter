@@ -50,5 +50,5 @@ class EndPoints {
   static const String getNotifications = '/notification';
   static const String markNotificationAsRead = 'notification/read/';
   static const String markAllNotificationsAsRead = '/notification/all/read/';
-  static const String updateToken = '/notifications/updateToken/';
+  static const String updateToken = '/users/';
 }

@@ -87,7 +87,7 @@ class DevicesCubit extends Cubit<DevicesState> {
     required String id,
     String? name,
     String? description,
-    String? pinNumber,
+    int? pinNumber,
   }) async {
     final currentState = state;
     final current = currentState.devices ?? <Device>[];

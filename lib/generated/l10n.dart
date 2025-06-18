@@ -1040,59 +1040,34 @@ class S {
     return Intl.message('Unknown', name: 'unknown', desc: '', args: []);
   }
 
-  /// `Tier 1 (0-50 kWh)`
+  /// `Tier 1`
   String get tier1 {
-    return Intl.message('Tier 1 (0-50 kWh)', name: 'tier1', desc: '', args: []);
+    return Intl.message('Tier 1', name: 'tier1', desc: '', args: []);
   }
 
-  /// `Tier 2 (51-100 kWh)`
+  /// `Tier 2`
   String get tier2 {
-    return Intl.message(
-      'Tier 2 (51-100 kWh)',
-      name: 'tier2',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Tier 2', name: 'tier2', desc: '', args: []);
   }
 
-  /// `Tier 3 (101-200 kWh)`
+  /// `Tier 3`
   String get tier3 {
-    return Intl.message(
-      'Tier 3 (101-200 kWh)',
-      name: 'tier3',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Tier 3', name: 'tier3', desc: '', args: []);
   }
 
-  /// `Tier 4 (201-350 kWh)`
+  /// `Tier 4`
   String get tier4 {
-    return Intl.message(
-      'Tier 4 (201-350 kWh)',
-      name: 'tier4',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Tier 4', name: 'tier4', desc: '', args: []);
   }
 
-  /// `Tier 5 (351-650 kWh)`
+  /// `Tier 5`
   String get tier5 {
-    return Intl.message(
-      'Tier 5 (351-650 kWh)',
-      name: 'tier5',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Tier 5', name: 'tier5', desc: '', args: []);
   }
 
-  /// `Tier 6+ (651+ kWh)`
+  /// `Tier 6+`
   String get tier6Plus {
-    return Intl.message(
-      'Tier 6+ (651+ kWh)',
-      name: 'tier6Plus',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Tier 6+', name: 'tier6Plus', desc: '', args: []);
   }
 
   /// `You are now in Electricity consumption bracket number {tierNumber}`
@@ -2113,6 +2088,31 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Please configure all device actions completely`
+  String get pleaseConfigureAllDeviceActions {
+    return Intl.message(
+      'Please configure all device actions completely',
+      name: 'pleaseConfigureAllDeviceActions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Monthly Usage`
+  String get montlyUsage {
+    return Intl.message(
+      'Monthly Usage',
+      name: 'montlyUsage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Count`
+  String get count {
+    return Intl.message('Count', name: 'count', desc: '', args: []);
   }
 }
 

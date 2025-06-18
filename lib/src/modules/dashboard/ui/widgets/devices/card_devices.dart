@@ -264,7 +264,6 @@ class DeviceCard extends StatelessWidget {
     } else if (priority == 3) {
       return S.of(context).medium;
     }
-
     return S.of(context).low;
   }
 

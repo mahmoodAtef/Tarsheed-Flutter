@@ -78,6 +78,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "automationStatusChanged": MessageLookupByLibrary.simpleMessage(
       "تم تغيير حالة الأتمتة بنجاح",
     ),
+    "automationUpdatedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم تحديث الأتمتة بنجاح",
+    ),
     "automations": MessageLookupByLibrary.simpleMessage("الأتمتة"),
     "avgCost": MessageLookupByLibrary.simpleMessage("متوسط التكلفة"),
     "avgUsage": MessageLookupByLibrary.simpleMessage("متوسط الاستهلاك"),
@@ -87,9 +90,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "bedroomAC": MessageLookupByLibrary.simpleMessage("مكيف غرفة النوم"),
     "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
     "cannotExceed": MessageLookupByLibrary.simpleMessage("لا يمكن أن يتجاوز"),
-    "category": MessageLookupByLibrary.simpleMessage("الفئة"),
+    "category": MessageLookupByLibrary.simpleMessage("الفئة"),
     "categoryRequired": MessageLookupByLibrary.simpleMessage(
-      "من فضلك اختر الفئة",
+      "من فضلك اختر الفئة",
     ),
     "characters": MessageLookupByLibrary.simpleMessage("حرفًا"),
     "codeMustBeAtLeast6Digits": MessageLookupByLibrary.simpleMessage(
@@ -124,6 +127,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "يحتوي على أحرف غير صالحة",
     ),
     "continueText": MessageLookupByLibrary.simpleMessage("متابعة"),
+    "count": MessageLookupByLibrary.simpleMessage("عدد"),
     "createAccount": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
     "createAccountDesc": MessageLookupByLibrary.simpleMessage(
       "أنشئ حسابًا حتى تتمكن من التحكم في منزلك بسهولة",
@@ -175,6 +179,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "تعديل كلمة المرور، الاسم، العنوان، اسم المستخدم، البريد الإلكتروني",
     ),
     "editPassword": MessageLookupByLibrary.simpleMessage("تعديل كلمة المرور"),
+    "editingAutomationInfo": MessageLookupByLibrary.simpleMessage(
+      "تعديل الأتمتة:",
+    ),
     "email": MessageLookupByLibrary.simpleMessage("البريد الإلكتروني"),
     "emailMaxLength": MessageLookupByLibrary.simpleMessage(
       "البريد الإلكتروني يجب أن لا يتجاوز 100 حرفًا",
@@ -268,6 +275,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "medium": MessageLookupByLibrary.simpleMessage("متوسط"),
     "month": MessageLookupByLibrary.simpleMessage("الشهر"),
+    "montlyUsage": MessageLookupByLibrary.simpleMessage("الاستهلاك الشهري"),
     "motionSensor": MessageLookupByLibrary.simpleMessage("مستشعر الحركة"),
     "mustBeAtLeast": MessageLookupByLibrary.simpleMessage(
       "يجب أن يكون على الأقل",
@@ -286,7 +294,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "استهلاك الشهر القادم",
     ),
     "noCategoriesAvailable": MessageLookupByLibrary.simpleMessage(
-      "لا يوجد فئات متاحة",
+      "لا يوجد فئات متاحة",
     ),
     "noConditionsSet": MessageLookupByLibrary.simpleMessage(
       "لا توجد شروط محددة",
@@ -356,6 +364,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pleaseAddAtLeastOneAction": MessageLookupByLibrary.simpleMessage(
       "يرجى إضافة إجراء واحد على الأقل",
+    ),
+    "pleaseConfigureAllDeviceActions": MessageLookupByLibrary.simpleMessage(
+      "يرجى إعداد جميع إجراءات الأجهزة بالكامل",
     ),
     "pleaseConfigureSensorTrigger": MessageLookupByLibrary.simpleMessage(
       "يرجى إعداد مُشغل المستشعر بالكامل",
@@ -436,24 +447,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "مستشعر درجة الحرارة",
     ),
     "tier": MessageLookupByLibrary.simpleMessage("الفئة"),
-    "tier1": MessageLookupByLibrary.simpleMessage(
-      "الشريحة الأولى (0-50 كيلووات/ساعة)",
-    ),
-    "tier2": MessageLookupByLibrary.simpleMessage(
-      "الشريحة الثانية (51-100 كيلووات/ساعة)",
-    ),
-    "tier3": MessageLookupByLibrary.simpleMessage(
-      "الشريحة الثالثة (101-200 كيلووات/ساعة)",
-    ),
-    "tier4": MessageLookupByLibrary.simpleMessage(
-      "الشريحة الرابعة (201-350 كيلووات/ساعة)",
-    ),
-    "tier5": MessageLookupByLibrary.simpleMessage(
-      "الشريحة الخامسة (351-650 كيلووات/ساعة)",
-    ),
-    "tier6Plus": MessageLookupByLibrary.simpleMessage(
-      "الشريحة السادسة فأكثر (651+ كيلووات/ساعة)",
-    ),
+    "tier1": MessageLookupByLibrary.simpleMessage("الشريحة 1"),
+    "tier2": MessageLookupByLibrary.simpleMessage("الشريحة 2"),
+    "tier3": MessageLookupByLibrary.simpleMessage("الشريحة 3"),
+    "tier4": MessageLookupByLibrary.simpleMessage("الشريحة 4"),
+    "tier5": MessageLookupByLibrary.simpleMessage("الشريحة 5"),
+    "tier6Plus": MessageLookupByLibrary.simpleMessage("الشريحة 6+"),
     "today": MessageLookupByLibrary.simpleMessage("اليوم"),
     "trigger": MessageLookupByLibrary.simpleMessage("المُشغل"),
     "triggerValue": MessageLookupByLibrary.simpleMessage("قيمة المُشغل"),
@@ -464,7 +463,11 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "typeRequired": MessageLookupByLibrary.simpleMessage("من فضلك اختر النوع"),
     "unknown": MessageLookupByLibrary.simpleMessage("غير معروف"),
+    "updateAutomation": MessageLookupByLibrary.simpleMessage("تحديث الأتمتة"),
     "updatePassword": MessageLookupByLibrary.simpleMessage("تحديث كلمة المرور"),
+    "updatingStatus": MessageLookupByLibrary.simpleMessage(
+      "جاري تحديث الحالة...",
+    ),
     "value": MessageLookupByLibrary.simpleMessage("القيمة"),
     "verificationCode": MessageLookupByLibrary.simpleMessage("رمز التحقق"),
     "verify": MessageLookupByLibrary.simpleMessage("تحقق"),
