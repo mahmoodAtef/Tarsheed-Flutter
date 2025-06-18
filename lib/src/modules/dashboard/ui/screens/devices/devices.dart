@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
@@ -65,7 +66,7 @@ class _DevicesScreenContent extends StatelessWidget {
               child: Column(
                 spacing: 20.h,
                 children: [
-                  CustomAppBar(text: 'Devices'),
+                  CustomAppBar(text: S.of(context).devices),
                   DeviceFilterHeader(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -82,7 +83,10 @@ class _DevicesScreenContent extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.push(AddDeviceScreen());
+          context.push(BlocProvider.value(
+            value: DevicesCubit.get(),
+            child: AddDeviceScreen(),
+          ));
         },
         backgroundColor: ColorManager.primary,
         child: const Icon(Icons.add),

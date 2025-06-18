@@ -75,8 +75,8 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                     if (state is ConfirmForgotPasswordCodeSuccessState) {
                       if (widget.isFromForgotPassword == true) {
                         context.push(ResetPasswordScreen());
-                      } else {
-                        context.push(MainScreen());
+                      } else if (state is VerifyEmailSuccessState) {
+                        context.pushReplacement(MainScreen());
                       }
                     } else if (state is AuthErrorState) {
                       ExceptionManager.showMessage(state.exception);
@@ -89,7 +89,9 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                   builder: (context, state) {
                     return DefaultButton(
                       title: S.of(context).Continue,
-                      isLoading: state is ConfirmForgotPasswordCodeLoadingState,
+                      isLoading:
+                          state is ConfirmForgotPasswordCodeLoadingState ||
+                              state is VerifyEmailLoadingState,
                       onPressed: () {
                         if (widget.isFromForgotPassword == true) {
                           authBloc.add(ConfirmForgotPasswordCodeEvent(

@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:tarsheed/src/core/apis/dio_helper.dart';
 import 'package:tarsheed/src/core/apis/end_points.dart';
+import 'package:tarsheed/src/core/utils/localization_manager.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/ai_recommendations.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
 
@@ -29,6 +30,7 @@ class ReportRemoteServices implements BaseReportService {
     try {
       var response = await DioHelper.getData(
         path: EndPoints.getAISuggestions,
+        query: {"lang": LocalizationManager.getLanguageName()},
       );
 
       return Right(

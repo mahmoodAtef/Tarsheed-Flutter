@@ -10,13 +10,12 @@ import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/automation/cubit/automation_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
-import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
-import 'package:tarsheed/src/modules/dashboard/data/models/sensor.dart';
 
 import '../../data/models/action/action.dart';
 import '../../data/models/automation.dart';
 import '../../data/models/condition/condition.dart';
 import '../../data/models/trigger/trigger.dart';
+import '../widgets/components.dart';
 
 class AddAutomationScreen extends StatefulWidget {
   const AddAutomationScreen({super.key});
@@ -36,7 +35,6 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
   int? _triggerValue;
 
   List<ConditionData> _conditions = [];
-
   List<ActionData> _actions = [];
 
   @override
@@ -113,7 +111,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
   }
 
   Widget _buildNameSection() {
-    return _buildSection(
+    return AutomationSection(
       title: S.of(context).automationName,
       child: TextFormField(
         controller: _nameController,
@@ -138,474 +136,133 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
   }
 
   Widget _buildTriggerSection() {
-    return _buildSection(
+    return AutomationSection(
       title: S.of(context).trigger,
       subtitle: S.of(context).whenShouldAutomationRun,
       child: Column(
         children: [
-          _buildTriggerTypeSelector(),
+          TriggerTypeSelector(
+            selectedTriggerType: _selectedTriggerType,
+            onTriggerTypeChanged: (type) {
+              setState(() {
+                _selectedTriggerType = type;
+                if (type == TriggerType.schedule) {
+                  _selectedSensorId = null;
+                  _triggerValue = null;
+                } else {
+                  _selectedTime = null;
+                }
+              });
+            },
+          ),
           SizedBox(height: 16.h),
-          _buildTriggerDetails(),
+          TriggerDetails(
+            triggerType: _selectedTriggerType,
+            selectedTime: _selectedTime,
+            selectedSensorId: _selectedSensorId,
+            triggerValue: _triggerValue,
+            onTimeSelected: (time) {
+              setState(() {
+                _selectedTime = time;
+              });
+            },
+            onSensorSelected: (sensorId) {
+              setState(() {
+                _selectedSensorId = sensorId;
+              });
+            },
+            onTriggerValueChanged: (value) {
+              setState(() {
+                _triggerValue = value;
+              });
+            },
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _buildTriggerTypeSelector() {
-    return Row(
-      children: [
-        Expanded(
-          child: _buildSelectableCard(
-            title: S.of(context).schedule,
-            subtitle: S.of(context).runAtSpecificTime,
-            icon: Icons.schedule,
-            isSelected: _selectedTriggerType == TriggerType.schedule,
-            onTap: () => setState(() {
-              _selectedTriggerType = TriggerType.schedule;
-              _selectedSensorId = null;
-              _triggerValue = null;
-            }),
-          ),
-        ),
-        SizedBox(width: 12.w),
-        Expanded(
-          child: _buildSelectableCard(
-            title: S.of(context).sensor,
-            subtitle: S.of(context).runWhenSensorValueChanges,
-            icon: Icons.sensors,
-            isSelected: _selectedTriggerType == TriggerType.sensor,
-            onTap: () => setState(() {
-              _selectedTriggerType = TriggerType.sensor;
-              _selectedTime = null;
-            }),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTriggerDetails() {
-    if (_selectedTriggerType == TriggerType.schedule) {
-      return _buildTimeSelector();
-    } else {
-      return _buildSensorTriggerSelector();
-    }
-  }
-
-  Widget _buildTimeSelector() {
-    return GestureDetector(
-      onTap: () async {
-        final time = await showTimePicker(
-          context: context,
-          initialTime: TimeOfDay.now(),
-        );
-        if (time != null) {
-          setState(() {
-            _selectedTime =
-                '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
-          });
-        }
-      },
-      child: Container(
-        padding: EdgeInsets.all(16.w),
-        decoration: BoxDecoration(
-          color: ColorManager.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.shade300),
-        ),
-        child: Row(
-          children: [
-            const Icon(Icons.access_time, color: Colors.blue),
-            SizedBox(width: 12.w),
-            Text(
-              _selectedTime ?? S.of(context).selectTime,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight:
-                    _selectedTime != null ? FontWeight.w600 : FontWeight.normal,
-              ),
-            ),
-            const Spacer(),
-            const Icon(Icons.arrow_forward_ios, size: 16),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSensorTriggerSelector() {
-    return BlocBuilder<DashboardBloc, DashboardState>(
-      buildWhen: (previous, current) =>
-          current is GetSensorsSuccessState ||
-          current is GetSensorsLoadingState ||
-          current is GetSensorsErrorState,
-      builder: (context, state) {
-        if (state is GetSensorsLoadingState) {
-          return Center(child: CircularProgressIndicator());
-        }
-
-        // Get sensors directly from the bloc state
-        final sensors = context.read<DashboardBloc>().sensors;
-        final sensorItems = _buildSensorItems(sensors);
-
-        return Column(
-          children: [
-            DropdownButtonFormField<String>(
-              value: _selectedSensorId,
-              decoration: InputDecoration(
-                labelText: S.of(context).selectSensor,
-                filled: true,
-                fillColor: ColorManager.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
-                prefixIcon: const Icon(Icons.sensors),
-              ),
-              items: sensorItems,
-              onChanged: (value) => setState(() => _selectedSensorId = value),
-            ),
-            SizedBox(height: 12.h),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: S.of(context).triggerValue,
-                filled: true,
-                fillColor: ColorManager.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
-                prefixIcon: const Icon(Icons.numbers),
-              ),
-              keyboardType: TextInputType.number,
-              onChanged: (value) => _triggerValue = int.tryParse(value),
-            ),
-          ],
-        );
-      },
     );
   }
 
   Widget _buildConditionsSection() {
-    return _buildSection(
+    return AutomationSection(
       title: S.of(context).conditionsOptional,
       subtitle: S.of(context).additionalConditions,
       child: Column(
         children: [
-          ..._conditions
-              .map((condition) => _buildConditionCard(condition))
-              .toList(),
-          _buildAddConditionButton(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildConditionCard(ConditionData condition) {
-    return BlocBuilder<DashboardBloc, DashboardState>(
-      builder: (context, dashboardState) {
-        return BlocBuilder<DevicesCubit, DevicesState>(
-          builder: (context, devicesState) {
-            final sensors = context.read<DashboardBloc>().sensors;
-            final devices = devicesState.devices ?? [];
-
-            return Container(
-              margin: EdgeInsets.only(bottom: 12.h),
-              padding: EdgeInsets.all(16.w),
-              decoration: BoxDecoration(
-                color: ColorManager.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey.shade300),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        condition.type == ConditionType.device
-                            ? Icons.devices
-                            : Icons.sensors,
-                        color: Colors.blue,
-                      ),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                        child: Text(
-                          condition.type == ConditionType.device
-                              ? S.of(context).deviceCondition
-                              : S.of(context).sensorCondition,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600, fontSize: 16.sp),
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () =>
-                            setState(() => _conditions.remove(condition)),
-                        icon: const Icon(Icons.delete, color: Colors.red),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: DropdownButtonFormField<String>(
-                          value: condition.id,
-                          decoration: InputDecoration(
-                            labelText: condition.type == ConditionType.device
-                                ? S.of(context).selectDevice
-                                : S.of(context).selectSensor,
-                            filled: true,
-                            fillColor: Colors.grey.shade50,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
-                          items: condition.type == ConditionType.device
-                              ? _buildDeviceItems(devices)
-                              : _buildSensorItems(sensors),
-                          onChanged: (value) =>
-                              setState(() => condition.id = value),
-                        ),
-                      ),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                        child: condition.type == ConditionType.device
-                            ? DropdownButtonFormField<int>(
-                                value:
-                                    condition.state == 0 || condition.state == 1
-                                        ? condition.state
-                                        : null,
-                                decoration: InputDecoration(
-                                  labelText: S.of(context).stateValue,
-                                  filled: true,
-                                  fillColor: Colors.grey.shade50,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                ),
-                                items: [
-                                  DropdownMenuItem(
-                                    value: 1,
-                                    child: Text(S.of(context).turnOn),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: 0,
-                                    child: Text(S.of(context).turnOff),
-                                  ),
-                                ],
-                                onChanged: (value) => setState(
-                                    () => condition.state = value ?? 0),
-                              )
-                            : TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: S.of(context).stateValue,
-                                  filled: true,
-                                  fillColor: Colors.grey.shade50,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                ),
-                                keyboardType: TextInputType.number,
-                                onChanged: (value) =>
-                                    condition.state = int.tryParse(value) ?? 0,
-                              ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildAddConditionButton() {
-    return Row(
-      children: [
-        Expanded(
-          child: _buildAddButton(
-            title: S.of(context).addDeviceCondition,
-            icon: Icons.devices,
-            onTap: () => setState(() {
+          ConditionsList(
+            conditions: _conditions,
+            onDeleteCondition: (condition) {
+              setState(() {
+                _conditions.remove(condition);
+              });
+            },
+            onConditionIdChanged: (condition, id) {
+              setState(() {
+                condition.id = id;
+              });
+            },
+            onConditionStateChanged: (condition, state) {
+              setState(() {
+                condition.state = state;
+              });
+            },
+          ),
+          AddConditionButtons(
+            onAddDeviceCondition: () => setState(() {
               _conditions.add(ConditionData(type: ConditionType.device));
             }),
-          ),
-        ),
-        SizedBox(width: 12.w),
-        Expanded(
-          child: _buildAddButton(
-            title: S.of(context).addSensorCondition,
-            icon: Icons.sensors,
-            onTap: () => setState(() {
+            onAddSensorCondition: () => setState(() {
               _conditions.add(ConditionData(type: ConditionType.sensor));
             }),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildActionsSection() {
-    return _buildSection(
+    return AutomationSection(
       title: S.of(context).actions,
       subtitle: S.of(context).whatShouldHappen,
       child: Column(
         children: [
-          ..._actions.map((action) => _buildActionCard(action)).toList(),
-          _buildAddActionButton(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActionCard(ActionData action) {
-    return BlocBuilder<DevicesCubit, DevicesState>(
-      builder: (context, devicesState) {
-        final devices = devicesState.devices ?? [];
-
-        return Container(
-          margin: EdgeInsets.only(bottom: 12.h),
-          padding: EdgeInsets.all(16.w),
-          decoration: BoxDecoration(
-            color: ColorManager.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.shade300),
+          ActionsList(
+            actions: _actions,
+            onDeleteAction: (action) {
+              setState(() {
+                _actions.remove(action);
+              });
+            },
+            onDeviceIdChanged: (action, value) {
+              setState(() {
+                action.deviceId = value;
+              });
+            },
+            onStateChanged: (action, value) {
+              setState(() {
+                action.state = value;
+              });
+            },
+            onTitleChanged: (action, value) {
+              setState(() {
+                action.title = value;
+              });
+            },
+            onMessageChanged: (action, value) {
+              setState(() {
+                action.message = value;
+              });
+            },
           ),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    action.type == ActionType.device
-                        ? Icons.devices
-                        : Icons.notifications,
-                    color: Colors.green,
-                  ),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    child: Text(
-                      action.type == ActionType.device
-                          ? S.of(context).deviceAction
-                          : S.of(context).notificationAction,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 16.sp),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () => setState(() => _actions.remove(action)),
-                    icon: const Icon(Icons.delete, color: Colors.red),
-                  ),
-                ],
-              ),
-              SizedBox(height: 12.h),
-              if (action.type == ActionType.device) ...[
-                Row(
-                  children: [
-                    Expanded(
-                      child: DropdownButtonFormField<String>(
-                        value: action.deviceId,
-                        decoration: InputDecoration(
-                          labelText: S.of(context).selectDevice,
-                          filled: true,
-                          fillColor: Colors.grey.shade50,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                        items: _buildDeviceItems(devices),
-                        onChanged: (value) =>
-                            setState(() => action.deviceId = value),
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: DropdownButtonFormField<String>(
-                        value: action.state,
-                        decoration: InputDecoration(
-                          labelText: S.of(context).action,
-                          filled: true,
-                          fillColor: Colors.grey.shade50,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                        items: [
-                          DropdownMenuItem(
-                              value: "ON", child: Text(S.of(context).turnOn)),
-                          DropdownMenuItem(
-                              value: "Of", child: Text(S.of(context).turnOff)),
-                        ],
-                        onChanged: (value) =>
-                            setState(() => action.state = value),
-                      ),
-                    ),
-                  ],
-                ),
-              ] else ...[
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: S.of(context).notificationTitle,
-                    filled: true,
-                    fillColor: Colors.grey.shade50,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                  onChanged: (value) => action.title = value,
-                ),
-                SizedBox(height: 12.h),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: S.of(context).notificationMessage,
-                    filled: true,
-                    fillColor: Colors.grey.shade50,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                  maxLines: 2,
-                  onChanged: (value) => action.message = value,
-                ),
-              ],
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildAddActionButton() {
-    return Row(
-      children: [
-        Expanded(
-          child: _buildAddButton(
-            title: S.of(context).addDeviceAction,
-            icon: Icons.devices,
-            onTap: () => setState(() {
+          AddActionButtons(
+            onAddDeviceAction: () => setState(() {
               _actions.add(ActionData(type: ActionType.device));
             }),
-          ),
-        ),
-        SizedBox(width: 12.w),
-        Expanded(
-          child: _buildAddButton(
-            title: S.of(context).addNotification,
-            icon: Icons.notifications,
-            onTap: () => setState(() {
+            onAddNotificationAction: () => setState(() {
               _actions.add(ActionData(type: ActionType.notification));
             }),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -614,181 +271,13 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
       builder: (context, state) {
         final isLoading = state is AddAutomationLoading;
 
-        return SizedBox(
-          width: double.infinity,
-          height: 50.h,
-          child: ElevatedButton(
-            onPressed: isLoading ? null : _saveAutomation,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              foregroundColor: ColorManager.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              elevation: 2,
-            ),
-            child: isLoading
-                ? const CircularProgressIndicator(color: ColorManager.white)
-                : Text(
-                    S.of(context).saveAutomation,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-          ),
+        return AutomationSaveButton(
+          isLoading: isLoading,
+          onPressed: isLoading ? null : _saveAutomation,
+          buttonText: S.of(context).saveAutomation,
         );
       },
     );
-  }
-
-  Widget _buildSection({
-    required String title,
-    String? subtitle,
-    required Widget child,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-        if (subtitle != null) ...[
-          SizedBox(height: 4.h),
-          Text(
-            subtitle,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.grey.shade600,
-            ),
-          ),
-        ],
-        SizedBox(height: 16.h),
-        child,
-      ],
-    );
-  }
-
-  Widget _buildSelectableCard({
-    required String title,
-    required String subtitle,
-    required IconData icon,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(16.w),
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.blue.shade50 : ColorManager.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? Colors.blue : Colors.grey.shade300,
-            width: isSelected ? 2 : 1,
-          ),
-        ),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              size: 32,
-              color: isSelected ? Colors.blue : Colors.grey.shade600,
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: isSelected ? Colors.blue : Colors.black87,
-              ),
-            ),
-            SizedBox(height: 4.h),
-            Text(
-              subtitle,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: Colors.grey.shade600,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAddButton({
-    required String title,
-    required IconData icon,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 12.w),
-        decoration: BoxDecoration(
-          color: Colors.blue.shade50,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.blue.shade200),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: Colors.blue, size: 20),
-            SizedBox(width: 8.w),
-            Flexible(
-              child: Text(
-                title,
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12.sp,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // Helper methods to build dropdown items
-  List<DropdownMenuItem<String>> _buildDeviceItems(List<Device> devices) {
-    if (devices.isEmpty) {
-      return [
-        DropdownMenuItem(
-          value: null,
-          child: Text(S.of(context).noDevicesAvailable),
-        ),
-      ];
-    }
-    return devices.map((device) {
-      return DropdownMenuItem(
-        value: device.id,
-        child: Text(device.name),
-      );
-    }).toList();
-  }
-
-  List<DropdownMenuItem<String>> _buildSensorItems(List<Sensor> sensors) {
-    if (sensors.isEmpty) {
-      return [
-        DropdownMenuItem(
-          value: null,
-          child: Text(S.of(context).noSensorsAvailable),
-        ),
-      ];
-    }
-    return sensors.map((sensor) {
-      return DropdownMenuItem(
-        value: sensor.id,
-        child: Text(sensor.name),
-      );
-    }).toList();
   }
 
   void _saveAutomation() {
@@ -877,29 +366,4 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
       actions: actions,
     );
   }
-}
-
-// Helper enums and classes
-enum TriggerType { schedule, sensor }
-
-enum ConditionType { device, sensor }
-
-enum ActionType { device, notification }
-
-class ConditionData {
-  final ConditionType type;
-  String? id;
-  int state = 0;
-
-  ConditionData({required this.type});
-}
-
-class ActionData {
-  final ActionType type;
-  String? deviceId;
-  String? state;
-  String? title;
-  String? message;
-
-  ActionData({required this.type});
 }

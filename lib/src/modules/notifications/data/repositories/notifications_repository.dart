@@ -17,4 +17,6 @@ class NotificationsRepository {
   Future<Either<Exception, Unit>> markAllNotificationsAsRead() async {
     return _notificationsService.markAllNotificationsAsRead();
   }
+
+  void clearData() {}
 }

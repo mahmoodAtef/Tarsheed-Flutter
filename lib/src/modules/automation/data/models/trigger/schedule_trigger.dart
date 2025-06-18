@@ -6,11 +6,14 @@ class ScheduleTrigger extends Trigger {
 
   factory ScheduleTrigger.fromJson(Map<String, dynamic> json) =>
       ScheduleTrigger(
-        time: json['time'],
+        time: json['time'] != null
+            ? json["time"].toString()
+            : json['value'].toString(), // Adjusted to match the JSON structure
       );
   @override
   Map<String, dynamic> toJson() => {
         "type": "SCHEDULE",
         'value': time,
+        'time': time, // Added 'time' to match the JSON structure
       };
 }

@@ -9,7 +9,12 @@ import 'package:tarsheed/src/core/utils/localization_manager.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/login.dart';
+import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
+import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
+import 'package:tarsheed/src/modules/dashboard/cubits/reports_cubit/reports_cubit.dart';
+import 'package:tarsheed/src/modules/notifications/cubit/notifications_cubit.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';
+import 'package:tarsheed/src/modules/settings/ui/screens/show_dialog.dart';
 
 import '../../../../core/error/exception_manager.dart';
 import '../../../../core/widgets/appbar.dart';
@@ -43,9 +48,8 @@ class SettingPage extends StatelessWidget {
                   context.pop(); // Close loading dialog
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text(S.of(context).accountDeletedSuccess)));
-                  context.pushAndRemove(LoginPage());
+                  _clearData(context);
                 } else if (state is SettingsErrorState) {
-                  context.pop(); // Close loading dialog
                   ExceptionManager.showMessage(state.exception);
                 }
               },
@@ -122,7 +126,7 @@ class SettingPage extends StatelessWidget {
                             current is LogoutLoadingState,
                         listener: (context, state) {
                           if (state is LogoutSuccessState) {
-                            context.pushAndRemove(LoginPage());
+                            _clearData(context);
                           }
                         },
                         builder: (context, state) {
@@ -145,7 +149,7 @@ class SettingPage extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         Fluttertoast.showToast(msg: "قولنا محدش يحذف الأكونت");
-                        // showDeleteAccountDialog(context);
+                        showDeleteAccountDialog(context);
                       },
                       child: Center(
                         child: Text(
@@ -169,5 +173,15 @@ class SettingPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _clearData(BuildContext context) {
+    context.pushAndRemove(LoginPage()).whenComplete(() {
+      DevicesCubit.get().close();
+      DashboardBloc.get().close();
+      ReportsCubit.get().close();
+      NotificationsCubit.get().close();
+      SettingsCubit.get().changeIndex(0);
+    });
   }
 }

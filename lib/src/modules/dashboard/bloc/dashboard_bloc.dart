@@ -28,7 +28,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
   @override
   close() async {
-    debugPrint('trying to close DashboardBloc');
+    _repository.clearData();
+    sensors = [];
     // return super.close();
   }
 

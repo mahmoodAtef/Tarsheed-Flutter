@@ -9,7 +9,7 @@ class Device extends Equatable {
   final double consumption;
   final int priority;
   final bool state;
-  final String pinNumber;
+  final int pinNumber;
   const Device({
     required this.pinNumber,
     required this.state,
@@ -33,7 +33,7 @@ class Device extends Equatable {
           json["totalUsage"] == null ? 0 : json['totalUsage']?.toDouble(),
       priority: json['priority'] ?? 0,
       state: json['status'] == "ON",
-      pinNumber: json['pinNumber'].toString(),
+      pinNumber: json['pinNumber'],
     );
   }
 
@@ -52,7 +52,7 @@ class Device extends Equatable {
       {String? id,
       String? name,
       String? description,
-      String? pinNumber,
+      int? pinNumber,
       String? roomId,
       String? categoryId,
       double? consumption,
@@ -61,7 +61,6 @@ class Device extends Equatable {
     return Device(
         name: name ?? this.name,
         id: id ?? this.id,
-        // type: type ?? this.type,
         description: description ?? this.description,
         roomId: roomId ?? this.roomId,
         consumption: consumption ?? this.consumption,
@@ -74,5 +73,3 @@ class Device extends Equatable {
   @override
   List<Object?> get props => [id, name];
 }
-/*
- */

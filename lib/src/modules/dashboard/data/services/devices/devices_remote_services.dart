@@ -12,7 +12,7 @@ abstract class BaseDevicesRemoteServices {
     required String id,
     String? name,
     String? description,
-    String? pinNumber,
+    int? pinNumber,
   });
   Future<Either<Exception, Unit>> deleteDevice(String id);
 }
@@ -52,10 +52,10 @@ class DevicesRemoteServices implements BaseDevicesRemoteServices {
     required String id,
     String? name,
     String? description,
-    String? pinNumber,
+    int? pinNumber,
   }) async {
     try {
-      await DioHelper.putData(
+      await DioHelper.patchData(
         path: EndPoints.editDevice + id,
         data: {
           if (name != null) 'name': name,
@@ -91,3 +91,5 @@ class DevicesRemoteServices implements BaseDevicesRemoteServices {
     }
   }
 }
+/*
+ */

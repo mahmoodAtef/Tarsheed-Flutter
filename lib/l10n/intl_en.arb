@@ -116,16 +116,17 @@
   "energyConsumption": "Energy consumption",
   "low": "LOW",
   "high": "HIGH",
+
   "medium": "Medium",
   "veryHigh": "Very High",
   "retry": "Retry",
   "unknown": "Unknown",
-  "tier1": "Tier 1 (0-50 kWh)",
-  "tier2": "Tier 2 (51-100 kWh)",
-  "tier3": "Tier 3 (101-200 kWh)",
-  "tier4": "Tier 4 (201-350 kWh)",
-  "tier5": "Tier 5 (351-650 kWh)",
-  "tier6Plus": "Tier 6+ (651+ kWh)",
+  "tier1": "Tier 1",
+  "tier2": "Tier 2",
+  "tier3": "Tier 3",
+  "tier4": "Tier 4",
+  "tier5": "Tier 5",
+  "tier6Plus": "Tier 6+",
   "currentTier": "You are now in Electricity consumption bracket number {tierNumber}",
   "currentSavings": "Your Current Savings is",
   "inThe": "which is in the",
@@ -251,7 +252,11 @@
   "updatingStatus": "Updating status...",
   "updateAutomation": "Update Automation",
   "editingAutomationInfo": "Editing automation:",
-  "automationUpdatedSuccessfully" : "Automation updated successfully"
+  "automationUpdatedSuccessfully" : "Automation updated successfully",
+  "pleaseConfigureAllDeviceActions" : "Please configure all device actions completely",
+  "montlyUsage": "Monthly Usage",
+  "count": "Count"
+
 }
 
 

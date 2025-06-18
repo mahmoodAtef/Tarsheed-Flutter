@@ -6,12 +6,12 @@ import 'package:tarsheed/src/modules/auth/ui/screens/verify_code.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
-import '../../bloc/auth_bloc.dart';
 import '../../../../core/widgets/large_button.dart';
-import '../widgets/main_title.dart';
 import '../../../../core/widgets/rectangle_background.dart';
-import '../widgets/sup_title.dart';
 import '../../../../core/widgets/text_field.dart';
+import '../../bloc/auth_bloc.dart';
+import '../widgets/main_title.dart';
+import '../widgets/sup_title.dart';
 
 class EmailVerificationScreen extends StatelessWidget {
   EmailVerificationScreen({

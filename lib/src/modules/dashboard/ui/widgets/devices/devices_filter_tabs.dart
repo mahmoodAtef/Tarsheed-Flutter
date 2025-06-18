@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/utils/color_manager.dart';
 
 class FilterTabsRow extends StatelessWidget {
@@ -22,9 +23,9 @@ class FilterTabsRow extends StatelessWidget {
       ),
       child: Row(
         children: [
-          _buildTab(context, 'Consumption', 0),
-          _buildTab(context, 'Rooms', 1),
-          _buildTab(context, 'Priority', 2),
+          _buildTab(context, S.of(context).consumption, 0),
+          _buildTab(context, S.of(context).rooms, 1),
+          _buildTab(context, S.of(context).priority, 2),
         ],
       ),
     );

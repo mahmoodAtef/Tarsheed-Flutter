@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device_creation_form.dart';
@@ -24,8 +23,7 @@ class DevicesCubit extends Cubit<DevicesState> {
 
   @override
   Future<void> close() async {
-    debugPrint('Closing DevicesCubit');
-    // Perform any necessary cleanup here
+    _repository.clearData();
     // return super.close();
   }
 
@@ -89,7 +87,7 @@ class DevicesCubit extends Cubit<DevicesState> {
     required String id,
     String? name,
     String? description,
-    String? pinNumber,
+    int? pinNumber,
   }) async {
     final currentState = state;
     final current = currentState.devices ?? <Device>[];

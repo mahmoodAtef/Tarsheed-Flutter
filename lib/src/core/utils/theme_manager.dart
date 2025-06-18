@@ -23,6 +23,7 @@ class ThemeManager {
 
   static ThemeData get lightTheme {
     return ThemeData(
+      fontFamily: 'Cairo',
       useMaterial3: true,
       colorScheme: const ColorScheme.light(
         primary: primaryBlue,
@@ -321,6 +322,7 @@ class ThemeManager {
 
   static ThemeData get darkTheme {
     return ThemeData(
+      fontFamily: 'Cairo',
       useMaterial3: true,
       brightness: Brightness.dark,
       colorScheme: const ColorScheme.dark(

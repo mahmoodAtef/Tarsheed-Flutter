@@ -35,7 +35,7 @@ class DevicesRepository {
     required String id,
     String? name,
     String? description,
-    String? pinNumber,
+    int? pinNumber,
   }) {
     return _remote.editDevice(
       id: id,
@@ -51,5 +51,9 @@ class DevicesRepository {
 
   Future<Either<Exception, Unit>> toggleDeviceStatus(String id) {
     return _remote.toggleDeviceStatus(id);
+  }
+
+  void clearData() {
+    lastDevices = [];
   }
 }
