@@ -163,7 +163,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       GetPaymentUrlEvent event, Emitter<DashboardState> emit) async {
     emit(GetPaymentUrlLoadingState());
     final result = await _repository.getPaymentUrl();
-    result.fold((l) => GetPaymentUrlErrorState(l), (r) {
+    result.fold((l) => emit(GetPaymentUrlErrorState(l)), (r) {
       emit(GetPaymentUrlSuccessState(r));
     });
   }
