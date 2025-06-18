@@ -330,6 +330,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Notification Title",
     ),
     "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
+    "operator": MessageLookupByLibrary.simpleMessage("Operator"),
     "orContinueWith": MessageLookupByLibrary.simpleMessage("Or continue with"),
     "originalPasswordNotProvided": MessageLookupByLibrary.simpleMessage(
       "Original password is not provided",
@@ -364,6 +365,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "passwordsDoNotMatch": MessageLookupByLibrary.simpleMessage(
       "Passwords do not match",
+    ),
+    "payBills": MessageLookupByLibrary.simpleMessage("Pay Bills"),
+    "payBillsDescription": MessageLookupByLibrary.simpleMessage(
+      "Pay your utility bills directly through the app for convenience and efficiency.",
     ),
     "pinNumber": MessageLookupByLibrary.simpleMessage("Pin Number"),
     "pinNumberRequired": MessageLookupByLibrary.simpleMessage(

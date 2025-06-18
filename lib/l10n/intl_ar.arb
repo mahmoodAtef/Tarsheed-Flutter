@@ -250,5 +250,13 @@
   "updateAutomation": "تحديث الأتمتة",
   "editingAutomationInfo": "تعديل الأتمتة:",
   "automationUpdatedSuccessfully": "تم تحديث الأتمتة بنجاح",
-  "pleaseConfigureAllDeviceActions": "يرجى إعداد جميع إجراءات الأجهزة بالكامل"
+  "pleaseConfigureAllDeviceActions": "يرجى إعداد جميع إجراءات الأجهزة بالكامل",
+  "pleaseSelectState": "من فضلك اختر الحالة",
+  "pleaseSelectDevice": "من فضلك اختر الجهاز",
+  "deviceState": "حالة الجهاز",
+  "pleaseEnterTitle": "من فضلك أدخل العنوان",
+  "pleaseEnterMessage": "من فضلك أدخل الرسالة",
+  "payBills": "دفع الفواتير",
+  "payBillsDescription": "ادفع فواتير الخدمات مباشرة من خلال التطبيق للراحة والكفاءة.",
+  "operator": "المشغل"
 }

@@ -185,7 +185,6 @@ class _AllAutomationsScreenState extends State<AllAutomationsScreen> {
 
   @override
   void dispose() {
-    // لا نحتاج لإغلاق الـ cubit هنا لأنه singleton
     super.dispose();
   }
 }

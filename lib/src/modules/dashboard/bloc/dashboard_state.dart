@@ -177,3 +177,27 @@ final class GetSensorsErrorState extends SensorState {
   @override
   List<Object?> get props => [exception];
 }
+
+/// Payment URL state
+
+final class GetPaymentUrlState extends DashboardState {
+  const GetPaymentUrlState({super.rooms});
+  @override
+  List<Object?> get props => [];
+}
+
+final class GetPaymentUrlLoadingState extends GetPaymentUrlState {}
+
+final class GetPaymentUrlSuccessState extends GetPaymentUrlState {
+  final String paymentUrl;
+  const GetPaymentUrlSuccessState(this.paymentUrl);
+  @override
+  List<Object?> get props => [paymentUrl];
+}
+
+final class GetPaymentUrlErrorState extends GetPaymentUrlState {
+  final Exception exception;
+  const GetPaymentUrlErrorState(this.exception);
+  @override
+  List<Object?> get props => [exception];
+}

@@ -20,6 +20,7 @@ class ConditionData {
   final ConditionType type;
   String? id;
   int state = 0;
+  String operator = '='; // Default operator for sensor conditions
 
   ConditionData({required this.type});
 }
@@ -281,15 +282,19 @@ class TimeSelector extends StatelessWidget {
 class SensorTriggerSelector extends StatelessWidget {
   final String? selectedSensorId;
   final int? triggerValue;
+  final String? selectedOperator;
   final Function(String?) onSensorSelected;
   final Function(int?) onTriggerValueChanged;
+  final Function(String?) onOperatorChanged;
 
   const SensorTriggerSelector({
     super.key,
     required this.selectedSensorId,
     required this.triggerValue,
+    required this.selectedOperator,
     required this.onSensorSelected,
     required this.onTriggerValueChanged,
+    required this.onOperatorChanged,
   });
 
   @override
@@ -309,6 +314,7 @@ class SensorTriggerSelector extends StatelessWidget {
 
         return Column(
           children: [
+            // Sensor Selection
             DropdownButtonFormField<String>(
               value: selectedSensorId,
               decoration: InputDecoration(
@@ -325,6 +331,26 @@ class SensorTriggerSelector extends StatelessWidget {
               onChanged: onSensorSelected,
             ),
             SizedBox(height: 12.h),
+
+            // Operator Selection
+            DropdownButtonFormField<String>(
+              value: selectedOperator,
+              decoration: InputDecoration(
+                labelText: S.of(context).operator,
+                filled: true,
+                fillColor: ColorManager.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+                prefixIcon: const Icon(Icons.compare_arrows),
+              ),
+              items: _buildOperatorItems(context),
+              onChanged: onOperatorChanged,
+            ),
+            SizedBox(height: 12.h),
+
+            // Trigger Value
             TextFormField(
               decoration: InputDecoration(
                 labelText: S.of(context).triggerValue,
@@ -363,6 +389,56 @@ class SensorTriggerSelector extends StatelessWidget {
       );
     }).toList();
   }
+
+  List<DropdownMenuItem<String>> _buildOperatorItems(BuildContext context) {
+    return [
+      DropdownMenuItem(
+        value: '==',
+        child: Row(
+          children: [
+            SizedBox(width: 8),
+            Text('=='),
+          ],
+        ),
+      ),
+      DropdownMenuItem(
+        value: '>',
+        child: Row(
+          children: [
+            SizedBox(width: 8),
+            Text('>'),
+          ],
+        ),
+      ),
+      DropdownMenuItem(
+        value: '<',
+        child: Row(
+          children: [
+            SizedBox(width: 8),
+            Text('<'),
+          ],
+        ),
+      ),
+      DropdownMenuItem(
+        value: '>=',
+        child: Row(
+          children: [
+            SizedBox(width: 8),
+            Text('>='),
+          ],
+        ),
+      ),
+      DropdownMenuItem(
+        value: '<=',
+        child: Row(
+          children: [
+            SizedBox(width: 8),
+            Text('<='),
+          ],
+        ),
+      ),
+    ];
+  }
 }
 
 // 8. Condition Card Widget
@@ -371,6 +447,7 @@ class ConditionCard extends StatelessWidget {
   final VoidCallback onDelete;
   final Function(String?) onIdChanged;
   final Function(int) onStateChanged;
+  final Function(String) onOperatorChanged; // New callback for operator
 
   const ConditionCard({
     super.key,
@@ -378,6 +455,7 @@ class ConditionCard extends StatelessWidget {
     required this.onDelete,
     required this.onIdChanged,
     required this.onStateChanged,
+    required this.onOperatorChanged, // Add required parameter
   });
 
   @override
@@ -427,6 +505,7 @@ class ConditionCard extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
+                        flex: 2,
                         child: DropdownButtonFormField<String>(
                           value: condition.id,
                           decoration: InputDecoration(
@@ -446,8 +525,31 @@ class ConditionCard extends StatelessWidget {
                           onChanged: onIdChanged,
                         ),
                       ),
-                      SizedBox(width: 12.w),
+                      SizedBox(width: 8.w),
+                      // Add operator dropdown for sensor conditions
+                      if (condition.type == ConditionType.sensor) ...[
+                        Expanded(
+                          flex: 1,
+                          child: DropdownButtonFormField<String>(
+                            value: condition.operator,
+                            decoration: InputDecoration(
+                              labelText: S.of(context).operator,
+                              filled: true,
+                              fillColor: Colors.grey.shade50,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                            items: _buildOperatorItems(context),
+                            onChanged: (value) =>
+                                onOperatorChanged(value ?? '='),
+                          ),
+                        ),
+                        SizedBox(width: 8.w),
+                      ],
                       Expanded(
+                        flex: condition.type == ConditionType.sensor ? 1 : 2,
                         child: condition.type == ConditionType.device
                             ? DropdownButtonFormField<int>(
                                 value:
@@ -478,7 +580,7 @@ class ConditionCard extends StatelessWidget {
                               )
                             : TextFormField(
                                 decoration: InputDecoration(
-                                  labelText: S.of(context).stateValue,
+                                  labelText: S.of(context).value,
                                   filled: true,
                                   fillColor: Colors.grey.shade50,
                                   border: OutlineInputBorder(
@@ -537,6 +639,31 @@ class ConditionCard extends StatelessWidget {
         child: Text(sensor.name),
       );
     }).toList();
+  }
+
+  List<DropdownMenuItem<String>> _buildOperatorItems(BuildContext context) {
+    return [
+      DropdownMenuItem(
+        value: '=',
+        child: Text('='),
+      ),
+      DropdownMenuItem(
+        value: '>',
+        child: Text('>'),
+      ),
+      DropdownMenuItem(
+        value: '<',
+        child: Text('<'),
+      ),
+      DropdownMenuItem(
+        value: '>=',
+        child: Text('>='),
+      ),
+      DropdownMenuItem(
+        value: '<=',
+        child: Text('<='),
+      ),
+    ];
   }
 }
 
@@ -885,9 +1012,11 @@ class TriggerDetails extends StatelessWidget {
   final String? selectedTime;
   final String? selectedSensorId;
   final int? triggerValue;
+  final String? selectedOperator;
   final Function(String?) onTimeSelected;
   final Function(String?) onSensorSelected;
   final Function(int?) onTriggerValueChanged;
+  final Function(String?) onOperatorChanged;
 
   const TriggerDetails({
     super.key,
@@ -895,9 +1024,11 @@ class TriggerDetails extends StatelessWidget {
     required this.selectedTime,
     required this.selectedSensorId,
     required this.triggerValue,
+    required this.selectedOperator,
     required this.onTimeSelected,
     required this.onSensorSelected,
     required this.onTriggerValueChanged,
+    required this.onOperatorChanged,
   });
 
   @override
@@ -911,8 +1042,10 @@ class TriggerDetails extends StatelessWidget {
       return SensorTriggerSelector(
         selectedSensorId: selectedSensorId,
         triggerValue: triggerValue,
+        selectedOperator: selectedOperator,
         onSensorSelected: onSensorSelected,
         onTriggerValueChanged: onTriggerValueChanged,
+        onOperatorChanged: onOperatorChanged,
       );
     }
   }
@@ -924,6 +1057,8 @@ class ConditionsList extends StatelessWidget {
   final Function(ConditionData) onDeleteCondition;
   final Function(ConditionData, String?) onConditionIdChanged;
   final Function(ConditionData, int) onConditionStateChanged;
+  final Function(ConditionData, String)
+      onConditionOperatorChanged; // New callback
 
   const ConditionsList({
     super.key,
@@ -931,6 +1066,7 @@ class ConditionsList extends StatelessWidget {
     required this.onDeleteCondition,
     required this.onConditionIdChanged,
     required this.onConditionStateChanged,
+    required this.onConditionOperatorChanged, // Add required parameter
   });
 
   @override
@@ -943,6 +1079,8 @@ class ConditionsList extends StatelessWidget {
                 onIdChanged: (value) => onConditionIdChanged(condition, value),
                 onStateChanged: (value) =>
                     onConditionStateChanged(condition, value),
+                onOperatorChanged: (value) => onConditionOperatorChanged(
+                    condition, value), // Add callback
               ))
           .toList(),
     );

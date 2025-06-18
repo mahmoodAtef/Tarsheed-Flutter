@@ -33,6 +33,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
   String? _selectedTime;
   String? _selectedSensorId;
   int? _triggerValue;
+  String? _selectedOperator;
 
   List<ConditionData> _conditions = [];
   List<ActionData> _actions = [];
@@ -149,6 +150,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
                 if (type == TriggerType.schedule) {
                   _selectedSensorId = null;
                   _triggerValue = null;
+                  _selectedOperator = null;
                 } else {
                   _selectedTime = null;
                 }
@@ -161,6 +163,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
             selectedTime: _selectedTime,
             selectedSensorId: _selectedSensorId,
             triggerValue: _triggerValue,
+            selectedOperator: _selectedOperator,
             onTimeSelected: (time) {
               setState(() {
                 _selectedTime = time;
@@ -174,6 +177,11 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
             onTriggerValueChanged: (value) {
               setState(() {
                 _triggerValue = value;
+              });
+            },
+            onOperatorChanged: (operator) {
+              setState(() {
+                _selectedOperator = operator;
               });
             },
           ),
@@ -203,6 +211,11 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
             onConditionStateChanged: (condition, state) {
               setState(() {
                 condition.state = state;
+              });
+            },
+            onConditionOperatorChanged: (condition, operator) {
+              setState(() {
+                condition.operator = operator;
               });
             },
           ),
@@ -304,7 +317,9 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
       }
 
       if (_selectedTriggerType == TriggerType.sensor &&
-          (_selectedSensorId == null || _triggerValue == null)) {
+          (_selectedSensorId == null ||
+              _triggerValue == null ||
+              _selectedOperator == null)) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(S.of(context).pleaseConfigureSensorTrigger),
@@ -325,8 +340,11 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
     if (_selectedTriggerType == TriggerType.schedule) {
       trigger = ScheduleTrigger(time: _selectedTime!);
     } else {
-      trigger =
-          SensorTrigger(sensorID: _selectedSensorId!, value: _triggerValue!);
+      trigger = SensorTrigger(
+        sensorID: _selectedSensorId!,
+        value: _triggerValue!,
+        operator: _selectedOperator!,
+      );
     }
 
     // Create conditions
@@ -340,6 +358,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
         return SensorCondition(
           sensorID: conditionData.id!,
           state: conditionData.state,
+          operator: conditionData.operator,
         );
       }
     }).toList();

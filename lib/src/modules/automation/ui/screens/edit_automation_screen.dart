@@ -32,6 +32,7 @@ class EditAutomationScreen extends StatefulWidget {
 class _EditAutomationScreenState extends State<EditAutomationScreen> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _nameController;
+  String? _selectedOperator;
 
   // Trigger
   late TriggerType _selectedTriggerType;
@@ -70,7 +71,6 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
 
   void _initializeTrigger() {
     final trigger = widget.automation.trigger;
-
     if (trigger is ScheduleTrigger) {
       _selectedTriggerType = TriggerType.schedule;
       _selectedTime = trigger.time;
@@ -78,6 +78,7 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
       _selectedTriggerType = TriggerType.sensor;
       _selectedSensorId = trigger.sensorID;
       _triggerValue = trigger.value;
+      _selectedOperator = trigger.operator; // إضافة هذا السطر
     }
   }
 
@@ -90,7 +91,9 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
       } else if (condition is SensorCondition) {
         return ConditionData(type: ConditionType.sensor)
           ..id = condition.sensorID
-          ..state = condition.state;
+          ..state = condition.state
+          ..operator =
+              condition.operator ?? '='; // Initialize operator with fallback
       }
       // Fallback
       return ConditionData(type: ConditionType.device);
@@ -225,6 +228,7 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
                 if (type == TriggerType.schedule) {
                   _selectedSensorId = null;
                   _triggerValue = null;
+                  _selectedOperator = null; // إضافة هذا السطر
                 } else {
                   _selectedTime = null;
                 }
@@ -237,6 +241,7 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
             selectedTime: _selectedTime,
             selectedSensorId: _selectedSensorId,
             triggerValue: _triggerValue,
+            selectedOperator: _selectedOperator, // إضافة هذا السطر
             onTimeSelected: (time) {
               setState(() {
                 _selectedTime = time;
@@ -250,6 +255,12 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
             onTriggerValueChanged: (value) {
               setState(() {
                 _triggerValue = value;
+              });
+            },
+            onOperatorChanged: (operator) {
+              // إضافة هذا الـ callback
+              setState(() {
+                _selectedOperator = operator;
               });
             },
           ),
@@ -279,6 +290,12 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
             onConditionStateChanged: (condition, state) {
               setState(() {
                 condition.state = state;
+              });
+            },
+            onConditionOperatorChanged: (condition, operator) {
+              // New callback
+              setState(() {
+                condition.operator = operator;
               });
             },
           ),
@@ -396,14 +413,59 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
     }
   }
 
+  void _saveAutomation() {
+    if (_formKey.currentState!.validate()) {
+      if (_actions.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(S.of(context).pleaseAddAtLeastOneAction),
+            backgroundColor: Colors.orange,
+          ),
+        );
+        return;
+      }
+
+      if (_selectedTriggerType == TriggerType.schedule &&
+          _selectedTime == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(S.of(context).pleaseSelectTimeForSchedule),
+            backgroundColor: Colors.orange,
+          ),
+        );
+        return;
+      }
+
+      if (_selectedTriggerType == TriggerType.sensor &&
+          (_selectedSensorId == null ||
+              _triggerValue == null ||
+              _selectedOperator == null)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(S.of(context).pleaseConfigureSensorTrigger),
+            backgroundColor: Colors.orange,
+          ),
+        );
+        return;
+      }
+
+      final automation = _createUpdatedAutomation();
+      AutomationCubit.get().updateAutomation(automation);
+    }
+  }
+
+// تحديث دالة _createUpdatedAutomation()
   Automation _createUpdatedAutomation() {
     // Create trigger
     Trigger trigger;
     if (_selectedTriggerType == TriggerType.schedule) {
       trigger = ScheduleTrigger(time: _selectedTime!);
     } else {
-      trigger =
-          SensorTrigger(sensorID: _selectedSensorId!, value: _triggerValue!);
+      trigger = SensorTrigger(
+        sensorID: _selectedSensorId!,
+        value: _triggerValue!,
+        operator: _selectedOperator!, // إضافة الـ operator
+      );
     }
 
     // Create conditions
@@ -417,6 +479,7 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
         return SensorCondition(
           sensorID: conditionData.id!,
           state: conditionData.state,
+          operator: conditionData.operator,
         );
       }
     }).toList();

@@ -128,6 +128,10 @@ class DashboardRepository {
     return await _remoteServices.deleteSensor(id);
   }
 
+  Future<Either<Exception, String>> getPaymentUrl() async {
+    return await _remoteServices.getPaymentUrl();
+  }
+
   void clearData() {
     lastCategories = [];
     lastRooms = [];

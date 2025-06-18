@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tarsheed/generated/l10n.dart';
+import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/widgets/appbar.dart';
+import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/auth/ui/widgets/card_item.dart';
 import 'package:tarsheed/src/modules/automation/ui/screens/all_automations_screen.dart';
+import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/devices/devices.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/screens/payment_webview.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/rooms_screen.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/sensors_screen.dart';
 
@@ -59,6 +63,41 @@ class DashBoardScreen extends StatelessWidget {
                   subtitle: S.of(context).manageYourRooms,
                   onTap: () {
                     context.push(RoomsScreen());
+                  },
+                ),
+                BlocConsumer<DashboardBloc, DashboardState>(
+                  listener: (context, state) {
+                    if (state is GetPaymentUrlErrorState) {
+                      ExceptionManager.showMessage(state.exception);
+                    }
+                    if (state is GetPaymentUrlSuccessState) {
+                      context.push(PaymentWebView(url: state.paymentUrl));
+                    }
+                  },
+                  buildWhen: (current, previous) {
+                    return current is GetPaymentUrlLoadingState ||
+                        current is GetPaymentUrlSuccessState ||
+                        current is GetPaymentUrlErrorState;
+                  },
+                  listenWhen: (current, previous) {
+                    return current is GetPaymentUrlErrorState ||
+                        current is GetPaymentUrlSuccessState;
+                  },
+                  builder: (context, state) {
+                    return state is GetSensorsLoadingState
+                        ? Center(
+                            child: CustomLoadingWidget(),
+                          )
+                        : BuildItem(
+                            icon: Icons.payments,
+                            title: S.of(context).payBills,
+                            subtitle: S.of(context).payBillsDescription,
+                            onTap: () {
+                              DashboardBloc.get().add(
+                                GetPaymentUrlEvent(),
+                              );
+                            },
+                          );
                   },
                 ),
               ],

@@ -254,13 +254,14 @@
   "pleaseConfigureAllDeviceActions" : "Please configure all device actions completely",
   "montlyUsage": "Monthly Usage",
   "count": "Count",
-
   "pleaseSelectState" : "Please select state",
   "pleaseSelectDevice" : "Please select device",
   "deviceState": "Device State",
   "pleaseEnterTitle": "Please enter title",
-  "pleaseEnterMessage": "Please enter message"
-
+  "pleaseEnterMessage": "Please enter message",
+  "payBills": "Pay Bills",
+  "payBillsDescription" : "Pay your utility bills directly through the app for convenience and efficiency.",
+  "operator": "Operator"
 }
 
 

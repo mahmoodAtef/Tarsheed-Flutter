@@ -167,6 +167,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deviceDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "تم حذف الجهاز بنجاح",
     ),
+    "deviceState": MessageLookupByLibrary.simpleMessage("حالة الجهاز"),
     "devices": MessageLookupByLibrary.simpleMessage("الأجهزة"),
     "devicesRunning": MessageLookupByLibrary.simpleMessage("أجهزة تعمل"),
     "didNotReceive": MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
@@ -323,6 +324,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "notificationTitle": MessageLookupByLibrary.simpleMessage("عنوان الإشعار"),
     "notifications": MessageLookupByLibrary.simpleMessage("الإشعارات"),
+    "operator": MessageLookupByLibrary.simpleMessage("المشغل"),
     "orContinueWith": MessageLookupByLibrary.simpleMessage("أو المتابعة عبر"),
     "originalPasswordNotProvided": MessageLookupByLibrary.simpleMessage(
       "لم يتم توفير كلمة المرور الأصلية",
@@ -358,6 +360,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordsDoNotMatch": MessageLookupByLibrary.simpleMessage(
       "كلمتا المرور غير متطابقتين",
     ),
+    "payBills": MessageLookupByLibrary.simpleMessage("دفع الفواتير"),
+    "payBillsDescription": MessageLookupByLibrary.simpleMessage(
+      "ادفع فواتير الخدمات مباشرة من خلال التطبيق للراحة والكفاءة.",
+    ),
     "pinNumber": MessageLookupByLibrary.simpleMessage("رقم المدخل"),
     "pinNumberRequired": MessageLookupByLibrary.simpleMessage(
       "من فضلك ادخل رقم المدخل",
@@ -371,8 +377,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "pleaseConfigureSensorTrigger": MessageLookupByLibrary.simpleMessage(
       "يرجى إعداد مُشغل المستشعر بالكامل",
     ),
+    "pleaseEnterMessage": MessageLookupByLibrary.simpleMessage(
+      "من فضلك أدخل الرسالة",
+    ),
+    "pleaseEnterTitle": MessageLookupByLibrary.simpleMessage(
+      "من فضلك أدخل العنوان",
+    ),
     "pleaseEnterVerificationCode": MessageLookupByLibrary.simpleMessage(
       "من فضلك أدخل رمز التحقق",
+    ),
+    "pleaseSelectDevice": MessageLookupByLibrary.simpleMessage(
+      "من فضلك اختر الجهاز",
+    ),
+    "pleaseSelectState": MessageLookupByLibrary.simpleMessage(
+      "من فضلك اختر الحالة",
     ),
     "pleaseSelectTimeForSchedule": MessageLookupByLibrary.simpleMessage(
       "يرجى تحديد وقت لتشغيل الأتمتة المجدولة",

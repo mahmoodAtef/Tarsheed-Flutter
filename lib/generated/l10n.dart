@@ -2164,6 +2164,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Pay Bills`
+  String get payBills {
+    return Intl.message('Pay Bills', name: 'payBills', desc: '', args: []);
+  }
+
+  /// `Pay your utility bills directly through the app for convenience and efficiency.`
+  String get payBillsDescription {
+    return Intl.message(
+      'Pay your utility bills directly through the app for convenience and efficiency.',
+      name: 'payBillsDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Operator`
+  String get operator {
+    return Intl.message('Operator', name: 'operator', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
