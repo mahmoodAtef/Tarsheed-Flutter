@@ -235,8 +235,6 @@
   "manageYourAutomations": "Create, edit, or delete automations to control your devices based on conditions",
   "manageYourRooms": "Add, edit, or delete rooms to organize your devices and sensors",
   "addSensor": "Add Sensor",
-
-
   "addRoom": "Add Room",
   "roomName": "Room Name",
   "roomDescription": "Room Description",
