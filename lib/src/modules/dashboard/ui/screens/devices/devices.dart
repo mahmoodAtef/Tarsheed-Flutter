@@ -34,7 +34,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
 
     // Only fetch devices if they haven't been loaded yet
     if (_devicesCubit.state is DevicesInitial) {
-      _devicesCubit.getDevices();
+      _devicesCubit.getDevices(refresh: false);
     }
   }
 
