@@ -74,17 +74,25 @@ class DashBoardScreen extends StatelessWidget {
                       context.push(PaymentWebView(url: state.paymentUrl));
                     }
                   },
-                  buildWhen: (current, previous) {
+                  buildWhen: (
+                    previous,
+                    current,
+                  ) {
                     return current is GetPaymentUrlLoadingState ||
                         current is GetPaymentUrlSuccessState ||
                         current is GetPaymentUrlErrorState;
                   },
-                  listenWhen: (current, previous) {
+                  listenWhen: (
+                    previous,
+                    current,
+                  ) {
                     return current is GetPaymentUrlErrorState ||
-                        current is GetPaymentUrlSuccessState;
+                        current is GetPaymentUrlSuccessState ||
+                        previous is GetPaymentUrlSuccessState ||
+                        previous is GetPaymentUrlErrorState;
                   },
                   builder: (context, state) {
-                    return state is GetSensorsLoadingState
+                    return state is GetPaymentUrlLoadingState
                         ? Center(
                             child: CustomLoadingWidget(),
                           )
