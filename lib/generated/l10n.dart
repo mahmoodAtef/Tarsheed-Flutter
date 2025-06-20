@@ -2184,6 +2184,81 @@ class S {
   String get operator {
     return Intl.message('Operator', name: 'operator', desc: '', args: []);
   }
+
+  /// `is required`
+  String get required {
+    return Intl.message('is required', name: 'required', desc: '', args: []);
+  }
+
+  /// `Password must be at least 8 characters`
+  String get passwordAtLeast {
+    return Intl.message(
+      'Password must be at least 8 characters',
+      name: 'passwordAtLeast',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Language`
+  String get selectLanguage {
+    return Intl.message(
+      'Select Language',
+      name: 'selectLanguage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `English`
+  String get english {
+    return Intl.message('English', name: 'english', desc: '', args: []);
+  }
+
+  /// `العربية`
+  String get arabic {
+    return Intl.message('العربية', name: 'arabic', desc: '', args: []);
+  }
+
+  /// `Signing out...`
+  String get signingOut {
+    return Intl.message(
+      'Signing out...',
+      name: 'signingOut',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deleting account...`
+  String get deletingAccount {
+    return Intl.message(
+      'Deleting account...',
+      name: 'deletingAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type 'DELETE' to confirm:`
+  String get deleteAccountConfirmationInstruction {
+    return Intl.message(
+      'Type \'DELETE\' to confirm:',
+      name: 'deleteAccountConfirmationInstruction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `DELETE`
+  String get deleteConfirmationWord {
+    return Intl.message(
+      'DELETE',
+      name: 'deleteConfirmationWord',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

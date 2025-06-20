@@ -61,6 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Already have an account?",
     ),
     "appName": MessageLookupByLibrary.simpleMessage("Tarsheed"),
+    "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
     "automationAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "Automation added successfully",
     ),
@@ -144,6 +145,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "currentTier": m0,
     "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteAccountConfirmationInstruction":
+        MessageLookupByLibrary.simpleMessage("Type \'DELETE\' to confirm:"),
     "deleteAccountMessage": MessageLookupByLibrary.simpleMessage(
       "Once you submit a request to delete data, there\'s a 72-hour window during which you can cancel the process. During this period, you can cancel your deletion request in your Intuit Account. After the window, you\'ll no longer be able to cancel the request, and we\'re unable to retrieve your data.",
     ),
@@ -156,11 +159,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteAutomationConfirmation": MessageLookupByLibrary.simpleMessage(
       "Are you sure you want to delete this automation?",
     ),
+    "deleteConfirmationWord": MessageLookupByLibrary.simpleMessage("DELETE"),
     "deleteDevice": MessageLookupByLibrary.simpleMessage("Delete Device"),
     "deleteMyAccount": MessageLookupByLibrary.simpleMessage(
       "Delete My Account",
     ),
     "deleteSensor": MessageLookupByLibrary.simpleMessage("Delete Device"),
+    "deletingAccount": MessageLookupByLibrary.simpleMessage(
+      "Deleting account...",
+    ),
     "description": MessageLookupByLibrary.simpleMessage("Description"),
     "descriptionRequired": MessageLookupByLibrary.simpleMessage(
       "Please enter description",
@@ -210,6 +217,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "energySavingMode": MessageLookupByLibrary.simpleMessage(
       "Energy Saving Mode",
     ),
+    "english": MessageLookupByLibrary.simpleMessage("English"),
     "enterAutomationName": MessageLookupByLibrary.simpleMessage(
       "Enter Automation Name",
     ),
@@ -336,6 +344,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Original password is not provided",
     ),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
+    "passwordAtLeast": MessageLookupByLibrary.simpleMessage(
+      "Password must be at least 8 characters",
+    ),
     "passwordDigitsRequired": MessageLookupByLibrary.simpleMessage(
       "Password must contain a digit",
     ),
@@ -415,6 +426,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateApplication": MessageLookupByLibrary.simpleMessage("Rate Application"),
     "register": MessageLookupByLibrary.simpleMessage("Register"),
     "reports": MessageLookupByLibrary.simpleMessage("Reports"),
+    "required": MessageLookupByLibrary.simpleMessage("is required"),
     "requiredField": MessageLookupByLibrary.simpleMessage(
       "This field is required",
     ),
@@ -442,6 +454,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "schedule": MessageLookupByLibrary.simpleMessage("Schedule"),
     "security": MessageLookupByLibrary.simpleMessage("Security"),
     "selectDevice": MessageLookupByLibrary.simpleMessage("Select Device"),
+    "selectLanguage": MessageLookupByLibrary.simpleMessage("Select Language"),
     "selectSensor": MessageLookupByLibrary.simpleMessage("Select Sensor"),
     "selectTime": MessageLookupByLibrary.simpleMessage("Select Time"),
     "sensor": MessageLookupByLibrary.simpleMessage("Sensor"),
@@ -461,6 +474,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
     "signOut": MessageLookupByLibrary.simpleMessage("Sign Out"),
     "signUp": MessageLookupByLibrary.simpleMessage("Sign up"),
+    "signingOut": MessageLookupByLibrary.simpleMessage("Signing out..."),
     "sleepMode": MessageLookupByLibrary.simpleMessage("Sleep Mode"),
     "softwareUpdate": MessageLookupByLibrary.simpleMessage("Software Update"),
     "state": MessageLookupByLibrary.simpleMessage("State"),

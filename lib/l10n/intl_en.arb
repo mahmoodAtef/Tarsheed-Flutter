@@ -261,7 +261,16 @@
   "pleaseEnterMessage": "Please enter message",
   "payBills": "Pay Bills",
   "payBillsDescription" : "Pay your utility bills directly through the app for convenience and efficiency.",
-  "operator": "Operator"
+  "operator": "Operator",
+  "required" : "is required",
+  "passwordAtLeast": "Password must be at least 8 characters",
+  "selectLanguage": "Select Language",
+  "english": "English",
+  "arabic": "العربية",
+  "signingOut": "Signing out...",
+  "deletingAccount": "Deleting account...",
+  "deleteAccountConfirmationInstruction": "Type 'DELETE' to confirm:",
+  "deleteConfirmationWord": "DELETE"
 }
 
 

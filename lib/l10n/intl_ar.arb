@@ -258,5 +258,13 @@
   "pleaseEnterMessage": "من فضلك أدخل الرسالة",
   "payBills": "دفع الفواتير",
   "payBillsDescription": "ادفع فواتير الخدمات مباشرة من خلال التطبيق للراحة والكفاءة.",
-  "operator": "المشغل"
+  "operator": "المشغل",
+  "selectLanguage": "اختر اللغة",
+  "english": "English",
+  "arabic": "العربية",
+  "signingOut": "جاري تسجيل الخروج...",
+  "deletingAccount": "جاري حذف الحساب...",
+  "deleteAccountWarning": "قولنا محدش يحذف الأكونت",
+  "deleteAccountConfirmationInstruction": "اكتب 'حذف' للتأكيد:",
+  "deleteConfirmationWord": "حذف"
 }

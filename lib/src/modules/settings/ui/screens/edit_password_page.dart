@@ -5,7 +5,7 @@ import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../../../core/error/exception_manager.dart';
-import '../../../../core/utils/color_manager.dart';
+import '../../../../core/utils/theme_manager.dart';
 import '../../../../core/widgets/appbar.dart';
 import '../../../auth/bloc/auth_bloc.dart';
 
@@ -17,99 +17,76 @@ class EditPasswordPage extends StatefulWidget {
 }
 
 class _EditPasswordPageState extends State<EditPasswordPage> {
-  final oldPasswordController = TextEditingController();
-  final newPasswordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
+  final _oldPasswordController = TextEditingController();
+  final _newPasswordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _oldPasswordController.dispose();
+    _newPasswordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is UpdatePasswordLoadingState) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (_) => const Center(child: CircularProgressIndicator()),
-          );
-        } else if (state is UpdatePasswordSuccessState) {
-          context.pop(); // close loading
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(S.of(context).passwordUpdatedSuccessfully),
-              backgroundColor: ColorManager.primary,
-            ),
-          );
-          Navigator.pop(context); // go back
-        } else if (state is AuthErrorState) {
-          ExceptionManager.showMessage(state.exception);
-        }
-      },
+      listener: _handleAuthStateChanges,
       child: Scaffold(
         appBar: CustomAppBar(text: S.of(context).editPassword),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
-          child: Column(
-            children: [
-              _buildPasswordField(
-                controller: oldPasswordController,
-                label: S.of(context).currentPassword,
-              ),
-              SizedBox(height: 16.h),
-              _buildPasswordField(
-                controller: newPasswordController,
-                label: S.of(context).newPassword,
-              ),
-              SizedBox(height: 16.h),
-              _buildPasswordField(
-                controller: confirmPasswordController,
-                label: S.of(context).confirmNewPassword,
-              ),
-              SizedBox(height: 32.h),
-              SizedBox(
-                width: double.infinity,
-                height: 50.h,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorManager.primary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                  ),
-                  onPressed: () {
-                    final oldPassword = oldPasswordController.text.trim();
-                    final newPassword = newPasswordController.text.trim();
-                    final confirmPassword =
-                        confirmPasswordController.text.trim();
+        body: _buildBody(theme),
+      ),
+    );
+  }
 
-                    if (newPassword != confirmPassword) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(S.of(context).passwordsDoNotMatch),
-                          backgroundColor: ColorManager.red,
-                        ),
-                      );
-                      return;
-                    }
+  void _handleAuthStateChanges(BuildContext context, AuthState state) {
+    if (state is UpdatePasswordLoadingState) {
+      _showLoadingDialog(context);
+    } else if (state is UpdatePasswordSuccessState) {
+      context.pop(); // close loading dialog
+      _showSuccessSnackBar(context);
+      Navigator.pop(context); // go back to previous screen
+    } else if (state is AuthErrorState) {
+      context.pop(); // close loading dialog if open
+      ExceptionManager.showMessage(state.exception);
+    }
+  }
 
-                    AuthBloc.instance.add(
-                      UpdatePasswordEvent(
-                        oldPassword: oldPassword,
-                        newPassword: newPassword,
-                      ),
-                    );
-                  },
-                  child: Text(
-                    S.of(context).updatePassword,
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+  Widget _buildBody(ThemeData theme) {
+    return SingleChildScrollView(
+      padding: EdgeInsets.symmetric(
+        horizontal: 20.w,
+        vertical: 30.h,
+      ),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _buildPasswordField(
+              controller: _oldPasswordController,
+              label: S.of(context).currentPassword,
+              validator: _validateCurrentPassword,
+            ),
+            SizedBox(height: 16.h),
+            _buildPasswordField(
+              controller: _newPasswordController,
+              label: S.of(context).newPassword,
+              validator: _validateNewPassword,
+            ),
+            SizedBox(height: 16.h),
+            _buildPasswordField(
+              controller: _confirmPasswordController,
+              label: S.of(context).confirmNewPassword,
+              validator: _validateConfirmPassword,
+            ),
+            SizedBox(height: 32.h),
+            _buildUpdateButton(theme),
+          ],
         ),
       ),
     );
@@ -118,20 +95,128 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
   Widget _buildPasswordField({
     required TextEditingController controller,
     required String label,
+    String? Function(String?)? validator,
   }) {
-    return TextField(
+    return TextFormField(
       controller: controller,
       obscureText: true,
+      style: Theme.of(context).textTheme.bodyLarge,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: ColorManager.darkGrey),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: ColorManager.grey),
-          borderRadius: BorderRadius.circular(10.r),
+      ),
+      validator: validator,
+    );
+  }
+
+  Widget _buildUpdateButton(ThemeData theme) {
+    return SizedBox(
+      height: 50.h,
+      child: ElevatedButton(
+        onPressed: _handleUpdatePassword,
+        child: Text(
+          S.of(context).updatePassword,
+          style: theme.textTheme.labelLarge?.copyWith(
+            color: theme.colorScheme.onPrimary,
+            fontWeight: FontWeight.w600,
+          ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: ColorManager.primary, width: 1.5.w),
-          borderRadius: BorderRadius.circular(10.r),
+      ),
+    );
+  }
+
+  void _handleUpdatePassword() {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    final oldPassword = _oldPasswordController.text.trim();
+    final newPassword = _newPasswordController.text.trim();
+    final confirmPassword = _confirmPasswordController.text.trim();
+
+    if (newPassword != confirmPassword) {
+      _showErrorSnackBar(
+        context,
+        S.of(context).passwordsDoNotMatch,
+      );
+      return;
+    }
+
+    AuthBloc.instance.add(
+      UpdatePasswordEvent(
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+      ),
+    );
+  }
+
+  // Validation methods
+  String? _validateCurrentPassword(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return S.of(context).currentPassword + ' ' + S.of(context).required;
+    }
+    return null;
+  }
+
+  String? _validateNewPassword(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return S.of(context).newPassword + ' ' + S.of(context).required;
+    }
+    if (value.length < 8) {
+      return S.of(context).passwordAtLeast;
+    }
+    return null;
+  }
+
+  String? _validateConfirmPassword(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return S.of(context).confirmNewPassword + ' ' + S.of(context).required;
+    }
+    if (value != _newPasswordController.text) {
+      return S.of(context).passwordsDoNotMatch;
+    }
+    return null;
+  }
+
+  // Helper methods for dialogs and snack bars
+  void _showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Center(
+        child: CircularProgressIndicator(
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+    );
+  }
+
+  void _showSuccessSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          S.of(context).passwordUpdatedSuccessfully,
+          style: Theme.of(context).snackBarTheme.contentTextStyle,
+        ),
+        backgroundColor: ThemeManager.statusColors['active'],
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+      ),
+    );
+  }
+
+  void _showErrorSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: Theme.of(context).snackBarTheme.contentTextStyle,
+        ),
+        backgroundColor: ThemeManager.statusColors['high'], // danger red
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
         ),
       ),
     );

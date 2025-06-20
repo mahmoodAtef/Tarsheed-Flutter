@@ -61,6 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "لديك حساب بالفعل؟",
     ),
     "appName": MessageLookupByLibrary.simpleMessage("ترشيد"),
+    "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
     "automationAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "تمت إضافة الأتمتة بنجاح",
     ),
@@ -142,6 +143,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "currentSavings": MessageLookupByLibrary.simpleMessage("توفيرك الحالي هو"),
     "currentTier": m0,
     "delete": MessageLookupByLibrary.simpleMessage("حذف"),
+    "deleteAccountConfirmationInstruction":
+        MessageLookupByLibrary.simpleMessage("اكتب \'حذف\' للتأكيد:"),
     "deleteAccountMessage": MessageLookupByLibrary.simpleMessage(
       "بمجرد تقديم طلب لحذف البيانات، سيكون لديك نافذة مدتها 72 ساعة يمكنك خلالها إلغاء العملية. خلال هذه الفترة، يمكنك إلغاء طلب الحذف في حسابك على Intuit. بعد مرور هذه الفترة، لن تتمكن من إلغاء الطلب، ولن نتمكن من استرجاع بياناتك.",
     ),
@@ -152,9 +155,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteAutomationConfirmation": MessageLookupByLibrary.simpleMessage(
       "هل أنت متأكد من أنك تريد حذف هذه الأتمتة؟",
     ),
+    "deleteConfirmationWord": MessageLookupByLibrary.simpleMessage("حذف"),
     "deleteDevice": MessageLookupByLibrary.simpleMessage(" حذف الجهاز"),
     "deleteMyAccount": MessageLookupByLibrary.simpleMessage("حذف حسابي"),
     "deleteSensor": MessageLookupByLibrary.simpleMessage("حذف المستشعر"),
+    "deletingAccount": MessageLookupByLibrary.simpleMessage(
+      "جاري حذف الحساب...",
+    ),
     "description": MessageLookupByLibrary.simpleMessage("الوصف"),
     "descriptionRequired": MessageLookupByLibrary.simpleMessage(
       "من فضلك ادخل الوصف",
@@ -200,6 +207,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "energySavingMode": MessageLookupByLibrary.simpleMessage(
       "وضع توفير الطاقة",
     ),
+    "english": MessageLookupByLibrary.simpleMessage("English"),
     "enterAutomationName": MessageLookupByLibrary.simpleMessage(
       "أدخل اسم الأتمتة",
     ),
@@ -434,6 +442,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "schedule": MessageLookupByLibrary.simpleMessage("جدولة"),
     "security": MessageLookupByLibrary.simpleMessage("الأمان"),
     "selectDevice": MessageLookupByLibrary.simpleMessage("اختر الجهاز"),
+    "selectLanguage": MessageLookupByLibrary.simpleMessage("اختر اللغة"),
     "selectSensor": MessageLookupByLibrary.simpleMessage("اختر المستشعر"),
     "selectTime": MessageLookupByLibrary.simpleMessage("اختر الوقت"),
     "sensor": MessageLookupByLibrary.simpleMessage("مستشعر"),
@@ -451,6 +460,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "signIn": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "signOut": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
     "signUp": MessageLookupByLibrary.simpleMessage("تسجيل حساب"),
+    "signingOut": MessageLookupByLibrary.simpleMessage("جاري تسجيل الخروج..."),
     "sleepMode": MessageLookupByLibrary.simpleMessage("وضع السكون"),
     "softwareUpdate": MessageLookupByLibrary.simpleMessage("تحديث النظام"),
     "state": MessageLookupByLibrary.simpleMessage("الحالة"),
