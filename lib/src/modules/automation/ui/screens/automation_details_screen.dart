@@ -5,7 +5,6 @@ import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/automation/cubit/automation_cubit.dart';
@@ -48,6 +47,8 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: DashboardBloc.get()),
@@ -58,15 +59,12 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
           _handleAutomationStateChanges(state);
         },
         child: Scaffold(
-          backgroundColor: Colors.grey.shade50,
+          backgroundColor: theme.colorScheme.background,
           appBar: AppBar(
             title: Text(
               _currentAutomation.name,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: theme.appBarTheme.titleTextStyle,
             ),
-            backgroundColor: ColorManager.white,
-            elevation: 1,
-            foregroundColor: Colors.black,
             actions: [
               IconButton(
                 onPressed: _editAutomation,
@@ -84,7 +82,7 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
                     value: 'delete',
                     child: Row(
                       children: [
-                        const Icon(Icons.delete, color: Colors.red),
+                        Icon(Icons.delete, color: theme.colorScheme.error),
                         SizedBox(width: 8.w),
                         Text(S.of(context).delete),
                       ],
@@ -156,18 +154,23 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
   }
 
   Widget _buildStatusCard(AutomationState state) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     bool isLoading =
         _isChangingStatus || state is ChangeAutomationStatusLoading;
+    final statusColor = _currentAutomation.isEnabled
+        ? theme.colorScheme.secondary
+        : theme.iconTheme.color!;
 
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: ColorManager.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: colorScheme.onSurface.withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 8,
             offset: const Offset(0, 2),
@@ -181,33 +184,25 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
               Container(
                 padding: EdgeInsets.all(12.w),
                 decoration: BoxDecoration(
-                  color: (_currentAutomation.isEnabled
-                          ? Colors.green
-                          : Colors.grey)
-                      .withOpacity(0.1),
+                  color: statusColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: isLoading
                     ? SizedBox(
-                        width: 24,
-                        height: 24,
+                        width: 24.w,
+                        height: 24.h,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            _currentAutomation.isEnabled
-                                ? Colors.green
-                                : Colors.grey,
-                          ),
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(statusColor),
                         ),
                       )
                     : Icon(
                         _currentAutomation.isEnabled
                             ? Icons.play_circle_filled
                             : Icons.pause_circle_filled,
-                        color: _currentAutomation.isEnabled
-                            ? Colors.green
-                            : Colors.grey,
-                        size: 24,
+                        color: statusColor,
+                        size: 24.sp,
                       ),
               ),
               SizedBox(width: 16.w),
@@ -217,10 +212,7 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
                   children: [
                     Text(
                       S.of(context).automationStatus,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.grey.shade600,
-                      ),
+                      style: theme.textTheme.bodySmall,
                     ),
                     Row(
                       children: [
@@ -228,23 +220,19 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
                           _currentAutomation.isEnabled
                               ? S.of(context).enabled
                               : S.of(context).disabled,
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
-                            color: _currentAutomation.isEnabled
-                                ? Colors.green
-                                : Colors.grey,
+                          style: theme.textTheme.headlineSmall?.copyWith(
+                            color: statusColor,
                           ),
                         ),
                         if (isLoading) ...[
                           SizedBox(width: 8.w),
                           SizedBox(
-                            width: 16,
-                            height: 16,
+                            width: 16.w,
+                            height: 16.h,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
                               valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.grey.shade400,
+                                theme.iconTheme.color!,
                               ),
                             ),
                           ),
@@ -258,7 +246,6 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
                 value: _currentAutomation.isEnabled,
                 onChanged:
                     isLoading ? null : (value) => _toggleAutomationStatus(),
-                activeColor: ColorManager.primary,
               ),
             ],
           ),
@@ -267,26 +254,26 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.1),
+                color: colorScheme.primary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8.r),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   SizedBox(
-                    width: 16,
-                    height: 16,
+                    width: 16.w,
+                    height: 16.h,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(colorScheme.primary),
                     ),
                   ),
                   SizedBox(width: 8.w),
                   Text(
                     S.of(context).updatingStatus,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: Colors.blue,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: colorScheme.primary,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -308,6 +295,9 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
   }
 
   Widget _buildTriggerCard() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     IconData icon;
     String title;
     String subtitle;
@@ -318,26 +308,26 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
       icon = Icons.schedule;
       title = S.of(context).schedule;
       subtitle = '${S.of(context).runAtSpecificTime}: ${scheduleTrigger.time}';
-      color = Colors.blue;
+      color = colorScheme.primary;
     } else if (_currentAutomation.trigger is SensorTrigger) {
       final sensorTrigger = _currentAutomation.trigger as SensorTrigger;
       icon = Icons.sensors;
       title = S.of(context).sensor;
       subtitle = '${S.of(context).sensorValue}: ${sensorTrigger.value}';
-      color = Colors.orange;
+      color = Color(0xFFFF9800); // Using warningOrange from theme
     } else {
       icon = Icons.help;
       title = S.of(context).unknown;
       subtitle = '';
-      color = Colors.grey;
+      color = theme.iconTheme.color!;
     }
 
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: ColorManager.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: colorScheme.outline),
       ),
       child: Row(
         children: [
@@ -347,7 +337,7 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
               color: color.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12.r),
             ),
-            child: Icon(icon, color: color, size: 24),
+            child: Icon(icon, color: color, size: 24.sp),
           ),
           SizedBox(width: 16.w),
           Expanded(
@@ -356,20 +346,15 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
-                    fontSize: 16.sp,
+                  style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
                   ),
                 ),
                 if (subtitle.isNotEmpty) ...[
                   SizedBox(height: 4.h),
                   Text(
                     subtitle,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: Colors.grey.shade600,
-                    ),
+                    style: theme.textTheme.bodySmall,
                   ),
                 ],
               ],
@@ -381,6 +366,9 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
   }
 
   Widget _buildConditionsSection() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     if (_currentAutomation.conditions.isEmpty) {
       return _buildSection(
         title: S.of(context).conditions,
@@ -388,20 +376,17 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
         child: Container(
           padding: EdgeInsets.all(20.w),
           decoration: BoxDecoration(
-            color: ColorManager.white,
+            color: colorScheme.surface,
             borderRadius: BorderRadius.circular(12.r),
-            border: Border.all(color: Colors.grey.shade300),
+            border: Border.all(color: colorScheme.outline),
           ),
           child: Row(
             children: [
-              Icon(Icons.info_outline, color: Colors.grey.shade600),
+              Icon(Icons.info_outline, color: theme.iconTheme.color),
               SizedBox(width: 12.w),
               Text(
                 S.of(context).noConditionsSet,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Colors.grey.shade600,
-                ),
+                style: theme.textTheme.bodyMedium,
               ),
             ],
           ),
@@ -421,6 +406,9 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
   }
 
   Widget _buildConditionCard(Condition condition) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     IconData icon;
     String title;
     String subtitle;
@@ -431,26 +419,26 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
       title = S.of(context).deviceCondition;
       subtitle =
           '${S.of(context).state}: ${condition.state == 1 ? S.of(context).turnOn : S.of(context).turnOff}';
-      color = Colors.purple;
+      color = const Color(0xFF9C27B0); // Purple color
     } else if (condition is SensorCondition) {
       icon = Icons.sensors;
       title = S.of(context).sensorCondition;
       subtitle = '${S.of(context).value}: ${condition.state}';
-      color = Colors.teal;
+      color = const Color(0xFF009688); // Teal color
     } else {
       icon = Icons.help;
       title = S.of(context).unknown;
       subtitle = '';
-      color = Colors.grey;
+      color = theme.iconTheme.color!;
     }
 
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: ColorManager.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: colorScheme.outline),
       ),
       child: Row(
         children: [
@@ -460,7 +448,7 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
               color: color.withOpacity(0.1),
               borderRadius: BorderRadius.circular(10.r),
             ),
-            child: Icon(icon, color: color, size: 20),
+            child: Icon(icon, color: color, size: 20.sp),
           ),
           SizedBox(width: 16.w),
           Expanded(
@@ -469,20 +457,15 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
-                    fontSize: 14.sp,
+                  style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: Colors.black87,
                   ),
                 ),
                 if (subtitle.isNotEmpty) ...[
                   SizedBox(height: 2.h),
                   Text(
                     subtitle,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: Colors.grey.shade600,
-                    ),
+                    style: theme.textTheme.labelSmall,
                   ),
                 ],
               ],
@@ -506,6 +489,9 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
   }
 
   Widget _buildActionCard(AutomationAction action) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     IconData icon;
     String title;
     String subtitle;
@@ -516,26 +502,26 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
       title = S.of(context).deviceAction;
       subtitle =
           '${S.of(context).state}: ${action.state == "turn_on" ? S.of(context).turnOn : S.of(context).turnOff}';
-      color = Colors.green;
+      color = colorScheme.secondary;
     } else if (action is NotificationAction) {
       icon = Icons.notifications;
       title = S.of(context).notificationAction;
       subtitle = '${action.title}: ${action.message}';
-      color = Colors.indigo;
+      color = const Color(0xFF3F51B5); // Indigo color
     } else {
       icon = Icons.help;
       title = S.of(context).unknown;
       subtitle = '';
-      color = Colors.grey;
+      color = theme.iconTheme.color!;
     }
 
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: ColorManager.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: colorScheme.outline),
       ),
       child: Row(
         children: [
@@ -545,7 +531,7 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
               color: color.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12.r),
             ),
-            child: Icon(icon, color: color, size: 24),
+            child: Icon(icon, color: color, size: 24.sp),
           ),
           SizedBox(width: 16.w),
           Expanded(
@@ -554,20 +540,15 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
-                    fontSize: 16.sp,
+                  style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
                   ),
                 ),
                 if (subtitle.isNotEmpty) ...[
                   SizedBox(height: 4.h),
                   Text(
                     subtitle,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: Colors.grey.shade600,
-                    ),
+                    style: theme.textTheme.bodyMedium,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -585,25 +566,20 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
     String? subtitle,
     required Widget child,
   }) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
+          style: theme.textTheme.headlineMedium,
         ),
         if (subtitle != null) ...[
           SizedBox(height: 4.h),
           Text(
             subtitle,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.grey.shade600,
-            ),
+            style: theme.textTheme.bodyMedium,
           ),
         ],
         SizedBox(height: 16.h),
@@ -627,6 +603,8 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
   }
 
   void _showDeleteDialog() {
+    final theme = Theme.of(context);
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -644,7 +622,7 @@ class _AutomationDetailsScreenState extends State<AutomationDetailsScreen> {
             },
             child: Text(
               S.of(context).delete,
-              style: const TextStyle(color: Colors.red),
+              style: TextStyle(color: theme.colorScheme.error),
             ),
           ),
         ],

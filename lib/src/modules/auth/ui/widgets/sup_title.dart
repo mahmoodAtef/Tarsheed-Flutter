@@ -1,10 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
 
 class SupTitle extends StatelessWidget {
-  const SupTitle({required this.text2, this.width, this.fontWeight, this.size});
+  const SupTitle({
+    super.key,
+    required this.text2,
+    this.width,
+    this.fontWeight,
+    this.size,
+  });
 
   final String text2;
   final double? width;
@@ -13,6 +17,8 @@ class SupTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Center(
       child: Container(
         alignment: Alignment.center,
@@ -21,9 +27,9 @@ class SupTitle extends StatelessWidget {
         child: Text(
           text2,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: theme.textTheme.headlineMedium?.copyWith(
             fontSize: size ?? 14.sp,
-            color: ColorManager.black,
+            color: theme.colorScheme.onBackground,
             fontWeight: fontWeight ?? FontWeight.w500,
           ),
         ),

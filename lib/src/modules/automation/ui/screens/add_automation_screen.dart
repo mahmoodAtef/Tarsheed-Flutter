@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/automation/cubit/automation_cubit.dart';
@@ -57,6 +56,8 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: AutomationCubit.get()),
@@ -64,27 +65,12 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
         BlocProvider.value(value: DevicesCubit.get()),
       ],
       child: Scaffold(
-        backgroundColor: Colors.grey.shade50,
-        appBar: AppBar(
-          title: Text(
-            S.of(context).addNewAutomation,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: ColorManager.white,
-          elevation: 1,
-          foregroundColor: Colors.black,
-        ),
+        backgroundColor: theme.colorScheme.background,
+        appBar: _buildAppBar(theme),
         body: ConnectionWidget(
           onRetry: _loadInitialData,
           child: BlocListener<AutomationCubit, AutomationState>(
-            listener: (context, state) {
-              if (state is AddAutomationSuccess) {
-                showToast(S.of(context).automationAddedSuccessfully);
-                context.pop();
-              } else if (state is AddAutomationError) {
-                ExceptionManager.showMessage(state.exception);
-              }
-            },
+            listener: _handleAutomationStateChange,
             child: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -92,15 +78,15 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildNameSection(),
+                    _buildNameSection(theme),
                     SizedBox(height: 24.h),
-                    _buildTriggerSection(),
+                    _buildTriggerSection(theme),
                     SizedBox(height: 24.h),
-                    _buildConditionsSection(),
+                    _buildConditionsSection(theme),
                     SizedBox(height: 24.h),
-                    _buildActionsSection(),
+                    _buildActionsSection(theme),
                     SizedBox(height: 32.h),
-                    _buildSaveButton(),
+                    _buildSaveButton(theme),
                   ],
                 ),
               ),
@@ -111,24 +97,56 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
     );
   }
 
-  Widget _buildNameSection() {
+  PreferredSizeWidget _buildAppBar(ThemeData theme) {
+    return AppBar(
+      title: Text(
+        S.of(context).addNewAutomation,
+        style: theme.appBarTheme.titleTextStyle?.copyWith(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      backgroundColor: theme.appBarTheme.backgroundColor,
+      elevation: theme.appBarTheme.elevation,
+      foregroundColor: theme.appBarTheme.foregroundColor,
+    );
+  }
+
+  void _handleAutomationStateChange(
+      BuildContext context, AutomationState state) {
+    if (state is AddAutomationSuccess) {
+      showToast(S.of(context).automationAddedSuccessfully);
+      context.pop();
+    } else if (state is AddAutomationError) {
+      ExceptionManager.showMessage(state.exception);
+    }
+  }
+
+  Widget _buildNameSection(ThemeData theme) {
     return AutomationSection(
       title: S.of(context).automationName,
       child: TextFormField(
         controller: _nameController,
+        style: theme.textTheme.bodyLarge,
         decoration: InputDecoration(
           hintText: S.of(context).enterAutomationName,
-          filled: true,
-          fillColor: ColorManager.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
+          hintStyle: theme.inputDecorationTheme.hintStyle,
+          filled: theme.inputDecorationTheme.filled,
+          fillColor: theme.inputDecorationTheme.fillColor,
+          border: theme.inputDecorationTheme.border,
+          enabledBorder: theme.inputDecorationTheme.enabledBorder,
+          focusedBorder: theme.inputDecorationTheme.focusedBorder,
+          errorBorder: theme.inputDecorationTheme.errorBorder,
+          focusedErrorBorder: theme.inputDecorationTheme.focusedErrorBorder,
+          contentPadding: theme.inputDecorationTheme.contentPadding,
+          prefixIcon: Icon(
+            Icons.label_outline,
+            color: theme.iconTheme.color,
+            size: theme.iconTheme.size,
           ),
-          prefixIcon: const Icon(Icons.label_outline),
         ),
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return S.of(context).enterAutomationName;
+            return S.of(context).automationNameRequired;
           }
           return null;
         },
@@ -136,7 +154,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
     );
   }
 
-  Widget _buildTriggerSection() {
+  Widget _buildTriggerSection(ThemeData theme) {
     return AutomationSection(
       title: S.of(context).trigger,
       subtitle: S.of(context).whenShouldAutomationRun,
@@ -144,18 +162,7 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
         children: [
           TriggerTypeSelector(
             selectedTriggerType: _selectedTriggerType,
-            onTriggerTypeChanged: (type) {
-              setState(() {
-                _selectedTriggerType = type;
-                if (type == TriggerType.schedule) {
-                  _selectedSensorId = null;
-                  _triggerValue = null;
-                  _selectedOperator = null;
-                } else {
-                  _selectedTime = null;
-                }
-              });
-            },
+            onTriggerTypeChanged: _handleTriggerTypeChange,
           ),
           SizedBox(height: 16.h),
           TriggerDetails(
@@ -164,122 +171,62 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
             selectedSensorId: _selectedSensorId,
             triggerValue: _triggerValue,
             selectedOperator: _selectedOperator,
-            onTimeSelected: (time) {
-              setState(() {
-                _selectedTime = time;
-              });
-            },
-            onSensorSelected: (sensorId) {
-              setState(() {
-                _selectedSensorId = sensorId;
-              });
-            },
-            onTriggerValueChanged: (value) {
-              setState(() {
-                _triggerValue = value;
-              });
-            },
-            onOperatorChanged: (operator) {
-              setState(() {
-                _selectedOperator = operator;
-              });
-            },
+            onTimeSelected: _handleTimeSelection,
+            onSensorSelected: _handleSensorSelection,
+            onTriggerValueChanged: _handleTriggerValueChange,
+            onOperatorChanged: _handleOperatorChange,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildConditionsSection() {
+  Widget _buildConditionsSection(ThemeData theme) {
     return AutomationSection(
       title: S.of(context).conditionsOptional,
-      subtitle: S.of(context).additionalConditions,
+      subtitle: S.of(context).additionalConditionsDescription,
       child: Column(
         children: [
           ConditionsList(
             conditions: _conditions,
-            onDeleteCondition: (condition) {
-              setState(() {
-                _conditions.remove(condition);
-              });
-            },
-            onConditionIdChanged: (condition, id) {
-              setState(() {
-                condition.id = id;
-              });
-            },
-            onConditionStateChanged: (condition, state) {
-              setState(() {
-                condition.state = state;
-              });
-            },
-            onConditionOperatorChanged: (condition, operator) {
-              setState(() {
-                condition.operator = operator;
-              });
-            },
+            onDeleteCondition: _handleDeleteCondition,
+            onConditionIdChanged: _handleConditionIdChange,
+            onConditionStateChanged: _handleConditionStateChange,
+            onConditionOperatorChanged: _handleConditionOperatorChange,
           ),
           AddConditionButtons(
-            onAddDeviceCondition: () => setState(() {
-              _conditions.add(ConditionData(type: ConditionType.device));
-            }),
-            onAddSensorCondition: () => setState(() {
-              _conditions.add(ConditionData(type: ConditionType.sensor));
-            }),
+            onAddDeviceCondition: _handleAddDeviceCondition,
+            onAddSensorCondition: _handleAddSensorCondition,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildActionsSection() {
+  Widget _buildActionsSection(ThemeData theme) {
     return AutomationSection(
       title: S.of(context).actions,
-      subtitle: S.of(context).whatShouldHappen,
+      subtitle: S.of(context).whatShouldHappenDescription,
       child: Column(
         children: [
           ActionsList(
             actions: _actions,
-            onDeleteAction: (action) {
-              setState(() {
-                _actions.remove(action);
-              });
-            },
-            onDeviceIdChanged: (action, value) {
-              setState(() {
-                action.deviceId = value;
-              });
-            },
-            onStateChanged: (action, value) {
-              setState(() {
-                action.state = value;
-              });
-            },
-            onTitleChanged: (action, value) {
-              setState(() {
-                action.title = value;
-              });
-            },
-            onMessageChanged: (action, value) {
-              setState(() {
-                action.message = value;
-              });
-            },
+            onDeleteAction: _handleDeleteAction,
+            onDeviceIdChanged: _handleActionDeviceIdChange,
+            onStateChanged: _handleActionStateChange,
+            onTitleChanged: _handleActionTitleChange,
+            onMessageChanged: _handleActionMessageChange,
           ),
           AddActionButtons(
-            onAddDeviceAction: () => setState(() {
-              _actions.add(ActionData(type: ActionType.device));
-            }),
-            onAddNotificationAction: () => setState(() {
-              _actions.add(ActionData(type: ActionType.notification));
-            }),
+            onAddDeviceAction: _handleAddDeviceAction,
+            onAddNotificationAction: _handleAddNotificationAction,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSaveButton() {
+  Widget _buildSaveButton(ThemeData theme) {
     return BlocBuilder<AutomationCubit, AutomationState>(
       builder: (context, state) {
         final isLoading = state is AddAutomationLoading;
@@ -293,45 +240,171 @@ class _AddAutomationScreenState extends State<AddAutomationScreen> {
     );
   }
 
+  // Event Handlers
+  void _handleTriggerTypeChange(TriggerType type) {
+    setState(() {
+      _selectedTriggerType = type;
+      if (type == TriggerType.schedule) {
+        _selectedSensorId = null;
+        _triggerValue = null;
+        _selectedOperator = null;
+      } else {
+        _selectedTime = null;
+      }
+    });
+  }
+
+  void _handleTimeSelection(String? time) {
+    setState(() {
+      _selectedTime = time;
+    });
+  }
+
+  void _handleSensorSelection(String? sensorId) {
+    setState(() {
+      _selectedSensorId = sensorId;
+    });
+  }
+
+  void _handleTriggerValueChange(int? value) {
+    setState(() {
+      _triggerValue = value;
+    });
+  }
+
+  void _handleOperatorChange(String? operator) {
+    setState(() {
+      _selectedOperator = operator;
+    });
+  }
+
+  void _handleDeleteCondition(ConditionData condition) {
+    setState(() {
+      _conditions.remove(condition);
+    });
+  }
+
+  void _handleConditionIdChange(ConditionData condition, String? id) {
+    setState(() {
+      condition.id = id;
+    });
+  }
+
+  void _handleConditionStateChange(ConditionData condition, dynamic state) {
+    setState(() {
+      condition.state = state;
+    });
+  }
+
+  void _handleConditionOperatorChange(
+      ConditionData condition, String operator) {
+    setState(() {
+      condition.operator = operator;
+    });
+  }
+
+  void _handleAddDeviceCondition() {
+    setState(() {
+      _conditions.add(ConditionData(type: ConditionType.device));
+    });
+  }
+
+  void _handleAddSensorCondition() {
+    setState(() {
+      _conditions.add(ConditionData(type: ConditionType.sensor));
+    });
+  }
+
+  void _handleDeleteAction(ActionData action) {
+    setState(() {
+      _actions.remove(action);
+    });
+  }
+
+  void _handleActionDeviceIdChange(ActionData action, String? value) {
+    setState(() {
+      action.deviceId = value;
+    });
+  }
+
+  void _handleActionStateChange(ActionData action, dynamic value) {
+    setState(() {
+      action.state = value;
+    });
+  }
+
+  void _handleActionTitleChange(ActionData action, String? value) {
+    setState(() {
+      action.title = value;
+    });
+  }
+
+  void _handleActionMessageChange(ActionData action, String? value) {
+    setState(() {
+      action.message = value;
+    });
+  }
+
+  void _handleAddDeviceAction() {
+    setState(() {
+      _actions.add(ActionData(type: ActionType.device));
+    });
+  }
+
+  void _handleAddNotificationAction() {
+    setState(() {
+      _actions.add(ActionData(type: ActionType.notification));
+    });
+  }
+
   void _saveAutomation() {
-    if (_formKey.currentState!.validate()) {
-      if (_actions.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(S.of(context).pleaseAddAtLeastOneAction),
-            backgroundColor: Colors.orange,
-          ),
-        );
-        return;
-      }
+    if (!_formKey.currentState!.validate()) return;
 
-      if (_selectedTriggerType == TriggerType.schedule &&
-          _selectedTime == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(S.of(context).pleaseSelectTimeForSchedule),
-            backgroundColor: Colors.orange,
-          ),
-        );
-        return;
-      }
+    final theme = Theme.of(context);
 
-      if (_selectedTriggerType == TriggerType.sensor &&
-          (_selectedSensorId == null ||
-              _triggerValue == null ||
-              _selectedOperator == null)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(S.of(context).pleaseConfigureSensorTrigger),
-            backgroundColor: Colors.orange,
-          ),
-        );
-        return;
-      }
-
-      final automation = _createAutomation();
-      AutomationCubit.get().addAutomation(automation);
+    if (_actions.isEmpty) {
+      _showValidationSnackBar(
+        S.of(context).pleaseAddAtLeastOneAction,
+        theme.colorScheme.secondary,
+      );
+      return;
     }
+
+    if (_selectedTriggerType == TriggerType.schedule && _selectedTime == null) {
+      _showValidationSnackBar(
+        S.of(context).pleaseSelectTimeForSchedule,
+        theme.colorScheme.secondary,
+      );
+      return;
+    }
+
+    if (_selectedTriggerType == TriggerType.sensor &&
+        (_selectedSensorId == null ||
+            _triggerValue == null ||
+            _selectedOperator == null)) {
+      _showValidationSnackBar(
+        S.of(context).pleaseConfigureSensorTrigger,
+        theme.colorScheme.secondary,
+      );
+      return;
+    }
+
+    final automation = _createAutomation();
+    AutomationCubit.get().addAutomation(automation);
+  }
+
+  void _showValidationSnackBar(String message, Color backgroundColor) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: Theme.of(context).snackBarTheme.contentTextStyle,
+        ),
+        backgroundColor: backgroundColor,
+        behavior: Theme.of(context).snackBarTheme.behavior,
+        shape: Theme.of(context).snackBarTheme.shape,
+      ),
+    );
   }
 
   Automation _createAutomation() {

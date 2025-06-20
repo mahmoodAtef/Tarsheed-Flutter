@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
 
 class FilterTabsRow extends StatelessWidget {
   final int selectedTabIndex;
@@ -14,12 +14,14 @@ class FilterTabsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
-      height: 40,
-      margin: const EdgeInsets.symmetric(horizontal: 12),
+      height: 40.h,
+      margin: EdgeInsets.symmetric(horizontal: 12.w),
       decoration: BoxDecoration(
-        color: ColorManager.grey300,
-        borderRadius: BorderRadius.circular(20),
+        color: theme.colorScheme.outline.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(20.r),
       ),
       child: Row(
         children: [
@@ -32,6 +34,7 @@ class FilterTabsRow extends StatelessWidget {
   }
 
   Widget _buildTab(BuildContext context, String title, int index) {
+    final theme = Theme.of(context);
     final isSelected = selectedTabIndex == index;
 
     return Expanded(
@@ -39,15 +42,18 @@ class FilterTabsRow extends StatelessWidget {
         onTap: () => onTabSelected(index),
         child: Container(
           decoration: BoxDecoration(
-            color: isSelected ? ColorManager.primary : Colors.transparent,
-            borderRadius: BorderRadius.circular(20),
+            color: isSelected ? theme.colorScheme.primary : Colors.transparent,
+            borderRadius: BorderRadius.circular(20.r),
           ),
           child: Center(
             child: Text(
               title,
-              style: TextStyle(
-                color: isSelected ? Colors.white : ColorManager.darkGrey,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: isSelected
+                    ? theme.colorScheme.onPrimary
+                    : theme.colorScheme.onSurface.withOpacity(0.7),
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                fontSize: 12.sp,
               ),
             ),
           ),

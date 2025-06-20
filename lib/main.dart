@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -58,8 +59,26 @@ class Tarsheed extends StatelessWidget {
           child: BlocBuilder<SettingsCubit, SettingsState>(
             buildWhen: (previous, current) =>
                 current is ChangeLanguageSuccessState ||
+                current is ChangeThemeSuccessState ||
+                current is SettingsLoadedState ||
                 current is SettingsInitial,
             builder: (context, state) {
+              final cubit = SettingsCubit.get();
+              bool isDarkMode = false;
+
+              if (state is ChangeThemeSuccessState) {
+                isDarkMode = state.isDarkMode;
+              } else if (state is SettingsLoadedState) {
+                isDarkMode = state.isDarkMode;
+              } else {
+                isDarkMode = cubit.isDarkMode;
+              }
+              SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+                systemNavigationBarColor:
+                    isDarkMode ? Colors.black : Colors.white,
+                systemNavigationBarIconBrightness:
+                    isDarkMode ? Brightness.light : Brightness.dark,
+              ));
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
                 title: LocalizationManager.getAppTitle(),
@@ -71,7 +90,9 @@ class Tarsheed extends StatelessWidget {
                   GlobalCupertinoLocalizations.delegate,
                 ],
                 supportedLocales: S.delegate.supportedLocales,
-                theme: ThemeManager.lightTheme,
+                theme: isDarkMode
+                    ? ThemeManager.darkTheme
+                    : ThemeManager.lightTheme,
                 home: SplashScreen(),
               );
             },

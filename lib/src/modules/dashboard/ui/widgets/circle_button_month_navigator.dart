@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CircularIconButton extends StatelessWidget {
   final IconData icon;
@@ -13,15 +13,21 @@ class CircularIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
-      width: 48,
-      height: 48,
-      decoration: const BoxDecoration(
-        color: Color(0xFFF3FBFF),
+      width: 48.w,
+      height: 48.h,
+      decoration: BoxDecoration(
+        color: theme.colorScheme.primary.withOpacity(0.1),
         shape: BoxShape.circle,
       ),
       child: IconButton(
-        icon: Icon(icon, color: ColorManager.primary, size: 28),
+        icon: Icon(
+          icon,
+          color: theme.colorScheme.primary,
+          size: 28.sp,
+        ),
         onPressed: onPressed,
         padding: EdgeInsets.zero,
       ),

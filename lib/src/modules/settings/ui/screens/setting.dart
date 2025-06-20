@@ -30,10 +30,7 @@ class SettingPage extends StatelessWidget {
       backgroundColor: theme.scaffoldBackgroundColor,
       body: Column(
         children: [
-          // Fixed AppBar at the top
           CustomAppBar(text: S.of(context).settings, withBackButton: false),
-
-          // Scrollable content
           Expanded(
             child: BlocListener<SettingsCubit, SettingsState>(
               listener: (context, state) {
@@ -55,6 +52,10 @@ class SettingPage extends StatelessWidget {
                     // Language Selection Section
                     _buildLanguageSection(
                         context, theme, textTheme, colorScheme),
+
+                    SizedBox(height: 16.h),
+
+                    // Theme Selection Section
 
                     SizedBox(height: 24.h),
 
@@ -101,51 +102,115 @@ class SettingPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 12.h),
-                Theme(
-                  data: ThemeData(
-                      inputDecorationTheme: theme.inputDecorationTheme.copyWith(
+                DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 16.w,
                       vertical: 12.h,
                     ),
-                  )),
-                  child: DropdownButtonFormField<String>(
-                    value: currentLang,
-                    hint: Text(
-                      S.of(context).selectLanguage,
-                    ),
-                    dropdownColor: theme.cardTheme.color,
-                    style: textTheme.bodyLarge,
-                    items: [
-                      DropdownMenuItem(
-                        value: 'en',
-                        child: Text(
-                          S.of(context).english,
-                          style: textTheme.bodyLarge,
-                        ),
+                  ),
+                  value: currentLang,
+                  hint: Text(
+                    S.of(context).selectLanguage,
+                  ),
+                  dropdownColor: theme.cardTheme.color,
+                  style: textTheme.bodyLarge,
+                  items: [
+                    DropdownMenuItem(
+                      value: 'en',
+                      child: Text(
+                        S.of(context).english,
+                        style: textTheme.bodyLarge,
                       ),
-                      DropdownMenuItem(
-                        value: 'ar',
-                        child: Text(
-                          S.of(context).arabic,
-                          style: textTheme.bodyLarge,
-                        ),
-                      ),
-                    ],
-                    onChanged: (value) {
-                      if (value != null && value != currentLang) {
-                        cubit.changeLanguage(value);
-                      }
-                    },
-                    icon: Icon(
-                      Icons.keyboard_arrow_down,
-                      color: colorScheme.onSurface.withOpacity(0.6),
                     ),
+                    DropdownMenuItem(
+                      value: 'ar',
+                      child: Text(
+                        S.of(context).arabic,
+                        style: textTheme.bodyLarge,
+                      ),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    if (value != null && value != currentLang) {
+                      cubit.changeLanguage(value);
+                    }
+                  },
+                  icon: Icon(
+                    Icons.keyboard_arrow_down,
+                    color: colorScheme.onSurface.withOpacity(0.6),
                   ),
                 ),
+                SizedBox(),
+                SizedBox(
+                  height: 20.h,
+                ),
+                _buildThemeOption(context, theme, textTheme, colorScheme),
               ],
             ),
           ),
+        );
+      },
+    );
+  }
+
+  Widget _buildThemeOption(
+    BuildContext context,
+    ThemeData theme,
+    TextTheme textTheme,
+    ColorScheme colorScheme,
+  ) {
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      builder: (context, state) {
+        final cubit = SettingsCubit.get();
+        bool isDarkMode = cubit.isDarkMode;
+
+        if (state is ChangeThemeSuccessState) {
+          isDarkMode = state.isDarkMode;
+        } else if (state is SettingsLoadedState) {
+          isDarkMode = state.isDarkMode;
+        }
+
+        return Row(
+          children: [
+            Icon(
+              isDarkMode ? Icons.dark_mode : Icons.light_mode,
+              color: colorScheme.onSurface,
+              size: 24.sp,
+            ),
+            SizedBox(width: 16.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    S.of(context).theme,
+                    style: textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    isDarkMode
+                        ? S.of(context).darkMode
+                        : S.of(context).lightMode,
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurface.withOpacity(0.7),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Switch(
+              value: isDarkMode,
+              onChanged: (value) {
+                cubit.toggleTheme();
+              },
+              activeColor: colorScheme.primary,
+              inactiveThumbColor: colorScheme.onSurface.withOpacity(0.6),
+              inactiveTrackColor: colorScheme.onSurface.withOpacity(0.3),
+            ),
+          ],
         );
       },
     );

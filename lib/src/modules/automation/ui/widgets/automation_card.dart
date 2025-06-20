@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/automation/data/models/action/action.dart';
 import 'package:tarsheed/src/modules/automation/data/models/automation.dart';
 import 'package:tarsheed/src/modules/automation/data/models/trigger/trigger.dart';
@@ -24,15 +23,18 @@ class AutomationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Card(
-      elevation: 2,
+      elevation: theme.cardTheme.elevation ?? 2,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.r),
         side: BorderSide(
           color: isEnabled
-              ? ColorManager.primary.withOpacity(0.2)
-              : Colors.grey.withOpacity(0.2),
+              ? colorScheme.primary.withOpacity(0.2)
+              : colorScheme.outline.withOpacity(0.2),
           width: 1,
         ),
       ),
@@ -44,7 +46,9 @@ class AutomationCard extends StatelessWidget {
           padding: EdgeInsets.all(16.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16.r),
-            color: isEnabled ? Colors.white : Colors.grey.shade50,
+            color: isEnabled
+                ? colorScheme.surface
+                : colorScheme.surface.withOpacity(0.5),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,15 +69,19 @@ class AutomationCard extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Row(
       children: [
         Expanded(
           child: Text(
             automation.name,
-            style: TextStyle(
-              fontSize: 16.sp,
+            style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
-              color: isEnabled ? Colors.black87 : Colors.grey.shade600,
+              color: isEnabled
+                  ? colorScheme.onSurface
+                  : colorScheme.onSurface.withOpacity(0.6),
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -92,17 +100,26 @@ class AutomationCard extends StatelessWidget {
               value: 'delete',
               child: Row(
                 children: [
-                  const Icon(Icons.delete, color: Colors.red, size: 20),
+                  Icon(
+                    Icons.delete,
+                    color: colorScheme.error,
+                    size: 20.sp,
+                  ),
                   SizedBox(width: 8.w),
-                  Text(S.of(context).delete),
+                  Text(
+                    S.of(context).delete,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.error,
+                    ),
+                  ),
                 ],
               ),
             ),
           ],
           child: Icon(
             Icons.more_vert,
-            color: Colors.grey.shade600,
-            size: 20,
+            color: colorScheme.onSurface.withOpacity(0.6),
+            size: 20.sp,
           ),
         ),
       ],
@@ -110,26 +127,32 @@ class AutomationCard extends StatelessWidget {
   }
 
   Widget _buildTriggerInfo(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     String triggerText = '';
     IconData triggerIcon = Icons.schedule;
-    Color triggerColor = ColorManager.primary;
+    Color triggerColor = colorScheme.primary;
 
     if (automation.trigger is ScheduleTrigger) {
       final scheduleTrigger = automation.trigger as ScheduleTrigger;
       triggerText = '${S.of(context).schedule}: ${scheduleTrigger.time}';
       triggerIcon = Icons.schedule;
-      triggerColor = ColorManager.primary;
+      triggerColor = colorScheme.primary;
     } else if (automation.trigger is SensorTrigger) {
       final sensorTrigger = automation.trigger as SensorTrigger;
       triggerText = '${S.of(context).sensor}: ${sensorTrigger.value}';
       triggerIcon = Icons.sensors;
-      triggerColor = Colors.orange;
+      triggerColor = colorScheme.secondary;
     }
+
+    final effectiveColor =
+        isEnabled ? triggerColor : colorScheme.onSurface.withOpacity(0.6);
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
       decoration: BoxDecoration(
-        color: (isEnabled ? triggerColor : Colors.grey).withOpacity(0.1),
+        color: effectiveColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(20.r),
       ),
       child: Row(
@@ -137,16 +160,15 @@ class AutomationCard extends StatelessWidget {
         children: [
           Icon(
             triggerIcon,
-            size: 16,
-            color: isEnabled ? triggerColor : Colors.grey.shade600,
+            size: 16.sp,
+            color: effectiveColor,
           ),
           SizedBox(width: 6.w),
           Flexible(
             child: Text(
               triggerText,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: isEnabled ? triggerColor : Colors.grey.shade600,
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: effectiveColor,
                 fontWeight: FontWeight.w500,
               ),
               overflow: TextOverflow.ellipsis,
@@ -158,6 +180,9 @@ class AutomationCard extends StatelessWidget {
   }
 
   Widget _buildActionsInfo(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     final deviceActions = automation.actions.whereType<DeviceAction>().length;
     final notificationActions =
         automation.actions.whereType<NotificationAction>().length;
@@ -167,9 +192,10 @@ class AutomationCard extends StatelessWidget {
       children: [
         Text(
           S.of(context).actions,
-          style: TextStyle(
-            fontSize: 12.sp,
-            color: isEnabled ? Colors.grey.shade600 : Colors.grey.shade500,
+          style: theme.textTheme.labelMedium?.copyWith(
+            color: isEnabled
+                ? colorScheme.onSurface.withOpacity(0.6)
+                : colorScheme.onSurface.withOpacity(0.5),
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -183,14 +209,14 @@ class AutomationCard extends StatelessWidget {
                 context,
                 Icons.devices,
                 '$deviceActions ${S.of(context).devices}',
-                Colors.green,
+                colorScheme.secondary,
               ),
             if (notificationActions > 0)
               _buildActionChip(
                 context,
                 Icons.notifications,
                 '$notificationActions ${S.of(context).notifications}',
-                Colors.purple,
+                colorScheme.tertiary ?? colorScheme.secondary,
               ),
           ],
         ),
@@ -200,7 +226,10 @@ class AutomationCard extends StatelessWidget {
 
   Widget _buildActionChip(
       BuildContext context, IconData icon, String text, Color color) {
-    final effectiveColor = isEnabled ? color : Colors.grey.shade600;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final effectiveColor =
+        isEnabled ? color : colorScheme.onSurface.withOpacity(0.6);
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
@@ -211,12 +240,15 @@ class AutomationCard extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 12, color: effectiveColor),
+          Icon(
+            icon,
+            size: 12.sp,
+            color: effectiveColor,
+          ),
           SizedBox(width: 4.w),
           Text(
             text,
-            style: TextStyle(
-              fontSize: 10.sp,
+            style: theme.textTheme.labelSmall?.copyWith(
               color: effectiveColor,
               fontWeight: FontWeight.w500,
             ),
@@ -227,14 +259,18 @@ class AutomationCard extends StatelessWidget {
   }
 
   Widget _buildStatusToggle(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Row(
       children: [
         Expanded(
           child: Text(
             isEnabled ? S.of(context).enabled : S.of(context).disabled,
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: isEnabled ? Colors.green : Colors.grey,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: isEnabled
+                  ? colorScheme.secondary
+                  : colorScheme.onSurface.withOpacity(0.6),
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -242,9 +278,6 @@ class AutomationCard extends StatelessWidget {
         Switch(
           value: isEnabled,
           onChanged: (value) => onToggle?.call(),
-          activeColor: ColorManager.activeBlue,
-          inactiveThumbColor: Colors.grey.shade400,
-          inactiveTrackColor: Colors.grey.shade300,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
       ],

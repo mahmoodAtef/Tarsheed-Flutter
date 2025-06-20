@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController? controller;
@@ -8,6 +9,8 @@ class CustomTextField extends StatefulWidget {
   final bool isPassword;
   final Widget? suffixIcon;
   final Iterable<String>? autofillHints;
+  final int? maxLines;
+
   const CustomTextField({
     super.key,
     this.controller,
@@ -17,10 +20,11 @@ class CustomTextField extends StatefulWidget {
     this.isPassword = false,
     this.suffixIcon,
     this.autofillHints,
+    this.maxLines,
   });
 
   @override
-  _CustomTextFieldState createState() => _CustomTextFieldState();
+  State<CustomTextField> createState() => _CustomTextFieldState();
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
@@ -29,31 +33,41 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return TextFormField(
-      autofillHints: widget.autofillHints,
-      controller: widget.controller,
-      keyboardType: widget.keyboardType,
-      obscureText: widget.isPassword ? _obscureText : false,
-      cursorColor: theme.colorScheme.onSurface,
-      decoration: InputDecoration(
-        hintText: widget.hintText,
-        suffixIcon: widget.isPassword
-            ? IconButton(
-                icon: Icon(
-                  _obscureText
-                      ? Icons.visibility_off_outlined
-                      : Icons.visibility_outlined,
-                  color: theme.colorScheme.onSurface,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _obscureText = !_obscureText;
-                  });
-                },
-              )
-            : widget.suffixIcon,
-      ).applyDefaults(theme.inputDecorationTheme),
-      validator: widget.validator,
+
+    return Theme(
+      data: ThemeData(
+          inputDecorationTheme: theme.inputDecorationTheme.copyWith(
+        hintStyle: theme.inputDecorationTheme.hintStyle,
+      )),
+      child: TextFormField(
+        maxLines: widget.maxLines,
+        autofillHints: widget.autofillHints,
+        controller: widget.controller,
+        keyboardType: widget.keyboardType,
+        obscureText: widget.isPassword ? _obscureText : false,
+        cursorColor: theme.colorScheme.primary,
+        style: theme.textTheme.bodyMedium,
+        decoration: InputDecoration(
+          hintText: widget.hintText,
+          suffixIcon: widget.isPassword
+              ? IconButton(
+                  icon: Icon(
+                    _obscureText
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined,
+                    color: theme.colorScheme.onSurface,
+                    size: 20.sp,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
+                )
+              : widget.suffixIcon,
+        ),
+        validator: widget.validator,
+      ),
     );
   }
 }

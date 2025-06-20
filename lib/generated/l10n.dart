@@ -180,10 +180,10 @@ class S {
     return Intl.message('Login Here', name: 'loginHere', desc: '', args: []);
   }
 
-  /// `Welcome back you’ve been missed!`
+  /// `Welcome back you've been missed!`
   String get welcomeBack {
     return Intl.message(
-      'Welcome back you’ve been missed!',
+      'Welcome back you\'ve been missed!',
       name: 'welcomeBack',
       desc: '',
       args: [],
@@ -1350,10 +1350,10 @@ class S {
     );
   }
 
-  /// `Are you sure you want to delete this device`
+  /// `Are you sure you want to delete this device?`
   String get confirmDeleteDevice {
     return Intl.message(
-      'Are you sure you want to delete this device',
+      'Are you sure you want to delete this device?',
       name: 'confirmDeleteDevice',
       desc: '',
       args: [],
@@ -1365,20 +1365,20 @@ class S {
     return Intl.message('Yes, Delete', name: 'yesDelete', desc: '', args: []);
   }
 
-  /// `Delete Device`
+  /// `Delete Sensor`
   String get deleteSensor {
     return Intl.message(
-      'Delete Device',
+      'Delete Sensor',
       name: 'deleteSensor',
       desc: '',
       args: [],
     );
   }
 
-  /// `Are you sure you want to delete this sensor`
+  /// `Are you sure you want to delete this sensor?`
   String get confirmDeleteSensor {
     return Intl.message(
-      'Are you sure you want to delete this sensor',
+      'Are you sure you want to delete this sensor?',
       name: 'confirmDeleteSensor',
       desc: '',
       args: [],
@@ -1910,10 +1910,10 @@ class S {
     );
   }
 
-  /// `Add, edit, or delete sensors to organize your devices`
+  /// `Add, edit, or delete sensors to monitor your home environment`
   String get manageYourSensors {
     return Intl.message(
-      'Add, edit, or delete sensors to organize your devices',
+      'Add, edit, or delete sensors to monitor your home environment',
       name: 'manageYourSensors',
       desc: '',
       args: [],
@@ -2050,6 +2050,16 @@ class S {
     );
   }
 
+  /// `Monthly Usage`
+  String get montlyUsage {
+    return Intl.message(
+      'Monthly Usage',
+      name: 'montlyUsage',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Updating status...`
   String get updatingStatus {
     return Intl.message(
@@ -2095,16 +2105,6 @@ class S {
     return Intl.message(
       'Please configure all device actions completely',
       name: 'pleaseConfigureAllDeviceActions',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Monthly Usage`
-  String get montlyUsage {
-    return Intl.message(
-      'Monthly Usage',
-      name: 'montlyUsage',
       desc: '',
       args: [],
     );
@@ -2240,6 +2240,16 @@ class S {
     );
   }
 
+  /// `Please don't delete the account`
+  String get deleteAccountWarning {
+    return Intl.message(
+      'Please don\'t delete the account',
+      name: 'deleteAccountWarning',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Type 'DELETE' to confirm:`
   String get deleteAccountConfirmationInstruction {
     return Intl.message(
@@ -2258,6 +2268,251 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Mark as read`
+  String get markAsRead {
+    return Intl.message('Mark as read', name: 'markAsRead', desc: '', args: []);
+  }
+
+  /// `Refresh`
+  String get refresh {
+    return Intl.message('Refresh', name: 'refresh', desc: '', args: []);
+  }
+
+  /// `Device Name`
+  String get deviceName {
+    return Intl.message('Device Name', name: 'deviceName', desc: '', args: []);
+  }
+
+  /// `Sensor Name`
+  String get sensorName {
+    return Intl.message('Sensor Name', name: 'sensorName', desc: '', args: []);
+  }
+
+  /// `Sort Ascending`
+  String get sortAscending {
+    return Intl.message(
+      'Sort Ascending',
+      name: 'sortAscending',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sort Descending`
+  String get sortDescending {
+    return Intl.message(
+      'Sort Descending',
+      name: 'sortDescending',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Room`
+  String get selectRoom {
+    return Intl.message('Select Room', name: 'selectRoom', desc: '', args: []);
+  }
+
+  /// `Select Category`
+  String get selectCategory {
+    return Intl.message(
+      'Select Category',
+      name: 'selectCategory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Priority`
+  String get selectPriority {
+    return Intl.message(
+      'Select Priority',
+      name: 'selectPriority',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter device name`
+  String get enterDeviceName {
+    return Intl.message(
+      'Enter device name',
+      name: 'enterDeviceName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter device description`
+  String get enterDeviceDescription {
+    return Intl.message(
+      'Enter device description',
+      name: 'enterDeviceDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Pin number`
+  String get enterPinNumber {
+    return Intl.message(
+      'Enter Pin number',
+      name: 'enterPinNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pin number must be numeric`
+  String get pinNumberMustBeNumeric {
+    return Intl.message(
+      'Pin number must be numeric',
+      name: 'pinNumberMustBeNumeric',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Device Description`
+  String get deviceDescription {
+    return Intl.message(
+      'Device Description',
+      name: 'deviceDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Condition`
+  String get condition {
+    return Intl.message('Condition', name: 'condition', desc: '', args: []);
+  }
+
+  /// `No conditions added yet`
+  String get noConditionsAdded {
+    return Intl.message(
+      'No conditions added yet',
+      name: 'noConditionsAdded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No actions added yet`
+  String get noActionsAdded {
+    return Intl.message(
+      'No actions added yet',
+      name: 'noActionsAdded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Equals`
+  String get equals {
+    return Intl.message('Equals', name: 'equals', desc: '', args: []);
+  }
+
+  /// `Greater than`
+  String get greaterThan {
+    return Intl.message(
+      'Greater than',
+      name: 'greaterThan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Less than`
+  String get lessThan {
+    return Intl.message('Less than', name: 'lessThan', desc: '', args: []);
+  }
+
+  /// `Greater than or equal to`
+  String get greaterThanOrEqual {
+    return Intl.message(
+      'Greater than or equal to',
+      name: 'greaterThanOrEqual',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Less than or equal to`
+  String get lessThanOrEqual {
+    return Intl.message(
+      'Less than or equal to',
+      name: 'lessThanOrEqual',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `On`
+  String get on {
+    return Intl.message('On', name: 'on', desc: '', args: []);
+  }
+
+  /// `Off`
+  String get off {
+    return Intl.message('Off', name: 'off', desc: '', args: []);
+  }
+
+  /// `Title`
+  String get title {
+    return Intl.message('Title', name: 'title', desc: '', args: []);
+  }
+
+  /// `Message`
+  String get message {
+    return Intl.message('Message', name: 'message', desc: '', args: []);
+  }
+
+  /// `Automation name is required`
+  String get automationNameRequired {
+    return Intl.message(
+      'Automation name is required',
+      name: 'automationNameRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Additional conditions for the automation`
+  String get additionalConditionsDescription {
+    return Intl.message(
+      'Additional conditions for the automation',
+      name: 'additionalConditionsDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `What should happen`
+  String get whatShouldHappenDescription {
+    return Intl.message(
+      'What should happen',
+      name: 'whatShouldHappenDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Theme`
+  String get theme {
+    return Intl.message('Theme', name: 'theme', desc: '', args: []);
+  }
+
+  /// `Dark Mode`
+  String get darkMode {
+    return Intl.message('Dark Mode', name: 'darkMode', desc: '', args: []);
+  }
+
+  /// `Light Mode`
+  String get lightMode {
+    return Intl.message('Light Mode', name: 'lightMode', desc: '', args: []);
   }
 }
 

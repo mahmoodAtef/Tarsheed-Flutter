@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
 
 class BuildItem extends StatelessWidget {
-  const BuildItem(
-      {required this.icon,
-      required this.title,
-      required this.subtitle,
-      this.onTap});
+  const BuildItem({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    this.onTap,
+  });
 
   final IconData icon;
   final String title;
@@ -16,46 +17,55 @@ class BuildItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return InkWell(
       onTap: onTap,
-      child: SizedBox(
+      borderRadius: BorderRadius.circular(12.r),
+      child: Container(
         width: double.infinity,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-          child: Row(
-            children: [
-              Container(
-                height: 60.h,
-                width: 40.w,
-                decoration: BoxDecoration(
-                  color: ColorManager.grey300,
-                  borderRadius: BorderRadius.circular(6.r),
-                ),
-                child: Center(child: Icon(icon)),
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+        child: Row(
+          children: [
+            Container(
+              height: 60.h,
+              width: 40.w,
+              decoration: BoxDecoration(
+                color: colorScheme.outline.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(6.r),
               ),
-              SizedBox(width: 14.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title,
-                        style: TextStyle(
-                          color: ColorManager.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18.sp,
-                        )),
-                    SizedBox(height: 4.h),
-                    Text(subtitle,
-                        style: TextStyle(
-                          color: ColorManager.steelGrey,
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.w400,
-                        )),
-                  ],
-                ),
-              )
-            ],
-          ),
+              child: Icon(
+                icon,
+                color: theme.iconTheme.color,
+                size: (theme.iconTheme.size ?? 24).sp,
+              ),
+            ),
+            SizedBox(width: 14.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: textTheme.titleLarge?.copyWith(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    subtitle,
+                    style: textTheme.bodySmall?.copyWith(
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

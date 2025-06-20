@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
 
 class SocialIcon extends StatelessWidget {
-  const SocialIcon({this.scale, required this.image, this.onPressed});
+  const SocialIcon({
+    super.key,
+    this.scale,
+    required this.image,
+    this.onPressed,
+  });
 
   final double? scale;
   final String image;
@@ -11,19 +15,28 @@ class SocialIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       height: 44.h,
       width: 60.w,
       decoration: BoxDecoration(
-          color: ColorManager.grey300,
-          borderRadius: BorderRadius.circular(10.r)),
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(10.r),
+        border: Border.all(
+          color: theme.colorScheme.outline,
+          width: 1,
+        ),
+      ),
       child: IconButton(
-          onPressed: onPressed,
-          icon: Image.asset(
-            image,
-            scale: scale,
-            fit: BoxFit.fill,
-          )),
+        onPressed: onPressed,
+        icon: Image.asset(
+          image,
+          scale: scale,
+          color: theme.colorScheme.inverseSurface,
+          fit: BoxFit.fill,
+        ),
+      ),
     );
   }
 }

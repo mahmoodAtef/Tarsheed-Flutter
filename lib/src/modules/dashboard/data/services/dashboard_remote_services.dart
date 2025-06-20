@@ -189,7 +189,7 @@ class DashboardRemoteServices implements BaseDashboardServices {
 
   Future<Either<Exception, String>> getPaymentUrl() async {
     try {
-      var response = await DioHelper.getData(
+      var response = await DioHelper.postData(
         path: EndPoints.getPaymentUrl,
       );
       String paymentUrl = response.data["redirectUrl"];

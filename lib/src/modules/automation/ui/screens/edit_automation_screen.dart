@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/automation/cubit/automation_cubit.dart';
@@ -78,7 +77,7 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
       _selectedTriggerType = TriggerType.sensor;
       _selectedSensorId = trigger.sensorID;
       _triggerValue = trigger.value;
-      _selectedOperator = trigger.operator; // إضافة هذا السطر
+      _selectedOperator = trigger.operator;
     }
   }
 
@@ -92,10 +91,8 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
         return ConditionData(type: ConditionType.sensor)
           ..id = condition.sensorID
           ..state = condition.state
-          ..operator =
-              condition.operator ?? '='; // Initialize operator with fallback
+          ..operator = condition.operator ?? '=';
       }
-      // Fallback
       return ConditionData(type: ConditionType.device);
     }).toList();
   }
@@ -111,7 +108,6 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
           ..title = action.title
           ..message = action.message;
       }
-      // Fallback
       return ActionData(type: ActionType.device);
     }).toList();
   }
@@ -124,6 +120,8 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: AutomationCubit.get()),
@@ -131,19 +129,23 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
         BlocProvider.value(value: DevicesCubit.get()),
       ],
       child: Scaffold(
-        backgroundColor: Colors.grey.shade50,
+        backgroundColor: theme.colorScheme.background,
         appBar: AppBar(
           title: Text(
-            S.of(context).editAutomation, // Add this to your localization
-            style: TextStyle(fontWeight: FontWeight.bold),
+            S.of(context).editAutomation,
+            style: theme.appBarTheme.titleTextStyle,
           ),
-          backgroundColor: ColorManager.white,
-          elevation: 1,
-          foregroundColor: Colors.black,
+          backgroundColor: theme.appBarTheme.backgroundColor,
+          elevation: theme.appBarTheme.elevation,
+          foregroundColor: theme.appBarTheme.foregroundColor,
           actions: [
             IconButton(
               onPressed: () => _showDeleteConfirmation(),
-              icon: Icon(Icons.delete_outline, color: Colors.red),
+              icon: Icon(
+                Icons.delete_outline,
+                color: theme.colorScheme.error,
+                size: theme.iconTheme.size,
+              ),
             ),
           ],
         ),
@@ -190,19 +192,21 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
   }
 
   Widget _buildNameSection() {
+    final theme = Theme.of(context);
+
     return AutomationSection(
       title: S.of(context).automationName,
       child: TextFormField(
         controller: _nameController,
+        style: theme.textTheme.bodyLarge,
         decoration: InputDecoration(
           hintText: S.of(context).enterAutomationName,
-          filled: true,
-          fillColor: ColorManager.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
+          hintStyle: theme.inputDecorationTheme.hintStyle,
+          prefixIcon: Icon(
+            Icons.label_outline,
+            color: theme.iconTheme.color,
+            size: theme.iconTheme.size,
           ),
-          prefixIcon: const Icon(Icons.label_outline),
         ),
         validator: (value) {
           if (value == null || value.isEmpty) {
@@ -228,7 +232,7 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
                 if (type == TriggerType.schedule) {
                   _selectedSensorId = null;
                   _triggerValue = null;
-                  _selectedOperator = null; // إضافة هذا السطر
+                  _selectedOperator = null;
                 } else {
                   _selectedTime = null;
                 }
@@ -241,7 +245,7 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
             selectedTime: _selectedTime,
             selectedSensorId: _selectedSensorId,
             triggerValue: _triggerValue,
-            selectedOperator: _selectedOperator, // إضافة هذا السطر
+            selectedOperator: _selectedOperator,
             onTimeSelected: (time) {
               setState(() {
                 _selectedTime = time;
@@ -258,7 +262,6 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
               });
             },
             onOperatorChanged: (operator) {
-              // إضافة هذا الـ callback
               setState(() {
                 _selectedOperator = operator;
               });
@@ -293,7 +296,6 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
               });
             },
             onConditionOperatorChanged: (condition, operator) {
-              // New callback
               setState(() {
                 condition.operator = operator;
               });
@@ -375,36 +377,23 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
   }
 
   void _updateAutomation() {
+    final theme = Theme.of(context);
+
     if (_formKey.currentState!.validate()) {
       if (_actions.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(S.of(context).pleaseAddAtLeastOneAction),
-            backgroundColor: Colors.orange,
-          ),
-        );
+        _showValidationError(S.of(context).pleaseAddAtLeastOneAction);
         return;
       }
 
       if (_selectedTriggerType == TriggerType.schedule &&
           _selectedTime == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(S.of(context).pleaseSelectTimeForSchedule),
-            backgroundColor: Colors.orange,
-          ),
-        );
+        _showValidationError(S.of(context).pleaseSelectTimeForSchedule);
         return;
       }
 
       if (_selectedTriggerType == TriggerType.sensor &&
           (_selectedSensorId == null || _triggerValue == null)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(S.of(context).pleaseConfigureSensorTrigger),
-            backgroundColor: Colors.orange,
-          ),
-        );
+        _showValidationError(S.of(context).pleaseConfigureSensorTrigger);
         return;
       }
 
@@ -413,48 +402,22 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
     }
   }
 
-  void _saveAutomation() {
-    if (_formKey.currentState!.validate()) {
-      if (_actions.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(S.of(context).pleaseAddAtLeastOneAction),
-            backgroundColor: Colors.orange,
-          ),
-        );
-        return;
-      }
+  void _showValidationError(String message) {
+    final theme = Theme.of(context);
 
-      if (_selectedTriggerType == TriggerType.schedule &&
-          _selectedTime == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(S.of(context).pleaseSelectTimeForSchedule),
-            backgroundColor: Colors.orange,
-          ),
-        );
-        return;
-      }
-
-      if (_selectedTriggerType == TriggerType.sensor &&
-          (_selectedSensorId == null ||
-              _triggerValue == null ||
-              _selectedOperator == null)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(S.of(context).pleaseConfigureSensorTrigger),
-            backgroundColor: Colors.orange,
-          ),
-        );
-        return;
-      }
-
-      final automation = _createUpdatedAutomation();
-      AutomationCubit.get().updateAutomation(automation);
-    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: theme.snackBarTheme.contentTextStyle,
+        ),
+        backgroundColor: theme.colorScheme.error,
+        behavior: theme.snackBarTheme.behavior,
+        shape: theme.snackBarTheme.shape,
+      ),
+    );
   }
 
-// تحديث دالة _createUpdatedAutomation()
   Automation _createUpdatedAutomation() {
     // Create trigger
     Trigger trigger;
@@ -464,7 +427,7 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
       trigger = SensorTrigger(
         sensorID: _selectedSensorId!,
         value: _triggerValue!,
-        operator: _selectedOperator!, // إضافة الـ operator
+        operator: _selectedOperator!,
       );
     }
 
@@ -508,15 +471,27 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
   }
 
   void _showDeleteConfirmation() {
+    final theme = Theme.of(context);
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(S.of(context).deleteAutomation),
-          content: Text(S.of(context).deleteAutomationConfirmation),
+          backgroundColor: theme.dialogTheme.backgroundColor,
+          elevation: theme.dialogTheme.elevation,
+          shape: theme.dialogTheme.shape,
+          title: Text(
+            S.of(context).deleteAutomation,
+            style: theme.dialogTheme.titleTextStyle,
+          ),
+          content: Text(
+            S.of(context).deleteAutomationConfirmation,
+            style: theme.dialogTheme.contentTextStyle,
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
+              style: theme.textButtonTheme.style,
               child: Text(S.of(context).cancel),
             ),
             BlocBuilder<AutomationCubit, AutomationState>(
@@ -531,16 +506,21 @@ class _EditAutomationScreenState extends State<EditAutomationScreen> {
                           AutomationCubit.get()
                               .deleteAutomation(widget.automation.id!);
                         },
+                  style: theme.textButtonTheme.style?.copyWith(
+                    foregroundColor: MaterialStateProperty.all(
+                      theme.colorScheme.error,
+                    ),
+                  ),
                   child: isDeleting
                       ? SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                          width: 16.w,
+                          height: 16.h,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.w,
+                            color: theme.progressIndicatorTheme.color,
+                          ),
                         )
-                      : Text(
-                          S.of(context).delete,
-                          style: TextStyle(color: Colors.red),
-                        ),
+                      : Text(S.of(context).delete),
                 );
               },
             ),

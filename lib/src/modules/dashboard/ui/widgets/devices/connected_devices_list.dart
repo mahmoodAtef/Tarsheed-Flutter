@@ -13,6 +13,8 @@ import '../../../../../../generated/l10n.dart';
 class ConnectedDevicesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -20,19 +22,26 @@ class ConnectedDevicesList extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomTextWidget(
-                label: S.of(context).connectedDevices, size: 22.sp),
+              label: S.of(context).connectedDevices,
+              size: 22.sp,
+            ),
             TextButton.icon(
               onPressed: () => context.push(BlocProvider.value(
                 value: DevicesCubit.get(),
                 child: DevicesScreen(),
               )),
-              style: TextButton.styleFrom(
-                foregroundColor: const Color(0xFF366692),
+              style: theme.textButtonTheme.style?.copyWith(
+                foregroundColor: MaterialStateProperty.all(
+                  theme.colorScheme.primary,
+                ),
+                padding: MaterialStateProperty.all(
+                  EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                ),
               ),
               label: Text(
                 S.of(context).viewAll,
-                style: TextStyle(
-                  color: const Color(0xFF366692),
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.primary,
                   fontSize: 10.sp,
                   fontWeight: FontWeight.w400,
                 ),
@@ -40,7 +49,7 @@ class ConnectedDevicesList extends StatelessWidget {
               icon: Icon(
                 Icons.arrow_forward,
                 size: 10.sp,
-                color: const Color(0xFF366692),
+                color: theme.colorScheme.primary,
               ),
             ),
           ],
@@ -92,8 +101,7 @@ class ConnectedDevicesList extends StatelessWidget {
                 return ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: displayCount,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(width: 10),
+                  separatorBuilder: (context, index) => SizedBox(width: 10.w),
                   itemBuilder: (context, index) {
                     final device = connectedDevices[index];
                     return DeviceCard(device: device);

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/device.dart';
@@ -49,24 +48,24 @@ class AutomationSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
-          style: TextStyle(
+          style: theme.textTheme.headlineMedium?.copyWith(
             fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
           ),
         ),
         if (subtitle != null) ...[
           SizedBox(height: 4.h),
           Text(
             subtitle!,
-            style: TextStyle(
+            style: theme.textTheme.bodyMedium?.copyWith(
               fontSize: 14.sp,
-              color: Colors.grey.shade600,
+              color: theme.colorScheme.onSurface.withOpacity(0.7),
             ),
           ),
         ],
@@ -96,15 +95,21 @@ class SelectableCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue.shade50 : ColorManager.white,
-          borderRadius: BorderRadius.circular(12),
+          color: isSelected
+              ? theme.colorScheme.primary.withOpacity(0.1)
+              : theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(12.r),
           border: Border.all(
-            color: isSelected ? Colors.blue : Colors.grey.shade300,
+            color: isSelected
+                ? theme.colorScheme.primary
+                : theme.colorScheme.outline,
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -112,23 +117,26 @@ class SelectableCard extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: 32,
-              color: isSelected ? Colors.blue : Colors.grey.shade600,
+              size: 32.sp,
+              color: isSelected
+                  ? theme.colorScheme.primary
+                  : theme.iconTheme.color,
             ),
             SizedBox(height: 8.h),
             Text(
               title,
-              style: TextStyle(
+              style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w600,
-                color: isSelected ? Colors.blue : Colors.black87,
+                color: isSelected
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.onSurface,
               ),
             ),
             SizedBox(height: 4.h),
             Text(
               subtitle,
-              style: TextStyle(
+              style: theme.textTheme.bodySmall?.copyWith(
                 fontSize: 12.sp,
-                color: Colors.grey.shade600,
               ),
               textAlign: TextAlign.center,
             ),
@@ -154,26 +162,33 @@ class AddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 12.w),
         decoration: BoxDecoration(
-          color: Colors.blue.shade50,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.blue.shade200),
+          color: theme.colorScheme.primary.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(
+            color: theme.colorScheme.primary.withOpacity(0.3),
+          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: Colors.blue, size: 20),
+            Icon(
+              icon,
+              color: theme.colorScheme.primary,
+              size: 20.sp,
+            ),
             SizedBox(width: 8.w),
             Flexible(
               child: Text(
                 title,
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w600,
+                style: theme.textTheme.labelLarge?.copyWith(
+                  color: theme.colorScheme.primary,
                   fontSize: 12.sp,
                 ),
                 textAlign: TextAlign.center,
@@ -238,6 +253,8 @@ class TimeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: () async {
         final time = await showTimePicker(
@@ -253,24 +270,32 @@ class TimeSelector extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
-          color: ColorManager.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.shade300),
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(color: theme.colorScheme.outline),
         ),
         child: Row(
           children: [
-            const Icon(Icons.access_time, color: Colors.blue),
+            Icon(
+              Icons.access_time,
+              color: theme.colorScheme.primary,
+              size: 24.sp,
+            ),
             SizedBox(width: 12.w),
             Text(
               selectedTime ?? S.of(context).selectTime,
-              style: TextStyle(
+              style: theme.textTheme.bodyLarge?.copyWith(
                 fontSize: 16.sp,
                 fontWeight:
                     selectedTime != null ? FontWeight.w600 : FontWeight.normal,
               ),
             ),
             const Spacer(),
-            const Icon(Icons.arrow_forward_ios, size: 16),
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 16.sp,
+              color: theme.iconTheme.color,
+            ),
           ],
         ),
       ),
@@ -299,6 +324,8 @@ class SensorTriggerSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return BlocBuilder<DashboardBloc, DashboardState>(
       buildWhen: (previous, current) =>
           current is GetSensorsSuccessState ||
@@ -306,7 +333,11 @@ class SensorTriggerSelector extends StatelessWidget {
           current is GetSensorsErrorState,
       builder: (context, state) {
         if (state is GetSensorsLoadingState) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+            child: CircularProgressIndicator(
+              color: theme.colorScheme.primary,
+            ),
+          );
         }
 
         final sensors = context.read<DashboardBloc>().sensors;
@@ -319,13 +350,10 @@ class SensorTriggerSelector extends StatelessWidget {
               value: selectedSensorId,
               decoration: InputDecoration(
                 labelText: S.of(context).selectSensor,
-                filled: true,
-                fillColor: ColorManager.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
+                prefixIcon: Icon(
+                  Icons.sensors,
+                  color: theme.colorScheme.primary,
                 ),
-                prefixIcon: const Icon(Icons.sensors),
               ),
               items: sensorItems,
               onChanged: onSensorSelected,
@@ -337,13 +365,10 @@ class SensorTriggerSelector extends StatelessWidget {
               value: selectedOperator,
               decoration: InputDecoration(
                 labelText: S.of(context).operator,
-                filled: true,
-                fillColor: ColorManager.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
+                prefixIcon: Icon(
+                  Icons.compare_arrows,
+                  color: theme.colorScheme.primary,
                 ),
-                prefixIcon: const Icon(Icons.compare_arrows),
               ),
               items: _buildOperatorItems(context),
               onChanged: onOperatorChanged,
@@ -354,13 +379,10 @@ class SensorTriggerSelector extends StatelessWidget {
             TextFormField(
               decoration: InputDecoration(
                 labelText: S.of(context).triggerValue,
-                filled: true,
-                fillColor: ColorManager.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
+                prefixIcon: Icon(
+                  Icons.numbers,
+                  color: theme.colorScheme.primary,
                 ),
-                prefixIcon: const Icon(Icons.numbers),
               ),
               keyboardType: TextInputType.number,
               initialValue: triggerValue?.toString(),
@@ -396,8 +418,8 @@ class SensorTriggerSelector extends StatelessWidget {
         value: '==',
         child: Row(
           children: [
-            SizedBox(width: 8),
-            Text('=='),
+            SizedBox(width: 8.w),
+            const Text('=='),
           ],
         ),
       ),
@@ -405,8 +427,8 @@ class SensorTriggerSelector extends StatelessWidget {
         value: '>',
         child: Row(
           children: [
-            SizedBox(width: 8),
-            Text('>'),
+            SizedBox(width: 8.w),
+            const Text('>'),
           ],
         ),
       ),
@@ -414,8 +436,8 @@ class SensorTriggerSelector extends StatelessWidget {
         value: '<',
         child: Row(
           children: [
-            SizedBox(width: 8),
-            Text('<'),
+            SizedBox(width: 8.w),
+            const Text('<'),
           ],
         ),
       ),
@@ -423,8 +445,8 @@ class SensorTriggerSelector extends StatelessWidget {
         value: '>=',
         child: Row(
           children: [
-            SizedBox(width: 8),
-            Text('>='),
+            SizedBox(width: 8.w),
+            const Text('>='),
           ],
         ),
       ),
@@ -432,8 +454,8 @@ class SensorTriggerSelector extends StatelessWidget {
         value: '<=',
         child: Row(
           children: [
-            SizedBox(width: 8),
-            Text('<='),
+            SizedBox(width: 8.w),
+            const Text('<='),
           ],
         ),
       ),
@@ -447,7 +469,7 @@ class ConditionCard extends StatelessWidget {
   final VoidCallback onDelete;
   final Function(String?) onIdChanged;
   final Function(int) onStateChanged;
-  final Function(String) onOperatorChanged; // New callback for operator
+  final Function(String) onOperatorChanged;
 
   const ConditionCard({
     super.key,
@@ -455,11 +477,13 @@ class ConditionCard extends StatelessWidget {
     required this.onDelete,
     required this.onIdChanged,
     required this.onStateChanged,
-    required this.onOperatorChanged, // Add required parameter
+    required this.onOperatorChanged,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return BlocBuilder<DashboardBloc, DashboardState>(
       builder: (context, dashboardState) {
         return BlocBuilder<DevicesCubit, DevicesState>(
@@ -471,9 +495,9 @@ class ConditionCard extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 12.h),
               padding: EdgeInsets.all(16.w),
               decoration: BoxDecoration(
-                color: ColorManager.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey.shade300),
+                color: theme.colorScheme.surface,
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(color: theme.colorScheme.outline),
               ),
               child: Column(
                 children: [
@@ -483,7 +507,8 @@ class ConditionCard extends StatelessWidget {
                         condition.type == ConditionType.device
                             ? Icons.devices
                             : Icons.sensors,
-                        color: Colors.blue,
+                        color: theme.colorScheme.primary,
+                        size: 24.sp,
                       ),
                       SizedBox(width: 12.w),
                       Expanded(
@@ -491,13 +516,18 @@ class ConditionCard extends StatelessWidget {
                           condition.type == ConditionType.device
                               ? S.of(context).deviceCondition
                               : S.of(context).sensorCondition,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600, fontSize: 16.sp),
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            fontSize: 16.sp,
+                          ),
                         ),
                       ),
                       IconButton(
                         onPressed: onDelete,
-                        icon: const Icon(Icons.delete, color: Colors.red),
+                        icon: Icon(
+                          Icons.delete,
+                          color: theme.colorScheme.error,
+                          size: 24.sp,
+                        ),
                       ),
                     ],
                   ),
@@ -512,12 +542,8 @@ class ConditionCard extends StatelessWidget {
                             labelText: condition.type == ConditionType.device
                                 ? S.of(context).selectDevice
                                 : S.of(context).selectSensor,
-                            filled: true,
-                            fillColor: Colors.grey.shade50,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide.none,
-                            ),
+                            fillColor:
+                                theme.colorScheme.surface.withOpacity(0.5),
                           ),
                           items: condition.type == ConditionType.device
                               ? _buildDeviceItems(context, devices)
@@ -534,12 +560,8 @@ class ConditionCard extends StatelessWidget {
                             value: condition.operator,
                             decoration: InputDecoration(
                               labelText: S.of(context).operator,
-                              filled: true,
-                              fillColor: Colors.grey.shade50,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide.none,
-                              ),
+                              fillColor:
+                                  theme.colorScheme.surface.withOpacity(0.5),
                             ),
                             items: _buildOperatorItems(context),
                             onChanged: (value) =>
@@ -558,12 +580,8 @@ class ConditionCard extends StatelessWidget {
                                         : null,
                                 decoration: InputDecoration(
                                   labelText: S.of(context).stateValue,
-                                  filled: true,
-                                  fillColor: Colors.grey.shade50,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide.none,
-                                  ),
+                                  fillColor: theme.colorScheme.surface
+                                      .withOpacity(0.5),
                                 ),
                                 items: [
                                   DropdownMenuItem(
@@ -581,12 +599,8 @@ class ConditionCard extends StatelessWidget {
                             : TextFormField(
                                 decoration: InputDecoration(
                                   labelText: S.of(context).value,
-                                  filled: true,
-                                  fillColor: Colors.grey.shade50,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide.none,
-                                  ),
+                                  fillColor: theme.colorScheme.surface
+                                      .withOpacity(0.5),
                                 ),
                                 keyboardType: TextInputType.number,
                                 initialValue: condition.state.toString(),
@@ -643,23 +657,23 @@ class ConditionCard extends StatelessWidget {
 
   List<DropdownMenuItem<String>> _buildOperatorItems(BuildContext context) {
     return [
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: '=',
         child: Text('='),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: '>',
         child: Text('>'),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: '<',
         child: Text('<'),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: '>=',
         child: Text('>='),
       ),
-      DropdownMenuItem(
+      const DropdownMenuItem(
         value: '<=',
         child: Text('<='),
       ),
@@ -668,8 +682,6 @@ class ConditionCard extends StatelessWidget {
 }
 
 // 9. Action Card Widget
-// Fix for ActionCard widget - replace the existing ActionCard in your components.dart
-
 class ActionCard extends StatelessWidget {
   final ActionData action;
   final VoidCallback onDelete;
@@ -690,9 +702,12 @@ class ActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: theme.cardTheme.elevation,
+      color: theme.cardTheme.color,
+      shape: theme.cardTheme.shape,
       child: Padding(
         padding: EdgeInsets.all(16.w),
         child: Column(
@@ -704,22 +719,26 @@ class ActionCard extends StatelessWidget {
                   action.type == ActionType.device
                       ? Icons.power_settings_new
                       : Icons.notifications,
-                  color: ColorManager.primary,
+                  color: theme.colorScheme.primary,
+                  size: 24.sp,
                 ),
                 SizedBox(width: 8.w),
                 Text(
                   action.type == ActionType.device
                       ? S.of(context).deviceAction
                       : S.of(context).notificationAction,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                  style: theme.textTheme.titleLarge?.copyWith(
                     fontSize: 16.sp,
                   ),
                 ),
                 const Spacer(),
                 IconButton(
                   onPressed: onDelete,
-                  icon: const Icon(Icons.delete_outline, color: Colors.red),
+                  icon: Icon(
+                    Icons.delete_outline,
+                    color: theme.colorScheme.error,
+                    size: 24.sp,
+                  ),
                 ),
               ],
             ),
@@ -736,13 +755,14 @@ class ActionCard extends StatelessWidget {
   }
 
   Widget _buildDeviceActionFields(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       children: [
         // Device Selector
         BlocBuilder<DevicesCubit, DevicesState>(
           builder: (context, state) {
             if (state is GetDevicesSuccess) {
-              // Create unique device options
               final devices = state.devices;
               final deviceItems = devices?.map((device) {
                 return DropdownMenuItem<String>(
@@ -751,12 +771,10 @@ class ActionCard extends StatelessWidget {
                 );
               }).toList();
 
-              // Ensure the selected value exists in the list
               String? validSelectedValue = action.deviceId;
               if (validSelectedValue != null &&
                   !devices!.any((device) => device.id == validSelectedValue)) {
                 validSelectedValue = null;
-                // Reset the invalid value
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   onDeviceIdChanged('');
                 });
@@ -767,12 +785,6 @@ class ActionCard extends StatelessWidget {
                 value: validSelectedValue,
                 decoration: InputDecoration(
                   labelText: S.of(context).selectDevice,
-                  filled: true,
-                  fillColor: ColorManager.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
                 ),
                 items: deviceItems,
                 onChanged: (value) {
@@ -788,7 +800,9 @@ class ActionCard extends StatelessWidget {
                 },
               );
             }
-            return const CircularProgressIndicator();
+            return CircularProgressIndicator(
+              color: theme.colorScheme.primary,
+            );
           },
         ),
         SizedBox(height: 16.h),
@@ -799,12 +813,6 @@ class ActionCard extends StatelessWidget {
           value: _getValidStateValue(),
           decoration: InputDecoration(
             labelText: S.of(context).deviceState,
-            filled: true,
-            fillColor: ColorManager.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none,
-            ),
           ),
           items: _getStateDropdownItems(context),
           onChanged: (value) {
@@ -845,6 +853,8 @@ class ActionCard extends StatelessWidget {
   }
 
   Widget _buildNotificationActionFields(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       children: [
         TextFormField(
@@ -852,13 +862,10 @@ class ActionCard extends StatelessWidget {
           initialValue: action.title,
           decoration: InputDecoration(
             labelText: S.of(context).notificationTitle,
-            filled: true,
-            fillColor: ColorManager.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none,
+            prefixIcon: Icon(
+              Icons.title,
+              color: theme.colorScheme.primary,
             ),
-            prefixIcon: const Icon(Icons.title),
           ),
           onChanged: onTitleChanged,
           validator: (value) {
@@ -874,13 +881,10 @@ class ActionCard extends StatelessWidget {
           initialValue: action.message,
           decoration: InputDecoration(
             labelText: S.of(context).notificationMessage,
-            filled: true,
-            fillColor: ColorManager.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none,
+            prefixIcon: Icon(
+              Icons.message,
+              color: theme.colorScheme.primary,
             ),
-            prefixIcon: const Icon(Icons.message),
           ),
           maxLines: 3,
           onChanged: onMessageChanged,
@@ -981,25 +985,24 @@ class AutomationSaveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return SizedBox(
       width: double.infinity,
       height: 50.h,
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue,
-          foregroundColor: ColorManager.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          elevation: 2,
-        ),
+        style: theme.elevatedButtonTheme.style,
         child: isLoading
-            ? const CircularProgressIndicator(color: ColorManager.white)
+            ? CircularProgressIndicator(
+                color: theme.colorScheme.onPrimary,
+              )
             : Text(
                 buttonText,
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: theme.textTheme.labelLarge?.copyWith(
+                  fontSize: 16.sp,
+                  color: theme.colorScheme.onPrimary,
+                ),
               ),
       ),
     );
@@ -1007,6 +1010,7 @@ class AutomationSaveButton extends StatelessWidget {
 }
 
 // 13. Trigger Details Widget (combines time and sensor selectors)
+// Trigger Details Widget
 class TriggerDetails extends StatelessWidget {
   final TriggerType triggerType;
   final String? selectedTime;
@@ -1033,32 +1037,42 @@ class TriggerDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (triggerType == TriggerType.schedule) {
-      return TimeSelector(
-        selectedTime: selectedTime,
-        onTimeSelected: onTimeSelected,
-      );
-    } else {
-      return SensorTriggerSelector(
-        selectedSensorId: selectedSensorId,
-        triggerValue: triggerValue,
-        selectedOperator: selectedOperator,
-        onSensorSelected: onSensorSelected,
-        onTriggerValueChanged: onTriggerValueChanged,
-        onOperatorChanged: onOperatorChanged,
-      );
-    }
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(
+          color: theme.colorScheme.outline,
+          width: 1.w,
+        ),
+      ),
+      child: triggerType == TriggerType.schedule
+          ? TimeSelector(
+              selectedTime: selectedTime,
+              onTimeSelected: onTimeSelected,
+            )
+          : SensorTriggerSelector(
+              selectedSensorId: selectedSensorId,
+              triggerValue: triggerValue,
+              selectedOperator: selectedOperator,
+              onSensorSelected: onSensorSelected,
+              onTriggerValueChanged: onTriggerValueChanged,
+              onOperatorChanged: onOperatorChanged,
+            ),
+    );
   }
 }
 
-// 14. Conditions List Widget
+// Conditions List Widget
 class ConditionsList extends StatelessWidget {
   final List<ConditionData> conditions;
   final Function(ConditionData) onDeleteCondition;
   final Function(ConditionData, String?) onConditionIdChanged;
   final Function(ConditionData, int) onConditionStateChanged;
-  final Function(ConditionData, String)
-      onConditionOperatorChanged; // New callback
+  final Function(ConditionData, String) onConditionOperatorChanged;
 
   const ConditionsList({
     super.key,
@@ -1066,28 +1080,75 @@ class ConditionsList extends StatelessWidget {
     required this.onDeleteCondition,
     required this.onConditionIdChanged,
     required this.onConditionStateChanged,
-    required this.onConditionOperatorChanged, // Add required parameter
+    required this.onConditionOperatorChanged,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    if (conditions.isEmpty) {
+      return Container(
+        padding: EdgeInsets.all(24.w),
+        child: Column(
+          children: [
+            Icon(
+              Icons.info_outline,
+              size: 48.w,
+              color: theme.colorScheme.onSurface.withOpacity(0.6),
+            ),
+            SizedBox(height: 12.h),
+            Text(
+              S.of(context).noConditionsAdded,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    }
+
     return Column(
-      children: conditions
-          .map((condition) => ConditionCard(
-                condition: condition,
-                onDelete: () => onDeleteCondition(condition),
-                onIdChanged: (value) => onConditionIdChanged(condition, value),
-                onStateChanged: (value) =>
-                    onConditionStateChanged(condition, value),
-                onOperatorChanged: (value) => onConditionOperatorChanged(
-                    condition, value), // Add callback
-              ))
-          .toList(),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          child: Text(
+            S.of(context).conditions,
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        ...conditions.asMap().entries.map((entry) {
+          final index = entry.key;
+          final condition = entry.value;
+
+          return Padding(
+            padding: EdgeInsets.only(
+              left: 16.w,
+              right: 16.w,
+              bottom: 12.h,
+            ),
+            child: ConditionCard(
+              condition: condition,
+              onDelete: () => onDeleteCondition(condition),
+              onIdChanged: (value) => onConditionIdChanged(condition, value),
+              onStateChanged: (value) =>
+                  onConditionStateChanged(condition, value),
+              onOperatorChanged: (value) =>
+                  onConditionOperatorChanged(condition, value),
+            ),
+          );
+        }).toList(),
+      ],
     );
   }
 }
 
-// 15. Actions List Widget
+// Actions List Widget
 class ActionsList extends StatelessWidget {
   final List<ActionData> actions;
   final Function(ActionData) onDeleteAction;
@@ -1108,17 +1169,64 @@ class ActionsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    if (actions.isEmpty) {
+      return Container(
+        padding: EdgeInsets.all(24.w),
+        child: Column(
+          children: [
+            Icon(
+              Icons.flash_off_outlined,
+              size: 48.w,
+              color: theme.colorScheme.onSurface.withOpacity(0.6),
+            ),
+            SizedBox(height: 12.h),
+            Text(
+              S.of(context).noActionsAdded,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    }
+
     return Column(
-      children: actions
-          .map((action) => ActionCard(
-                action: action,
-                onDelete: () => onDeleteAction(action),
-                onDeviceIdChanged: (value) => onDeviceIdChanged(action, value),
-                onStateChanged: (value) => onStateChanged(action, value),
-                onTitleChanged: (value) => onTitleChanged(action, value),
-                onMessageChanged: (value) => onMessageChanged(action, value),
-              ))
-          .toList(),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          child: Text(
+            S.of(context).actions,
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        ...actions.asMap().entries.map((entry) {
+          final index = entry.key;
+          final action = entry.value;
+
+          return Padding(
+            padding: EdgeInsets.only(
+              left: 16.w,
+              right: 16.w,
+              bottom: 12.h,
+            ),
+            child: ActionCard(
+              action: action,
+              onDelete: () => onDeleteAction(action),
+              onDeviceIdChanged: (value) => onDeviceIdChanged(action, value),
+              onStateChanged: (value) => onStateChanged(action, value),
+              onTitleChanged: (value) => onTitleChanged(action, value),
+              onMessageChanged: (value) => onMessageChanged(action, value),
+            ),
+          );
+        }).toList(),
+      ],
     );
   }
 }

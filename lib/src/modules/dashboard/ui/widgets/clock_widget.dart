@@ -71,23 +71,23 @@ class _ClockWidgetState extends State<ClockWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           currentTime,
-          style: TextStyle(
+          style: theme.textTheme.headlineSmall?.copyWith(
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
           ),
         ),
         SizedBox(height: 4.h),
         Text(
           currentDate,
-          style: TextStyle(
+          style: theme.textTheme.bodySmall?.copyWith(
             fontSize: 12.sp,
-            color: Colors.grey,
           ),
         ),
       ],

@@ -64,3 +64,23 @@ final class SelectPageState extends SettingsState {
   @override
   List<Object?> get props => [index];
 }
+
+class ChangeThemeSuccessState extends SettingsState {
+  final bool isDarkMode;
+  const ChangeThemeSuccessState({required this.isDarkMode});
+
+  @override
+  List<Object> get props => [isDarkMode];
+}
+
+class SettingsLoadedState extends SettingsState {
+  final String languageCode;
+  final bool isDarkMode;
+  const SettingsLoadedState({
+    required this.languageCode,
+    required this.isDarkMode,
+  });
+
+  @override
+  List<Object> get props => [languageCode, isDarkMode];
+}

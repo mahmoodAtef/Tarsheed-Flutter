@@ -111,6 +111,7 @@ class _EnergyConsumptionSectionState extends State<EnergyConsumptionSection>
   }
 
   Widget _buildGaugeContent(BuildContext context, Report? report) {
+    final theme = Theme.of(context);
     double consumptionValue = 0;
     int tierNumber = 1;
 
@@ -134,10 +135,9 @@ class _EnergyConsumptionSectionState extends State<EnergyConsumptionSection>
         children: [
           Text(
             S.of(context).energyConsumption,
-            style: TextStyle(
+            style: theme.textTheme.headlineMedium?.copyWith(
               fontSize: 20.sp,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
             ),
           ),
           SizedBox(height: 8.h),
@@ -157,39 +157,35 @@ class _EnergyConsumptionSectionState extends State<EnergyConsumptionSection>
                           showLabels: false,
                           showTicks: false,
                           axisLineStyle: AxisLineStyle(
-                            thickness: 20,
-                            color: Colors.grey[200],
+                            thickness: 20.w,
+                            color: theme.colorScheme.outline.withOpacity(0.3),
                           ),
                           ranges: _buildGaugeRanges(context),
                           pointers: <GaugePointer>[
                             NeedlePointer(
-                              value:
-                                  _currentAnimatedValue, // استخدام القيمة المتحركة
-                              needleColor: Colors.black,
-                              needleStartWidth: 2,
-                              needleEndWidth: 5,
-                              knobStyle: const KnobStyle(
+                              value: _currentAnimatedValue,
+                              needleColor: theme.colorScheme.onSurface,
+                              needleStartWidth: 2.w,
+                              needleEndWidth: 5.w,
+                              knobStyle: KnobStyle(
                                 knobRadius: 0.05,
-                                color: Colors.black,
+                                color: theme.colorScheme.onSurface,
                               ),
-                              // إضافة أنيميشن للمؤشر نفسه
                               animationType: AnimationType.ease,
                               enableAnimation: true,
                               animationDuration: 1500,
                             ),
                           ],
                           annotations: <GaugeAnnotation>[
-                            _buildGaugeAnnotation("0-50", 175, 0.9),
-                            _buildGaugeAnnotation("1000+", 5, 0.9),
+                            _buildGaugeAnnotation(context, "0-50", 175, 0.9),
+                            _buildGaugeAnnotation(context, "1000+", 5, 0.9),
                             GaugeAnnotation(
                               widget: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  // أنيميشن للنص أيضاً
                                   AnimatedBuilder(
                                     animation: _animation,
                                     builder: (context, child) {
-                                      // حساب القيمة الحقيقية من القيمة المتحركة
                                       double animatedConsumption =
                                           (_currentAnimatedValue * 10)
                                               .clamp(0, 1000);
@@ -199,21 +195,22 @@ class _EnergyConsumptionSectionState extends State<EnergyConsumptionSection>
                                       }
 
                                       return Text(
-                                        '${animatedConsumption.toInt()} kWh',
-                                        style: TextStyle(
+                                        'kWh',
+                                        style: theme.textTheme.headlineMedium
+                                            ?.copyWith(
                                           fontSize: 20.sp,
                                           fontWeight: FontWeight.w600,
-                                          color: Colors.black,
                                         ),
                                       );
                                     },
                                   ),
                                   Text(
                                     '${S.of(context).tier} $tierNumber',
-                                    style: TextStyle(
+                                    style: theme.textTheme.titleLarge?.copyWith(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.grey[700],
+                                      color: theme.colorScheme.onSurface
+                                          .withOpacity(0.7),
                                     ),
                                   ),
                                 ],
@@ -257,7 +254,9 @@ class _EnergyConsumptionSectionState extends State<EnergyConsumptionSection>
           Center(
             child: Text(
               S.of(context).currentTier(tierNumber),
-              style: TextStyle(fontSize: 12.sp),
+              style: theme.textTheme.bodySmall?.copyWith(
+                fontSize: 12.sp,
+              ),
             ),
           ),
         ],
@@ -271,74 +270,86 @@ class _EnergyConsumptionSectionState extends State<EnergyConsumptionSection>
         startValue: 0,
         endValue: 5,
         color: Colors.green,
-        startWidth: 20,
-        endWidth: 20,
+        startWidth: 20.w,
+        endWidth: 20.w,
         label: "1",
-        labelStyle:
-            GaugeTextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+        labelStyle: GaugeTextStyle(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       GaugeRange(
         startValue: 5,
         endValue: 10,
         color: Colors.lightGreen,
-        startWidth: 20,
-        endWidth: 20,
+        startWidth: 20.w,
+        endWidth: 20.w,
         label: "2",
-        labelStyle:
-            GaugeTextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+        labelStyle: GaugeTextStyle(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       GaugeRange(
         startValue: 10,
         endValue: 20,
         color: Colors.yellow,
-        startWidth: 20,
-        endWidth: 20,
+        startWidth: 20.w,
+        endWidth: 20.w,
         label: "3",
-        labelStyle:
-            GaugeTextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+        labelStyle: GaugeTextStyle(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       GaugeRange(
         startValue: 20,
         endValue: 35,
         color: Colors.orange,
-        startWidth: 20,
-        endWidth: 20,
+        startWidth: 20.w,
+        endWidth: 20.w,
         label: "4",
-        labelStyle:
-            GaugeTextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+        labelStyle: GaugeTextStyle(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       GaugeRange(
         startValue: 35,
         endValue: 65,
         color: Colors.deepOrange,
-        startWidth: 20,
-        endWidth: 20,
+        startWidth: 20.w,
+        endWidth: 20.w,
         label: "5",
-        labelStyle:
-            GaugeTextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+        labelStyle: GaugeTextStyle(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       GaugeRange(
         startValue: 65,
         endValue: 100,
         color: Colors.red,
-        startWidth: 20,
-        endWidth: 20,
+        startWidth: 20.w,
+        endWidth: 20.w,
         label: "6",
-        labelStyle:
-            GaugeTextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+        labelStyle: GaugeTextStyle(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     ];
   }
 
   GaugeAnnotation _buildGaugeAnnotation(
-      String text, double angle, double positionFactor) {
+      BuildContext context, String text, double angle, double positionFactor) {
+    final theme = Theme.of(context);
     return GaugeAnnotation(
       widget: Text(
         text,
-        style: TextStyle(
+        style: theme.textTheme.titleMedium?.copyWith(
           fontSize: 13.sp,
           fontWeight: FontWeight.w600,
-          color: Colors.black,
         ),
       ),
       angle: angle,
