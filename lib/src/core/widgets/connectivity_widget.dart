@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -7,15 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/large_button.dart';
 
 class ConnectionWidget extends StatefulWidget {
   final Widget child;
   final void Function() onRetry;
 
-  const ConnectionWidget(
-      {super.key, required this.child, required this.onRetry});
+  const ConnectionWidget({
+    super.key,
+    required this.child,
+    required this.onRetry,
+  });
 
   @override
   _ConnectionWidgetState createState() => _ConnectionWidgetState();
@@ -30,7 +30,8 @@ class _ConnectionWidgetState extends State<ConnectionWidget> {
   void initState() {
     super.initState();
     initConnectivity();
-    _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+    _connectivitySubscription =
+        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
   }
 
   @override
@@ -46,39 +47,59 @@ class _ConnectionWidgetState extends State<ConnectionWidget> {
   }
 
   Widget _notConnectedWidget() {
-    return Center(
-      child: SizedBox(
-        width: 300.w,
-        height: 200.h,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.wifi_off,
-              color: ColorManager.primary,
-              size: 45.sp,
-            ),
-            SizedBox(height: 5.sp),
-            Text(
-              S.of(context).noInternetConnection,
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: ColorManager.primary,
+    final theme = Theme.of(context);
+
+    return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
+      body: Center(
+        child: Container(
+          width: 300.w,
+          height: 200.h,
+          padding: EdgeInsets.all(16.w),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(16.r),
+            boxShadow: [
+              BoxShadow(
+                color: theme.colorScheme.shadow.withOpacity(0.1),
+                blurRadius: 10.r,
+                offset: Offset(0, 4.h),
               ),
-            ),
-            SizedBox(height: 10.sp),
-            SizedBox(
-              height: 40.h,
-              child: DefaultButton(
-                width: 160.w,
-                onPressed: () async {
-                  widget.onRetry.call();
-                },
-                title: S.of(context).retry,
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.wifi_off_rounded,
+                color: theme.colorScheme.primary,
+                size: 45.sp,
               ),
-            ),
-          ],
+              SizedBox(height: 12.h),
+              Text(
+                S.of(context).noInternetConnection,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontSize: 16.sp,
+                  color: theme.colorScheme.onSurface,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 16.h),
+              SizedBox(
+                height: 40.h,
+                child: DefaultButton(
+                  width: 160.w,
+                  onPressed: () async {
+                    widget.onRetry.call();
+                    await initConnectivity();
+                  },
+                  title: S.of(context).retry,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -86,15 +107,12 @@ class _ConnectionWidgetState extends State<ConnectionWidget> {
 
   @override
   void dispose() {
-    if (_connectivitySubscription != null) {
-      _connectivitySubscription!.cancel();
-    }
+    _connectivitySubscription?.cancel();
     super.dispose();
   }
 
   Future<void> initConnectivity() async {
     late List<ConnectivityResult> result;
-    // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       result = await _connectivity.checkConnectivity();
     } on PlatformException {
@@ -109,9 +127,14 @@ class _ConnectionWidgetState extends State<ConnectionWidget> {
   }
 
   Future<void> _updateConnectionStatus(List<ConnectivityResult> result) async {
-    setState(() {
-      _connectionStatus = result;
-      widget.onRetry.call();
-    });
+    if (mounted) {
+      setState(() {
+        _connectionStatus = result;
+      });
+      if (result.contains(ConnectivityResult.mobile) ||
+          result.contains(ConnectivityResult.wifi)) {
+        widget.onRetry.call();
+      }
+    }
   }
 }

@@ -14,46 +14,97 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return SafeArea(
       child: BlocProvider<DevicesCubit>(
         create: (context) => DevicesCubit.get(),
         child: ConnectionWidget(
           onRetry: _initializeData,
-          child: SingleChildScrollView(
-            child: Builder(builder: (context) {
-              _initializeData();
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  HeaderSection(),
-                  Padding(
-                    padding: EdgeInsets.all(12.w),
-                    child: EnergyConsumptionSection(),
-                  ),
-                  SizedBox(height: 16.h),
-                  Padding(
-                    padding: EdgeInsets.all(12.w),
-                    child: ConnectedDevicesList(),
-                  ),
-                ],
-              );
-            }),
+          child: Container(
+            color: theme.scaffoldBackgroundColor,
+            child: _buildScrollableContent(context, theme),
           ),
         ),
       ),
     );
   }
 
+  Widget _buildScrollableContent(BuildContext context, ThemeData theme) {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Builder(
+        builder: (context) {
+          _initializeData();
+          return _buildMainContent(theme);
+        },
+      ),
+    );
+  }
+
+  Widget _buildMainContent(ThemeData theme) {
+    return Column(
+      spacing: 10.h,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildHeaderSection(),
+        _buildEnergyConsumptionSection(theme),
+        _buildSpacing(),
+        _buildDevicesSection(theme),
+        _buildBottomSpacing(),
+      ],
+    );
+  }
+
+  Widget _buildHeaderSection() {
+    return const HeaderSection();
+  }
+
+  Widget _buildEnergyConsumptionSection(ThemeData theme) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 12.w),
+      child: EnergyConsumptionSection(),
+    );
+  }
+
+  Widget _buildSpacing() {
+    return SizedBox(height: 16.h);
+  }
+
+  Widget _buildDevicesSection(ThemeData theme) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 12.w),
+      child: ConnectedDevicesList(),
+    );
+  }
+
+  Widget _buildBottomSpacing() {
+    return SizedBox(height: 20.h);
+  }
+
   void _initializeData() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final bloc = DashboardBloc.get();
-      final reportsCubit = ReportsCubit.get();
-      final DevicesCubit devicesCubit = DevicesCubit.get();
-      final now = DateTime.now();
-      reportsCubit.getUsageReport(period: "${now.month}-${now.year}");
-      bloc.add(GetRoomsEvent());
-      bloc.add(GetDevicesCategoriesEvent());
-      devicesCubit.getDevices();
+      _loadDashboardData();
+      _loadReportsData();
+      _loadDevicesData();
     });
+  }
+
+  void _loadDashboardData() {
+    final bloc = DashboardBloc.get();
+    bloc.add(GetRoomsEvent());
+    bloc.add(GetDevicesCategoriesEvent());
+  }
+
+  void _loadReportsData() {
+    final reportsCubit = ReportsCubit.get();
+    final now = DateTime.now();
+    final period = "${now.month}-${now.year}";
+    reportsCubit.getUsageReport(period: period);
+  }
+
+  void _loadDevicesData() {
+    final devicesCubit = DevicesCubit.get();
+    devicesCubit.getDevices();
   }
 }

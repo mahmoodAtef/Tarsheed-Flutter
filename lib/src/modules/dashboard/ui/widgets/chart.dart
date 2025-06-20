@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:tarsheed/generated/l10n.dart';
 
-import '../../../../core/utils/color_manager.dart';
 import '../../data/models/consumption_interval.dart';
 
 class UsageChartWidget extends StatelessWidget {
@@ -12,12 +11,11 @@ class UsageChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return SizedBox(
       height: 270.h,
       child: Card(
-        color: ColorManager.white,
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Padding(
           padding: EdgeInsets.all(10.0.h),
           child: Column(
@@ -25,30 +23,32 @@ class UsageChartWidget extends StatelessWidget {
             children: [
               Text(
                 S.of(context).montlyUsage,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: ColorManager.black,
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontSize: 16.sp,
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
               Expanded(
                 child: SizedBox(
-                  height: 200,
+                  height: 200.h,
                   child: SfCartesianChart(
                     primaryXAxis: NumericAxis(
                       minimum: 0,
                       maximum: 30,
                       interval: 3,
                       title: AxisTitle(text: ''),
-                      labelStyle: TextStyle(color: ColorManager.black),
+                      labelStyle: TextStyle(
+                        color: theme.colorScheme.onSurface,
+                      ),
                     ),
                     primaryYAxis: NumericAxis(
                       minimum: 0,
                       maximum: getMaxValue(chartData) ?? 300,
                       interval: 50,
                       title: AxisTitle(text: ''),
-                      labelStyle: TextStyle(color: ColorManager.black),
+                      labelStyle: TextStyle(
+                        color: theme.colorScheme.onSurface,
+                      ),
                     ),
                     plotAreaBorderWidth: 0,
                     enableAxisAnimation: true,
@@ -59,28 +59,27 @@ class UsageChartWidget extends StatelessWidget {
                             data.day.toDouble(),
                         yValueMapper: (ConsumptionInterval data, _) =>
                             data.averageUsage,
-                        color: ColorManager.primary,
-                        width: 2,
+                        color: theme.colorScheme.primary,
+                        width: 2.w,
                         markerSettings: MarkerSettings(
                           isVisible: true,
                           shape: DataMarkerType.circle,
-                          color: ColorManager.primary,
-                          width: 6,
-                          height: 6,
+                          color: theme.colorScheme.primary,
+                          width: 6.w,
+                          height: 6.h,
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10.h),
               Center(
                 child: Text(
-                  'kWh',
-                  style: TextStyle(
-                    fontSize: 14,
+                  'kWh', // Add this to your localization file
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
-                    color: ColorManager.black,
                   ),
                 ),
               ),

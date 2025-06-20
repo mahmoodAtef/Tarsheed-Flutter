@@ -51,4 +51,7 @@ class EndPoints {
   static const String markNotificationAsRead = 'notification/read/';
   static const String markAllNotificationsAsRead = '/notification/all/read/';
   static const String updateToken = '/users/';
+
+  /// PAYMENT ENDPOINTS
+  static const String getPaymentUrl = '/payment/create/';
 }

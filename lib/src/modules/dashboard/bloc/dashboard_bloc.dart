@@ -51,6 +51,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         await _handleGetSensorsEvent(event, emit);
       } else if (event is DeleteSensorEvent) {
         await _handleDeleteSensorEvent(event, emit);
+      } else if (event is GetPaymentUrlEvent) {
+        await _handleGetPaymentUrlEvent(event, emit);
       }
     });
   }
@@ -156,4 +158,15 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       emit(DeleteSensorSuccessState(event.sensorId));
     });
   }
+
+  _handleGetPaymentUrlEvent(
+      GetPaymentUrlEvent event, Emitter<DashboardState> emit) async {
+    emit(GetPaymentUrlLoadingState());
+    final result = await _repository.getPaymentUrl();
+    result.fold((l) => emit(GetPaymentUrlErrorState(l)), (r) {
+      emit(GetPaymentUrlSuccessState(r));
+    });
+  }
 }
+
+// comment

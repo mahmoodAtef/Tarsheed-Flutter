@@ -1,21 +1,25 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
 
 class MainTitle extends StatelessWidget {
-  const MainTitle({required this.mainText});
+  const MainTitle({
+    super.key,
+    required this.mainText,
+  });
 
   final String mainText;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Center(
       child: Text(
         mainText,
-        style: TextStyle(
+        style: theme.textTheme.displayMedium?.copyWith(
           fontSize: 30.sp,
           fontWeight: FontWeight.w700,
-          color: ColorManager.primary,
+          color: theme.colorScheme.primary,
         ),
       ),
     );

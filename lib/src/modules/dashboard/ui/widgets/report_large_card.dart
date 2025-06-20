@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BuildInfoCard extends StatelessWidget {
   final Widget? iconWidget;
@@ -26,109 +25,120 @@ class BuildInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Card(
-      color: Colors.white,
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      color: colorScheme.surface,
+      elevation: theme.cardTheme.elevation ?? 2,
+      shape: theme.cardTheme.shape ??
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: EdgeInsets.all(12.w),
         child: Row(
           children: [
             Container(
-              width: 50,
-              height: 50,
+              width: 50.w,
+              height: 50.h,
               decoration: BoxDecoration(
-                color: color ?? ColorManager.primary,
-                borderRadius: BorderRadius.circular(10),
+                color: color ?? colorScheme.primary,
+                borderRadius: BorderRadius.circular(10.r),
               ),
-              padding: const EdgeInsets.all(8),
+              padding: EdgeInsets.all(8.w),
               child: iconWidget ??
                   Icon(
                     icon ?? Icons.info,
-                    color: Colors.white,
-                    size: 24,
+                    color: colorScheme.onPrimary,
+                    size: 24.sp,
                   ),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: 16.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title ?? 'No Title',
-                    style: const TextStyle(
-                      color: ColorManager.darkGrey,
-                      fontSize: 14,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: colorScheme.onSurface.withOpacity(0.7),
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Text(
                     value ?? 'No Value',
-                    style: const TextStyle(
-                      color: ColorManager.black,
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      color: colorScheme.onSurface,
                       fontWeight: FontWeight.w700,
-                      fontSize: 20,
+                      fontSize: 20.sp,
                     ),
                   ),
                 ],
               ),
             ),
-
-            if (roomName != null)
-              Container(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                decoration: BoxDecoration(
-                  color: ColorManager.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  roomName!,
-                  style: const TextStyle(
-                    color: ColorManager.primary,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              )
-            else
-              Container(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: ColorManager.white,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      (isDecrease ?? true)
-                          ? Icons.arrow_downward_rounded
-                          : Icons.arrow_upward_rounded,
-                      color: (isDecrease ?? true)
-                          ? (color ?? ColorManager.primary)
-                          : ColorManager.red,
-                      size: 20,
-                      weight: 800,
-                    ),
-                    const SizedBox(width: 2),
-                    Text(
-                      percentage ?? '0%',
-                      style: TextStyle(
-                        color: (isDecrease ?? true)
-                            ? (color ?? ColorManager.primary)
-                            : ColorManager.red,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            _buildTrailingWidget(context, theme, colorScheme),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildTrailingWidget(
+      BuildContext context, ThemeData theme, ColorScheme colorScheme) {
+    if (roomName != null) {
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+        decoration: BoxDecoration(
+          color: colorScheme.primary.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        child: Text(
+          roomName!,
+          style: theme.textTheme.labelMedium?.copyWith(
+            color: colorScheme.primary,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      );
+    } else {
+      final isDecreasing = isDecrease ?? true;
+      final indicatorColor =
+          isDecreasing ? (color ?? colorScheme.primary) : colorScheme.error;
+
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          borderRadius: BorderRadius.circular(8.r),
+          border: Border.all(
+            color: colorScheme.outline.withOpacity(0.2),
+            width: 1.w,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              isDecreasing
+                  ? Icons.arrow_downward_rounded
+                  : Icons.arrow_upward_rounded,
+              color: indicatorColor,
+              size: 20.sp,
+            ),
+            SizedBox(width: 2.w),
+            Text(
+              percentage ?? '0%',
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: indicatorColor,
+                fontWeight: FontWeight.w700,
+                fontSize: 16.sp,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }

@@ -34,7 +34,7 @@ class Automation extends Equatable {
                 json['triggers'][0],
               )
             : Trigger.empty(),
-        isEnabled: json['isEnabled'] ?? true,
+        isEnabled: json['status'] ?? true,
       );
 
   /*

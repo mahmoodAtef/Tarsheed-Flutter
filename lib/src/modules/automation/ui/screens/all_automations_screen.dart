@@ -35,6 +35,8 @@ class _AllAutomationsScreenState extends State<AllAutomationsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).automations),
@@ -44,148 +46,207 @@ class _AllAutomationsScreenState extends State<AllAutomationsScreen> {
         child: ConnectionWidget(
           onRetry: _fetchAutomations,
           child: BlocConsumer<AutomationCubit, AutomationState>(
-            listener: (context, state) {
-              if (state is DeleteAutomationSuccess) {
-                showToast(S.of(context).automationDeletedSuccessfully);
-              } else if (state is DeleteAutomationError ||
-                  state is ChangeAutomationStatusError ||
-                  state is GetAllAutomationsError) {
-                if (state is DeleteAutomationError) {
-                  ExceptionManager.showMessage(state.exception);
-                } else if (state is ChangeAutomationStatusError) {
-                  ExceptionManager.showMessage(state.exception);
-                } else if (state is GetAllAutomationsError) {
-                  ExceptionManager.showMessage(state.exception);
-                }
-              } else if (state is ChangeAutomationStatusSuccess) {
-                showToast(S.of(context).automationStatusChanged);
-              }
-            },
-            builder: (context, state) {
-              if (state is GetAllAutomationsLoading &&
-                  state.automations == null) {
-                return const CustomLoadingWidget();
-              }
-
-              if (state is GetAllAutomationsError &&
-                  state.automations == null) {
-                return Center(
-                  child: SizedBox(
-                    height: 120.h,
-                    child: CustomErrorWidget(
-                      exception: state.exception,
-                    ),
-                  ),
-                );
-              }
-
-              final automations = state.automations ?? [];
-
-              if (automations.isEmpty) {
-                return const NoDataWidget();
-              }
-
-              return RefreshIndicator(
-                onRefresh: () async => _fetchAutomations(),
-                child: Stack(
-                  children: [
-                    ListView.separated(
-                      padding: const EdgeInsets.all(16),
-                      itemCount: automations.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 12),
-                      itemBuilder: (context, index) {
-                        final automation = automations[index];
-                        return AutomationCard(
-                          automation: automation,
-                          isEnabled: automation.isEnabled ?? true,
-                          onTap: () async {
-                            final result = await context.push(
-                              BlocProvider.value(
-                                value: context.read<AutomationCubit>(),
-                                child: AutomationDetailsScreen(
-                                    automation: automation),
-                              ),
-                            );
-                            if (result == true) {
-                              _fetchAutomations();
-                            }
-                          },
-                          onToggle: () {
-                            if (automation.id != null) {
-                              _automationCubit
-                                  .changeAutomationStatus(automation.id!);
-                            } else {
-                              debugPrint(
-                                  'Automation ID is null, cannot toggle status.');
-                            }
-                          },
-                          onDelete: () {
-                            _showDeleteDialog(automation);
-                          },
-                        );
-                      },
-                    ),
-                    if (state is DeleteAutomationLoading ||
-                        state is ChangeAutomationStatusLoading)
-                      Container(
-                        color: Colors.black.withOpacity(0.3),
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      ),
-                  ],
-                ),
-              );
-            },
+            listener: _handleStateChanges,
+            builder: (context, state) => _buildBody(context, state, theme),
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final result = await context.push(const AddAutomationScreen());
-          if (result == true) {
-            _fetchAutomations();
-          }
-        },
-        child: const Icon(Icons.add),
-        tooltip: S.of(context).addNewAutomation,
+      floatingActionButton: _buildFloatingActionButton(context, theme),
+    );
+  }
+
+  void _handleStateChanges(BuildContext context, AutomationState state) {
+    if (state is DeleteAutomationSuccess) {
+      showToast(S.of(context).automationDeletedSuccessfully);
+    } else if (state is DeleteAutomationError ||
+        state is ChangeAutomationStatusError ||
+        state is GetAllAutomationsError) {
+      if (state is DeleteAutomationError) {
+        ExceptionManager.showMessage(state.exception);
+      } else if (state is ChangeAutomationStatusError) {
+        ExceptionManager.showMessage(state.exception);
+      } else if (state is GetAllAutomationsError) {
+        ExceptionManager.showMessage(state.exception);
+      }
+    } else if (state is ChangeAutomationStatusSuccess) {
+      showToast(S.of(context).automationStatusChanged);
+    }
+  }
+
+  Widget _buildBody(
+      BuildContext context, AutomationState state, ThemeData theme) {
+    if (state is GetAllAutomationsLoading && state.automations == null) {
+      return const CustomLoadingWidget();
+    }
+
+    if (state is GetAllAutomationsError && state.automations == null) {
+      return Center(
+        child: SizedBox(
+          height: 120.h,
+          child: CustomErrorWidget(
+            exception: state.exception,
+          ),
+        ),
+      );
+    }
+
+    final automations = state.automations ?? [];
+
+    if (automations.isEmpty) {
+      return const NoDataWidget();
+    }
+
+    return RefreshIndicator(
+      onRefresh: () async => _fetchAutomations(),
+      child: Stack(
+        children: [
+          _buildAutomationsList(automations, theme),
+          if (state is DeleteAutomationLoading ||
+              state is ChangeAutomationStatusLoading)
+            _buildLoadingOverlay(theme),
+        ],
       ),
     );
   }
 
-  void _showDeleteDialog(Automation automation) {
+  Widget _buildAutomationsList(List<Automation> automations, ThemeData theme) {
+    return ListView.separated(
+      padding: EdgeInsets.all(16.w),
+      itemCount: automations.length,
+      separatorBuilder: (_, __) => SizedBox(height: 12.h),
+      itemBuilder: (context, index) {
+        final automation = automations[index];
+        return AutomationCard(
+          automation: automation,
+          isEnabled: automation.isEnabled ?? true,
+          onTap: () => _handleAutomationTap(context, automation),
+          onToggle: () => _handleToggleAutomation(automation),
+          onDelete: () => _showDeleteDialog(automation, theme),
+        );
+      },
+    );
+  }
+
+  Widget _buildLoadingOverlay(ThemeData theme) {
+    return Container(
+      color: theme.colorScheme.onSurface.withOpacity(0.3),
+      child: Center(
+        child: CircularProgressIndicator(
+          color: theme.colorScheme.primary,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFloatingActionButton(BuildContext context, ThemeData theme) {
+    return FloatingActionButton(
+      onPressed: () => _handleAddAutomation(context),
+      tooltip: S.of(context).addNewAutomation,
+      child: Icon(
+        Icons.add,
+        color: theme.floatingActionButtonTheme.foregroundColor,
+      ),
+    );
+  }
+
+  Future<void> _handleAutomationTap(
+      BuildContext context, Automation automation) async {
+    final result = await context.push(
+      BlocProvider.value(
+        value: context.read<AutomationCubit>(),
+        child: AutomationDetailsScreen(automation: automation),
+      ),
+    );
+    if (result == true) {
+      _fetchAutomations();
+    }
+  }
+
+  void _handleToggleAutomation(Automation automation) {
+    if (automation.id != null) {
+      _automationCubit.changeAutomationStatus(automation.id!);
+    } else {}
+  }
+
+  Future<void> _handleAddAutomation(BuildContext context) async {
+    final result = await context.push(const AddAutomationScreen());
+    if (result == true) {
+      _fetchAutomations();
+    }
+  }
+
+  void _showDeleteDialog(Automation automation, ThemeData theme) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(S.of(context).deleteAutomation),
+        backgroundColor: theme.dialogTheme.backgroundColor,
+        elevation: theme.dialogTheme.elevation,
+        shape: theme.dialogTheme.shape,
+        title: Text(
+          S.of(context).deleteAutomation,
+          style: theme.dialogTheme.titleTextStyle,
+        ),
         content: Text(
           '${S.of(context).deleteAutomationConfirmation}\n\n"${automation.name}"',
+          style: theme.dialogTheme.contentTextStyle,
         ),
         actions: [
-          TextButton(
+          _buildDialogButton(
+            context: context,
+            text: S.of(context).cancel,
             onPressed: () => Navigator.of(context).pop(),
-            child: Text(S.of(context).cancel),
+            theme: theme,
+            isDestructive: false,
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              if (automation.id != null) {
-                _automationCubit.deleteAutomation(automation.id!);
-              }
-            },
-            child: Text(
-              S.of(context).delete,
-              style: const TextStyle(color: Colors.red),
-            ),
+          _buildDialogButton(
+            context: context,
+            text: S.of(context).delete,
+            onPressed: () => _handleDeleteConfirmation(automation),
+            theme: theme,
+            isDestructive: true,
           ),
         ],
       ),
     );
   }
 
+  Widget _buildDialogButton({
+    required BuildContext context,
+    required String text,
+    required VoidCallback onPressed,
+    required ThemeData theme,
+    required bool isDestructive,
+  }) {
+    return TextButton(
+      onPressed: onPressed,
+      style: theme.textButtonTheme.style?.copyWith(
+        foregroundColor: MaterialStateProperty.all(
+          isDestructive
+              ? theme.colorScheme.error
+              : theme.textButtonTheme.style?.foregroundColor?.resolve({}) ??
+                  theme.colorScheme.primary,
+        ),
+      ),
+      child: Text(
+        text,
+        style: theme.textTheme.labelLarge?.copyWith(
+          color: isDestructive
+              ? theme.colorScheme.error
+              : theme.colorScheme.primary,
+        ),
+      ),
+    );
+  }
+
+  void _handleDeleteConfirmation(Automation automation) {
+    Navigator.of(context).pop();
+    if (automation.id != null) {
+      _automationCubit.deleteAutomation(automation.id!);
+    }
+  }
+
   @override
   void dispose() {
-    // لا نحتاج لإغلاق الـ cubit هنا لأنه singleton
     super.dispose();
   }
 }

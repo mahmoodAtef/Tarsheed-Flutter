@@ -5,7 +5,6 @@ import 'package:tarsheed/generated/l10n.dart';
 import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/services/dep_injection.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/sign_up_create_account.dart';
 import 'package:tarsheed/src/modules/auth/ui/screens/verify_email.dart';
@@ -31,8 +30,11 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final AuthBloc authBloc = sl();
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Stack(
@@ -68,9 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: 50.h),
                       CustomTextField(
-                        autofillHints: [
-                          AutofillHints.email,
-                        ],
+                        autofillHints: const [AutofillHints.email],
                         controller: emailController,
                         hintText: S.of(context).email,
                         keyboardType: TextInputType.emailAddress,
@@ -95,10 +95,9 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 20.h),
                       CustomTextField(
                         controller: passwordController,
-                        autofillHints: [
-                          AutofillHints.password,
-                        ],
+                        autofillHints: const [AutofillHints.password],
                         hintText: S.of(context).password,
+                        maxLines: 1,
                         isPassword: true,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
@@ -123,9 +122,10 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           child: Text(
                             S.of(context).forgotPassword,
-                            style: TextStyle(
-                                color: ColorManager.primary,
-                                fontWeight: FontWeight.w800),
+                            style: theme.textTheme.labelLarge?.copyWith(
+                              color: theme.colorScheme.primary,
+                              fontWeight: FontWeight.w800,
+                            ),
                           ),
                         ),
                       ),
@@ -154,8 +154,8 @@ class _LoginPageState extends State<LoginPage> {
                       Center(
                         child: TextButton(
                           style: TextButton.styleFrom(
-                            foregroundColor: Colors.black,
-                            textStyle: const TextStyle(
+                            foregroundColor: theme.colorScheme.onBackground,
+                            textStyle: theme.textTheme.labelLarge?.copyWith(
                               fontWeight: FontWeight.w800,
                             ),
                           ),
@@ -169,9 +169,8 @@ class _LoginPageState extends State<LoginPage> {
                       Center(
                         child: Text(
                           S.of(context).orContinueWith,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: const Color(0xFF2666DE),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.primary,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -190,7 +189,15 @@ class _LoginPageState extends State<LoginPage> {
                                             .add(const LoginWithGoogleEvent());
                                       },
                                 child: state is LoginWithGoogleLoadingState
-                                    ? const CircularProgressIndicator()
+                                    ? SizedBox(
+                                        height: 44.h,
+                                        width: 60.w,
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            color: theme.colorScheme.primary,
+                                          ),
+                                        ),
+                                      )
                                     : SocialIcon(
                                         image: AssetsManager.google,
                                         scale: 1.3,
@@ -205,7 +212,15 @@ class _LoginPageState extends State<LoginPage> {
                                             const LoginWithFacebookEvent());
                                       },
                                 child: state is LoginWithFacebookLoadingState
-                                    ? const CircularProgressIndicator()
+                                    ? SizedBox(
+                                        height: 44.h,
+                                        width: 60.w,
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            color: theme.colorScheme.primary,
+                                          ),
+                                        ),
+                                      )
                                     : SocialIcon(
                                         image: AssetsManager.facebook,
                                         scale: 2,

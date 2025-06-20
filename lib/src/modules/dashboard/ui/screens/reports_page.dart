@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
 import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/reports_cubit/reports_cubit.dart';
@@ -121,6 +120,10 @@ class _ReportContentSection extends StatelessWidget {
   }
 
   Widget _buildReportContent(BuildContext context, Report report) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return SingleChildScrollView(
       child: Column(
         spacing: 10.h,
@@ -131,7 +134,7 @@ class _ReportContentSection extends StatelessWidget {
             value: '${report.averageConsumption.toStringAsFixed(2)} kWh',
             percentage: '${report.savingsPercentage}%',
             isDecrease: report.savingsPercentage > 0,
-            color: ColorManager.primary,
+            color: colorScheme.primary,
           ),
           BuildInfoCard(
             icon: Icons.attach_money,
@@ -139,7 +142,7 @@ class _ReportContentSection extends StatelessWidget {
             value: '\$${report.averageCost.toStringAsFixed(2)}',
             percentage: '${report.savingsCostPercentage}%',
             isDecrease: report.savingsCostPercentage > 0,
-            color: ColorManager.primary,
+            color: colorScheme.primary,
           ),
           _UsageForecastSection(
             lastMonthUsage: "${report.previousTotalConsumption}",
@@ -147,7 +150,9 @@ class _ReportContentSection extends StatelessWidget {
           ),
           Text(
             "${S.of(context).lowTierSystemMessage} ${report.tier}",
-            style: TextStyle(fontSize: 14.sp),
+            style: textTheme.bodyMedium?.copyWith(
+              fontSize: 14.sp,
+            ),
           ),
           SizedBox(height: 10.h),
         ],
@@ -201,15 +206,18 @@ class _UsageForecastSection extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        UsageCard(
-          title: S.of(context).lastMonthUsage,
-          value: '$lastMonthUsage kWh',
+        Expanded(
+          child: UsageCard(
+            titleKey: S.of(context).lastMonthUsage,
+            value: '$lastMonthUsage kWh',
+          ),
         ),
         SizedBox(width: 12.w),
-        UsageCard(
-          title: S.of(context).currentMonthUsage,
-          value: '$nextMonthUsage kWh',
-          subtitle: S.of(context).projectedBasedOnUsageHistory,
+        Expanded(
+          child: UsageCard(
+            titleKey: S.of(context).currentMonthUsage,
+            value: '$nextMonthUsage kWh',
+          ),
         ),
       ],
     );
@@ -219,16 +227,22 @@ class _UsageForecastSection extends StatelessWidget {
 class _AISuggestionsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       spacing: 20.h,
       children: [
-        Text(S.of(context).aiSuggestions,
-            style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: ColorManager.black)),
+        Text(
+          S.of(context).aiSuggestions,
+          style: textTheme.headlineSmall?.copyWith(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         BlocBuilder<ReportsCubit, ReportsState>(
           buildWhen: (previous, current) =>
               current is GetAISuggestionsLoading ||
@@ -254,7 +268,10 @@ class _AISuggestionsSection extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) => AISuggestionCard(
                     suggestion: state.suggestion.recommendations[index]),
-                separatorBuilder: (context, index) => Divider(),
+                separatorBuilder: (context, index) => Divider(
+                  color: colorScheme.outline,
+                  thickness: theme.dividerTheme.thickness,
+                ),
                 itemCount: state.suggestion.recommendations.length,
               );
             }

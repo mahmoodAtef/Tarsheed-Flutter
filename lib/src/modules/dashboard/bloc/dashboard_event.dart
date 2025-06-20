@@ -71,3 +71,10 @@ final class GetSensorsEvent extends DashboardEvent {
   @override
   List<Object?> get props => [isRefresh];
 }
+
+final class GetPaymentUrlEvent extends DashboardEvent {
+  const GetPaymentUrlEvent();
+
+  @override
+  List<Object?> get props => [];
+}

@@ -1,39 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final bool withBackButton;
+  final String text;
+  final List<Widget>? actions;
+  final Widget? leading;
+
   const CustomAppBar({
     required this.text,
     super.key,
     this.withBackButton = true,
+    this.actions,
+    this.leading,
   });
-  final bool withBackButton;
-  final String text;
 
   @override
   Size get preferredSize => Size.fromHeight(56.h);
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return AppBar(
-      backgroundColor: ColorManager.white,
-      leading: withBackButton
-          ? IconButton(
-              icon: Icon(Icons.chevron_left,
-                  color: ColorManager.black, size: 24.sp),
-              onPressed: () => context.pop(),
-            )
-          : null,
-      centerTitle: true,
+      backgroundColor: theme.appBarTheme.backgroundColor,
+      foregroundColor: theme.appBarTheme.foregroundColor,
+      elevation: theme.appBarTheme.elevation,
+      centerTitle: theme.appBarTheme.centerTitle,
+      surfaceTintColor: theme.appBarTheme.surfaceTintColor,
+      leading: leading ??
+          (withBackButton == true
+              ? IconButton(
+                  icon: Icon(
+                    Icons.chevron_left_rounded,
+                    color: theme.appBarTheme.foregroundColor,
+                    size: 28.sp,
+                  ),
+                  onPressed: () => context.pop(),
+                  tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                )
+              : null),
       title: Text(
         text,
-        style: TextStyle(
-          fontSize: 22.sp,
-          fontWeight: FontWeight.w700,
-          color: ColorManager.black,
+        style: theme.appBarTheme.titleTextStyle?.copyWith(
+          fontSize: 20.sp,
+          fontWeight: FontWeight.w600,
         ),
+      ),
+      actions: actions,
+      iconTheme: theme.appBarTheme.iconTheme?.copyWith(
+        size: 24.sp,
       ),
     );
   }

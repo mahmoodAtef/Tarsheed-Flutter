@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tarsheed/generated/l10n.dart';
-import 'package:tarsheed/src/core/utils/color_manager.dart';
+import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/category.dart';
@@ -18,19 +18,22 @@ class DeviceCard extends StatelessWidget {
   final bool deletable;
   final bool toggleable;
 
-  const DeviceCard(
-      {super.key,
-      required this.device,
-      this.deletable = true,
-      this.editable = true,
-      this.toggleable = true});
+  const DeviceCard({
+    super.key,
+    required this.device,
+    this.deletable = true,
+    this.editable = true,
+    this.toggleable = true,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(
-          value: DevicesCubit.get(), // Use .value to get the same instance
+          value: DevicesCubit.get(),
         ),
         BlocProvider.value(
           value: DashboardBloc.get(),
@@ -38,7 +41,6 @@ class DeviceCard extends StatelessWidget {
       ],
       child: BlocBuilder<DevicesCubit, DevicesState>(
         buildWhen: (previous, current) {
-          // Build when any device status changes or when this specific device is affected
           return current is ToggleDeviceStatusLoading ||
               current is ToggleDeviceStatusSuccess ||
               current is ToggleDeviceStatusError ||
@@ -46,18 +48,14 @@ class DeviceCard extends StatelessWidget {
               previous.devices != current.devices;
         },
         builder: (context, state) {
-          // Get the current device from the state's device list
           final currentDevice = _getCurrentDevice(state);
-          bool isActive = currentDevice?.state ?? device.state;
+          final isActive = currentDevice?.state ?? device.state;
 
-          // Check if this device is currently being toggled
           bool isToggling = false;
           if (state is ToggleDeviceStatusLoading &&
               state.deviceId == device.id) {
             isToggling = true;
           }
-
-          final textColor = isActive ? ColorManager.white : ColorManager.black;
 
           return SizedBox(
             height: 160.h,
@@ -65,15 +63,17 @@ class DeviceCard extends StatelessWidget {
             child: GestureDetector(
               onLongPress: deletable ? () => _deleteDevice(context) : null,
               child: Container(
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.all(12.w),
                 decoration: BoxDecoration(
-                  color: isActive ? ColorManager.primary : ColorManager.grey200,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: const [
+                  color: isActive
+                      ? theme.colorScheme.primaryContainer
+                      : theme.colorScheme.surface,
+                  borderRadius: BorderRadius.circular(16.r),
+                  boxShadow: [
                     BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 6,
-                      offset: Offset(0, 3),
+                      color: theme.shadowColor.withOpacity(0.1),
+                      blurRadius: 6.r,
+                      offset: Offset(0, 3.h),
                     ),
                   ],
                 ),
@@ -84,120 +84,34 @@ class DeviceCard extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            _buildCategoryIcon(textColor),
+                            FittedBox(
+                                child: _buildCategoryIcon(context, isActive)),
                             const Spacer(),
                             if (toggleable)
-                              Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Switch(
-                                    value: isActive,
-                                    onChanged: toggleable && !isToggling
-                                        ? (s) => _toggleStatus(s, context)
-                                        : null,
-                                    activeColor: Colors.white,
-                                    inactiveThumbColor: Colors.grey.shade400,
-                                  ),
-                                  if (isToggling)
-                                    SizedBox(
-                                      width: 16,
-                                      height: 16,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                          textColor,
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
+                              _buildToggleSwitch(context, isActive, isToggling),
                           ],
                         ),
-                        Text(
-                          currentDevice?.name ?? device.name,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: textColor,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                        SizedBox(height: 8.h),
+                        FittedBox(
+                            fit: BoxFit.fill,
+                            child: _buildDeviceName(
+                                context, currentDevice, isActive)),
+                        SizedBox(height: 4.h),
+                        FittedBox(
+                          child: _buildDeviceDescription(
+                              context, currentDevice, isActive),
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          currentDevice?.description ?? device.description,
-                          style: TextStyle(
-                            color: textColor.withOpacity(0.8),
-                            fontSize: 12,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.bolt,
-                              size: 16,
-                              color: textColor.withOpacity(0.9),
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              '${(currentDevice?.consumption ?? device.consumption).toStringAsFixed(1)} kW/h',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: textColor.withOpacity(0.9),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 6),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.priority_high,
-                              size: 16,
-                              color: textColor.withOpacity(0.9),
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              _getPriorityText(
-                                  currentDevice?.priority ?? device.priority,
-                                  context),
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: textColor.withOpacity(0.9),
-                              ),
-                            ),
-                          ],
-                        ),
+                        SizedBox(height: 8.h),
+                        FittedBox(
+                            child: _buildConsumptionInfo(
+                                context, currentDevice, isActive)),
+                        SizedBox(height: 6.h),
+                        Expanded(
+                            child: _buildPriorityInfo(
+                                context, currentDevice, isActive)),
                       ],
                     ),
-                    if (editable)
-                      Positioned(
-                        bottom: 4,
-                        right: 4,
-                        child: GestureDetector(
-                          onTap: editable ? () => _editDevice(context) : null,
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: isActive
-                                  ? Colors.white24
-                                  : Colors.grey.shade300,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              Icons.edit,
-                              size: 16,
-                              color: textColor,
-                            ),
-                          ),
-                        ),
-                      ),
+                    if (editable) _buildEditButton(context, isActive),
                   ],
                 ),
               ),
@@ -208,7 +122,150 @@ class DeviceCard extends StatelessWidget {
     );
   }
 
-  // Helper method to get the current device from the state
+  Widget _buildToggleSwitch(
+      BuildContext context, bool isActive, bool isToggling) {
+    final theme = Theme.of(context);
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Switch(
+          value: isActive,
+          onChanged: toggleable && !isToggling
+              ? (status) => _toggleStatus(status, context)
+              : null,
+        ),
+        if (isToggling)
+          SizedBox(
+            width: 16.w,
+            height: 16.h,
+            child: CircularProgressIndicator(
+              strokeWidth: 2.w,
+              color: isActive
+                  ? theme.colorScheme.onPrimary
+                  : theme.colorScheme.primary,
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildDeviceName(
+      BuildContext context, Device? currentDevice, bool isActive) {
+    final theme = Theme.of(context);
+
+    return Text(
+      currentDevice?.name ?? device.name,
+      style: theme.textTheme.titleLarge?.copyWith(
+        color: isActive
+            ? theme.colorScheme.onPrimary
+            : theme.colorScheme.onSurface,
+        fontWeight: FontWeight.bold,
+      ),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+
+  Widget _buildDeviceDescription(
+      BuildContext context, Device? currentDevice, bool isActive) {
+    final theme = Theme.of(context);
+
+    return Text(
+      currentDevice?.description ?? device.description,
+      style: theme.textTheme.bodySmall?.copyWith(
+        color: isActive
+            ? theme.colorScheme.onPrimary.withOpacity(0.8)
+            : theme.colorScheme.onSurface.withOpacity(0.7),
+      ),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+
+  Widget _buildConsumptionInfo(
+      BuildContext context, Device? currentDevice, bool isActive) {
+    final theme = Theme.of(context);
+    final textColor = isActive
+        ? theme.colorScheme.onPrimary.withOpacity(0.9)
+        : theme.colorScheme.onSurface.withOpacity(0.8);
+
+    return Row(
+      children: [
+        Icon(
+          Icons.bolt,
+          size: 16.sp,
+          color: textColor,
+        ),
+        SizedBox(width: 4.w),
+        Text(
+          '${(currentDevice?.consumption ?? device.consumption).toStringAsFixed(1)} kwh',
+          style: theme.textTheme.bodySmall?.copyWith(
+            fontWeight: FontWeight.w500,
+            color: textColor,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPriorityInfo(
+      BuildContext context, Device? currentDevice, bool isActive) {
+    final theme = Theme.of(context);
+    final textColor = isActive
+        ? theme.colorScheme.onPrimary.withOpacity(0.9)
+        : theme.colorScheme.onSurface.withOpacity(0.8);
+
+    return Row(
+      children: [
+        Icon(
+          Icons.priority_high,
+          size: 16.sp,
+          color: textColor,
+        ),
+        SizedBox(width: 4.w),
+        Text(
+          _getPriorityText(
+            currentDevice?.priority ?? device.priority,
+            context,
+          ),
+          style: theme.textTheme.bodySmall?.copyWith(
+            fontWeight: FontWeight.w500,
+            color: textColor,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEditButton(BuildContext context, bool isActive) {
+    final theme = Theme.of(context);
+
+    return Positioned(
+      bottom: 4.h,
+      right: 4.w,
+      child: GestureDetector(
+        onTap: editable ? () => _editDevice(context) : null,
+        child: Container(
+          padding: EdgeInsets.all(4.w),
+          decoration: BoxDecoration(
+            color: isActive
+                ? theme.colorScheme.onPrimary.withOpacity(0.2)
+                : theme.colorScheme.onSurface.withOpacity(0.1),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            Icons.edit,
+            size: 16.sp,
+            color: isActive
+                ? theme.colorScheme.onPrimary
+                : theme.colorScheme.onSurface,
+          ),
+        ),
+      ),
+    );
+  }
+
   Device? _getCurrentDevice(DevicesState state) {
     final devices = state.devices;
     if (devices == null) return null;
@@ -220,51 +277,69 @@ class DeviceCard extends StatelessWidget {
     }
   }
 
-  Widget _buildCategoryIcon(Color color) {
+  Widget _buildCategoryIcon(BuildContext context, bool isActive) {
+    final theme = Theme.of(context);
+    final iconColor =
+        isActive ? theme.colorScheme.onPrimary : theme.colorScheme.onSurface;
+
     List<DeviceCategory> categories = [];
+
     return BlocConsumer<DashboardBloc, DashboardState>(
       listener: (context, state) {
         if (state is GetDeviceCategoriesError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.exception.toString())),
-          );
+          ExceptionManager.showMessage(state.exception);
         } else if (state is GetDeviceCategoriesSuccess) {
           categories = state.deviceCategories;
         }
       },
       buildWhen: (current, previous) => current is DeviceCategoryState,
       builder: (context, state) {
-        DeviceCategory category = categories.firstWhere(
-            (category) => category.id == device.categoryId,
-            orElse: () => DeviceCategory.empty);
-        return state is GetDeviceCategoriesLoading
-            ? SizedBox()
-            : Image.network(
-                category.iconUrl,
-                height: 40,
-                width: 40,
-                color: color,
-                errorBuilder: (context, error, stackTrace) {
-                  return Icon(
-                    Icons.devices,
-                    size: 40,
-                    color: color,
-                  );
-                },
+        if (state is GetDeviceCategoriesLoading) {
+          return SizedBox(
+            width: 40.w,
+            height: 40.h,
+            child: CircularProgressIndicator(
+              strokeWidth: 2.w,
+              color: iconColor,
+            ),
+          );
+        }
+
+        final category = categories.firstWhere(
+          (category) => category.id == device.categoryId,
+          orElse: () => DeviceCategory.empty,
+        );
+
+        return SizedBox(
+          width: 40.w,
+          height: 40.h,
+          child: Image.network(
+            category.iconUrl,
+            color: iconColor,
+            errorBuilder: (context, error, stackTrace) {
+              return Icon(
+                Icons.devices,
+                size: 40.sp,
+                color: iconColor,
               );
+            },
+          ),
+        );
       },
     );
   }
 
   String _getPriorityText(int priority, BuildContext context) {
-    if (priority == 1) {
-      return S.of(context).veryHigh;
-    } else if (priority == 2) {
-      return S.of(context).high;
-    } else if (priority == 3) {
-      return S.of(context).medium;
+    switch (priority) {
+      case 1:
+        return S.of(context).veryHigh;
+      case 2:
+        return S.of(context).high;
+      case 3:
+        return S.of(context).medium;
+      default:
+        return S.of(context).low;
     }
-    return S.of(context).low;
   }
 
   void _deleteDevice(BuildContext context) {
@@ -282,7 +357,7 @@ class DeviceCard extends StatelessWidget {
   }
 
   void _toggleStatus(bool status, BuildContext context) {
-    final DevicesCubit devicesCubit = DevicesCubit.get();
+    final devicesCubit = DevicesCubit.get();
     devicesCubit.toggleDeviceStatus(device.id);
   }
 }

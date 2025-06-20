@@ -1,10 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../utils/color_manager.dart';
-
 class DefaultButton extends StatelessWidget {
+  final bool isLoading;
+  final String title;
+  final Widget? icon;
+  final double? width;
+  final VoidCallback? onPressed;
+
   const DefaultButton({
     super.key,
     required this.title,
@@ -14,45 +17,46 @@ class DefaultButton extends StatelessWidget {
     this.isLoading = false,
   });
 
-  final bool? isLoading;
-  final String title;
-  final Widget? icon;
-  final double? width;
-  final VoidCallback? onPressed;
-
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return SizedBox(
       width: width ?? double.infinity,
       height: 55.h,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: ColorManager.primary,
-          disabledBackgroundColor: ColorManager.primary,
-          elevation: 10,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-        ).copyWith(
+        style: theme.elevatedButtonTheme.style?.copyWith(
+          elevation: MaterialStateProperty.all(10),
           overlayColor: MaterialStateProperty.all(
-            ColorManager.primary.withOpacity(0.8),
+            theme.colorScheme.primary.withOpacity(0.8),
           ),
         ),
-        onPressed: isLoading == true ? null : onPressed,
-        child: isLoading == true
-            ? Center(
-                child: CircularProgressIndicator(color: ColorManager.white))
+        onPressed: isLoading ? null : onPressed,
+        child: isLoading
+            ? SizedBox(
+                height: 20.h,
+                width: 20.w,
+                child: CircularProgressIndicator(
+                  color: theme.colorScheme.onPrimary,
+                  strokeWidth: 2.w,
+                ),
+              )
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      color: ColorManager.white,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: theme.elevatedButtonTheme.style?.textStyle
+                            ?.resolve({MaterialState.pressed})?.copyWith(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w600,
+                        ) ??
+                        theme.textTheme.labelLarge?.copyWith(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.onPrimary,
+                        ),
                   ),
                   if (icon != null) ...[
                     SizedBox(width: 10.w),

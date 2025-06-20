@@ -11,6 +11,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
   SettingsCubit() : super(SettingsInitial());
   int currentPageIndex = 0;
   int lastIndex = 0;
+  bool isDarkMode = false;
   SettingsRepository settingsRepository = sl();
 
   static SettingsCubit get() {
@@ -70,14 +71,23 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
         languageCode: LocalizationManager.getCurrentLocale().languageCode));
   }
 
+  void toggleTheme() {
+    isDarkMode = !isDarkMode;
+    emit(ChangeThemeSuccessState(isDarkMode: isDarkMode));
+  }
+
   static SettingsCubit? _cubit;
 
-  //  Save language
+  //  Save language and theme
   @override
   SettingsState? fromJson(Map<String, dynamic> json) {
     LocalizationManager.changeLanguage(json['languageCode'] ?? "en");
-    return ChangeLanguageSuccessState(
+    isDarkMode = json['isDarkMode'] ?? false;
+
+    // Return the last saved state with both language and theme
+    return SettingsLoadedState(
       languageCode: json['languageCode'] ?? "en",
+      isDarkMode: isDarkMode,
     );
   }
 
@@ -86,6 +96,17 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
     if (state is ChangeLanguageSuccessState) {
       return {
         'languageCode': state.languageCode,
+        'isDarkMode': isDarkMode,
+      };
+    } else if (state is ChangeThemeSuccessState) {
+      return {
+        'languageCode': LocalizationManager.getCurrentLocale().languageCode,
+        'isDarkMode': state.isDarkMode,
+      };
+    } else if (state is SettingsLoadedState) {
+      return {
+        'languageCode': state.languageCode,
+        'isDarkMode': state.isDarkMode,
       };
     }
     return null;
