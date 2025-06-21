@@ -1,5 +1,5 @@
-![1](https://github.com/user-attachments/assets/608de5bd-3ef3-4446-a137-6b5dcebac668)![10_PhotoGrid](https://github.com/user-attachments/assets/6e71a165-2c1f-4685-a427-541f95ee0c20)![9_PhotoGrid](https://github.com/user-attachments/assets/ab1ed801-a5cb-47cd-9391-0c279951bb01)![8_PhotoGrid](https://github.com/user-attachments/assets/c471c965-b68a-4c18-a807-75d779ec7899)# ⚡Tarsheed
-# ⚡ Smart Energy Management App
+# ⚡Tarsheed
+## ⚡ Smart Energy Management App
 
 A Flutter-based mobile application that helps users monitor and control electricity consumption in their homes through automation, device management, and real-time sensor integration.
 
@@ -39,13 +39,11 @@ A Flutter-based mobile application that helps users monitor and control electric
 ![2](https://github.com/user-attachments/assets/e14131d6-3556-425d-94f9-9c0f0ce20199)
 ![7_PhotoGrid](https://github.com/user-attachments/assets/5dbcb37a-b2c1-4824-afb6-436086d7d0ab)
 ![5](https://github.com/user-attachments/assets/6aa20f3d-9fe1-4573-b044-929b36b356a0)
-![2](https://github.com/user-attachments/assets/d783a854-5971-4f54-a097-749ab1614069)
 ![6_PhotoGrid](https://github.com/user-attachments/assets/6209ab1e-8fdf-46fd-b6fc-980303c03c63)
 ![1](https://github.com/user-attachments/assets/fd2af91b-8deb-4f2b-99b7-070375510065)
 ![10_PhotoGrid](https://github.com/user-attachments/assets/3c1d7604-fed5-49b3-930d-03071b2e4ec7)
 ![9_PhotoGrid](https://github.com/user-attachments/assets/e0c82e40-b934-4557-b196-0d185c4ab74c)
 ![8_PhotoGrid](https://github.com/user-attachments/assets/f50fbf74-9789-47c2-94cc-2d06678c478d)
-![3](https://github.com/user-attachments/assets/db6d9314-214f-43b8-9ebb-9ddc16fc02f9)
 
 # Project Architecture
 
