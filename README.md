@@ -1,4 +1,4 @@
-# ⚡Tarsheed
+![1](https://github.com/user-attachments/assets/608de5bd-3ef3-4446-a137-6b5dcebac668)![10_PhotoGrid](https://github.com/user-attachments/assets/6e71a165-2c1f-4685-a427-541f95ee0c20)![9_PhotoGrid](https://github.com/user-attachments/assets/ab1ed801-a5cb-47cd-9391-0c279951bb01)![8_PhotoGrid](https://github.com/user-attachments/assets/c471c965-b68a-4c18-a807-75d779ec7899)# ⚡Tarsheed
 # ⚡ Smart Energy Management App
 
 A Flutter-based mobile application that helps users monitor and control electricity consumption in their homes through automation, device management, and real-time sensor integration.
@@ -33,17 +33,19 @@ A Flutter-based mobile application that helps users monitor and control electric
 A Flutter-based mobile application that helps users monitor and control electricity consumption in their homes through automation, device management, and real-time sensor integration.
 ---
 # App UI
-![3](https://github.com/user-attachments/assets/6377923f-c949-45a6-b97b-0bb0353cb716)
-![2](https://github.com/user-attachments/assets/d2ff0338-5f91-4aa9-ba30-e584e863a4c9)
-![1](https://github.com/user-attachments/assets/18c9a239-ca53-449b-9d1b-a7db1cc3200e)
-![10](https://github.com/user-attachments/assets/d5f058ba-94ca-4817-b64d-b5fc89c9d45d)
-![9](https://github.com/user-attachments/assets/652d3558-4545-4871-b5a1-a521028b6411)
-![8](https://github.com/user-attachments/assets/ca8329cf-8a5a-4d17-947c-f496597976af)
-![7](https://github.com/user-attachments/assets/d29198ff-030e-416b-b343-15d05f630e21)
-![6](https://github.com/user-attachments/assets/3499be76-b941-40c3-bfbe-e68203d088fa)
-![5](https://github.com/user-attachments/assets/1b8e3a19-8a39-42f2-86d1-b0b146656a23)
-![4](https://github.com/user-attachments/assets/96891366-8c7c-4099-91fb-270593e94777)
 
+![3](https://github.com/user-attachments/assets/5fc195cb-705d-460a-b917-8da5a3c2700a)
+![4](https://github.com/user-attachments/assets/ec744f01-9cb1-42f8-89d0-919eeca19aa5)
+![2](https://github.com/user-attachments/assets/e14131d6-3556-425d-94f9-9c0f0ce20199)
+![7_PhotoGrid](https://github.com/user-attachments/assets/5dbcb37a-b2c1-4824-afb6-436086d7d0ab)
+![5](https://github.com/user-attachments/assets/6aa20f3d-9fe1-4573-b044-929b36b356a0)
+![2](https://github.com/user-attachments/assets/d783a854-5971-4f54-a097-749ab1614069)
+![6_PhotoGrid](https://github.com/user-attachments/assets/6209ab1e-8fdf-46fd-b6fc-980303c03c63)
+![1](https://github.com/user-attachments/assets/fd2af91b-8deb-4f2b-99b7-070375510065)
+![10_PhotoGrid](https://github.com/user-attachments/assets/3c1d7604-fed5-49b3-930d-03071b2e4ec7)
+![9_PhotoGrid](https://github.com/user-attachments/assets/e0c82e40-b934-4557-b196-0d185c4ab74c)
+![8_PhotoGrid](https://github.com/user-attachments/assets/f50fbf74-9789-47c2-94cc-2d06678c478d)
+![3](https://github.com/user-attachments/assets/db6d9314-214f-43b8-9ebb-9ddc16fc02f9)
 
 # Project Architecture
 
