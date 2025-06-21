@@ -175,7 +175,7 @@ modules/automation/
 
 #### **Dashboard Module**
 ```
-```
+
 modules/dashboard/
 ├── 📁 bloc/
 │   ├── dashboard_bloc.dart
@@ -257,27 +257,7 @@ modules/dashboard/
         │   ├── dashboard_item.dart
         │   ├── home_header.dart
         │   └── text_home_screen.dart
-```
 
-### 3. **Notification System** (`src/notifications/`)
-```
-notifications/
-├── 📁 cubit/
-│   ├── notifications_cubit.dart
-│   └── notifications_state.dart
-├── 📁 data/
-│   ├── models/
-│   │   └── app_notification.dart
-│   ├── repositories/
-│   │   └── notifications_repository.dart
-│   └── services/
-│       ├── base_notifications_services.dart
-│       └── notifications_services.dart
-├── 📁 ui/
-│   ├── screens/
-│   │   └── notification_page.dart
-│   └── widgets/
-│       └── notification_widget.dart
 ```
 
 ### 4. **Settings Module** (`src/settings/`)
