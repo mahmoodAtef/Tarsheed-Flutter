@@ -69,11 +69,11 @@ Foundation layer containing shared utilities and configurations:
 
 ```
 core/
-├── 📄 apis/
+├── 📁 apis/
 │   ├── api.dart
 │   ├── dio_helper.dart
 │   └── end_points.dart
-├── 📄 error/
+├── 📁 error/
 │   ├── custom_exceptions/
 │   │   └── auth_exceptions.dart
 │   ├── handlers/
@@ -82,19 +82,19 @@ core/
 │   │   ├── sqlite_exception_handler.dart
 │   │   └── unexpected_exception_handler.dart
 │   └── exception_manager.dart
-├── 📄 routing/
+├── 📁 routing/
 │   └── navigation_manager.dart
-├── 📄 services/
+├── 📁 services/
 │   ├── app_initializer.dart
 │   ├── bloc_observer.dart
 │   ├── connectivity_services.dart
 │   ├── dep_injection.dart
 │   └── secure_storage_helper.dart
-├── 📄 utils/
+├── 📁 utils/
 │   ├── image_manager.dart
 │   ├── localization_manager.dart
 │   └── theme_manager.dart
-└── 📄 widgets/
+└── 📁 widgets/
     ├── appbar.dart
     ├── bottom_navigator_bar.dart
     ├── circle_background.dart
