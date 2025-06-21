@@ -7,6 +7,10 @@ import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/automation/cubit/automation_cubit.dart';
+import 'package:tarsheed/src/modules/automation/ui/ui_models/ui_models.dart';
+import 'package:tarsheed/src/modules/automation/ui/widgets/actions_components.dart';
+import 'package:tarsheed/src/modules/automation/ui/widgets/conditions_components.dart';
+import 'package:tarsheed/src/modules/automation/ui/widgets/triggers_components.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 

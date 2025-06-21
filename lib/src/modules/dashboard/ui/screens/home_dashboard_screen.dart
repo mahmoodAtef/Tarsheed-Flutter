@@ -6,14 +6,14 @@ import 'package:tarsheed/src/core/error/exception_manager.dart';
 import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/widgets/appbar.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
-import 'package:tarsheed/src/modules/auth/ui/widgets/card_item.dart';
 import 'package:tarsheed/src/modules/automation/ui/screens/all_automations_screen.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/devices/devices.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/payment_webview.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/screens/rooms_screen.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/screens/sensors_screen.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/screens/rooms/rooms_screen.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/screens/sensors/sensors_screen.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/widgets/dashboard_item.dart';
 
 class DashBoardScreen extends StatelessWidget {
   const DashBoardScreen({super.key});
@@ -87,7 +87,7 @@ class DashBoardScreen extends StatelessWidget {
   }
 
   Widget _buildDevicesItem(BuildContext context, ThemeData theme) {
-    return BuildItem(
+    return DashboardItem(
       icon: Icons.devices,
       title: S.of(context).devices,
       subtitle: S.of(context).manageYourDevices,
@@ -96,7 +96,7 @@ class DashBoardScreen extends StatelessWidget {
   }
 
   Widget _buildSensorsItem(BuildContext context, ThemeData theme) {
-    return BuildItem(
+    return DashboardItem(
       icon: Icons.sensors,
       title: S.of(context).sensors,
       subtitle: S.of(context).manageYourSensors,
@@ -105,7 +105,7 @@ class DashBoardScreen extends StatelessWidget {
   }
 
   Widget _buildAutomationsItem(BuildContext context, ThemeData theme) {
-    return BuildItem(
+    return DashboardItem(
       icon: Icons.auto_awesome,
       title: S.of(context).automations,
       subtitle: S.of(context).manageYourAutomations,
@@ -114,7 +114,7 @@ class DashBoardScreen extends StatelessWidget {
   }
 
   Widget _buildRoomsItem(BuildContext context, ThemeData theme) {
-    return BuildItem(
+    return DashboardItem(
       icon: Icons.door_back_door_outlined,
       title: S.of(context).rooms,
       subtitle: S.of(context).manageYourRooms,
@@ -139,7 +139,7 @@ class DashBoardScreen extends StatelessWidget {
       return _buildPaymentLoadingWidget(theme);
     }
 
-    return BuildItem(
+    return DashboardItem(
       icon: Icons.payments,
       title: S.of(context).payBills,
       subtitle: S.of(context).payBillsDescription,

@@ -7,8 +7,8 @@ import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/reports_cubit/reports_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
 
-import '../../../../../../generated/l10n.dart';
-import '../widgets/color_indicator.dart';
+import '../../../../../../../generated/l10n.dart';
+import 'color_indicator.dart';
 
 class EnergyConsumptionSection extends StatefulWidget {
   @override

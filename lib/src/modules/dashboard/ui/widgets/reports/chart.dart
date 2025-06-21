@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:tarsheed/generated/l10n.dart';
 
-import '../../data/models/consumption_interval.dart';
+import '../../../data/models/consumption_interval.dart';
 
 class UsageChartWidget extends StatelessWidget {
   final List<ConsumptionInterval> chartData;

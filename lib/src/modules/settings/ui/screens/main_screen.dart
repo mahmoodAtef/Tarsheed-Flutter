@@ -6,7 +6,7 @@ import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubi
 import 'package:tarsheed/src/modules/dashboard/cubits/reports_cubit/reports_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/home_dashboard_screen.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/screens/home_screen.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/screens/reports_page.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/screens/reports/reports_page.dart';
 import 'package:tarsheed/src/modules/notifications/cubit/notifications_cubit.dart';
 import 'package:tarsheed/src/modules/notifications/ui/screens/notification_page.dart';
 import 'package:tarsheed/src/modules/settings/cubit/settings_cubit.dart';

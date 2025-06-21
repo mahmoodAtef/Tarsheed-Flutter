@@ -6,8 +6,8 @@ import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/devices_cubit/devices_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/reports_cubit/reports_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/devices/connected_devices_list.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/widgets/energy_consumption_section.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/home_header.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/widgets/reports/energy_consumption_section.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
