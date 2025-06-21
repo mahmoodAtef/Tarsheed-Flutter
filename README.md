@@ -133,7 +133,6 @@ modules/auth/
 │   │   ├── verify_email.dart
 │   │   └── verify_finish.dart
 │   └── widgets/
-│       ├── card_item.dart
 │       ├── main_title.dart
 │       ├── social_icon.dart
 │       └── sup_title.dart
@@ -224,14 +223,18 @@ modules/dashboard/
     │   ├── reports_page.dart
     │   └── rooms_screen.dart
     └── widgets/
+        ├── card_item.dart
+        ├── clock_widget.dart
+
         ├── devices/
-        │   └── ai-sugg_card.dart
+            ├── connected_devices_indicator.dart
+
+            └── ai-sugg_card.dart
         ├── sensor/
+
+        ├── report/
         │   ├── chart.dart
-        │   ├── circle_button_month_name.dart
-        │   ├── clock_widget.dart
         │   ├── color_indicator.dart
-        │   ├── connected_devices_indicator.dart
         │   ├── energy_consumption_chart.dart
         │   ├── home_header.dart
         │   ├── report_large_card.dart
