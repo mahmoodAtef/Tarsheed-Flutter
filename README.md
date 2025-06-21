@@ -175,17 +175,24 @@ modules/automation/
 
 #### **Dashboard Module**
 ```
+```
 modules/dashboard/
 ├── 📁 bloc/
 │   ├── dashboard_bloc.dart
 │   ├── dashboard_event.dart
 │   └── dashboard_state.dart
 ├── 📁 cubits/
-│   ├── devices_cubit
-│   ├── reports_cubit
-│   └── sensors_cubit
+│   ├── 📁 devices_cubit/
+│   │   ├── devices_cubit.dart
+│   │   └── devices_state.dart
+│   ├── 📁 reports_cubit/
+│   │   ├── reports_cubit.dart
+│   │   └── reports_state.dart
+│   └── 📁 sensors_cubit/
+│       ├── sensor_cubit.dart
+│       └── sensor_state.dart
 ├── 📁 data/
-│   ├── models/
+│   ├── 📁 models/
 │   │   ├── ai_recommendations.dart
 │   │   ├── category.dart
 │   │   ├── consumption_interval.dart
@@ -196,51 +203,60 @@ modules/dashboard/
 │   │   ├── room.dart
 │   │   ├── sensor.dart
 │   │   └── sensor_category.dart
-│   ├── repositories/
-│   │   ├── devices/
+│   ├── 📁 repositories/
+│   │   ├── 📁 devices/
 │   │   │   └── devices_repository.dart
-│   │   ├── report/
+│   │   ├── 📁 report/
 │   │   │   └── report_repository.dart
 │   │   └── dashboard_repository.dart
-│   └── services/
-│       ├── devices/
+│   └── 📁 services/
+│       ├── 📁 devices/
 │       │   └── devices_remote_services.dart
-│       ├── report/
-│       │   └── report_remote_services.dart
-│       ├── base_dashboard_services.dart
-│       ├── dashboard_local_services.dart
-│       └── dashboard_remote_services.dart
+│       ├── 📁 report/
+│       │   ├── report_remote_services.dart
+│       │   ├── base_dashboard_services.dart
+│       │   ├── dashboard_local_services.dart
+│       │   └── dashboard_remote_services.dart
 └── 📁 ui/
-    ├── screens/
-    │   ├── devices/
+    ├── 📁 screens/
+    │   ├── 📁 devices/
     │   │   ├── add_device_screen.dart
     │   │   └── devices.dart
-    │   ├── add_room_screen.dart
-    │   ├── add_sensor_form_page.dart
+    │   ├── 📁 reports/
+    │   │   └── reports_page.dart
+    │   ├── 📁 rooms/
+    │   │   ├── add_room_screen.dart
+    │   │   └── rooms_screen.dart
+    │   ├── 📁 sensors/
+    │   │   ├── add_sensor_form_page.dart
+    │   │   └── sensors_screen.dart
     │   ├── home_dashboard_screen.dart
     │   ├── home_screen.dart
-    │   ├── payment_webview.dart
-    │   ├── reports_page.dart
-    │   └── rooms_screen.dart
-    └── widgets/
-        ├── card_item.dart
-        ├── clock_widget.dart
-
-        ├── devices/
-            ├── connected_devices_indicator.dart
-
-            └── ai-sugg_card.dart
-        ├── sensor/
-
-        ├── report/
+    │   └── payment_webview.dart
+    └── 📁 widgets/
+        ├── 📁 devices/
+        │   ├── card_devices.dart
+        │   ├── connected_devices_list.dart
+        │   ├── delete_confirmation_dialog.dart
+        │   ├── devices_filter_tabs.dart
+        │   └── edit_device_dialog.dart
+        ├── 📁 reports/
+        │   ├── ai-sugg_card.dart
         │   ├── chart.dart
         │   ├── color_indicator.dart
-        │   ├── energy_consumption_chart.dart
-        │   ├── home_header.dart
+        │   ├── energy_consumption_section.dart
         │   ├── report_large_card.dart
-        │   ├── room_card.dart
-        │   ├── text_home_screen.dart
         │   └── usage_card.dart
+        ├── 📁 rooms/
+        │   └── room_card.dart
+        ├── 📁 sensor/
+        │   ├── delete_sensor_dialog.dart
+        │   ├── sensor_card.dart
+        │   ├── clock_widget.dart
+        │   ├── connected_devices_indicator.dart
+        │   ├── dashboard_item.dart
+        │   ├── home_header.dart
+        │   └── text_home_screen.dart
 ```
 
 ### 3. **Notification System** (`src/notifications/`)
