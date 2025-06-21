@@ -6,8 +6,8 @@ import 'package:tarsheed/src/core/routing/navigation_manager.dart';
 import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/screens/add_room_screen.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/widgets/room_card.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/screens/rooms/add_room_screen.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/widgets/rooms/room_card.dart';
 
 class RoomsScreen extends StatelessWidget {
   const RoomsScreen({super.key});

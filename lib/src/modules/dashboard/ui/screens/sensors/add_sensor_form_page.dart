@@ -12,7 +12,7 @@ import 'package:tarsheed/src/modules/dashboard/data/models/room.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/sensor.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/sensor_category.dart';
 
-import '../../bloc/dashboard_bloc.dart';
+import '../../../bloc/dashboard_bloc.dart';
 
 class AddSensorFormPage extends StatefulWidget {
   const AddSensorFormPage({super.key});

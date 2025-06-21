@@ -6,12 +6,12 @@ import 'package:tarsheed/src/core/widgets/connectivity_widget.dart';
 import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/dashboard/cubits/reports_cubit/reports_cubit.dart';
 import 'package:tarsheed/src/modules/dashboard/data/models/report.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/widgets/ai-sugg_card.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/widgets/report_large_card.dart';
-import 'package:tarsheed/src/modules/dashboard/ui/widgets/usage_card.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/widgets/reports/ai-sugg_card.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/widgets/reports/report_large_card.dart';
+import 'package:tarsheed/src/modules/dashboard/ui/widgets/reports/usage_card.dart';
 
-import '../../../../core/widgets/appbar.dart';
-import '../widgets/chart.dart';
+import '../../../../../core/widgets/appbar.dart';
+import '../../widgets/reports/chart.dart';
 
 class ReportsPage extends StatelessWidget {
   const ReportsPage({super.key});

@@ -8,9 +8,9 @@ import 'package:tarsheed/src/core/widgets/core_widgets.dart';
 import 'package:tarsheed/src/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:tarsheed/src/modules/dashboard/ui/widgets/sensor/sensor_card.dart';
 
-import '../../../../core/widgets/appbar.dart';
-import '../../../../core/widgets/rectangle_background.dart';
-import '../../data/models/sensor_category.dart';
+import '../../../../../core/widgets/appbar.dart';
+import '../../../../../core/widgets/rectangle_background.dart';
+import '../../../data/models/sensor_category.dart';
 import 'add_sensor_form_page.dart';
 
 class SensorsScreen extends StatelessWidget {

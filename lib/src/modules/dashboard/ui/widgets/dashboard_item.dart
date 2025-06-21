@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class BuildItem extends StatelessWidget {
-  const BuildItem({
+class DashboardItem extends StatelessWidget {
+  const DashboardItem({
     super.key,
     required this.icon,
     required this.title,
