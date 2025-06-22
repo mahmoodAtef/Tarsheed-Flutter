@@ -6,7 +6,6 @@ import 'package:tarsheed/src/modules/auth/data/models/email_and_password_registr
 import 'package:tarsheed/src/modules/auth/data/repositories/auth_repository.dart';
 
 import '../../../core/services/dep_injection.dart';
-import '../data/models/security_settings.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
