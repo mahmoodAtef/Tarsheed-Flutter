@@ -118,8 +118,7 @@ modules/auth/
 ├── 📁 data/
 │   ├── models/
 │   │   ├── auth_info.dart
-│   │   ├── email_and_password.dart
-│   │   └── security_settings.dart
+│   │   └── email_and_password.dart
 │   ├── repositories/
 │   │   └── auth_repository.dart
 │   └── services/
