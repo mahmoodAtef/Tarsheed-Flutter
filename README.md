@@ -5,6 +5,12 @@ A Flutter-based mobile application that helps users monitor and control electric
 
 ---
 
+## 🎬 Live Demo
+
+**[👆 Try Live Demo Here](#-demo)**
+
+---
+
 ## 📱 Features
 
 - **Authentication:**
@@ -30,8 +36,41 @@ A Flutter-based mobile application that helps users monitor and control electric
     - Update user info, change language, delete account
 
 ---
-A Flutter-based mobile application that helps users monitor and control electricity consumption in their homes through automation, device management, and real-time sensor integration.
+
+# 📺 Demo
+
+Experience Tarsheed's smart energy management capabilities through our interactive demo. Test all features including device control, automation setup, and energy monitoring without any setup required.
+
+
+
+### 📱 Mobile Demo
+- **Android APK**: [Download Demo APK](https://drive.google.com/drive/folders/1DmFR_F-A7NoQmosW-esQ-ax5Z-bfXiaE?usp=sharing)
+
+
+### 🎮 Demo Features Available
+- ✅ Full device management simulation
+- ✅ Real-time sensor data visualization
+- ✅ Automation rule creation and testing
+- ✅ Energy consumption reports
+- ✅ AI-powered recommendations
+- ✅ Multi-room setup simulation
+
+### 👤 Demo Credentials
+```
+Email: demo@tarsheed.app
+Password: Demo123!
+```
+
+### 🎯 Quick Demo Guide
+1. **Login** using the demo credentials above
+2. **Explore Dashboard** - View your simulated smart home
+3. **Add Devices** - Try adding virtual smart devices
+4. **Create Automation** - Set up energy-saving rules
+5. **View Reports** - Check energy consumption analytics
+6. **Test Controls** - Turn devices on/off remotely
+
 ---
+
 # App UI
 
 ![3](https://github.com/user-attachments/assets/5fc195cb-705d-460a-b917-8da5a3c2700a)
